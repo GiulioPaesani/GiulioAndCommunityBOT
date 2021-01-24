@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-var request = require('request');
-client.login(process.env.token);
+client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.rUbtH1ly1sen6caAsj9p-CGLZXY");
 
 client.on("ready", () => {
     console.log("ONLINE")
@@ -94,31 +93,6 @@ client.on("message", (message) => {
     }
 })
 
-//YOUTUBE API
-var id = "UCK6QwAdGWOWN9AT1_UQFGtA";
-var key = "AIzaSyAoPIQMri9i6iqvJKZX5rulsM3LWYyCjsk";
-
-var url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + id + "&key=" + key;
-var subscriptions, view, video
-request({
-    method: 'GET',
-    url: url
-}, function (err, response, text) {
-    if (err) {
-
-        return;
-    }
-
-    var json = JSON.parse(text);
-    subscriptions = json.items[0].statistics.subscriberCount;
-    view = json.items[0].statistics.viewCount;
-    video = json.items[0].statistics.videoCount;
-});
-//Counter subscriptions
-setInterval(function () {
-    var canale = client.channels.cache.get("801717800137129994")
-    canale.setName("🎬│subscribers: " + subscriptions);
-}, 1000)
 //Counter member
 client.on("guildMemberAdd", member => {
     var canale = client.channels.cache.get("800802386587287562")
@@ -131,17 +105,10 @@ client.on("guildMemberRemove", member => {
     console.log(member.guild.memberCount)
 });
 
-client.on("message", (message) => {
-    var youtubeinfo = new Discord.MessageEmbed()
-        .setTitle("\:projector: GiulioAndCode \:projector:")
-        .setThumbnail("https://i.postimg.cc/3JsT2km4/Profilo2-PNG.png")
-        .setDescription("Tutte le statistiche sul canale youtube di **GiulioAndCode**")
-        .setColor("#41A9F6")
-        .addField("Subscriptions", "```" + subscriptions + "```", true)
-        .addField("View", "```" + view + "```", true)
-        .addField("Video", "```" + video + "```", true)
-
-    if (message.content == "!youtubeinfo") {
-        message.channel.send(youtubeinfo)
-    }
-})
+const ytch = require('yt-channel-info')
+setInterval(function () {
+    ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
+        var canale = client.channels.cache.get("801717800137129994")
+        canale.setName("🎬│subscribers: " + response.subscriberCount)
+    })
+}, 1000)
