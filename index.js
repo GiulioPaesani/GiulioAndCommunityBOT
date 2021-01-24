@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.rUbtH1ly1sen6caAsj9p-CGLZXY");
+client.login(process.env.token);
 
 client.on("ready", () => {
     console.log("ONLINE")
