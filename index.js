@@ -108,9 +108,8 @@ client.on("guildMemberRemove", member => {
 const ytch = require('yt-channel-info')
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-        //var canale = client.channels.cache.get("801717800137129994")
+        var canale = client.channels.cache.get("801717800137129994")
         //canale.setName("🎬│subscribers: " + response.subscriberCount)
-        var canale = client.channels.cache.get("801019779480944660")
         console.log(canale)
     })
 }, 1000)
