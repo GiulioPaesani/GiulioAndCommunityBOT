@@ -112,3 +112,10 @@ setInterval(function () {
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000)
+
+
+client.on("message", message => {
+    if (message.content == "!test") {
+        message.channel.send("FUNZIONA TUTTO!")
+    }
+})
