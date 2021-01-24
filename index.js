@@ -3,7 +3,7 @@ const client = new Discord.Client();
 client.login(process.env.token);
 
 client.on("ready", () => {
-    console.log("ONLINE")
+    console.log("------------ONLINE------------")
 })
 
 
@@ -109,7 +109,6 @@ const ytch = require('yt-channel-info')
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
         var canale = client.channels.cache.get("801717800137129994")
-        //canale.setName("🎬│subscribers: " + response.subscriberCount)
-        console.log(canale)
+        canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000)
