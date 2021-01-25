@@ -82,7 +82,7 @@ client.on("message", (message) => {
             }
         }
     }
-    if (trovato && !message.member.hasPermission("ADMINISTRATOR")) {
+    if (trovato && message.member.hasPermission("ADMINISTRATOR")) {
         canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
         message.channel.send(canaleNonConcesso)
             .then(msg => {
@@ -111,7 +111,7 @@ setInterval(function () {
         var canale = client.channels.cache.get("801717800137129994")
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
-}, 1000)
+}, 1000 * 10)
 
 
 client.on("message", message => {
