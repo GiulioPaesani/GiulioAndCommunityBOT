@@ -82,7 +82,7 @@ client.on("message", (message) => {
             }
         }
     }
-    if (trovato && message.member.hasPermission("ADMINISTRATOR")) {
+    if (trovato && !message.member.hasPermission("ADMINISTRATOR")) {
         canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
         message.channel.send(canaleNonConcesso)
             .then(msg => {
