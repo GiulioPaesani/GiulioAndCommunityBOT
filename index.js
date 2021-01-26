@@ -120,13 +120,6 @@ client.on("message", message => {
     if (message.content == "!test") {
         message.channel.send("FUNZIONA TUTTO!")
     }
-
-    //YOUTUBE
-    if (message.content == "!youtube") {
-        ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-            console.log(response)
-        })
-    }
 })
 //YOUTUBE - LASTVIDEO
 client.on("message", message => {
