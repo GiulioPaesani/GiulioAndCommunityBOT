@@ -110,16 +110,56 @@ client.on("guildMemberRemove", member => {
 });
 
 const ytch = require('yt-channel-info')
-setInterval(function () {
+/*setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
         var canale = client.channels.cache.get("801717800137129994")
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
-}, 1000 * 10)
-
+}, 1000 * 10)*/
 
 client.on("message", message => {
+    //TEST
     if (message.content == "!test") {
         message.channel.send("FUNZIONA TUTTO!")
     }
+
+    //YOUTUBE
+    if (message.content == "!youtube") {
+        ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
+            console.log(response)
+        })
+    }
 })
+//YOUTUBE - LASTVIDEO
+client.on("message", message => {
+    if (message.content == "!youtube") {
+        ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
+            var youtube = new Discord.MessageEmbed()
+                .setTitle("GiulioAndCode")
+                .setColor("#41A9F6")
+                .setURL(response.authorUrl)
+                .setDescription(":love_you_gesture: Questo è il canale youtube **GiulioAndCode**\rIscriviti, lascia like, e attiva la campanellina")
+                .setThumbnail(response.authorThumbnails[2].url)
+            message.channel.send(youtube);
+            console.log(response);
+        })
+    }
+    if (message.content == "!lastvideo") {
+        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
+        const sortBy = 'newest'
+        ytch.getChannelVideos(channelId, sortBy).then((response) => {
+            var lastVideo = new Discord.MessageEmbed()
+                .setTitle(response.items[0].title)
+                .setColor("#41A9F6")
+                .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
+                .setDescription(":love_you_gesture: Questo è l'ultimo video uscito su **GiulioAndCode**, vai subito a vederlo...\r :point_right:  https://www.youtube.com/watch?v=" + response.items[0].videoId)
+                .setThumbnail(response.items[0].videoThumbnails[3].url)
+                .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
+                .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
+                .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
+            console.log(response.items[0])
+            message.channel.send(lastVideo)
+        })
+    }
+})
+
