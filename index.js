@@ -101,21 +101,19 @@ client.on("message", (message) => {
 client.on("guildMemberAdd", member => {
     var canale = client.channels.cache.get("800802386587287562")
     canale.setName("👾│members: " + member.guild.memberCount)
-    console.log(member.guild.memberCount)
 });
 client.on("guildMemberRemove", member => {
     var canale = client.channels.cache.get("800802386587287562")
     canale.setName("👾│members: " + member.guild.memberCount)
-    console.log(member.guild.memberCount)
 });
 
 const ytch = require('yt-channel-info')
-/*setInterval(function () {
+setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
         var canale = client.channels.cache.get("801717800137129994")
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
-}, 1000 * 10)*/
+}, 1000 * 10)
 
 client.on("message", message => {
     //TEST
@@ -141,7 +139,6 @@ client.on("message", message => {
                 .setDescription(":love_you_gesture: Questo è il canale youtube **GiulioAndCode**\rIscriviti, lascia like, e attiva la campanellina")
                 .setThumbnail(response.authorThumbnails[2].url)
             message.channel.send(youtube);
-            console.log(response);
         })
     }
     if (message.content == "!lastvideo") {
@@ -157,7 +154,6 @@ client.on("message", message => {
                 .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
                 .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
                 .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
-            console.log(response.items[0])
             message.channel.send(lastVideo)
         })
     }
