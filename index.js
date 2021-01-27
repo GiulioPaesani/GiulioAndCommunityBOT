@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+var request = require('request');
+const ytch = require('yt-channel-info')
 client.login(process.env.token);
 
 client.on("ready", () => {
@@ -107,7 +109,7 @@ client.on("guildMemberRemove", member => {
     canale.setName("👾│members: " + member.guild.memberCount)
 });
 
-const ytch = require('yt-channel-info')
+//Counter youtube
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
         var canale = client.channels.cache.get("801717800137129994")
@@ -122,6 +124,7 @@ client.on("message", message => {
     }
 })
 //YOUTUBE - LASTVIDEO
+//https://www.npmjs.com/package/yt-channel-info
 client.on("message", message => {
     if (message.content == "!youtube") {
         ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
@@ -149,6 +152,46 @@ client.on("message", message => {
                 .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
             message.channel.send(lastVideo)
         })
+    }
+    if (message.content == "!youtubeinfo") {
+        var id = "UCK6QwAdGWOWN9AT1_UQFGtA";
+        var key = "AIzaSyAoPIQMri9i6iqvJKZX5rulsM3LWYyCjsk";
+        var url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + id + "&key=" + key;
+        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
+        const sortBy = 'newest'
+
+        request({
+            method: 'GET',
+            url: url
+        }, function (err, response, text) {
+            var json = JSON.parse(text);
+            ytch.getChannelVideos(channelId, sortBy).then((responseVideo) => {
+                ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
+                    var lastVideo = responseVideo.items[0].title;
+                    lastVideo = lastVideo.toString()
+                    lastVideo = lastVideo.slice(0, 20)
+                    lastVideo = lastVideo.trim();
+                    lastVideo += "..."
+                    console.log(response)
+
+                    var youtubeInfo = new Discord.MessageEmbed()
+                        .setTitle("GiulioAndCode Info")
+                        .setURL(response.authorUrl)
+                        .setColor("#41A9F6")
+                        .setThumbnail(response.authorThumbnails[2].url)
+                        .setDescription("Tutte le statistiche del canale youtube **GiulioAndCode**")
+                        .addField(":bust_in_silhouette: Subscribers", "```" + response.subscriberCount + "```", true)
+                        .addField(":eyes: Views", "```" + json.items[0].statistics.viewCount + "```", true)
+                        .addField(":film_frames: Videos", "```" + json.items[0].statistics.videoCount + "```", true)
+                        .addField("User created", "```May 5th, 2020```", true)
+                        .addField("Last video", "[```" + lastVideo + "```](https://www.youtube.com/watch?v=" + responseVideo.items[0].videoId + ")", true)
+                        .addField(":speech_balloon: Description", "```" + response.description + "```", false)
+
+                    message.channel.send(youtubeInfo);
+                })
+            })
+
+        });
     }
 })
 

@@ -11,5 +11,8 @@
   "dependencies": {
     "discord.js": "^12.5.1",
     "yt-channel-info": "^1.2.0"
+  },
+  "devDependencies": {
+    "request": "^2.88.2"
   }
 }
