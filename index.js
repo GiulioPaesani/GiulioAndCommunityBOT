@@ -153,7 +153,7 @@ client.on("message", message => {
             message.channel.send(lastVideo)
         })
     }
-    if (message.content == "!youtubeinfo") {
+    /*if (message.content == "!youtubeinfo") {
         var id = "UCK6QwAdGWOWN9AT1_UQFGtA";
         var key = "AIzaSyAoPIQMri9i6iqvJKZX5rulsM3LWYyCjsk";
         var url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + id + "&key=" + key;
@@ -192,6 +192,6 @@ client.on("message", message => {
             })
 
         });
-    }
+    }*/
 })
 
