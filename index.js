@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-var request = require('request');
+//var request = require('request');
 const ytch = require('yt-channel-info')
 client.login(process.env.token);
 
