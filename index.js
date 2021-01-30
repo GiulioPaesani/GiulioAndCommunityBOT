@@ -71,7 +71,7 @@ client.on("message", (message) => {
         .setColor("ff0000")
 
     if (message.author.bot) return;
-    
+
     var trovato = false;
     var id;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
@@ -194,4 +194,28 @@ client.on("message", message => {
         });
     }*/
 })
+//SERVERSTATS
+client.on("message", message => {
+    if (message.content.trim() == "!serverstats" || message.content.trim() == "!serverinfo") {
+        var server = message.member.guild;
+        var botCount = server.members.cache.filter(member => member.user.bot).size
+        var memberCount = server.memberCount - botCount;
 
+        var categoryCount = server.channels.cache.filter(c => c.type == "category").size;
+        var textCount = server.channels.cache.filter(c => c.type == "text").size;
+        var vocalCount = server.channels.cache.filter(c => c.type == "voice").size;
+
+        var serverStats = new Discord.MessageEmbed()
+            .setTitle(server.name)
+            .setDescription("Tutte le statistiche su questo server")
+            .setThumbnail(server.iconURL())
+            .addField(":technologist: Owner", "```" + server.owner.user.username + "```", true)
+            .addField(":placard: Server ID", "```" + server.id + "```", true)
+            .addField(":map: Server region", "```" + server.region + "```", true)
+            .addField(":busts_in_silhouette: Members", "```Total: " + server.memberCount + " | Members: " + memberCount + " | Bots: " + botCount + "```", false)
+            .addField(":loud_sound: Server categories and channels", "```Category: " + categoryCount + " | Text: " + textCount + " | Voice: " + vocalCount + "```", false)
+            .addField(":calendar_spiral: Server created", "```" + server.createdAt.toDateString() + "```", true)
+            .addField(":beginner: Boost level", "```Level " + server.premiumTier + " (" + server.premiumSubscriptionCount + " boost)```", true)
+        message.channel.send(serverStats)
+    }
+})
