@@ -71,7 +71,7 @@ client.on("message", (message) => {
         .setColor("ff0000")
 
     if (message.author.bot) return;
-    if (message.author != "793768313934577664") return //DA TOGLIERE
+    
     var trovato = false;
     var id;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
