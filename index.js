@@ -124,7 +124,6 @@ setInterval(function () {
 
 client.on("message", message => {
     if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
-        console.log("ciao")
         return
     }
     //TEST
