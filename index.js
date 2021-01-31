@@ -124,14 +124,18 @@ client.on("message", message => {
     }
 })
 client.on("message", message => {
-    if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
-        return
-    }
+    
 })
 
 //YOUTUBE - LASTVIDEO
 //https://www.npmjs.com/package/yt-channel-info
 client.on("message", message => {
+    if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
+        console.log("ciao")
+        return
+    }
+    
+    //YOUTUBE
     if (message.content == "!youtube") {
         ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
             var youtube = new Discord.MessageEmbed()
@@ -143,6 +147,7 @@ client.on("message", message => {
             message.channel.send(youtube);
         })
     }
+    //LAST VIDEO
     if (message.content == "!lastvideo") {
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
@@ -159,50 +164,7 @@ client.on("message", message => {
             message.channel.send(lastVideo)
         })
     }
-    /*if (message.content == "!youtubeinfo") {
-        var id = "UCK6QwAdGWOWN9AT1_UQFGtA";
-        var key = "AIzaSyAoPIQMri9i6iqvJKZX5rulsM3LWYyCjsk";
-        var url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + id + "&key=" + key;
-        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
-        const sortBy = 'newest'
-
-        request({
-            method: 'GET',
-            url: url
-        }, function (err, response, text) {
-            var json = JSON.parse(text);
-            ytch.getChannelVideos(channelId, sortBy).then((responseVideo) => {
-                ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-                    var lastVideo = responseVideo.items[0].title;
-                    lastVideo = lastVideo.toString()
-                    lastVideo = lastVideo.slice(0, 20)
-                    lastVideo = lastVideo.trim();
-                    lastVideo += "..."
-                    console.log(response)
-
-                    var youtubeInfo = new Discord.MessageEmbed()
-                        .setTitle("GiulioAndCode Info")
-                        .setURL(response.authorUrl)
-                        .setColor("#41A9F6")
-                        .setThumbnail(response.authorThumbnails[2].url)
-                        .setDescription("Tutte le statistiche del canale youtube **GiulioAndCode**")
-                        .addField(":bust_in_silhouette: Subscribers", "```" + response.subscriberCount + "```", true)
-                        .addField(":eyes: Views", "```" + json.items[0].statistics.viewCount + "```", true)
-                        .addField(":film_frames: Videos", "```" + json.items[0].statistics.videoCount + "```", true)
-                        .addField("User created", "```May 5th, 2020```", true)
-                        .addField("Last video", "[```" + lastVideo + "```](https://www.youtube.com/watch?v=" + responseVideo.items[0].videoId + ")", true)
-                        .addField(":speech_balloon: Description", "```" + response.description + "```", false)
-
-                    message.channel.send(youtubeInfo);
-                })
-            })
-
-        });
-    }*/
-})
-
-//SERVERINFO
-client.on("message", message => {
+    //SERVERINFO
     if (message.content == "!serverinfo" || message.content == "!serverstats") {
         var server = message.member.guild;
         var botCount = server.members.cache.filter(member => member.user.bot).size
@@ -225,9 +187,7 @@ client.on("message", message => {
             .addField(":beginner: Boost level", "```Level " + server.premiumTier + " (" + server.premiumSubscriptionCount + " boost)```", true)
         message.channel.send(serverStats)
     }
-})
-//USERINFO
-client.on("message", message => {
+    //USERINFO
     if (message.content.startsWith("!userinfo") || message.content.startsWith("!userstats")) {
         if (message.content.trim() == "!userinfo") {
             var utente = message.member;
@@ -252,6 +212,11 @@ client.on("message", message => {
             .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + "```", true)
         message.channel.send(userStats)
     }
+})
+
+//USERINFO
+client.on("message", message => {
+
 
 
 })
