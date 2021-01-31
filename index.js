@@ -13,8 +13,13 @@ client.on("ready", () => {
 client.on("message", (message) => {
     //Non ho aggiunto KitRobit, AXVin, Sesh, Serverstats, Xenon, 
     var BOT = {
+        giulioAndCommunityBot: {
+            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!youtube", "!lastvideo"],
+            id: "802184359120863272",
+            canaliPermessi: ["801019779480944660"]
+        },
         mee6: {
-            comandi: ["!lastvideo", "!youtube", "!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
+            comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
             id: "159985870458322944",
             canaliPermessi: ["801019779480944660"]
         },
