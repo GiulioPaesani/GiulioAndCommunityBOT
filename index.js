@@ -118,23 +118,14 @@ setInterval(function () {
 }, 1000 * 10)
 
 client.on("message", message => {
-    //TEST
-    if (message.content == "!test") {
-        message.channel.send("FUNZIONA TUTTO!")
-    }
-})
-client.on("message", message => {
-    
-})
-
-//YOUTUBE - LASTVIDEO
-//https://www.npmjs.com/package/yt-channel-info
-client.on("message", message => {
     if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
         console.log("ciao")
         return
     }
-    
+    //TEST
+    if (message.content == "!test") {
+        message.channel.send("FUNZIONA TUTTO!")
+    }
     //YOUTUBE
     if (message.content == "!youtube") {
         ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
@@ -149,6 +140,7 @@ client.on("message", message => {
     }
     //LAST VIDEO
     if (message.content == "!lastvideo") {
+        //https://www.npmjs.com/package/yt-channel-info
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
         ytch.getChannelVideos(channelId, sortBy).then((response) => {
@@ -212,11 +204,4 @@ client.on("message", message => {
             .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + "```", true)
         message.channel.send(userStats)
     }
-})
-
-//USERINFO
-client.on("message", message => {
-
-
-
 })
