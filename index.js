@@ -123,6 +123,7 @@ client.on("message", message => {
         message.channel.send("FUNZIONA TUTTO!")
     }
 })
+
 //YOUTUBE - LASTVIDEO
 //https://www.npmjs.com/package/yt-channel-info
 client.on("message", message => {
@@ -194,9 +195,10 @@ client.on("message", message => {
         });
     }*/
 })
-//SERVERSTATS
+
+//SERVERINFO
 client.on("message", message => {
-    if (message.content.trim() == "!serverstats" || message.content.trim() == "!serverinfo") {
+    if (message.content == "!serverinfo" || message.content == "!serverstats") {
         var server = message.member.guild;
         var botCount = server.members.cache.filter(member => member.user.bot).size
         var memberCount = server.memberCount - botCount;
@@ -218,4 +220,33 @@ client.on("message", message => {
             .addField(":beginner: Boost level", "```Level " + server.premiumTier + " (" + server.premiumSubscriptionCount + " boost)```", true)
         message.channel.send(serverStats)
     }
+})
+//USERINFO
+client.on("message", message => {
+    if (message.content.startsWith("!userinfo") || message.content.startsWith("!userstats")) {
+        if (message.content.trim() == "!userinfo") {
+            var utente = message.member;
+        }
+        else {
+            var utente = message.mentions.members.first()
+        }
+
+        if (!utente) {
+            message.channel.send("Non ho trovato questo utente")
+            return
+        }
+
+        var userStats = new Discord.MessageEmbed()
+            .setTitle(utente.user.tag)
+            .setDescription("Tutte le statistiche su questo utente")
+            .setThumbnail(utente.user.avatarURL())
+            .addField(":receipt: User ID", "```" + utente.user.id + "```", true)
+            .addField(":ok_hand: Status", "```" + utente.user.presence.status + "```", true)
+            .addField(":shirt: Roles", "```" + utente.roles.cache.map(role => role.name).join(", ") + "```", true)
+            .addField(":pencil: Account created", "```" + utente.user.createdAt.toDateString() + "```", true)
+            .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + "```", true)
+        message.channel.send(userStats)
+    }
+
+
 })
