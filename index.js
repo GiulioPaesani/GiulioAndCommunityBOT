@@ -123,6 +123,11 @@ client.on("message", message => {
         message.channel.send("FUNZIONA TUTTO!")
     }
 })
+client.on("message", message => {
+    if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
+        return
+    }
+})
 
 //YOUTUBE - LASTVIDEO
 //https://www.npmjs.com/package/yt-channel-info
