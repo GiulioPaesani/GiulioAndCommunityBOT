@@ -188,7 +188,7 @@ client.on("message", message => {
     }
     //USERINFO
     if (message.content.startsWith("!userinfo") || message.content.startsWith("!userstats")) {
-        if (message.content.trim() == "!userinfo") {
+        if (message.content.trim() == "!userinfo" || message.content.trim() == "!userstats") {
             var utente = message.member;
         }
         else {
