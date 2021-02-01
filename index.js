@@ -126,6 +126,9 @@ client.on("message", message => {
     if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
         return
     }
+
+    message.content = message.content.trim().toLowerCase();
+
     //TEST
     if (message.content == "!test") {
         message.channel.send("FUNZIONA TUTTO!")
@@ -191,21 +194,54 @@ client.on("message", message => {
         else {
             var utente = message.mentions.members.first()
         }
-
         if (!utente) {
             message.channel.send("Non ho trovato questo utente")
             return
         }
 
+        var elencoRuoli = "";
+        var ruoli = utente._roles;
+        for (var i = 0; i < ruoli.length; i++) {
+            var ruolo = message.guild.roles.cache.find(role => role.id == ruoli[i]);
+            elencoRuoli += "- " + ruolo.name + "\r";
+            if (i == 2 && ruoli.length != 3) {
+                elencoRuoli += "[Altri " + (ruoli.length - i - 1) + "...]";
+                i = ruoli.length + 1;
+            }
+        }
+
+        var elencoPermessi = "";
+        if (utente.hasPermission("ADMINISTRATOR")) {
+            elencoPermessi = "👑ADMINISTRATOR";
+        }
+        else {
+            var permissions = ["CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "ADD_REACTIONS", "VIEW_AUDIT_LOG", "PRIORITY_SPEAKER", "STREAM", "VIEW_CHANNEL", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "MANAGE_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "VIEW_GUILD_INSIGHTS", "CONNECT", "SPEAK", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"]
+
+            for (var i = 0; i < permissions.length; i++) {
+                if (utente.hasPermission(permissions[i])) {
+                    elencoPermessi += "- " + permissions[i] + "\r";
+                }
+            }
+        }
+
+        var status = utente.user.presence.status;
+        switch (status) {
+            case "online": status = "Online"; break;
+            case "offline": status = "Offline"; break;
+            case "dnd": status = "Do not disturb"; break;
+            case "idle": status = "Idle"; break;
+        }
         var userStats = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription("Tutte le statistiche su questo utente")
             .setThumbnail(utente.user.avatarURL())
             .addField(":receipt: User ID", "```" + utente.user.id + "```", true)
-            .addField(":ok_hand: Status", "```" + utente.user.presence.status + "```", true)
-            .addField(":shirt: Roles", "```" + utente.roles.cache.map(role => role.name).join(", ") + "```", true)
+            .addField(":ok_hand: Status", "```" + status + "```", true)
+            .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)
             .addField(":pencil: Account created", "```" + utente.user.createdAt.toDateString() + "```", true)
             .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + "```", true)
+            .addField(":shirt: Roles", "```" + elencoRuoli + "```", false)
+            .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
         message.channel.send(userStats)
     }
 })
