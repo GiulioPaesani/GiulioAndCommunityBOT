@@ -394,8 +394,8 @@ client.on("message", message => {
             */
 
             message.channel.send(paginaInziale).then(msg => {
-                msg.delete({ timeout: 35000 })
-                message.delete({ timeout: 35000 })
+                msg.delete({ timeout: 60000 })
+                message.delete({ timeout: 60000 })
                 msg.react('🏠').then(r => {
                     msg.react('🔨')
                     msg.react('🧰')
