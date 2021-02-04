@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-//var request = require('request');
+const fs = require("file-system")
 const ytch = require('yt-channel-info')
 client.login(process.env.token);
 
@@ -243,5 +243,265 @@ client.on("message", message => {
             .addField(":shirt: Roles", "```" + elencoRuoli + "```", false)
             .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
         message.channel.send(userStats)
+    }
+
+    var comandi = {
+        ban: {
+            description: "**Bannare** un utente permanentemente",
+            alias: ["ban", "bannare"],
+            info: "",
+            video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
+        },
+        kick: {
+            description: "**Espellere** un utente dal server",
+            alias: ["kick", "kickare", "kiccare", "kikkare", "espellere"],
+            info: "",
+            video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
+        },
+        audio: {
+            description: "Far riprodurre al bot un **file audio**",
+            alias: ["audio", "play", "music", "fileaudio", "file audio", "riprodurre", "riprodurre audio", "riprodurre file audio"],
+            info: "Prima di utilizzare il comando è necessario:\r1. Installare **ffmpeg** sul proprio pc\rPer farlo bisogna scaricare i file da [qui](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z), estrarre la cartella all'interno del file zip e metterla da qualche parte sul vostro pc, io vi consiglio direttamente nel disco C. Ora sarà necessario aggiungere come variabile d'ambiente il path di questa cartella, per sapere come fare vedere il mio video su YouTube\r2. Installare la libreria **Discord.js Opus**\rPer farlo scrivere nel terminal della cartella del vostro bot: `npm install discord.js @discordjs/opus`",
+            video: "https://youtu.be/x-Ii6BZiVQQ?t=374"
+        },
+        reazione: {
+            description: "Far **reagire** il bot a un messaggio che ha inviato",
+            alias: ["reazione", "react", "reazioni", "reaction", "reactions"],
+            info: "Nelle reazioni non è possibile utilizzare le emoji di Discord ma quelle universali. Puoi ottenerle in diversi modi, cliccando WIN+. oppure andando sul sito [emojipedia.com](https://emojipedia.org/), oppure aggiungendo uno \\ prima di mandare una emoji nella chat di Discord",
+            video: "https://youtu.be/x-Ii6BZiVQQ?t=637"
+        },
+        azioneReazione: {
+            description: "Far eseguire una azione quando un utente **clicca** una reazione",
+            alias: ["azioneReazione", "azione con reazione", "azionereazione", "azione reazione"],
+            info: "Nelle reazioni non è possibile utilizzare le emoji di Discord ma quelle universali. Puoi ottenerle in diversi modi, cliccando WIN+. oppure andando sul sito [emojipedia.com](https://emojipedia.org/), oppure aggiungendo uno \\ prima di mandare una emoji nella chat di Discord",
+            video: "https://youtu.be/x-Ii6BZiVQQ?t=763"
+        },
+        messaggioPrivato: {
+            description: "Fare mandare al bot un **messaggio privato** a un utente specifico o a chi ha scritto il messaggio",
+            alias: ["messaggioPrivato", "messaggio privato", "messaggioprivato"],
+            info: "",
+            video: "https://youtu.be/SN8b92REkII?t=30"
+        },
+        taggare: {
+            description: "**Taggare** utenti, ruoli, canali e categorie",
+            alias: ["taggare", "tag", "pin"],
+            info: "",
+            video: ""
+        },
+        file: {
+            description: "Mandare in allegato qualsiasi **file**",
+            alias: ["file", "mandare file", "mandarefile", "sendfile", "send file", "mandare immagini"],
+            info: "",
+            video: "https://youtu.be/SN8b92REkII?t=311"
+        },
+        embed: {
+            description: "Realizzare un **messaggio embed**",
+            alias: ["embed", "message embed", "messageembed", "embedmessage", "embed message"],
+            info: "Tutte le proprierà che possiamo settare a un embed sono opzionali, quindi non è necessario aggiungerle tutte ma solo quelle necessarie",
+            video: ""
+        },
+        random: {
+            description: "Mandare un **messaggio casuale** tra alcuni scelti",
+            alias: ["random", "messaggio random", "testo random"],
+            info: "",
+            video: "https://youtu.be/SN8b92REkII?t=755"
+        },
+        notifica: {
+            description: "Mandare un **messaggio** a una determinata ora",
+            alias: ["notifica", "messaggio a un ora specifica", "testo random"],
+            info: "",
+            video: "https://youtu.be/SN8b92REkII?t=977"
+        },
+        soloRuolo: {
+            description: "Fare eseguire un comando solo a utenti che hanno un certo **ruolo**",
+            alias: ["soloRuolo", "soloruolo", "solo ruolo", "comando solo a chi ha un ruolo"],
+            info: "",
+            video: "https://youtu.be/Cr1yobtZd4c?t=14"
+        },
+        benvenuto: {
+            description: "Messaggio di **benvenuto** o **addio**",
+            alias: ["benvenuto", "addio", "welcome", "messaggio di benvenuto", "messaggio di addio", "welcome message"],
+            info: "Prima di usare il comando, è necessario andare nelle impostazioni del bot sul [sito developer](https://discord.com/developers/applications) e andare nella sezione \"Bot\". Attivare le due opzioni in \"Privileged Gateway Intents\" (sia PRESENCE INTENT che SERVER MEMBERS INTENT)",
+            video: "https://youtu.be/Cr1yobtZd4c?t=126"
+        }
+    }
+    if (message.content.startsWith("!code")) {
+        var command = message.content.slice(5).trim();
+        var data, comando, info, video, description;
+
+        if (message.member.hasPermission("ADMINISTRATOR")) {
+            var utente = message.mentions.members.first()
+            if (utente) {
+                command = command.slice(0, -22).trim()
+            }
+            if (!utente) {
+                var utente = message.member
+            }
+        }
+        else {
+            var utente = message.member
+        }
+
+        if (message.content.trim() == "!code") {
+            var paginaInziale = new Discord.MessageEmbed()
+                .setTitle("CodeAndCommand")
+                .setDescription("Tutti i codici per tutti i comandi del tuo bot")
+                .addField("❓Come funziona", "Questo comando ti permette di avere accesso a **tutti i codici** o **funzioni** che sono stati affrontati su **GiulioAndCode** da utilizzare nel tuo Bot Discord\rQua c'è l'elenco di tutti i comandi che puoi usare per avere precisamente il comando, la funzione e il suo funzionamente (`!code [comando]`)")
+                .addField("🌐Sezioni", "`🏠Home`\r`🔨Moderazione (Come come !ban, !clear, !kick, ecc..)`\r`🧰Utility (Come mandare un file, notifiche, embed, ecc..)`\r`🤣Fun`\r`🔰Altro (Come taggare un ruolo, ecc..)`")
+
+            var paginaModerazione = new Discord.MessageEmbed()
+                .setTitle("Moderazione")
+                .setDescription("Qui troverai tutti i comandi relativi alla **moderazione**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code ban`, `!code clear`)")
+                .setColor("#DF8612")
+                .addField("ban", "- **Bannare** un utente permanentemente")
+                .addField("kick", "- **Espellere** un utente dal server")
+                .addField("clear", "- **Cancellare** un tot di messaggi antecedenti al comando")
+
+            var paginaUtility = new Discord.MessageEmbed()
+                .setTitle("Utility")
+                .setDescription("Qui troverai tutti i comandi più **utili**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code audio`, `!code file`)")
+                .setColor("#C92F42")
+                .addField("audio", "- Far riprodurre al bot un **file audio**")
+                .addField("reazione", "- Far **reagire** il bot a un messaggio che ha inviato")
+                .addField("messaggioPrivato", "- Fare mandare al bot un **messaggio privato** a un utente specifico o a chi ha scritto il messaggio")
+                .addField("file", "- Mandare in allegato qualsiasi **file**")
+                .addField("azioneReazione", "- Far eseguire una azione quando un utente **clicca** una reazione")
+                .addField("embed", "- Realizzare un **messaggio embed**")
+                .addField("random", "- Mandare un **messaggio casuale** tra alcuni scelti")
+                .addField("notifica", "- Mandare un **messaggio** a una determinata ora")
+                .addField("soloRuolo", "- Fare eseguire un comando solo a utenti che hanno un certo **ruolo**")
+                .addField("benvenuto", "- Messaggio di **benvenuto** o **addio**")
+
+
+            var paginaFunny = new Discord.MessageEmbed()
+                .setTitle("Fun")
+                .setDescription("Qua non c'è ancora nulla mi spiace...")
+                .setColor("#F3C249")
+
+            var paginaAltro = new Discord.MessageEmbed()
+                .setTitle("Altro")
+                .setDescription("Qui troverai tutti altre tipologie di comandi\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
+                .setColor("#45D8CE")
+                .addField("taggare", "- **Taggare** utenti, ruoli, canali e categorie")
+
+
+            /*PAGINE
+            - Home 🏠
+            - Moderazione 🔨
+            - Utility 🧰
+            - Fun 🤣
+            - Altro 🔰
+            */
+
+            message.channel.send(paginaInziale).then(msg => {
+                msg.delete({ timeout: 35000 })
+                message.delete({ timeout: 35000 })
+                msg.react('🏠').then(r => {
+                    msg.react('🔨')
+                    msg.react('🧰')
+                    msg.react('🤣')
+                    msg.react('🔰')
+
+                    // Filters
+                    const reactHome = (reaction, user) => reaction.emoji.name === '🏠' && user.id === message.author.id
+                    const reactMod = (reaction, user) => reaction.emoji.name === '🔨' && user.id === message.author.id
+                    const reactUtl = (reaction, user) => reaction.emoji.name === '🧰' && user.id === message.author.id
+                    const reactFun = (reaction, user) => reaction.emoji.name === '🤣' && user.id === message.author.id
+                    const reactAlt = (reaction, user) => reaction.emoji.name === '🔰' && user.id === message.author.id
+
+                    const paginaHome = msg.createReactionCollector(reactHome)
+                    const paginamod = msg.createReactionCollector(reactMod)
+                    const paginaUtl = msg.createReactionCollector(reactUtl)
+                    const paginaFun = msg.createReactionCollector(reactFun)
+                    const paginaAlt = msg.createReactionCollector(reactAlt)
+
+                    paginaHome.on('collect', (r, u) => {
+                        msg.edit(paginaInziale)
+                        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                    })
+                    paginamod.on('collect', (r, u) => {
+                        msg.edit(paginaModerazione)
+                        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                    })
+                    paginaUtl.on('collect', (r, u) => {
+                        msg.edit(paginaUtility)
+                        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                    })
+                    paginaFun.on('collect', (r, u) => {
+                        msg.edit(paginaFunny)
+                        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                    })
+                    paginaAlt.on('collect', (r, u) => {
+                        msg.edit(paginaAltro)
+                        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                    })
+                })
+            })
+            return
+        }
+
+        for (var i = 0; i < Object.keys(comandi).length; i++) {
+            for (var x = 0; x < eval("comandi." + Object.keys(comandi)[i]).alias.length; x++) {
+                if (command == eval("comandi." + Object.keys(comandi)[i]).alias[x]) {
+                    comando = Object.keys(comandi)[i];
+                    info = eval("comandi." + Object.keys(comandi)[i]).info
+                    video = eval("comandi." + Object.keys(comandi)[i]).video
+                    description = eval("comandi." + Object.keys(comandi)[i]).description
+                    break
+                }
+            }
+        }
+        if (!comando) {
+            var embed = new Discord.MessageEmbed()
+                .setTitle(":interrobang: Non trovato")
+                .setDescription(message.member.toString() + " `" + command + "` è un codice che non esiste o non è stato ancora aggiunto\rScrivi `!code` per sapere quali sono i comandi disponibili")
+                .setColor("#f23b38")
+            message.channel.send(embed).then(msg => {
+                msg.delete({ timeout: 5000 });
+                message.delete({ timeout: 5000 })
+            })
+        }
+        else {
+            data = fs.readFileSync("comandi/" + comando + "-GiulioAndCode.js")
+
+            var embed = new Discord.MessageEmbed()
+                .setTitle(comando.toUpperCase())
+            if (video) {
+                embed
+                    .setDescription(description + "\rGuarda il video su YouTube per maggiori info ([Clicca qui](" + video + "))");
+            }
+            else {
+                embed
+                    .setDescription(description)
+            }
+
+            if (info) {
+                embed
+                    .addField(":name_badge: Info", info)
+            }
+
+
+            if (data.length > 1000) {
+                data = data.slice(0, 950);
+
+                embed
+                    .addField(":wrench: Codes:", "```js\r" + data + "```")
+                    .addField(":warning: Il codice è troppo lungo", "Per ricevere il codice completo puoi scaricare il file allegato")
+
+                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM").then(msg => msg.delete({ timeout: 5000 })));
+                utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
+                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString()).then(msg => msg.delete({ timeout: 5000 }))
+                message.delete({ timeout: 5000 })
+            }
+            else {
+                embed.addField(":wrench: Codes:", "```js\r" + data + "```");
+
+                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM").then(msg => msg.delete({ timeout: 5000 })));
+                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString()).then(msg => msg.delete({ timeout: 5000 }))
+                message.delete({ timeout: 5000 })
+            }
+
+        }
+
     }
 })

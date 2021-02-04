@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "file-system": "^2.2.2",
     "yt-channel-info": "^1.2.0"
   },
   "devDependencies": {
