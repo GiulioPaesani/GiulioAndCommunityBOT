@@ -392,8 +392,6 @@ client.on("message", message => {
                 .addField("taggare", "- **Taggare** utenti, ruoli, canali e categorie")
 
             message.channel.send(paginaInziale).then(msg => {
-                msg.delete({ timeout: 60000 })
-                message.delete({ timeout: 60000 })
                 msg.react('🏠').then(r => {
                     msg.react('🔨')
                     msg.react('🧰')
@@ -486,17 +484,15 @@ client.on("message", message => {
                     .addField(":wrench: Codes:", "```js\r" + data + "```")
                     .addField(":warning: Il codice è troppo lungo", "Per ricevere il codice completo puoi scaricare il file allegato")
 
-                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM").then(msg => msg.delete({ timeout: 5000 })));
+                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
                 utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
-                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString()).then(msg => msg.delete({ timeout: 5000 }))
-                message.delete({ timeout: 5000 })
+                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
             }
             else {
                 embed.addField(":wrench: Codes:", "```js\r" + data + "```");
 
-                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM").then(msg => msg.delete({ timeout: 5000 })));
-                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString()).then(msg => msg.delete({ timeout: 5000 }))
-                message.delete({ timeout: 5000 })
+                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
             }
 
         }
