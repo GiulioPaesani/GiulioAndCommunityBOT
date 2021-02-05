@@ -11,13 +11,12 @@ client.on("ready", () => {
 
 //CANCELLARE COMANDO IN CANALE SBAGLIATO
 client.on("message", (message) => {
-    //Non ho aggiunto KitRobit, AXVin, Sesh, Serverstats, Xenon, 
     var BOT = {
-        giulioAndCommunityBot: {
+        /*giulioAndCommunityBot: {
             comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!youtube", "!lastvideo"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
-        },
+        },*/
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
             id: "159985870458322944",
@@ -123,11 +122,15 @@ setInterval(function () {
 }, 1000 * 10)
 
 client.on("message", message => {
-    if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
+    /*if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
         return
-    }
+    }*/
 
     message.content = message.content.trim().toLowerCase();
+
+    if (!message.content.startsWith("!code")) {
+        return
+    }
 
     //TEST
     if (message.content == "!test") {
@@ -383,15 +386,6 @@ client.on("message", message => {
                 .setDescription("Qui troverai tutti altre tipologie di comandi\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
                 .setColor("#45D8CE")
                 .addField("taggare", "- **Taggare** utenti, ruoli, canali e categorie")
-
-
-            /*PAGINE
-            - Home 🏠
-            - Moderazione 🔨
-            - Utility 🧰
-            - Fun 🤣
-            - Altro 🔰
-            */
 
             message.channel.send(paginaInziale).then(msg => {
                 msg.delete({ timeout: 60000 })
