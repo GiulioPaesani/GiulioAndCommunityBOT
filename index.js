@@ -9,17 +9,18 @@ client.on("ready", () => {
 })
 
 
-//CANCELLARE COMANDO IN CANALE SBAGLIATO
 client.on("message", (message) => {
-    if (message.content.startsWith("!code")) {
-        return
-    }
-
+    //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
             comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!youtube", "!lastvideo"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
+        },
+        giulioAndCommunityBot2: {
+            comandi: ["!code"],
+            id: "802184359120863272",
+            canaliPermessi: ["801019779480944660", "793781898689773589", "793781901240172544"]
         },
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
@@ -92,49 +93,27 @@ client.on("message", (message) => {
             }
         }
     }
-    if (message.member.hasPermission("ADMINISTRATOR")) {
-        return
-    }
 
     if (trovato) {
-        canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
-        message.channel.send(canaleNonConcesso)
-            .then(msg => {
-                msg.delete({ timeout: 5000 })
-            })
-        message.delete({ timeout: 5000 })
-        return
+        if (message.channel == "804688929109966848" || message.channel == "793781905740922900" || message.channel == "802181386869276702" || message.channel == "793781906478858269") {
+
+        }
+        else {
+            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
+            message.channel.send(canaleNonConcesso)
+                .then(msg => {
+                    msg.delete({ timeout: 5000 })
+                })
+            message.delete({ timeout: 5000 })
+            return
+        }
     }
-})
-
-//Counter member
-client.on("guildMemberAdd", member => {
-    var canale = client.channels.cache.get("800802386587287562")
-    canale.setName("👾│members: " + member.guild.memberCount)
-});
-client.on("guildMemberRemove", member => {
-    var canale = client.channels.cache.get("800802386587287562")
-    canale.setName("👾│members: " + member.guild.memberCount)
-});
-
-//Counter youtube
-setInterval(function () {
-    ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-        var canale = client.channels.cache.get("801717800137129994")
-        canale.setName("🎬│subscribers: " + response.subscriberCount)
-    })
-}, 1000 * 10)
-
-client.on("message", message => {
-    /*if (message.channel != "801019779480944660" && message.channel != "793781905740922900" && message.channel != "793781906478858269") {
-        return
-    }*/
 
     message.content = message.content.trim().toLowerCase();
 
-    if (!message.content.startsWith("!code")) {
+    /*if (!message.content.startsWith("!code")) {
         return
-    }
+    }*/
 
     //TEST
     if (message.content == "!test") {
@@ -265,6 +244,12 @@ client.on("message", message => {
             info: "",
             video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
         },
+        clear: {
+            description: "**Cancellare** un tot di messaggi antecedenti al comando",
+            alias: ["clear", "cancellare", "cancellare messaggi", "clear message"],
+            info: "",
+            video: "https://youtu.be/Cr1yobtZd4c?t=389"
+        },
         audio: {
             description: "Far riprodurre al bot un **file audio**",
             alias: ["audio", "play", "music", "fileaudio", "file audio", "riprodurre", "riprodurre audio", "riprodurre file audio"],
@@ -335,6 +320,12 @@ client.on("message", message => {
     if (message.content.startsWith("!code")) {
         var command = message.content.slice(5).trim();
         var data, comando, info, video, description;
+
+        var args = command.split(" ");
+        if (args[args.length - 1].toLowerCase() == "here" && message.member.hasPermission("ADMINISTRATOR") && args.length != 1) {
+            command = command.slice(0, -5)
+        }
+
 
         if (message.member.hasPermission("ADMINISTRATOR")) {
             var utente = message.mentions.members.first()
@@ -484,18 +475,48 @@ client.on("message", message => {
                     .addField(":wrench: Codes:", "```js\r" + data + "```")
                     .addField(":warning: Il codice è troppo lungo", "Per ricevere il codice completo puoi scaricare il file allegato")
 
-                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
-                utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
-                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                if (args[args.length - 1].toLowerCase() == "here") {
+                    message.channel.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                    message.channel.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
+                }
+                else {
+                    utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                    utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
+                    message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                }
             }
             else {
                 embed.addField(":wrench: Codes:", "```js\r" + data + "```");
+                if (args[args.length - 1].toLowerCase() == "here") {
+                    message.channel.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                }
+                else {
+                    utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                    message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                }
 
-                utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
-                message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
             }
 
         }
 
     }
 })
+
+//Counter member
+client.on("guildMemberAdd", member => {
+    var canale = client.channels.cache.get("800802386587287562")
+    canale.setName("👾│members: " + member.guild.memberCount)
+});
+client.on("guildMemberRemove", member => {
+    var canale = client.channels.cache.get("800802386587287562")
+    canale.setName("👾│members: " + member.guild.memberCount)
+});
+
+//Counter youtube
+setInterval(function () {
+    ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
+        var canale = client.channels.cache.get("801717800137129994")
+        canale.setName("🎬│subscribers: " + response.subscriberCount)
+    })
+}, 1000 * 10)
+
