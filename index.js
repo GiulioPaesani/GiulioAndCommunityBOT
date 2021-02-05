@@ -11,12 +11,16 @@ client.on("ready", () => {
 
 //CANCELLARE COMANDO IN CANALE SBAGLIATO
 client.on("message", (message) => {
+    if (message.content.startsWith("!code")) {
+        return
+    }
+
     var BOT = {
-        /*giulioAndCommunityBot: {
+        giulioAndCommunityBot: {
             comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!youtube", "!lastvideo"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
-        },*/
+        },
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
             id: "159985870458322944",
