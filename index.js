@@ -5,7 +5,7 @@ const ytch = require('yt-channel-info')
 client.login(process.env.token);
 
 client.on("ready", () => {
-    console.log("------------ONLINE------------")
+    console.log("-------------ONLINE-------------")
 })
 
 
