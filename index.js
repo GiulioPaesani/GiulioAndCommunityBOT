@@ -99,19 +99,25 @@ client.on("message", (message) => {
 
         }
         else {
-            if (message.content.startsWith("!code") && message.member.hasPermission("ADMINISTRATOR")) {
+            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
+            message.channel.send(canaleNonConcesso)
+                .then(msg => {
+                    msg.delete({ timeout: 5000 })
+                })
+            message.delete({ timeout: 5000 })
+            return
 
-            }
-            else {
-                canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
-                message.channel.send(canaleNonConcesso)
-                    .then(msg => {
-                        msg.delete({ timeout: 5000 })
-                    })
-                message.delete({ timeout: 5000 })
-                return
-            }
-
+        }
+    }
+    else {
+        if (message.content.startsWith("!code") && !message.member.hasPermission("ADMINISTRATOR")) {
+            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
+            message.channel.send(canaleNonConcesso)
+                .then(msg => {
+                    msg.delete({ timeout: 5000 })
+                })
+            message.delete({ timeout: 5000 })
+            return
         }
     }
 
