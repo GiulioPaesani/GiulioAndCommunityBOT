@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const fs = require("file-system")
 const ytch = require('yt-channel-info')
 client.login(process.env.token);
+//client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.0TPO9gHpdIe8fb76fGfLakGjiHY");
 
 client.on("ready", () => {
     console.log("------------ONLINE------------")
@@ -111,6 +112,7 @@ client.on("message", (message) => {
     }
     else {
         if (message.content.startsWith("!code") && !message.member.hasPermission("ADMINISTRATOR") && (message.channel == "793781901240172544" || message.channel == "793781898689773589")) {
+            id = "802184359120863272"
             canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
             message.channel.send(canaleNonConcesso)
                 .then(msg => {
@@ -488,29 +490,40 @@ client.on("message", (message) => {
                     .addField(":warning: Il codice è troppo lungo", "Per ricevere il codice completo puoi scaricare il file allegato")
 
                 if (args[args.length - 1].toLowerCase() == "here") {
-                    message.channel.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                    message.channel.send(embed)
                     message.channel.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
                 }
                 else {
-                    utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                    utente.send(embed).catch(() => {
+                        message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
+                        return
+                    });
                     utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
                     message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                        .then(msg => {
+                            msg.delete({ timeout: 5000 })
+                        })
+                    message.delete({ timeout: 5000 })
                 }
             }
             else {
                 embed.addField(":wrench: Codes:", "```js\r" + data + "```");
                 if (args[args.length - 1].toLowerCase() == "here") {
-                    message.channel.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
+                    message.channel.send(embed).catch(() => {
+                        message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
+                        return
+                    });
                 }
                 else {
-                    var mandabile = true;
                     utente.send(embed).catch(() => {
                         message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
-                        mandabile = false;
+                        return
                     });
-                    if (mandabile) {
-                        message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-                    }
+                    message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                        .then(msg => {
+                            msg.delete({ timeout: 5000 })
+                        })
+                    message.delete({ timeout: 5000 })
 
                 }
 
