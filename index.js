@@ -99,13 +99,19 @@ client.on("message", (message) => {
 
         }
         else {
-            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
-            message.channel.send(canaleNonConcesso)
-                .then(msg => {
-                    msg.delete({ timeout: 5000 })
-                })
-            message.delete({ timeout: 5000 })
-            return
+            if (message.content.startsWith("!code") && message.member.hasPermission("ADMINISTRATOR")) {
+
+            }
+            else {
+                canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
+                message.channel.send(canaleNonConcesso)
+                    .then(msg => {
+                        msg.delete({ timeout: 5000 })
+                    })
+                message.delete({ timeout: 5000 })
+                return
+            }
+
         }
     }
 
