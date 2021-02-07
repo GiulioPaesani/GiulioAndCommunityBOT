@@ -110,7 +110,7 @@ client.on("message", (message) => {
         }
     }
     else {
-        if (message.content.startsWith("!code") && !message.member.hasPermission("ADMINISTRATOR")) {
+        if (message.content.startsWith("!code") && !message.member.hasPermission("ADMINISTRATOR") && (message.channel == "793781901240172544" || message.channel == "793781898689773589")) {
             canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
             message.channel.send(canaleNonConcesso)
                 .then(msg => {
@@ -503,8 +503,15 @@ client.on("message", (message) => {
                     message.channel.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
                 }
                 else {
-                    utente.send(embed).catch(() => message.channel.send(":no_entry_sign: Questo utente non può ricevere DM"));
-                    message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                    var mandabile = true;
+                    utente.send(embed).catch(() => {
+                        message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
+                        mandabile = false;
+                    });
+                    if (mandabile) {
+                        message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                    }
+
                 }
 
             }
