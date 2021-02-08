@@ -14,7 +14,7 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!youtube", "!lastvideo"],
+            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avataer", "!youtube", "!lastvideo"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
         },
