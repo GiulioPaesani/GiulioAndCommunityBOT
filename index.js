@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const fs = require("file-system")
-const ytch = require('yt-channel-info')
+const fs = require("file-system");
+const ytch = require('yt-channel-info');
+const { Permissions } = require('discord.js');
 client.login(process.env.token);
-//client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.0TPO9gHpdIe8fb76fGfLakGjiHY");
 
 client.on("ready", () => {
     console.log("------------ONLINE------------")
@@ -244,6 +244,72 @@ client.on("message", (message) => {
             .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
         message.channel.send(userStats)
     }
+    //ROLEINFO
+    if (message.content.trim().startsWith("!roleinfo")) {
+        var idRuolo = message.content.slice(13, -1);
+        var ruolo = message.guild.roles.cache.get(idRuolo);
+
+        if (!ruolo) {
+            message.channel.send("Non ho trovato questo ruolo")
+            return
+        }
+
+        var memberCount = message.guild.members.cache.filter(member => member.roles.cache.find(role => role == ruolo)).size;
+
+        var permessiRuolo = new Permissions(ruolo.permissions.bitfield);
+        var elencoPermessi = "";
+        if (permessiRuolo.has("ADMINISTRATOR")) {
+            elencoPermessi = "👑ADMINISTRATOR";
+        }
+        else {
+            var permissions = ["CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "ADD_REACTIONS", "VIEW_AUDIT_LOG", "PRIORITY_SPEAKER", "STREAM", "VIEW_CHANNEL", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "MANAGE_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "VIEW_GUILD_INSIGHTS", "CONNECT", "SPEAK", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"]
+
+            for (var i = 0; i < permissions.length; i++) {
+                if (permessiRuolo.has(permissions[i])) {
+                    elencoPermessi += "- " + permissions[i] + "\r";
+                }
+            }
+        }
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(ruolo.name)
+            .setDescription("Tutte le statistiche di questo ruolo")
+            .addField("Role ID", "```" + ruolo.id + "```", true)
+            .addField("Members", "```" + memberCount + "```", true)
+            .addField("Color", "```" + ruolo.hexColor + "```", true)
+            .addField("Role created", "```" + ruolo.createdAt.toDateString() + "```", true)
+            .addField("Permissions", "```" + elencoPermessi + "```", false)
+
+        message.channel.send(embed)
+
+    }
+    //AVATER
+    if (message.content.trim().startsWith("!avatar")) {
+        if (message.content.trim() == "!avatar") {
+            var utente = message.member;
+        }
+        else {
+            var utente = message.mentions.members.first();
+        }
+
+        if (!utente) {
+            message.channel.send("Utente non trovato")
+        }
+
+        console.log(utente)
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(utente.user.tag)
+            .setDescription("L'avatar di questo utente")
+            .setImage(utente.user.displayAvatarURL({
+                dynamic: true,
+                format: "png",
+                size: 512
+            }))
+
+        message.channel.send(embed)
+    }
+
 
     var comandi = {
         ban: {
@@ -532,6 +598,8 @@ client.on("message", (message) => {
         }
 
     }
+
+
 })
 
 //Counter member
@@ -551,4 +619,5 @@ setInterval(function () {
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000 * 10)
+
 
