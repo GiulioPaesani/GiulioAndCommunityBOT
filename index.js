@@ -621,3 +621,14 @@ setInterval(function () {
 }, 1000 * 10)
 
 
+
+client.on("message", message => {
+    if (message.content == "!fs") {
+        var messaggio = message.content.slice(4);
+
+        fs.writeFileSync('text.txt', messaggio);
+        var file = fs.readFileSync('text.txt');
+        message.channel.send(file);
+    }
+})
+
