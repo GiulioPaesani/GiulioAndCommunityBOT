@@ -425,7 +425,7 @@ client.on("message", (message) => {
                 .setTitle("CodeAndCommand")
                 .setDescription("Tutti i codici per tutti i comandi del tuo bot")
                 .addField("❓Come funziona", "Questo comando ti permette di avere accesso a **tutti i codici** o **funzioni** che sono stati affrontati su **GiulioAndCode** da utilizzare nel tuo Bot Discord\rQua c'è l'elenco di tutti i comandi che puoi usare per avere precisamente il comando, la funzione e il suo funzionamente (`!code [comando]`)")
-                .addField("🌐Sezioni", "`🏠Home`\r`🔨Moderazione (Come come !ban, !clear, !kick, ecc..)`\r`🧰Utility (Come mandare un file, notifiche, embed, ecc..)`\r`🤣Fun`\r`🔰Altro (Come taggare un ruolo, ecc..)`")
+                .addField("🌐Sezioni", "`🏠Home`\r`🔨Moderazione (Come !ban, !clear, !kick, ecc..)`\r`🧰Utility (Come mandare un file, notifiche, embed, ecc..)`\r`🤣Fun`\r`🔰Altro (Come taggare un ruolo, ecc..)`")
 
             var paginaModerazione = new Discord.MessageEmbed()
                 .setTitle("Moderazione")
