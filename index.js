@@ -283,7 +283,7 @@ client.on("message", (message) => {
         message.channel.send(embed)
 
     }
-    //AVATER
+    //AVATAR
     if (message.content.trim().startsWith("!avatar")) {
         if (message.content.trim() == "!avatar") {
             var utente = message.member;
