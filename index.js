@@ -424,7 +424,6 @@ client.on("message", (message) => {
             command = command.slice(0, -5)
         }
 
-
         if (message.member.hasPermission("ADMINISTRATOR")) {
             var utente = message.mentions.members.first()
             if (utente) {
