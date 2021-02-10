@@ -283,7 +283,7 @@ client.on("message", (message) => {
         message.channel.send(embed)
 
     }
-    //AVATER
+    //AVATAR
     if (message.content.trim().startsWith("!avatar")) {
         if (message.content.trim() == "!avatar") {
             var utente = message.member;
@@ -395,6 +395,24 @@ client.on("message", (message) => {
             alias: ["benvenuto", "addio", "welcome", "messaggio di benvenuto", "messaggio di addio", "welcome message"],
             info: "Prima di usare il comando, è necessario andare nelle impostazioni del bot sul [sito developer](https://discord.com/developers/applications) e andare nella sezione \"Bot\". Attivare le due opzioni in \"Privileged Gateway Intents\" (sia PRESENCE INTENT che SERVER MEMBERS INTENT)",
             video: "https://youtu.be/Cr1yobtZd4c?t=126"
+        },
+        userinfo: {
+            description: "Ottenere le informazioni di un **utente specifico**",
+            alias: ["userinfo", "userstats", "user info", "infouser", "info user", "user stats"],
+            info: "",
+            video: "https://youtu.be/FNUIyrRoitg?t=561"
+        },
+        serverinfo: {
+            description: "Ottenere le informazioni sul **server**",
+            alias: ["serverinfo", "server stats", "server info", "infoserver", "info server", "server stats"],
+            info: "",
+            video: "https://youtu.be/FNUIyrRoitg?t=146"
+        },
+        memberCounter: {
+            description: "Canale di **statistica membri**",
+            alias: ["memberCounter", "member counter", "counter membri"],
+            info: "Prima di creare il comando è necessario creare il canale dove vengono segnati i numeri di membri, potete scegliere nel creare un canale testuale o vocale. Una volta fatto copiare l'id nel codice",
+            video: "https://youtu.be/FNUIyrRoitg?t=19"
         }
     }
     if (message.content.startsWith("!code")) {
@@ -431,24 +449,21 @@ client.on("message", (message) => {
                 .setTitle("Moderazione")
                 .setDescription("Qui troverai tutti i comandi relativi alla **moderazione**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code ban`, `!code clear`)")
                 .setColor("#DF8612")
-                .addField("ban", "- **Bannare** un utente permanentemente")
-                .addField("kick", "- **Espellere** un utente dal server")
-                .addField("clear", "- **Cancellare** un tot di messaggi antecedenti al comando")
+                .addField("💿Tutti i codici", `
+                - \`ban\` **Bannare** un utente permanentemente\r
+                - \`kick\` **Espellere** un utente dal server\r
+                - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
+                ` )
 
             var paginaUtility = new Discord.MessageEmbed()
                 .setTitle("Utility")
                 .setDescription("Qui troverai tutti i comandi più **utili**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code audio`, `!code file`)")
                 .setColor("#C92F42")
-                .addField("audio", "- Far riprodurre al bot un **file audio**")
-                .addField("reazione", "- Far **reagire** il bot a un messaggio che ha inviato")
-                .addField("messaggioPrivato", "- Fare mandare al bot un **messaggio privato** a un utente specifico o a chi ha scritto il messaggio")
-                .addField("file", "- Mandare in allegato qualsiasi **file**")
-                .addField("azioneReazione", "- Far eseguire una azione quando un utente **clicca** una reazione")
-                .addField("embed", "- Realizzare un **messaggio embed**")
-                .addField("random", "- Mandare un **messaggio casuale** tra alcuni scelti")
-                .addField("notifica", "- Mandare un **messaggio** a una determinata ora")
-                .addField("soloRuolo", "- Fare eseguire un comando solo a utenti che hanno un certo **ruolo**")
-                .addField("benvenuto", "- Messaggio di **benvenuto** o **addio**")
+                .addField("💿Tutti i codici", `
+                - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
+                - \`serverinfo\` Ottenere le informazioni sul **server**\r
+                - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
+                ` )
 
 
             var paginaFunny = new Discord.MessageEmbed()
@@ -458,9 +473,21 @@ client.on("message", (message) => {
 
             var paginaAltro = new Discord.MessageEmbed()
                 .setTitle("Altro")
-                .setDescription("Qui troverai tutti altre tipologie di comandi\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
+                .setDescription("Qui troverai tutti altre tipologie di funzioni\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
                 .setColor("#45D8CE")
-                .addField("taggare", "- **Taggare** utenti, ruoli, canali e categorie")
+                .addField("💿Tutti i codici", `
+                - \`audio\` Fare riprodurre al bot un **file audio**\r
+                - \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
+                - \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
+                - \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
+                - \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
+                - \`notifica\` Mandare un **messaggio** a una determinata ora\r
+                - \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
+                - \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
+                - \`file\` Mandare in allegato qualsiasi ** file **\r
+                - \`embed\` Realizzare un **messaggio embed**\r
+                - \`memberCounter\` Canale di **statistica membri**\r
+                ` )
 
             message.channel.send(paginaInziale).then(msg => {
                 msg.react('🏠').then(r => {
@@ -620,15 +647,4 @@ setInterval(function () {
     })
 }, 1000 * 10)
 
-
-
-client.on("message", message => {
-    if (message.content == "!fs") {
-        var messaggio = message.content.slice(4);
-
-        fs.writeFileSync('text.txt', messaggio);
-        var file = fs.readFileSync('text.txt');
-        message.channel.send(file);
-    }
-})
 
