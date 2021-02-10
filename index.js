@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const fs = require("file-system");
+const moment = require('moment');
+const fs = require('file-system');
+const Parser = require('expr-eval').Parser;
 const ytch = require('yt-channel-info');
 const { Permissions } = require('discord.js');
 client.login(process.env.token);
@@ -14,7 +16,7 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avataer", "!youtube", "!lastvideo"],
+            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!cuser", "!cserver"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
         },
@@ -125,9 +127,6 @@ client.on("message", (message) => {
 
     message.content = message.content.trim().toLowerCase();
 
-    /*if (!message.content.startsWith("!code")) {
-        return
-    }*/
 
     //TEST
     if (message.content == "!test") {
@@ -310,7 +309,7 @@ client.on("message", (message) => {
         message.channel.send(embed)
     }
 
-
+    //CODE
     var comandi = {
         ban: {
             description: "**Bannare** un utente permanentemente",
@@ -625,7 +624,154 @@ client.on("message", (message) => {
 
     }
 
+    //COUNTING
+    var canaleCounting = "793781899796938802";
+    if (message.channel == canaleCounting) {
+        var serverStats = fs.readFileSync("commandsFiles/counting/serverstats.json");
+        serverStats = JSON.parse(serverStats);
 
+        try {
+            var numero = Parser.evaluate(message.content);
+        }
+        catch {
+            return //Stringa o valori/espressioni non compresibili
+        }
+
+
+        if (message.author.id == serverStats.ultimoUtente) {
+            var embed = new Discord.MessageEmbed()
+                .setTitle("ERRORE")
+                .setColor("#ff2e1f")
+                .setDescription("Ogni utente può scrivere un solo numero alla volta")
+            message.channel.send(embed)
+            serverStats.ultimoUtente = message.author.id
+            erroreCountin();
+            return
+
+        }
+
+        if (numero - 1 == serverStats.numero) { //Numero corretto
+            numero > serverStats.bestScore ? message.react("🔵") : message.react("🟢")
+            numero > serverStats.bestScore ? serverStats.timeBestScore = new Date().getTime() : serverStats.timeBestScore
+            serverStats.numero = serverStats.numero + 1;
+            serverStats.ultimoUtente = message.author.id
+            serverStats.bestScore = numero > serverStats.bestScore ? serverStats.bestScore = numero : serverStats.bestScore
+            fs.writeFileSync("commandsFiles/counting/serverstats.json", JSON.stringify(serverStats));
+            //UPDATE USER STATS
+            var userstatsJson = fs.readFileSync("commandsFiles/counting/userstats.json");
+            userstatsJson = JSON.parse(userstatsJson);
+            userstatsJson[message.author.id] = {
+                "username": message.member.user.tag,
+                "lastScore": numero,
+                "timeBestScore": numero > userstatsJson[message.author.id].bestScore ? new Date().getTime() : userstatsJson[message.author.id].timeBestScore,
+                "bestScore": numero > userstatsJson[message.author.id].bestScore ? userstatsJson[message.author.id].bestScore = numero : userstatsJson[message.author.id].bestScore,
+                "correct": userstatsJson[message.author.id].correct + 1,
+                "incorrect": userstatsJson[message.author.id].incorrect,
+            }
+            fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
+
+        }
+        else { //Numero sbagliato
+            message.channel.send("ERRORE - Numero errato, dovevi inserire " + (serverStats.numero + 1))
+            serverStats.ultimoUtente = message.author.id
+            erroreCountin();
+        }
+
+
+        function erroreCountin() { //reset
+            message.react("🔴");
+            serverStats.numero = 0;
+            serverStats.ultimoUtente = "NessunUtente";
+            //UPDATE STATS
+            var userstatsJson = fs.readFileSync("commandsFiles/counting/userstats.json");
+            userstatsJson = JSON.parse(userstatsJson);
+            userstatsJson[message.author.id] = {
+                "username": message.member.user.tag,
+                "lastScore": userstatsJson[message.author.id].lastScore,
+                "bestScore": userstatsJson[message.author.id].bestScore,
+                "correct": userstatsJson[message.author.id].correct,
+                "incorrect": userstatsJson[message.author.id].incorrect + 1
+            }
+            fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
+            //RESET NUMBER
+            fs.writeFileSync("commandsFiles/counting/serverstats.json", JSON.stringify(serverStats));
+        }
+
+    }
+    var userstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/userstats.json"));
+    var serverstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/serverstats.json"));
+    if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
+        if (message.content.trim() == "!cuser" || message.content.trim() == "!cuser") {
+            var utente = message.member;
+        }
+        else {
+            var utente = message.mentions.members.first()
+        }
+        if (!utente) {
+            message.channel.send(":no_entry_sign: Non ho trovato questo utente")
+            return
+        }
+
+        var countingUserStats = userstatsJson[utente.id]
+        if (!countingUserStats) {
+            message.channel.send(":x: Questo utente non ha mai giocato a Counting")
+            return
+        }
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle("COUNTING - " + utente.user.tag)
+            .setDescription("Tutte le statistiche di **counting** su questo utente")
+            .setThumbnail(utente.user.avatarURL())
+            .addField(":trophy: Best score", "```" + countingUserStats.bestScore + " (" + moment(countingUserStats.timeBestScore).fromNow() + ")```", false)
+            .addField(":medal: Last score", "```" + countingUserStats.lastScore + "```", true)
+            .addField(":white_check_mark: Total correct", "```" + countingUserStats.correct + "```", true)
+            .addField(":x: Total incorrect", "```" + countingUserStats.incorrect + "```", true)
+
+        message.channel.send(embed)
+    }
+    if (message.content == "!cserver" || message.content == "!cserver") {
+        var leaderboardArray = Object.keys(userstatsJson)
+            .map(function (key) {
+                return userstatsJson[key];
+            });
+        leaderboardArray.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : -1)
+
+        var leaderboard = "";
+        for (var i = 0; i < 10; i++) {
+            if (leaderboardArray.length - 1 < i) {
+                break
+            }
+            var utente = client.users.cache.find(u => u.tag === leaderboardArray[i].username).username
+            switch (i) {
+                case 0:
+                    leaderboard += ":first_place: ";
+                    break
+                case 1:
+                    leaderboard += ":second_place: "
+                    break
+                case 2:
+                    leaderboard += ":third_place: "
+                    break
+                default:
+                    leaderboard += "**#" + (i + 1) + "** "
+
+
+            }
+            leaderboard += utente + " - **" + leaderboardArray[i].bestScore + "**\r";
+        }
+
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle("COUNTING - GiulioAndCommunity")
+            .setThumbnail(message.member.guild.iconURL())
+            .setDescription("La classifica del server su **counting**")
+            .addField(":1234: Current Number", "```" + serverstatsJson.numero + "```", true)
+            .addField(":medal: Last user", serverstatsJson.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstatsJson.ultimoUtente).username + "```" : "```None```", true)
+            .addField(":trophy: Best score", "```" + serverstatsJson.bestScore + " - " + client.users.cache.find(u => u.tag === leaderboardArray[0].username).username + " (" + moment(serverstatsJson.timeBestScore).fromNow() + ")```", false)
+            .addField("Leaderboard", leaderboard, false)
+
+        message.channel.send(embed)
+    }
 })
 
 //Counter member
