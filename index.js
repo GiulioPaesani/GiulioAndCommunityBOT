@@ -410,7 +410,7 @@ client.on("message", (message) => {
         },
         memberCounter: {
             description: "Canale di **statistica membri**",
-            alias: ["memberCounter", "member counter", "counter membri"],
+            alias: ["membercounter", "member counter", "counter membri"],
             info: "Prima di creare il comando è necessario creare il canale dove vengono segnati i numeri di membri, potete scegliere nel creare un canale testuale o vocale. Una volta fatto copiare l'id nel codice",
             video: "https://youtu.be/FNUIyrRoitg?t=19"
         }
