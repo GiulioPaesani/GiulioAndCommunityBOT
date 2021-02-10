@@ -627,6 +627,21 @@ client.on("message", (message) => {
     //COUNTING
     var canaleCounting = "793781899796938802";
     if (message.channel == canaleCounting) {
+        var userstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/userstats.json"));
+
+        if (!userstatsJson.hasOwnProperty(message.author.id)) {
+            userstatsJson[message.author.id] = {
+                "username": message.member.user.tag,
+                "lastScore": 0,
+                "timeBestScore": "",
+                "bestScore": 0,
+                "correct": 0,
+                "incorrect": 0,
+            }
+            fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
+
+        }
+
         var serverStats = fs.readFileSync("commandsFiles/counting/serverstats.json");
         serverStats = JSON.parse(serverStats);
 
@@ -636,7 +651,6 @@ client.on("message", (message) => {
         catch {
             return //Stringa o valori/espressioni non compresibili
         }
-
 
         if (message.author.id == serverStats.ultimoUtente) {
             var embed = new Discord.MessageEmbed()
@@ -660,14 +674,18 @@ client.on("message", (message) => {
             //UPDATE USER STATS
             var userstatsJson = fs.readFileSync("commandsFiles/counting/userstats.json");
             userstatsJson = JSON.parse(userstatsJson);
+
+
+
             userstatsJson[message.author.id] = {
                 "username": message.member.user.tag,
                 "lastScore": numero,
-                "timeBestScore": !userstatsJson[message.author.id].bestScore ? "" : numero > userstatsJson[message.author.id].bestScore ? new Date().getTime() : userstatsJson[message.author.id].timeBestScore,
+                "timeBestScore": numero > userstatsJson[message.author.id].bestScore ? new Date().getTime() : userstatsJson[message.author.id].timeBestScore,
                 "bestScore": numero > userstatsJson[message.author.id].bestScore ? userstatsJson[message.author.id].bestScore = numero : userstatsJson[message.author.id].bestScore,
                 "correct": userstatsJson[message.author.id].correct + 1,
                 "incorrect": userstatsJson[message.author.id].incorrect,
             }
+
             fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
 
         }
