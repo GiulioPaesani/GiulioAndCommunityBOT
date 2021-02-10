@@ -663,7 +663,7 @@ client.on("message", (message) => {
             userstatsJson[message.author.id] = {
                 "username": message.member.user.tag,
                 "lastScore": numero,
-                "timeBestScore": numero > userstatsJson[message.author.id].bestScore ? new Date().getTime() : userstatsJson[message.author.id].timeBestScore,
+                "timeBestScore": !userstatsJson[message.author.id].bestScore ? "" : numero > userstatsJson[message.author.id].bestScore ? new Date().getTime() : userstatsJson[message.author.id].timeBestScore,
                 "bestScore": numero > userstatsJson[message.author.id].bestScore ? userstatsJson[message.author.id].bestScore = numero : userstatsJson[message.author.id].bestScore,
                 "correct": userstatsJson[message.author.id].correct + 1,
                 "incorrect": userstatsJson[message.author.id].incorrect,
