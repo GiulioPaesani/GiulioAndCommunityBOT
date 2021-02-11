@@ -130,6 +130,9 @@ client.on("message", (message) => {
 
     //TEST
     if (message.content == "!test") {
+        if (!message.member.hasPermission("ADMINISTRATOR")) {
+            return
+        }
         message.channel.send("FUNZIONA TUTTO! Forse...")
     }
     //YOUTUBE
