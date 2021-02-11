@@ -130,7 +130,7 @@ client.on("message", (message) => {
 
     //TEST
     if (message.content == "!test") {
-        message.channel.send("FUNZIONA TUTTO!")
+        message.channel.send("FUNZIONA TUTTO! Forse...")
     }
     //YOUTUBE
     if (message.content == "!youtube") {
@@ -791,6 +791,9 @@ client.on("message", (message) => {
         message.channel.send(embed)
     }
 })
+
+
+
 
 //Counter member
 client.on("guildMemberAdd", member => {
