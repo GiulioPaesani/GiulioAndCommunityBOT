@@ -628,7 +628,7 @@ client.on("message", (message) => {
     }
 
     //COUNTING
-    var canaleCounting = "793781899796938802";
+    var canaleCounting = "793781905740922900";
     if (message.channel == canaleCounting) {
         var userstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/userstats.json"));
 
