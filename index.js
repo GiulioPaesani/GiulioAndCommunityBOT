@@ -870,11 +870,8 @@ client.on("message", message => {
         con.query("INSERT INTO prova (testo) VALUES ('" + testo + "')", function (err, result, fields) {
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
-                console.log(result)
             }
-            else {
-                console.log(result)
-            }
+            console.log("scrivi")
         })
     }
 })
