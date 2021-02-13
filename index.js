@@ -851,7 +851,7 @@ client.on("message", message => {
 
 client.on("message", message => {
     if (message.content == "!leggi") {
-        con.query("SELECT * FROM testo", function (err, result, fields) {
+        con.query("SELECT * FROM prova", function (err, result, fields) {
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
                 console.log(result)
