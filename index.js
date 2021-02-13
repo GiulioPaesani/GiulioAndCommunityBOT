@@ -863,3 +863,18 @@ client.on("message", message => {
         })
     }
 })
+client.on("message", message => {
+    if (message.content == "!scrivi") {
+        var testo = message.content.slice(8)
+
+        con.query("INSERT INTO prova (testo) VALUES ('" + testo + "')", function (err, result, fields) {
+            if (err) console.log(err);
+            if (!err && Object.keys(result).length > 0) {
+                console.log(result)
+            }
+            else {
+                console.log(result)
+            }
+        })
+    }
+})
