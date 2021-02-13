@@ -816,4 +816,50 @@ setInterval(function () {
     })
 }, 1000 * 10)
 
+//npm install mysql
+const mysql = require('mysql');
 
+var con = mysql.createPool({
+    connectionLimit: 1000,
+    connectTimeout: 60 * 60 * 1000,
+    acquireTimeout: 60 * 60 * 1000,
+    timeout: 60 * 60 * 1000,
+    host: 'eu-cdbr-west-03.cleardb.net',
+    port: 3306,
+    user: 'b0e6f9bf85a35f',
+    password: '1b1a0310',
+    database: 'heroku_e1befae4f922504',
+    charset: 'utf8mb4'
+});
+
+
+/*
+client.on("message", message => {
+  if (message.content == "!leggi") {
+    var prendiDb = "SELECT * FROM testo"
+    var caricaDb = "INSERT INTO qot (domande) VALUES ('Buongiorno')"
+    con.query(caricaDb, function (err, result, fields) {
+      if (err) console.log(err);
+      if (!err && Object.keys(result).length > 0) {
+        console.log(result)
+      }
+
+    })
+  }
+})*/
+
+
+client.on("message", message => {
+    if (message.content == "!leggi") {
+        con.query("SELECT * FROM testo", function (err, result, fields) {
+            if (err) console.log(err);
+            if (!err && Object.keys(result).length > 0) {
+                console.log(result)
+            }
+            else {
+                console.log("eh no")
+            }
+
+        })
+    }
+})
