@@ -867,7 +867,7 @@ client.on("message", message => {
     if (message.content.startsWith("!scrivi")) {
         var testo = message.content.slice(8)
 
-        con.query("INSERT INTO prova (testo) VALUES ('" + testo + "')", function (err, result, fields) {
+        con.query("INSERT INTO prova (testo, testo2) VALUES ('" + testo + "', '" + testo + "ciao')", function (err, result, fields) {
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
             }
