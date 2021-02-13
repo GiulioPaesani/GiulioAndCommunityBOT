@@ -857,7 +857,7 @@ client.on("message", message => {
                 console.log(result)
             }
             else {
-                console.log("eh no")
+                console.log(result)
             }
 
         })
