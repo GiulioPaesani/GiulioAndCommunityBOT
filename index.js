@@ -638,7 +638,7 @@ client.on("message", (message) => {
         host: 'eu-cdbr-west-03.cleardb.net',
         port: 3306,
         user: 'b0e6f9bf85a35f',
-        password: process.env.passworddb,
+        password: '1b1a0310',
         database: 'heroku_e1befae4f922504',
         charset: 'utf8mb4'
     });
