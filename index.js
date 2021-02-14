@@ -12,6 +12,7 @@ client.on("ready", () => {
     console.log("------------ONLINE------------")
 })
 
+console.log(process.env.passworddb)
 
 client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
