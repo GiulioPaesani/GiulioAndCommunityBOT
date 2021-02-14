@@ -5,6 +5,7 @@ const fs = require('file-system');
 const Parser = require('expr-eval').Parser;
 const ytch = require('yt-channel-info');
 const { Permissions } = require('discord.js');
+const mysql = require('mysql');
 client.login(process.env.token);
 
 client.on("ready", () => {
@@ -166,7 +167,7 @@ client.on("message", (message) => {
         })
     }
     //SERVERINFO
-    if (message.content == "!serverinfo" || message.content == "!serverstats") {
+    if (message.content == "!server" || message.content == "!server") {
         var server = message.member.guild;
         var botCount = server.members.cache.filter(member => member.user.bot).size
         var memberCount = server.memberCount - botCount;
@@ -189,8 +190,8 @@ client.on("message", (message) => {
         message.channel.send(serverStats)
     }
     //USERINFO
-    if (message.content.startsWith("!userinfo") || message.content.startsWith("!userstats")) {
-        if (message.content.trim() == "!userinfo" || message.content.trim() == "!userstats") {
+    if (message.content.startsWith("!user") || message.content.startsWith("!user")) {
+        if (message.content.trim() == "!userinfo" || message.content.trim() == "!userstats" || message.content.trim() == "!user") {
             var utente = message.member;
         }
         else {
@@ -313,111 +314,111 @@ client.on("message", (message) => {
     }
 
     //CODE
-    var comandi = {
-        ban: {
-            description: "**Bannare** un utente permanentemente",
-            alias: ["ban", "bannare"],
-            info: "",
-            video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
-        },
-        kick: {
-            description: "**Espellere** un utente dal server",
-            alias: ["kick", "kickare", "kiccare", "kikkare", "espellere"],
-            info: "",
-            video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
-        },
-        clear: {
-            description: "**Cancellare** un tot di messaggi antecedenti al comando",
-            alias: ["clear", "cancellare", "cancellare messaggi", "clear message"],
-            info: "",
-            video: "https://youtu.be/Cr1yobtZd4c?t=389"
-        },
-        audio: {
-            description: "Far riprodurre al bot un **file audio**",
-            alias: ["audio", "play", "music", "fileaudio", "file audio", "riprodurre", "riprodurre audio", "riprodurre file audio"],
-            info: "Prima di utilizzare il comando è necessario:\r1. Installare **ffmpeg** sul proprio pc\rPer farlo bisogna scaricare i file da [qui](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z), estrarre la cartella all'interno del file zip e metterla da qualche parte sul vostro pc, io vi consiglio direttamente nel disco C. Ora sarà necessario aggiungere come variabile d'ambiente il path di questa cartella, per sapere come fare vedere il mio video su YouTube\r2. Installare la libreria **Discord.js Opus**\rPer farlo scrivere nel terminal della cartella del vostro bot: `npm install discord.js @discordjs/opus`",
-            video: "https://youtu.be/x-Ii6BZiVQQ?t=374"
-        },
-        reazione: {
-            description: "Far **reagire** il bot a un messaggio che ha inviato",
-            alias: ["reazione", "react", "reazioni", "reaction", "reactions"],
-            info: "Nelle reazioni non è possibile utilizzare le emoji di Discord ma quelle universali. Puoi ottenerle in diversi modi, cliccando WIN+. oppure andando sul sito [emojipedia.com](https://emojipedia.org/), oppure aggiungendo uno \\ prima di mandare una emoji nella chat di Discord",
-            video: "https://youtu.be/x-Ii6BZiVQQ?t=637"
-        },
-        azioneReazione: {
-            description: "Far eseguire una azione quando un utente **clicca** una reazione",
-            alias: ["azioneReazione", "azione con reazione", "azionereazione", "azione reazione"],
-            info: "Nelle reazioni non è possibile utilizzare le emoji di Discord ma quelle universali. Puoi ottenerle in diversi modi, cliccando WIN+. oppure andando sul sito [emojipedia.com](https://emojipedia.org/), oppure aggiungendo uno \\ prima di mandare una emoji nella chat di Discord",
-            video: "https://youtu.be/x-Ii6BZiVQQ?t=763"
-        },
-        messaggioPrivato: {
-            description: "Fare mandare al bot un **messaggio privato** a un utente specifico o a chi ha scritto il messaggio",
-            alias: ["messaggioPrivato", "messaggio privato", "messaggioprivato"],
-            info: "",
-            video: "https://youtu.be/SN8b92REkII?t=30"
-        },
-        taggare: {
-            description: "**Taggare** utenti, ruoli, canali e categorie",
-            alias: ["taggare", "tag", "pin"],
-            info: "",
-            video: ""
-        },
-        file: {
-            description: "Mandare in allegato qualsiasi **file**",
-            alias: ["file", "mandare file", "mandarefile", "sendfile", "send file", "mandare immagini"],
-            info: "",
-            video: "https://youtu.be/SN8b92REkII?t=311"
-        },
-        embed: {
-            description: "Realizzare un **messaggio embed**",
-            alias: ["embed", "message embed", "messageembed", "embedmessage", "embed message"],
-            info: "Tutte le proprierà che possiamo settare a un embed sono opzionali, quindi non è necessario aggiungerle tutte ma solo quelle necessarie",
-            video: ""
-        },
-        random: {
-            description: "Mandare un **messaggio casuale** tra alcuni scelti",
-            alias: ["random", "messaggio random", "testo random"],
-            info: "",
-            video: "https://youtu.be/SN8b92REkII?t=755"
-        },
-        notifica: {
-            description: "Mandare un **messaggio** a una determinata ora",
-            alias: ["notifica", "messaggio a un ora specifica", "testo random"],
-            info: "",
-            video: "https://youtu.be/SN8b92REkII?t=977"
-        },
-        soloRuolo: {
-            description: "Fare eseguire un comando solo a utenti che hanno un certo **ruolo**",
-            alias: ["soloRuolo", "soloruolo", "solo ruolo", "comando solo a chi ha un ruolo"],
-            info: "",
-            video: "https://youtu.be/Cr1yobtZd4c?t=14"
-        },
-        benvenuto: {
-            description: "Messaggio di **benvenuto** o **addio**",
-            alias: ["benvenuto", "addio", "welcome", "messaggio di benvenuto", "messaggio di addio", "welcome message"],
-            info: "Prima di usare il comando, è necessario andare nelle impostazioni del bot sul [sito developer](https://discord.com/developers/applications) e andare nella sezione \"Bot\". Attivare le due opzioni in \"Privileged Gateway Intents\" (sia PRESENCE INTENT che SERVER MEMBERS INTENT)",
-            video: "https://youtu.be/Cr1yobtZd4c?t=126"
-        },
-        userinfo: {
-            description: "Ottenere le informazioni di un **utente specifico**",
-            alias: ["userinfo", "userstats", "user info", "infouser", "info user", "user stats"],
-            info: "",
-            video: "https://youtu.be/FNUIyrRoitg?t=561"
-        },
-        serverinfo: {
-            description: "Ottenere le informazioni sul **server**",
-            alias: ["serverinfo", "server stats", "server info", "infoserver", "info server", "server stats"],
-            info: "",
-            video: "https://youtu.be/FNUIyrRoitg?t=146"
-        },
-        memberCounter: {
-            description: "Canale di **statistica membri**",
-            alias: ["membercounter", "member counter", "counter membri"],
-            info: "Prima di creare il comando è necessario creare il canale dove vengono segnati i numeri di membri, potete scegliere nel creare un canale testuale o vocale. Una volta fatto copiare l'id nel codice",
-            video: "https://youtu.be/FNUIyrRoitg?t=19"
-        }
-    }
     if (message.content.startsWith("!code")) {
+        var comandi = {
+            ban: {
+                description: "**Bannare** un utente permanentemente",
+                alias: ["ban", "bannare"],
+                info: "",
+                video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
+            },
+            kick: {
+                description: "**Espellere** un utente dal server",
+                alias: ["kick", "kickare", "kiccare", "kikkare", "espellere"],
+                info: "",
+                video: "https://youtu.be/x-Ii6BZiVQQ?t=27"
+            },
+            clear: {
+                description: "**Cancellare** un tot di messaggi antecedenti al comando",
+                alias: ["clear", "cancellare", "cancellare messaggi", "clear message"],
+                info: "",
+                video: "https://youtu.be/Cr1yobtZd4c?t=389"
+            },
+            audio: {
+                description: "Far riprodurre al bot un **file audio**",
+                alias: ["audio", "play", "music", "fileaudio", "file audio", "riprodurre", "riprodurre audio", "riprodurre file audio"],
+                info: "Prima di utilizzare il comando è necessario:\r1. Installare **ffmpeg** sul proprio pc\rPer farlo bisogna scaricare i file da [qui](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z), estrarre la cartella all'interno del file zip e metterla da qualche parte sul vostro pc, io vi consiglio direttamente nel disco C. Ora sarà necessario aggiungere come variabile d'ambiente il path di questa cartella, per sapere come fare vedere il mio video su YouTube\r2. Installare la libreria **Discord.js Opus**\rPer farlo scrivere nel terminal della cartella del vostro bot: `npm install discord.js @discordjs/opus`",
+                video: "https://youtu.be/x-Ii6BZiVQQ?t=374"
+            },
+            reazione: {
+                description: "Far **reagire** il bot a un messaggio che ha inviato",
+                alias: ["reazione", "react", "reazioni", "reaction", "reactions"],
+                info: "Nelle reazioni non è possibile utilizzare le emoji di Discord ma quelle universali. Puoi ottenerle in diversi modi, cliccando WIN+. oppure andando sul sito [emojipedia.com](https://emojipedia.org/), oppure aggiungendo uno \\ prima di mandare una emoji nella chat di Discord",
+                video: "https://youtu.be/x-Ii6BZiVQQ?t=637"
+            },
+            azioneReazione: {
+                description: "Far eseguire una azione quando un utente **clicca** una reazione",
+                alias: ["azioneReazione", "azione con reazione", "azionereazione", "azione reazione"],
+                info: "Nelle reazioni non è possibile utilizzare le emoji di Discord ma quelle universali. Puoi ottenerle in diversi modi, cliccando WIN+. oppure andando sul sito [emojipedia.com](https://emojipedia.org/), oppure aggiungendo uno \\ prima di mandare una emoji nella chat di Discord",
+                video: "https://youtu.be/x-Ii6BZiVQQ?t=763"
+            },
+            messaggioPrivato: {
+                description: "Fare mandare al bot un **messaggio privato** a un utente specifico o a chi ha scritto il messaggio",
+                alias: ["messaggioPrivato", "messaggio privato", "messaggioprivato"],
+                info: "",
+                video: "https://youtu.be/SN8b92REkII?t=30"
+            },
+            taggare: {
+                description: "**Taggare** utenti, ruoli, canali e categorie",
+                alias: ["taggare", "tag", "pin"],
+                info: "",
+                video: ""
+            },
+            file: {
+                description: "Mandare in allegato qualsiasi **file**",
+                alias: ["file", "mandare file", "mandarefile", "sendfile", "send file", "mandare immagini"],
+                info: "",
+                video: "https://youtu.be/SN8b92REkII?t=311"
+            },
+            embed: {
+                description: "Realizzare un **messaggio embed**",
+                alias: ["embed", "message embed", "messageembed", "embedmessage", "embed message"],
+                info: "Tutte le proprierà che possiamo settare a un embed sono opzionali, quindi non è necessario aggiungerle tutte ma solo quelle necessarie",
+                video: ""
+            },
+            random: {
+                description: "Mandare un **messaggio casuale** tra alcuni scelti",
+                alias: ["random", "messaggio random", "testo random"],
+                info: "",
+                video: "https://youtu.be/SN8b92REkII?t=755"
+            },
+            notifica: {
+                description: "Mandare un **messaggio** a una determinata ora",
+                alias: ["notifica", "messaggio a un ora specifica", "testo random"],
+                info: "",
+                video: "https://youtu.be/SN8b92REkII?t=977"
+            },
+            soloRuolo: {
+                description: "Fare eseguire un comando solo a utenti che hanno un certo **ruolo**",
+                alias: ["soloRuolo", "soloruolo", "solo ruolo", "comando solo a chi ha un ruolo"],
+                info: "",
+                video: "https://youtu.be/Cr1yobtZd4c?t=14"
+            },
+            benvenuto: {
+                description: "Messaggio di **benvenuto** o **addio**",
+                alias: ["benvenuto", "addio", "welcome", "messaggio di benvenuto", "messaggio di addio", "welcome message"],
+                info: "Prima di usare il comando, è necessario andare nelle impostazioni del bot sul [sito developer](https://discord.com/developers/applications) e andare nella sezione \"Bot\". Attivare le due opzioni in \"Privileged Gateway Intents\" (sia PRESENCE INTENT che SERVER MEMBERS INTENT)",
+                video: "https://youtu.be/Cr1yobtZd4c?t=126"
+            },
+            userinfo: {
+                description: "Ottenere le informazioni di un **utente specifico**",
+                alias: ["userinfo", "userstats", "user info", "infouser", "info user", "user stats"],
+                info: "",
+                video: "https://youtu.be/FNUIyrRoitg?t=561"
+            },
+            serverinfo: {
+                description: "Ottenere le informazioni sul **server**",
+                alias: ["serverinfo", "server stats", "server info", "infoserver", "info server", "server stats"],
+                info: "",
+                video: "https://youtu.be/FNUIyrRoitg?t=146"
+            },
+            memberCounter: {
+                description: "Canale di **statistica membri**",
+                alias: ["membercounter", "member counter", "counter membri"],
+                info: "Prima di creare il comando è necessario creare il canale dove vengono segnati i numeri di membri, potete scegliere nel creare un canale testuale o vocale. Una volta fatto copiare l'id nel codice",
+                video: "https://youtu.be/FNUIyrRoitg?t=19"
+            }
+        }
         var command = message.content.slice(5).trim();
         var data, comando, info, video, description;
 
@@ -627,100 +628,162 @@ client.on("message", (message) => {
 
     }
 
-    //COUNTING
-    var canaleCounting = "793781905740922900";
+    //COUTING
+    var con = mysql.createPool({ //Connessione database Heroku
+        connectionLimit: 1000,
+        connectTimeout: 60 * 60 * 1000,
+        acquireTimeout: 60 * 60 * 1000,
+        timeout: 60 * 60 * 1000,
+        host: 'eu-cdbr-west-03.cleardb.net',
+        port: 3306,
+        user: 'b0e6f9bf85a35f',
+        password: process.env.passworddb,
+        database: 'heroku_e1befae4f922504',
+        charset: 'utf8mb4'
+    });
+
+    var canaleCounting = "810219854505312317";
     if (message.channel == canaleCounting) {
-        var userstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/userstats.json"));
 
-        if (!userstatsJson.hasOwnProperty(message.author.id)) {
-            userstatsJson[message.author.id] = {
-                "username": message.member.user.tag,
-                "lastScore": 0,
-                "timeBestScore": "",
-                "bestScore": 0,
-                "correct": 0,
-                "incorrect": 0,
-            }
-            fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
-
-        }
-
-        var serverStats = fs.readFileSync("commandsFiles/counting/serverstats.json");
-        serverStats = JSON.parse(serverStats);
-
-        try {
-            var numero = Parser.evaluate(message.content);
-        }
-        catch {
-            return //Stringa o valori/espressioni non compresibili
-        }
-
-        if (message.author.id == serverStats.ultimoUtente) {
-            var embed = new Discord.MessageEmbed()
-                .setTitle("ERRORE")
-                .setColor("#ff2e1f")
-                .setDescription("Ogni utente può scrivere un solo numero alla volta")
-            message.channel.send(embed)
-            serverStats.ultimoUtente = message.author.id
-            erroreCountin();
-            return
-
-        }
-
-        if (numero - 1 == serverStats.numero) { //Numero corretto
-            numero > serverStats.bestScore ? message.react("🔵") : message.react("🟢")
-            numero > serverStats.bestScore ? serverStats.timeBestScore = new Date().getTime() : serverStats.timeBestScore
-            serverStats.numero = serverStats.numero + 1;
-            serverStats.ultimoUtente = message.author.id
-            serverStats.bestScore = numero > serverStats.bestScore ? serverStats.bestScore = numero : serverStats.bestScore
-            fs.writeFileSync("commandsFiles/counting/serverstats.json", JSON.stringify(serverStats));
-            //UPDATE USER STATS
-            var userstatsJson = fs.readFileSync("commandsFiles/counting/userstats.json");
-            userstatsJson = JSON.parse(userstatsJson);
-
-
-
-            userstatsJson[message.author.id] = {
-                "username": message.member.user.tag,
-                "lastScore": numero,
-                "timeBestScore": numero > userstatsJson[message.author.id].bestScore ? new Date().getTime() : userstatsJson[message.author.id].timeBestScore,
-                "bestScore": numero > userstatsJson[message.author.id].bestScore ? userstatsJson[message.author.id].bestScore = numero : userstatsJson[message.author.id].bestScore,
-                "correct": userstatsJson[message.author.id].correct + 1,
-                "incorrect": userstatsJson[message.author.id].incorrect,
+        con.query(`select * from serverstats`, function (err, result, fields) {
+            if (err) console.log(err);
+            if (!err && Object.keys(result).length > 0) {
+                var serverstats = result[0]; //Get serverstats
             }
 
-            fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
+            try {
+                var numero = Parser.evaluate(message.content); //Get numero scritto o risultato espressione
 
-        }
-        else { //Numero sbagliato
-            message.channel.send("ERRORE - Numero errato, dovevi inserire " + (serverStats.numero + 1))
-            serverStats.ultimoUtente = message.author.id
-            erroreCountin();
-        }
-
-
-        function erroreCountin() { //reset
-            message.react("🔴");
-            serverStats.numero = 0;
-            serverStats.ultimoUtente = "NessunUtente";
-            //UPDATE STATS
-            var userstatsJson = fs.readFileSync("commandsFiles/counting/userstats.json");
-            userstatsJson = JSON.parse(userstatsJson);
-            userstatsJson[message.author.id] = {
-                "username": message.member.user.tag,
-                "lastScore": userstatsJson[message.author.id].lastScore,
-                "bestScore": userstatsJson[message.author.id].bestScore,
-                "correct": userstatsJson[message.author.id].correct,
-                "incorrect": userstatsJson[message.author.id].incorrect + 1
+                con.query(`SELECT * FROM userstats WHERE id = ${message.author.id}`, function (err, result, fields) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    if (!result[0]) { //Se l'utente non è presente nel database, viene aggiunto
+                        con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0)`, function (err, result, fields) {
+                            if (err) console.log(err);
+                        })
+                    }
+                })
             }
-            fs.writeFileSync("commandsFiles/counting/userstats.json", JSON.stringify(userstatsJson));
-            //RESET NUMBER
-            fs.writeFileSync("commandsFiles/counting/serverstats.json", JSON.stringify(serverStats));
-        }
+            catch {
+                return //Stringa o valori/espressioni non compresibili
+            }
 
+            if (message.author.id == serverstats.ultimoUtente) {
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("ERRORE")
+                    .setColor("#EB3140")
+                    .setDescription("Ogni utente può scrivere un solo numero alla volta")
+                message.channel.send(embed)
+                serverstats.ultimoUtente = message.author.id
+                erroreCountin();
+                return
+            }
+
+            if (numero - 1 == serverstats.numero) { //Numero corretto
+                numero > serverstats.bestScore ? message.react("🔵") : message.react("🟢")
+                numero > serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
+                serverstats.numero = serverstats.numero + 1;
+                serverstats.ultimoUtente = message.author.id
+                serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
+
+                con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = "${serverstats.ultimoUtente}", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}`, function (err, result, fields) {
+                    if (err) {
+                        console.log(err)
+                    }
+                })
+
+
+                con.query(`select * from userstats where id = ${message.author.id}`, function (err, result, fields) {
+                    if (err) console.log(err);
+                    if (!err && Object.keys(result).length > 0) {
+                        index = result.findIndex(x => x.id == message.author.id)
+                        var userstats = result[index]
+                    }
+
+                    userstats = {
+                        "username": message.member.user.tag,
+                        "lastScore": numero,
+                        "timeBestScore": numero > userstats.bestScore ? new Date().getTime() : userstats.timeBestScore,
+                        "timeLastScore": new Date().getTime(),
+                        "bestScore": numero > userstats.bestScore ? userstats.bestScore = numero : userstats.bestScore,
+                        "correct": userstats.correct + 1,
+                        "incorrect": userstats.incorrect,
+                    }
+
+                    //Update userstats
+                    con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    })
+
+                })
+            }
+            else { //Numero sbagliato
+                var embed = new Discord.MessageEmbed()
+                    .setColor("#EB3140")
+                    .setDescription("Numero errato, dovevi inserire `" + (serverstats.numero + 1) + "`")
+
+                if (serverstats.numero <= 10) {
+                    embed.setTitle(`FORTUNA CHE ERAVAMO SOLO A ${serverstats.numero}`)
+                }
+                else if (serverstats.numero <= 30) {
+                    embed.setTitle(`MA SIETE SICURI DI SAPER CONTARE?`)
+                }
+                else if (serverstats.numero <= 50) {
+                    var titleRandom = ["NOOOO, PERCHÈ...", message.member.user.username + " MEGLIO SE TORNATE A PROGRAMMARE", "PROPRIO ORA DOVEVATE SBAGLIARE?", "DAIII, STAVAMO FACENDO IL RECORD", message.member.user.username + " HAI ROVINATO I SOGNI DI TUTTI"]
+                    embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                }
+                else {
+                    var titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", "MEGLIO SE TORNATE A PROGRAMMARE", "SIETE DELLE CAPRE"]
+                    embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                }
+
+                message.channel.send(embed)
+                serverstats.ultimoUtente = message.author.id
+                erroreCountin();
+            }
+
+
+            function erroreCountin() { //Errore + Reset
+                message.react("🔴");
+
+                //Update userstats
+                con.query(`select * from userstats where id = ${message.author.id}`, function (err, result, fields) {
+                    if (err) console.log(err);
+                    if (!err && Object.keys(result).length > 0) {
+                        var userstats = result[0]
+                    }
+
+                    userstats = {
+                        "username": message.member.user.tag,
+                        "lastScore": userstats.lastScore,
+                        "bestScore": userstats.bestScore,
+                        "correct": userstats.correct,
+                        "timeBestScore": userstats.timeBestScore,
+                        "timeLastScore": userstats.timeBestScore,
+                        "incorrect": userstats.incorrect + 1
+                    }
+                    con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
+                        if (err) {
+                            console.log(err)
+                        }
+
+                    })
+
+                    //Reset numero
+                    con.query(`UPDATE serverstats SET numero = 0, ultimoUtente = "NessunUtente", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore};`, function (err, result, fields) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    })
+                })
+            }
+        })
     }
-    var userstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/userstats.json"));
-    var serverstatsJson = JSON.parse(fs.readFileSync("commandsFiles/counting/serverstats.json"));
+
     if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
         if (message.content.trim() == "!cuser" || message.content.trim() == "!cuser") {
             var utente = message.member;
@@ -730,68 +793,96 @@ client.on("message", (message) => {
         }
         if (!utente) {
             message.channel.send(":no_entry_sign: Non ho trovato questo utente")
+                .then(msg => {
+                    msg.delete({ timeout: 5000 })
+                    message.delete({ timeout: 5000 })
+                })
             return
         }
+        con.query(`select * from userstats where id = ${utente.user.id}`, function (err, result, fields) {
+            if (err) console.log(err);
+            if (!err && Object.keys(result).length > 0) {
+                var userstats = result[0]
+            }
+            if (!userstats) {
+                message.channel.send(":x: Questo utente non ha mai giocato a Counting")
+                    .then(msg => {
+                        msg.delete({ timeout: 5000 })
+                        message.delete({ timeout: 5000 })
+                    })
+                return
+            }
 
-        var countingUserStats = userstatsJson[utente.id]
-        if (!countingUserStats) {
-            message.channel.send(":x: Questo utente non ha mai giocato a Counting")
-            return
-        }
+            con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
+                if (err) console.log(err);
+                if (!err && Object.keys(result).length > 0) {
+                    var position = result.findIndex(x => x.id == utente.user.id) + 1
+                }
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle("COUNTING - " + utente.user.tag)
-            .setDescription("Tutte le statistiche di **counting** su questo utente")
-            .setThumbnail(utente.user.avatarURL())
-            .addField(":trophy: Best score", "```" + countingUserStats.bestScore + " (" + moment(countingUserStats.timeBestScore).fromNow() + ")```", false)
-            .addField(":medal: Last score", "```" + countingUserStats.lastScore + "```", true)
-            .addField(":white_check_mark: Total correct", "```" + countingUserStats.correct + "```", true)
-            .addField(":x: Total incorrect", "```" + countingUserStats.incorrect + "```", true)
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("COUNTING - " + utente.user.tag)
+                    .setDescription("Tutte le statistiche di **counting** su questo utente")
+                    .setThumbnail(utente.user.avatarURL())
+                    .addField(":trophy: Best score", "```" + userstats.bestScore + " (" + moment(new Date(parseInt(userstats.timeBestScore))).fromNow() + ")```", true)
+                    .addField(":chart_with_upwards_trend: Rank", "```#" + position + "```", true)
+                    .addField(":medal: Last score", "```" + userstats.lastScore + " (" + moment(new Date(parseInt(userstats.timeLastScore))).fromNow() + ")```", true)
+                    .addField(":white_check_mark: Total correct", "```" + userstats.correct + "```", true)
+                    .addField(":x: Total incorrect", "```" + userstats.incorrect + "```", true)
 
-        message.channel.send(embed)
+                message.channel.send(embed)
+            })
+        })
     }
     if (message.content == "!cserver" || message.content == "!cserver") {
-        var leaderboardArray = Object.keys(userstatsJson)
-            .map(function (key) {
-                return userstatsJson[key];
-            });
-        leaderboardArray.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : -1)
-
-        var leaderboard = "";
-        for (var i = 0; i < 10; i++) {
-            if (leaderboardArray.length - 1 < i) {
-                break
+        con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
+            if (err) console.log(err);
+            if (!err && Object.keys(result).length > 0) {
+                var leaderboardList = result;
             }
-            var utente = client.users.cache.find(u => u.tag === leaderboardArray[i].username).username
-            switch (i) {
-                case 0:
-                    leaderboard += ":first_place: ";
+
+            var leaderboard = "";
+            for (var i = 0; i < 10; i++) {
+                if (leaderboardList.length - 1 < i) {
                     break
-                case 1:
-                    leaderboard += ":second_place: "
-                    break
-                case 2:
-                    leaderboard += ":third_place: "
-                    break
-                default:
-                    leaderboard += "**#" + (i + 1) + "** "
+                }
+                var utente = client.users.cache.find(u => u.tag == leaderboardList[i].username).username
+                switch (i) {
+                    case 0:
+                        leaderboard += ":first_place: ";
+                        break
+                    case 1:
+                        leaderboard += ":second_place: "
+                        break
+                    case 2:
+                        leaderboard += ":third_place: "
+                        break
+                    default:
+                        leaderboard += "**#" + (i + 1) + "** "
 
 
+                }
+                leaderboard += utente + " - **" + leaderboardList[i].bestScore + "**\r";
             }
-            leaderboard += utente + " - **" + leaderboardArray[i].bestScore + "**\r";
-        }
+
+            con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
+                if (err) console.log(err);
+                if (!err && Object.keys(result).length > 0) {
+                    var serverstats = result[0];
+                }
 
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle("COUNTING - GiulioAndCommunity")
-            .setThumbnail(message.member.guild.iconURL())
-            .setDescription("La classifica del server su **counting**")
-            .addField(":1234: Current Number", "```" + serverstatsJson.numero + "```", true)
-            .addField(":medal: Last user", serverstatsJson.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstatsJson.ultimoUtente).username + "```" : "```None```", true)
-            .addField(":trophy: Best score", "```" + serverstatsJson.bestScore + " - " + client.users.cache.find(u => u.tag === leaderboardArray[0].username).username + " (" + moment(serverstatsJson.timeBestScore).fromNow() + ")```", false)
-            .addField("Leaderboard", leaderboard, false)
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("COUNTING - GiulioAndCommunity")
+                    .setThumbnail(message.member.guild.iconURL())
+                    .setDescription("La classifica del server su **counting**")
+                    .addField(":1234: Current Number", "```" + serverstats.numero + "```", true)
+                    .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstats.ultimoUtente).username + "```" : "```None```", true)
+                    .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + client.users.cache.find(u => u.tag === leaderboardList[0].username).username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
+                    .addField("Leaderboard", leaderboard, false)
 
-        message.channel.send(embed)
+                message.channel.send(embed)
+            })
+        })
     }
 })
 
@@ -815,63 +906,3 @@ setInterval(function () {
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000 * 10)
-
-//npm install mysql
-const mysql = require('mysql');
-
-var con = mysql.createPool({
-    connectionLimit: 1000,
-    connectTimeout: 60 * 60 * 1000,
-    acquireTimeout: 60 * 60 * 1000,
-    timeout: 60 * 60 * 1000,
-    host: 'eu-cdbr-west-03.cleardb.net',
-    port: 3306,
-    user: 'b0e6f9bf85a35f',
-    password: '1b1a0310',
-    database: 'heroku_e1befae4f922504',
-    charset: 'utf8mb4'
-});
-
-
-/*
-client.on("message", message => {
-  if (message.content == "!leggi") {
-    var prendiDb = "SELECT * FROM testo"
-    var caricaDb = "INSERT INTO qot (domande) VALUES ('Buongiorno')"
-    con.query(caricaDb, function (err, result, fields) {
-      if (err) console.log(err);
-      if (!err && Object.keys(result).length > 0) {
-        console.log(result)
-      }
-
-    })
-  }
-})*/
-
-
-client.on("message", message => {
-    if (message.content == "!leggi") {
-        con.query("SELECT * FROM prova", function (err, result, fields) {
-            if (err) console.log(err);
-            if (!err && Object.keys(result).length > 0) {
-                console.log(result)
-            }
-            else {
-                console.log(result)
-            }
-
-        })
-    }
-})
-client.on("message", message => {
-    if (message.content.startsWith("!scrivi")) {
-        var testo = message.content.slice(8)
-
-        con.query("INSERT INTO prova (testo, testo2) VALUES ('" + testo + "', '" + testo + "ciao')", function (err, result, fields) {
-            if (err) console.log(err);
-            if (!err && Object.keys(result).length > 0) {
-            }
-            console.log("scrivi")
-        })
-    }
-})
