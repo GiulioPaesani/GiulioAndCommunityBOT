@@ -645,7 +645,6 @@ client.on("message", (message) => {
     if (message.channel == canaleCounting) {
 
         con.query(`select * from serverstats`, function (err, result, fields) {
-            con.release();
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
                 console.log("ciao")
@@ -657,7 +656,6 @@ client.on("message", (message) => {
                 var numero = Parser.evaluate(message.content); //Get numero scritto o risultato espressione
 
                 con.query(`SELECT * FROM userstats WHERE id = ${message.author.id}`, function (err, result, fields) {
-                    con.release();
 
                     if (err) {
                         console.log(err);
@@ -693,7 +691,6 @@ client.on("message", (message) => {
                 serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
 
                 con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = "${serverstats.ultimoUtente}", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}`, function (err, result, fields) {
-                    con.release();
 
                     if (err) {
                         console.log(err)
@@ -702,7 +699,6 @@ client.on("message", (message) => {
 
 
                 con.query(`select * from userstats where id = ${message.author.id}`, function (err, result, fields) {
-                    con.release();
 
                     if (err) console.log(err);
                     if (!err && Object.keys(result).length > 0) {
@@ -722,7 +718,6 @@ client.on("message", (message) => {
 
                     //Update userstats
                     con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
-                        con.release();
 
                         if (err) {
                             console.log(err)
@@ -762,7 +757,6 @@ client.on("message", (message) => {
 
                 //Update userstats
                 con.query(`select * from userstats where id = ${message.author.id}`, function (err, result, fields) {
-                    con.release();
                     if (err) console.log(err);
                     if (!err && Object.keys(result).length > 0) {
                         var userstats = result[0]
@@ -778,7 +772,6 @@ client.on("message", (message) => {
                         "incorrect": userstats.incorrect + 1
                     }
                     con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
-                        con.release();
                         if (err) {
                             console.log(err)
                         }
@@ -787,7 +780,6 @@ client.on("message", (message) => {
 
                     //Reset numero
                     con.query(`UPDATE serverstats SET numero = 0, ultimoUtente = "NessunUtente", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore};`, function (err, result, fields) {
-                        con.release();
                         if (err) {
                             console.log(err)
                         }
@@ -813,7 +805,6 @@ client.on("message", (message) => {
             return
         }
         con.query(`select * from userstats where id = ${utente.user.id}`, function (err, result, fields) {
-            con.release();
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
                 var userstats = result[0]
@@ -828,7 +819,6 @@ client.on("message", (message) => {
             }
 
             con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
-                con.release();
                 if (err) console.log(err);
                 if (!err && Object.keys(result).length > 0) {
                     var position = result.findIndex(x => x.id == utente.user.id) + 1
@@ -850,7 +840,6 @@ client.on("message", (message) => {
     }
     if (message.content == "!cserver" || message.content == "!cserver") {
         con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
-            con.release();
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
                 var leaderboardList = result;
@@ -881,7 +870,6 @@ client.on("message", (message) => {
             }
 
             con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
-                con.release();
                 if (err) console.log(err);
                 if (!err && Object.keys(result).length > 0) {
                     var serverstats = result[0];
