@@ -12,8 +12,6 @@ client.on("ready", () => {
     console.log("------------ONLINE------------")
 })
 
-console.log(process.env.passworddb)
-
 client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
@@ -638,7 +636,7 @@ client.on("message", (message) => {
         host: 'eu-cdbr-west-03.cleardb.net',
         port: 3306,
         user: 'b0e6f9bf85a35f',
-        password: '1b1a0310',
+        password: process.env.passworddb,
         database: 'heroku_e1befae4f922504',
         charset: 'utf8mb4'
     });
@@ -649,6 +647,8 @@ client.on("message", (message) => {
         con.query(`select * from serverstats`, function (err, result, fields) {
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
+                console.log("ciao")
+                console.log(result)
                 var serverstats = result[0]; //Get serverstats
             }
 
