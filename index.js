@@ -166,7 +166,7 @@ client.on("message", (message) => {
         })
     }
     //SERVERINFO
-    if (message.content == "!server" || message.content == "!server") {
+    if (message.content == "!server" || message.content == "!serverinfo" || message.content == "!serverstats") {
         var server = message.member.guild;
         var botCount = server.members.cache.filter(member => member.user.bot).size
         var memberCount = server.memberCount - botCount;
@@ -787,6 +787,7 @@ client.on("message", (message) => {
                 })
             }
         })
+        con.end();
     }
 
     if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
@@ -836,7 +837,9 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             })
+            con.end();
         })
+        con.end();
     }
     if (message.content == "!cserver" || message.content == "!cserver") {
         con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
@@ -887,7 +890,9 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             })
+            con.end();
         })
+        con.end();
     }
 })
 
