@@ -641,7 +641,7 @@ client.on("message", (message) => {
             database: 'heroku_e1befae4f922504'
         });
         console.log("Connect")
-    }
+    
 
     var canaleCounting = "810219854505312317";
     if (message.channel == canaleCounting) {
@@ -899,7 +899,7 @@ client.on("message", (message) => {
              
         })
          
-    }
+    }}
 })
 
 
