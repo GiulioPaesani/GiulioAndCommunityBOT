@@ -628,21 +628,20 @@ client.on("message", (message) => {
     }
 
     //COUTING
-    var con = mysql.createPool({ //Connessione database Heroku
-        connectionLimit: 1000,
-        connectTimeout: 60 * 60 * 1000,
-        acquireTimeout: 60 * 60 * 1000,
-        timeout: 60 * 60 * 1000,
-        host: 'eu-cdbr-west-03.cleardb.net',
-        port: 3306,
-        user: 'b0e6f9bf85a35f',
-        password: process.env.passworddb,
-        database: 'heroku_e1befae4f922504',
-        charset: 'utf8mb4'
-    });
-
     var canaleCounting = "810219854505312317";
     if (message.channel == canaleCounting) {
+        var con = mysql.createPool({ //Connessione database Heroku
+            connectionLimit: 1000,
+            connectTimeout: 60 * 60 * 1000,
+            acquireTimeout: 60 * 60 * 1000,
+            timeout: 60 * 60 * 1000,
+            host: 'eu-cdbr-west-03.cleardb.net',
+            port: 3306,
+            user: 'b0e6f9bf85a35f',
+            password: process.env.passworddb,
+            database: 'heroku_e1befae4f922504',
+            charset: 'utf8mb4'
+        });
 
         con.query(`select * from serverstats`, function (err, result, fields) {
             if (err) console.log(err);
@@ -788,9 +787,22 @@ client.on("message", (message) => {
             }
         })
         
+        con.end()
     }
 
     if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
+        var con = mysql.createPool({ //Connessione database Heroku
+            connectionLimit: 1000,
+            connectTimeout: 60 * 60 * 1000,
+            acquireTimeout: 60 * 60 * 1000,
+            timeout: 60 * 60 * 1000,
+            host: 'eu-cdbr-west-03.cleardb.net',
+            port: 3306,
+            user: 'b0e6f9bf85a35f',
+            password: process.env.passworddb,
+            database: 'heroku_e1befae4f922504',
+            charset: 'utf8mb4'
+        });
         if (message.content.trim() == "!cuser" || message.content.trim() == "!cuser") {
             var utente = message.member;
         }
@@ -840,8 +852,21 @@ client.on("message", (message) => {
             
         })
          
+        con.end()
     }
-    if (message.content == "!cserver" || message.content == "!cserver") {
+    if (message.content == "!cserver" || message.content == "!cserverstats"|| message.content == "!cserverinfo") {
+        var con = mysql.createPool({ //Connessione database Heroku
+            connectionLimit: 1000,
+            connectTimeout: 60 * 60 * 1000,
+            acquireTimeout: 60 * 60 * 1000,
+            timeout: 60 * 60 * 1000,
+            host: 'eu-cdbr-west-03.cleardb.net',
+            port: 3306,
+            user: 'b0e6f9bf85a35f',
+            password: process.env.passworddb,
+            database: 'heroku_e1befae4f922504',
+            charset: 'utf8mb4'
+        });
         con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
             if (err) console.log(err);
             if (!err && Object.keys(result).length > 0) {
@@ -893,6 +918,7 @@ client.on("message", (message) => {
              
         })
          
+        con.end()
     }
 })
 
