@@ -628,19 +628,19 @@ client.on("message", (message) => {
     }
 
     //COUTING
-    if (message.channel == canaleCounting || message.content.startsWith("!cuser") || message.content.startsWith("!cserver")){
-        var con = mysql.createPool({ //Connessione database Heroku
-            /*connectionLimit: 1000,
-            connectTimeout: 60 * 60 * 1000,
-            acquireTimeout: 60 * 60 * 1000,
-            timeout: 60 * 60 * 1000,*/
-            host: 'eu-cdbr-west-03.cleardb.net',
-            port: 3306,
-            user: 'b0e6f9bf85a35f',
-            password: process.env.passworddb,
-            database: 'heroku_e1befae4f922504'
-        });
-        console.log("Connect")
+    var con = mysql.createPool({ //Connessione database Heroku
+        /*connectionLimit: 1000,
+        connectTimeout: 60 * 60 * 1000,
+        acquireTimeout: 60 * 60 * 1000,
+        timeout: 60 * 60 * 1000,*/
+        host: 'eu-cdbr-west-03.cleardb.net',
+        port: 3306,
+        user: 'b0e6f9bf85a35f',
+        password: process.env.passworddb,
+        database: 'heroku_e1befae4f922504'
+    });
+    console.log("Connect")
+    
     
 
     var canaleCounting = "810219854505312317";
@@ -900,7 +900,7 @@ client.on("message", (message) => {
         })
          
     }}
-})
+)
 
 
 
