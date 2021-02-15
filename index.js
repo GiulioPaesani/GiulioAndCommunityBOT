@@ -787,7 +787,7 @@ client.on("message", (message) => {
                 })
             }
         })
-        con.end();
+        
     }
 
     if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
@@ -837,9 +837,9 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             })
-            con.end();
+            
         })
-        con.end();
+         
     }
     if (message.content == "!cserver" || message.content == "!cserver") {
         con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
@@ -890,9 +890,9 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             })
-            con.end();
+             
         })
-        con.end();
+         
     }
 })
 
