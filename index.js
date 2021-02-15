@@ -628,7 +628,7 @@ client.on("message", (message) => {
     }
 
     //COUTING
-    if (message.channel == canaleCounting || merssage.content.startsWith("!cuser") || message.content.startsWith("!cserver")){
+    if (message.channel == canaleCounting || message.content.startsWith("!cuser") || message.content.startsWith("!cserver")){
         var con = mysql.createPool({ //Connessione database Heroku
             /*connectionLimit: 1000,
             connectTimeout: 60 * 60 * 1000,
