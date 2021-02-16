@@ -29,12 +29,17 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!cuser", "!cserver"],
+            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
         },
         giulioAndCommunityBot2: {
             comandi: ["!code"],
+            id: "802184359120863272",
+            canaliPermessi: ["793781899796938802", "801019779480944660"]
+        },
+        giulioAndCommunityBot3: {
+            comandi: ["!cuser", "!cserver"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660", "793781898689773589", "793781901240172544"]
         },
@@ -103,7 +108,6 @@ client.on("message", (message) => {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
             if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x])) {
                 if (!eval("BOT." + Object.keys(BOT)[i]).canaliPermessi.includes(message.channel.id)) {
-                    id = eval("BOT." + Object.keys(BOT)[i]).id;
                     trovato = true;
                 }
             }
@@ -115,7 +119,7 @@ client.on("message", (message) => {
 
         }
         else {
-            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
+            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare il comando `" + message.content + "` in questo canale!");
             message.channel.send(canaleNonConcesso)
                 .then(msg => {
                     msg.delete({ timeout: 5000 })
