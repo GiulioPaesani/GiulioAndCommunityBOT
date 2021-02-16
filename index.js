@@ -12,6 +12,19 @@ client.on("ready", () => {
     console.log("------------ONLINE------------")
 })
 
+var con = mysql.createPool({ //Connessione database Heroku
+    connectionLimit: 1000,
+    connectTimeout: 60 * 60 * 1000,
+    acquireTimeout: 60 * 60 * 1000,
+    timeout: 60 * 60 * 1000,
+    host: 'eu-cdbr-west-03.cleardb.net',
+    port: 3306,
+    user: 'b0e6f9bf85a35f',
+    password: passworddb, //<--------------------------------------------TOGLIERE PASSWORD
+    database: 'heroku_e1befae4f922504',
+    charset: 'utf8mb4'
+})
+
 client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
@@ -626,90 +639,123 @@ client.on("message", (message) => {
         }
 
     }
-    /*
-        //COUTING
-        var con = mysql.createPool({ //Connessione database Heroku
-            connectionLimit: 1000,
-            connectTimeout: 60 * 60 * 1000,
-            acquireTimeout: 60 * 60 * 1000,
-            timeout: 60 * 60 * 1000,
-            host: 'eu-cdbr-west-03.cleardb.net',
-            port: 3306,
-            user: 'b0e6f9bf85a35f',
-            password: process.env.passworddb,
-            database: 'heroku_e1befae4f922504'
-        });
-        console.log("Connect")
-    
-    
-    
-        var canaleCounting = "810219854505312317";
-        if (message.channel == canaleCounting) {
-            console.log("couting")
-    
-    
-            con.query(`select * from serverstats`, function (err, result, fields) {
-                if (err) console.log(err);
-                if (!err && Object.keys(result).length > 0) {
-                    console.log("ciao")
-                    console.log(result)
-                    var serverstats = result[0]; //Get serverstats
-                }
-    
-                try {
-                    var numero = Parser.evaluate(message.content); //Get numero scritto o risultato espressione
-    
-                    con.query(`SELECT * FROM userstats WHERE id = ${message.author.id}`, function (err, result, fields) {
-    
-                        if (err) {
-                            console.log(err);
-                        }
-                        if (!result[0]) { //Se l'utente non è presente nel database, viene aggiunto
-                            con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0)`, function (err, result, fields) {
-                                if (err) console.log(err);
-                            })
-                        }
-                    })
-                }
-                catch {
-                    return //Stringa o valori/espressioni non compresibili
-                }
-    
-                if (message.author.id == serverstats.ultimoUtente) {
-    
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("ERRORE")
-                        .setColor("#EB3140")
-                        .setDescription("Ogni utente può scrivere un solo numero alla volta")
-                    message.channel.send(embed)
-                    serverstats.ultimoUtente = message.author.id
-                    erroreCountin();
+
+    //COUTING
+    var canaleCounting = "793781899796938802";
+    if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser")) {
+        var serverstats, userstats, userstatsList;
+        con.query(`select * from serverstats`, function (err, result, fields) {
+            if (err) {
+                console.log(err);
+                return
+            }
+            serverstats = result[0]; //Get serverstats
+
+            con.query(`select * from userstats`, function (err, result, fields) {
+                if (err) {
+                    console.log(err);
                     return
                 }
-    
-                if (numero - 1 == serverstats.numero) { //Numero corretto
-                    numero > serverstats.bestScore ? message.react("🔵") : message.react("🟢")
-                    numero > serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
-                    serverstats.numero = serverstats.numero + 1;
-                    serverstats.ultimoUtente = message.author.id
-                    serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
-    
-                    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = "${serverstats.ultimoUtente}", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}`, function (err, result, fields) {
-    
-                        if (err) {
-                            console.log(err)
+                userstatsList = result; //Get all userinfo
+                if (message.channel == canaleCounting) {
+
+                    try {
+                        var numero = Parser.evaluate(message.content); //Get numero scritto o risultato espressione
+
+                        var index = userstatsList.findIndex(x => x.id == message.author.id);
+                        if (index < 0) { //Se questo utente non c'è nel database
+                            userstatsList[userstatsList.length] = {
+                                id: message.author.id,
+                                username: message.member.user.tag,
+                                lastScore: 0,
+                                bestScore: 0,
+                                timeBestScore: 0,
+                                timeLastScore: 0,
+                                correct: 0,
+                                incorrect: 0
+                            }
+
+                            var index = userstatsList.findIndex(x => x.id == message.author.id);
+                            userstats = userstatsList[index];
+
+                            //Aggiungere nuovo utente nel database
+                            con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0)`, function (err, result, fields) {
+                                if (err) {
+                                    console.log(err);
+                                    return
+                                }
+                            })
                         }
-                    })
-    
-    
-                    con.query(`select * from userstats where id = ${message.author.id}`, function (err, result, fields) {
-    
-                        if (err) console.log(err);
-                        if (!err && Object.keys(result).length > 0) {
-                            index = result.findIndex(x => x.id == message.author.id)
-                            var userstats = result[index]
+                        else {
+                            userstats = userstatsList[index];
                         }
-    
+
+
+                    }
+                    catch {
+                        return //Stringa o valori/espressioni non compresibili
+                    }
+
+                    if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
+                        var titleRandom = ["MA SAPETE COME SI GIOCA?", "MA È COSÌ DIFFICILE QUESTO GIOCO?", "NOOOO, PERCHÈ..."]
+                        var embed = new Discord.MessageEmbed()
+                            .setColor("#EB3140")
+                            .setDescription("Ogni utente può scrivere un solo numero alla volta")
+                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        message.channel.send(embed)
+
+                        userstats.incorrect = userstats.incorrect + 1;
+                        serverstats = {
+                            numero: 0,
+                            ultimoUtente: "NessunUtente",
+                            bestScore: serverstats.bestScore,
+                            timeBestScore: serverstats.timeBestScore
+                        }
+
+                        message.react("🔴");
+                    }
+                    else if (numero - 1 != serverstats.numero) { //Numero sbagliato
+                        var embed = new Discord.MessageEmbed()
+                            .setColor("#EB3140")
+                            .setDescription("Numero errato, dovevi inserire `" + (serverstats.numero + 1) + "`")
+
+                        if (serverstats.numero == 0) {
+                            var titleRandom = ["RIUSCIAMO A COMINCIARE ALMENO?", "DAI... ALMENO ARRIVIAMO A 10", "NON SO SE LO SAI MA IL PRIMO NUMERO È 1"]
+                            embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        }
+                        else if (serverstats.numero <= 10) {
+                            embed.setTitle(`FORTUNA CHE ERAVAMO SOLO A ${serverstats.numero}`)
+                        }
+                        else if (serverstats.numero <= 30) {
+                            embed.setTitle(`MA SIETE SICURI DI SAPER CONTARE?`)
+                        }
+                        else if (serverstats.numero <= 50) {
+                            var titleRandom = ["NOOOO, PERCHÈ...", "MEGLIO SE TORNATE A PROGRAMMARE", "PROPRIO ORA DOVEVATE SBAGLIARE?", "DAIII, STAVAMO FACENDO IL RECORD", message.member.user.username + " HAI ROVINATO I SOGNI DI TUTTI"]
+                            embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        }
+                        else {
+                            var titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", "MEGLIO SE TORNATE A PROGRAMMARE", "SIETE DELLE CAPRE"]
+                            embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        }
+                        message.channel.send(embed)
+
+                        userstats.incorrect = userstats.incorrect + 1;
+                        serverstats = {
+                            numero: 0,
+                            ultimoUtente: "NessunUtente",
+                            bestScore: serverstats.bestScore,
+                            timeBestScore: serverstats.timeBestScore
+                        }
+
+                        message.react("🔴");
+                    }
+                    else { //Numero corretto
+                        numero > serverstats.bestScore ? message.react("🔵") : message.react("🟢")
+                        numero > serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
+                        serverstats.numero = serverstats.numero + 1;
+                        serverstats.ultimoUtente = message.author.id
+                        serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
+
                         userstats = {
                             "username": message.member.user.tag,
                             "lastScore": numero,
@@ -719,117 +765,48 @@ client.on("message", (message) => {
                             "correct": userstats.correct + 1,
                             "incorrect": userstats.incorrect,
                         }
-    
-                        //Update userstats
-                        con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
-    
-                            if (err) {
-                                console.log(err)
-                            }
-                        })
-    
-                    })
+
+                    }
+                    updateDatabase(userstats, serverstats)
+
                 }
-                else { //Numero sbagliato
-                    var embed = new Discord.MessageEmbed()
-                        .setColor("#EB3140")
-                        .setDescription("Numero errato, dovevi inserire `" + (serverstats.numero + 1) + "`")
-    
-                    if (serverstats.numero <= 10) {
-                        embed.setTitle(`FORTUNA CHE ERAVAMO SOLO A ${serverstats.numero}`)
-                    }
-                    else if (serverstats.numero <= 30) {
-                        embed.setTitle(`MA SIETE SICURI DI SAPER CONTARE?`)
-                    }
-                    else if (serverstats.numero <= 50) {
-                        var titleRandom = ["NOOOO, PERCHÈ...", message.member.user.username + " MEGLIO SE TORNATE A PROGRAMMARE", "PROPRIO ORA DOVEVATE SBAGLIARE?", "DAIII, STAVAMO FACENDO IL RECORD", message.member.user.username + " HAI ROVINATO I SOGNI DI TUTTI"]
-                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+
+                if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
+                    if (message.content.trim() == "!cuser" || message.content.trim() == "!cuser") {
+                        var utente = message.member;
                     }
                     else {
-                        var titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", "MEGLIO SE TORNATE A PROGRAMMARE", "SIETE DELLE CAPRE"]
-                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        var utente = message.mentions.members.first()
                     }
-    
-                    message.channel.send(embed)
-                    serverstats.ultimoUtente = message.author.id
-                    erroreCountin();
-                }
-    
-    
-                function erroreCountin() { //Errore + Reset
-                    message.react("🔴");
-    
-                    //Update userstats
-                    con.query(`select * from userstats where id = ${message.author.id}`, function (err, result, fields) {
-                        if (err) console.log(err);
-                        if (!err && Object.keys(result).length > 0) {
-                            var userstats = result[0]
-                        }
-    
-                        userstats = {
-                            "username": message.member.user.tag,
-                            "lastScore": userstats.lastScore,
-                            "bestScore": userstats.bestScore,
-                            "correct": userstats.correct,
-                            "timeBestScore": userstats.timeBestScore,
-                            "timeLastScore": userstats.timeBestScore,
-                            "incorrect": userstats.incorrect + 1
-                        }
-                        con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
-                            if (err) {
-                                console.log(err)
-                            }
-    
-                        })
-    
-                        //Reset numero
-                        con.query(`UPDATE serverstats SET numero = 0, ultimoUtente = "NessunUtente", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore};`, function (err, result, fields) {
-                            if (err) {
-                                console.log(err)
-                            }
-                        })
-                    })
-                }
-            })
-    
-        }
-    
-        if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
-    
-            if (message.content.trim() == "!cuser" || message.content.trim() == "!cuser") {
-                var utente = message.member;
-            }
-            else {
-                var utente = message.mentions.members.first()
-            }
-            if (!utente) {
-                message.channel.send(":no_entry_sign: Non ho trovato questo utente")
-                    .then(msg => {
-                        msg.delete({ timeout: 5000 })
-                        message.delete({ timeout: 5000 })
-                    })
-                return
-            }
-            con.query(`select * from userstats where id = ${utente.user.id}`, function (err, result, fields) {
-                if (err) console.log(err);
-                if (!err && Object.keys(result).length > 0) {
-                    var userstats = result[0]
-                }
-                if (!userstats) {
-                    message.channel.send(":x: Questo utente non ha mai giocato a Counting")
-                        .then(msg => {
-                            msg.delete({ timeout: 5000 })
-                            message.delete({ timeout: 5000 })
-                        })
-                    return
-                }
-    
-                con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
+                    if (!utente) {
+                        message.channel.send(":no_entry_sign: Non ho trovato questo utente")
+                            .then(msg => {
+                                msg.delete({ timeout: 5000 })
+                                message.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+
+                    var index = userstatsList.findIndex(x => x.id == utente.user.id);
+                    if (index < 0) { //Se questo utente non c'è nel database
+                        message.channel.send(":x: Questo utente non ha mai giocato a Counting")
+                            .then(msg => {
+                                msg.delete({ timeout: 5000 })
+                                message.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+
+                    userstats = userstatsList[index];
+
+                    var leaderboard = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                    var position = leaderboard.findIndex(x => x.id == utente.user.id) + 1
+
                     if (err) console.log(err);
                     if (!err && Object.keys(result).length > 0) {
                         var position = result.findIndex(x => x.id == utente.user.id) + 1
                     }
-    
+
                     var embed = new Discord.MessageEmbed()
                         .setTitle("COUNTING - " + utente.user.tag)
                         .setDescription("Tutte le statistiche di **counting** su questo utente")
@@ -839,52 +816,38 @@ client.on("message", (message) => {
                         .addField(":medal: Last score", "```" + userstats.lastScore + " (" + moment(new Date(parseInt(userstats.timeLastScore))).fromNow() + ")```", true)
                         .addField(":white_check_mark: Total correct", "```" + userstats.correct + "```", true)
                         .addField(":x: Total incorrect", "```" + userstats.incorrect + "```", true)
-    
+
                     message.channel.send(embed)
-                })
-    
-            })
-    
-        }
-        if (message.content == "!cserver" || message.content == "!cserverstats" || message.content == "!cserverinfo") {
-    
-            con.query(`SELECT * FROM userstats ORDER BY bestScore desc`, function (err, result, fields) {
-                if (err) console.log(err);
-                if (!err && Object.keys(result).length > 0) {
-                    var leaderboardList = result;
                 }
-    
-                var leaderboard = "";
-                for (var i = 0; i < 10; i++) {
-                    if (leaderboardList.length - 1 < i) {
-                        break
-                    }
-                    var utente = client.users.cache.find(u => u.tag == leaderboardList[i].username).username
-                    switch (i) {
-                        case 0:
-                            leaderboard += ":first_place: ";
+
+                if (message.content == "!cserver" || message.content == "!cserver") {
+
+                    var leaderboardList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+
+                    var leaderboard = "";
+                    for (var i = 0; i < 10; i++) {
+                        if (leaderboardList.length - 1 < i) {
                             break
-                        case 1:
-                            leaderboard += ":second_place: "
-                            break
-                        case 2:
-                            leaderboard += ":third_place: "
-                            break
-                        default:
-                            leaderboard += "**#" + (i + 1) + "** "
-    
-    
+                        }
+                        var utente = client.users.cache.find(u => u.tag == leaderboardList[i].username).username
+                        switch (i) {
+                            case 0:
+                                leaderboard += ":first_place: ";
+                                break
+                            case 1:
+                                leaderboard += ":second_place: "
+                                break
+                            case 2:
+                                leaderboard += ":third_place: "
+                                break
+                            default:
+                                leaderboard += "**#" + (i + 1) + "** "
+
+
+                        }
+                        leaderboard += utente + " - **" + leaderboardList[i].bestScore + "**\r";
                     }
-                    leaderboard += utente + " - **" + leaderboardList[i].bestScore + "**\r";
-                }
-    
-                con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
-                    if (err) console.log(err);
-                    if (!err && Object.keys(result).length > 0) {
-                        var serverstats = result[0];
-                    }
-    
-    
+
                     var embed = new Discord.MessageEmbed()
                         .setTitle("COUNTING - GiulioAndCommunity")
                         .setThumbnail(message.member.guild.iconURL())
@@ -893,13 +856,28 @@ client.on("message", (message) => {
                         .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstats.ultimoUtente).username + "```" : "```None```", true)
                         .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + client.users.cache.find(u => u.tag === leaderboardList[0].username).username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
                         .addField("Leaderboard", leaderboard, false)
-    
+
                     message.channel.send(embed)
-                })
-    
+
+
+                }
+
             })
-    
-        }*/
+        })
+        function updateDatabase(userstats, serverstats) {
+            con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = "${serverstats.ultimoUtente}", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}`, function (err, result, fields) {
+                if (err) {
+                    console.log(err)
+                }
+            })
+
+            con.query(`UPDATE userstats SET id = ${message.author.id}, username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id};`, function (err, result, fields) {
+                if (err) {
+                    console.log(err)
+                }
+            })
+        }
+    }
 }
 )
 
