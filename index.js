@@ -642,6 +642,11 @@ client.on("message", (message) => {
 
     //COUTING
     var canaleCounting = "793781899796938802";
+
+    if (message.content.startsWith("!cserver")) {
+        return
+    }
+
     if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser")) {
         var serverstats, userstats, userstatsList;
         con.query(`select * from serverstats`, function (err, result, fields) {
