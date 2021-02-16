@@ -643,9 +643,6 @@ client.on("message", (message) => {
     //COUTING
     var canaleCounting = "793781899796938802";
 
-    if (message.content.startsWith("!cserver")) {
-        return
-    }
 
     if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser")) {
         var serverstats, userstats, userstatsList;
@@ -834,7 +831,7 @@ client.on("message", (message) => {
                         if (leaderboardList.length - 1 < i) {
                             break
                         }
-                        var utente = client.users.cache.find(u => u.tag == leaderboardList[i].username).username
+                        var utente = client.users.cache.find(u => u.id == leaderboardList[i].id).username
                         switch (i) {
                             case 0:
                                 leaderboard += ":first_place: ";
