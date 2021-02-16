@@ -20,7 +20,7 @@ var con = mysql.createPool({ //Connessione database Heroku
     host: 'eu-cdbr-west-03.cleardb.net',
     port: 3306,
     user: 'b0e6f9bf85a35f',
-    password: passworddb, //<--------------------------------------------TOGLIERE PASSWORD
+    password: process.env.passworddb, //<--------------------------------------------TOGLIERE PASSWORD
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
