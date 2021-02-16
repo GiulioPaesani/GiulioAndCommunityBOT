@@ -20,7 +20,7 @@ var con = mysql.createPool({ //Connessione database Heroku
     host: 'eu-cdbr-west-03.cleardb.net',
     port: 3306,
     user: 'b0e6f9bf85a35f',
-    password: process.env.passworddb, //<--------------------------------------------TOGLIERE PASSWORD
+    password: process.env.passworddb, 
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
@@ -29,7 +29,7 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo"],
+            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
         },
@@ -181,6 +181,15 @@ client.on("message", (message) => {
                 .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
             message.channel.send(lastVideo)
         })
+    }
+    //GITHUB
+    if(message.content == "!github"){
+        var embed = new Discord.MessageEmbed()
+        .setTitle("GITHUB")
+        .setDescription("Questo è il link per tutto il codice di <@802184359120863272>\n\n[Clicca qui](https://github.com/GiulioPaesani/GiulioAndCommunityBOT)")
+        .setImage("https://image.flaticon.com/icons/png/512/25/25231.png")
+        
+        message.channel.send(embed)
     }
     //SERVERINFO
     if (message.content == "!server" || message.content == "!serverinfo" || message.content == "!serverstats") {
@@ -646,8 +655,6 @@ client.on("message", (message) => {
 
     //COUTING
     var canaleCounting = "793781899796938802";
-
-
     if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser")) {
         var serverstats, userstats, userstatsList;
         con.query(`select * from serverstats`, function (err, result, fields) {
@@ -884,6 +891,8 @@ client.on("message", (message) => {
             })
         }
     }
+
+
 }
 )
 
