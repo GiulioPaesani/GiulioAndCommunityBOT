@@ -899,34 +899,8 @@ client.on("message", (message) => {
 
 
 
-//Counter member + Welcome message
-client.on("guildMemberAdd", member => {
-    var server = member.guild;
-    var botCount = server.members.cache.filter(member => member.user.bot).size;
-    var utentiCount = server.memberCount - botCount;
 
-    //Counter message
-    var canale = client.channels.cache.get("800802386587287562")
-    canale.setName("👾│members: " + utentiCount)
 
-    //Welcome message
-    var canale = client.channels.cache.get("793781905740922900")
-    canale.send(`
--------------- 𝐍𝐔𝐎𝐕𝐎 𝐌𝐄𝐌𝐁𝐑𝐎 --------------
-🤙 Ciao ${member.toString()}, benvenuto in GiulioAndCommunity
-👀 Sei il **${utentiCount}° Membro** 
-📜 Prima di fare altro, leggi le <#793781895829258260>
-🚨 Poi vedere tutte le informazioni sul server in <#793781897619570738>`)
-});
-
-client.on("guildMemberRemove", member => {
-    var server = member.guild;
-    var botCount = server.members.cache.filter(member => member.user.bot).size;
-    var utentiCount = server.memberCount - botCount;
-
-    var canale = client.channels.cache.get("800802386587287562")
-    canale.setName("👾│members: " + utentiCount)
-});
 
 //Counter youtube
 setInterval(function () {
