@@ -180,7 +180,7 @@ client.on("message", (message) => {
     if (message.content == "!github") {
         var embed = new Discord.MessageEmbed()
             .setTitle("GITHUB")
-            .setDescription("Questo è il link per tutto il codice di <@802184359120863272>\n\n--> [Clicca qui](https://github.com/GiulioPaesani/GiulioAndCommunityBOT)")
+            .setDescription("Questo è il link per tutto il codice di <@802184359120863272>\n\n:point_right: https://github.com/GiulioPaesani/GiulioAndCommunityBOT")
             .setThumbnail("https://i.postimg.cc/mrXPWCHK/Senza-titolo-1.jpg")
 
         message.channel.send(embed)
