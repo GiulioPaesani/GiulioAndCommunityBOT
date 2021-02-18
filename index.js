@@ -159,22 +159,23 @@ client.on("message", (message) => {
     }
     //LAST VIDEO
     if (message.content == "!lastvideo") {
-        //https://www.npmjs.com/package/yt-channel-info
-        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
-        const sortBy = 'newest'
-        ytch.getChannelVideos(channelId, sortBy).then((response) => {
-            var lastVideo = new Discord.MessageEmbed()
-                .setTitle(response.items[0].title)
-                .setColor("#41A9F6")
-                .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
-                .setDescription(":love_you_gesture: Questo è l'ultimo video uscito su **GiulioAndCode**, vai subito a vederlo...\r :point_right:  https://www.youtube.com/watch?v=" + response.items[0].videoId)
-                .setThumbnail(response.items[0].videoThumbnails[3].url)
-                .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
-                .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
-                .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
-            message.channel.send(lastVideo)
-        })
-    }
+    //https://www.npmjs.com/package/yt-channel-info
+    const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
+    const sortBy = 'newest'
+    ytch.getChannelVideos(channelId, sortBy).then((response) => {
+      console.log(response[0])
+      var lastVideo = new Discord.MessageEmbed()
+        .setTitle(response.items[0].title)
+        .setColor("#41A9F6")
+        .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
+        .setDescription(":love_you_gesture: Questo è l'ultimo video uscito su **GiulioAndCode**, vai subito a vederlo...\r :point_right:  https://www.youtube.com/watch?v=" + response.items[0].videoId)
+        .setThumbnail(response.items[0].videoThumbnails[3].url)
+        .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
+        .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
+        .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
+      message.channel.send(lastVideo)
+    })
+  }
     //GITHUB
     if(message.content == "!github"){
         var embed = new Discord.MessageEmbed()
