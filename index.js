@@ -130,7 +130,7 @@ client.on("message", (message) => {
         }
     }
     else {
-        if (message.content.startsWith("!code") && !message.member.hasPermission("ADMINISTRATOR") && (message.channel == "793781901240172544" || message.channel == "793781898689773589")) {
+        if (message.content.startsWith("!code") && message.content.start("!ban") && message.content.start("!tempban") && message.content.start("!mute") && message.content.start("!tempmute") && message.content.start("!clear") && message.content.start("!kick") && message.content.start("!infractions") && message.content.start("!slowmode") && message.content.start("!warn") && message.content.start("!unban") && message.content.start("!unmute") && !message.member.hasPermission("ADMINISTRATOR") && (message.channel == "793781901240172544" || message.channel == "793781898689773589")) {
             id = "802184359120863272"
             canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
             message.channel.send(canaleNonConcesso)
