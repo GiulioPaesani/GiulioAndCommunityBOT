@@ -111,7 +111,11 @@ client.on("message", (message) => {
     }
 
     if(message.channel.type == "dm" && message.content.startsWith("!")){
-        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati");
+        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
+        .then(msg =>{
+            msg.delete({timeout:5000})
+            message.delete({timeout:5000})
+        })
         return
     }
 
