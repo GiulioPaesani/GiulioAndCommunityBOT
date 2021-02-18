@@ -20,7 +20,7 @@ var con = mysql.createPool({ //Connessione database Heroku
     host: 'eu-cdbr-west-03.cleardb.net',
     port: 3306,
     user: 'b0e6f9bf85a35f',
-    password: process.env.passworddb, 
+    password: process.env.passworddb,
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
@@ -96,7 +96,7 @@ client.on("message", (message) => {
         .setColor("ff0000")
 
     if (message.author.bot) return;
-    
+
 
 
     var trovato = false;
@@ -110,12 +110,12 @@ client.on("message", (message) => {
         }
     }
 
-    if(message.channel.type == "dm" && message.content.startsWith("!")){
-        message.delete({timeout:5000})
+    if (message.channel.type == "dm" && message.content.startsWith("!")) {
+        message.delete({ timeout: 5000 })
         message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
-        .then(msg =>{
-            msg.delete({timeout:5000})
-        })
+            .then(msg => {
+                msg.delete({ timeout: 5000 })
+            })
         return
     }
 
@@ -159,33 +159,30 @@ client.on("message", (message) => {
     }
     //LAST VIDEO
     if (message.content == "!lastvideo") {
-    //https://www.npmjs.com/package/yt-channel-info
-    const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
-    const sortBy = 'newest'
-    console.log("ehi");
-    ytch.getChannelVideos(channelId, sortBy).then((response) => {
-        console.log("ciao");
-        console.log(response);
-      /*console.log(response[0])
-      var lastVideo = new Discord.MessageEmbed()
-        .setTitle(response.items[0].title)
-        .setColor("#41A9F6")
-        .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
-        .setDescription(":love_you_gesture: Questo è l'ultimo video uscito su **GiulioAndCode**, vai subito a vederlo...\r :point_right:  https://www.youtube.com/watch?v=" + response.items[0].videoId)
-        .setThumbnail(response.items[0].videoThumbnails[3].url)
-        .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
-        .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
-        .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
-      message.channel.send(lastVideo)*/
-    })
-  }
+        //https://www.npmjs.com/package/yt-channel-info
+        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
+        const sortBy = 'newest'
+        ytch.getChannelVideos(channelId, sortBy).then((response) => {
+            console.log(response[0])
+            var lastVideo = new Discord.MessageEmbed()
+                .setTitle(response.items[0].title)
+                .setColor("#41A9F6")
+                .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
+                .setDescription(":love_you_gesture: Questo è l'ultimo video uscito su **GiulioAndCode**, vai subito a vederlo...\r :point_right:  https://www.youtube.com/watch?v=" + response.items[0].videoId)
+                .setThumbnail(response.items[0].videoThumbnails[3].url)
+                .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
+                .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
+                .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
+            message.channel.send(lastVideo)
+        })
+    }
     //GITHUB
-    if(message.content == "!github"){
+    if (message.content == "!github") {
         var embed = new Discord.MessageEmbed()
-        .setTitle("GITHUB")
-        .setDescription("Questo è il link per tutto il codice di <@802184359120863272>\n\n--> [Clicca qui](https://github.com/GiulioPaesani/GiulioAndCommunityBOT)")
-        .setThumbnail("https://i.postimg.cc/mrXPWCHK/Senza-titolo-1.jpg")
-        
+            .setTitle("GITHUB")
+            .setDescription("Questo è il link per tutto il codice di <@802184359120863272>\n\n--> [Clicca qui](https://github.com/GiulioPaesani/GiulioAndCommunityBOT)")
+            .setThumbnail("https://i.postimg.cc/mrXPWCHK/Senza-titolo-1.jpg")
+
         message.channel.send(embed)
     }
     //SERVERINFO
@@ -893,19 +890,19 @@ client.on("message", (message) => {
 
 //Counter member + Welcome message
 client.on("guildMemberAdd", member => {
-  if (member.user.bot) return
+    if (member.user.bot) return
 
-  var server = member.guild;
-  var botCount = server.members.cache.filter(member => member.user.bot).size;
-  var utentiCount = server.memberCount - botCount;
+    var server = member.guild;
+    var botCount = server.members.cache.filter(member => member.user.bot).size;
+    var utentiCount = server.memberCount - botCount;
 
-  //Counter message
-  var canale = client.channels.cache.get("800802386587287562")
-  canale.setName("👾│members: " + utentiCount)
+    //Counter message
+    var canale = client.channels.cache.get("800802386587287562")
+    canale.setName("👾│members: " + utentiCount)
 
-  //Welcome message
-  var canale = client.channels.cache.get("793781893904072715")
-  canale.send(`
+    //Welcome message
+    var canale = client.channels.cache.get("793781893904072715")
+    canale.send(`
 -------------- 𝐍𝐔𝐎𝐕𝐎 𝐌𝐄𝐌𝐁𝐑𝐎 --------------
 🤙 Ciao ${member.toString()}, benvenuto in GiulioAndCommunity
 👀 Sei il **${utentiCount}° Membro** 
@@ -914,14 +911,14 @@ client.on("guildMemberAdd", member => {
 });
 
 client.on("guildMemberRemove", member => {
-  if (member.user.bot) return
+    if (member.user.bot) return
 
-  var server = member.guild;
-  var botCount = server.members.cache.filter(member => member.user.bot).size;
-  var utentiCount = server.memberCount - botCount;
+    var server = member.guild;
+    var botCount = server.members.cache.filter(member => member.user.bot).size;
+    var utentiCount = server.memberCount - botCount;
 
-  var canale = client.channels.cache.get("800802386587287562")
-  canale.setName("👾│members: " + utentiCount)
+    var canale = client.channels.cache.get("800802386587287562")
+    canale.setName("👾│members: " + utentiCount)
 });
 
 //Counter youtube
