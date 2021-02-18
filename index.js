@@ -29,16 +29,11 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github"],
+            comandi: ["!code", "!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
         },
-        giulioAndCommunityBot2: {
-            comandi: ["!code"],
-            id: "802184359120863272",
-            canaliPermessi: ["793781899796938802", "801019779480944660"]
-        },
-        giulioAndCommunityBot3: {
+        giulioAndCommunityBot: {
             comandi: ["!cuser", "!cserver"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660", "793781898689773589", "793781901240172544"]
@@ -101,6 +96,10 @@ client.on("message", (message) => {
         .setColor("ff0000")
 
     if (message.author.bot) return;
+    if(message.channel.type == "dm"){
+        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
+    }
+
 
     var trovato = false;
     var id;
@@ -114,7 +113,8 @@ client.on("message", (message) => {
         }
     }
 
-    if (trovato) {
+
+    if (trovato && !message.member.hasPermission("ADMINISTRATOR")) {
         if (message.channel == "804688929109966848" || message.channel == "793781905740922900" || message.channel == "802181386869276702" || message.channel == "793781906478858269") {
 
         }
@@ -127,18 +127,6 @@ client.on("message", (message) => {
             message.delete({ timeout: 5000 })
             return
 
-        }
-    }
-    else {
-        if (message.content.startsWith("!code") && message.content.start("!ban") && message.content.start("!tempban") && message.content.start("!mute") && message.content.start("!tempmute") && message.content.start("!clear") && message.content.start("!kick") && message.content.start("!infractions") && message.content.start("!slowmode") && message.content.start("!warn") && message.content.start("!unban") && message.content.start("!unmute") && !message.member.hasPermission("ADMINISTRATOR") && (message.channel == "793781901240172544" || message.channel == "793781898689773589")) {
-            id = "802184359120863272"
-            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare i comandi di <@" + id + "> in questo canale!");
-            message.channel.send(canaleNonConcesso)
-                .then(msg => {
-                    msg.delete({ timeout: 5000 })
-                })
-            message.delete({ timeout: 5000 })
-            return
         }
     }
 
