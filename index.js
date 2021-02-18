@@ -172,6 +172,7 @@ client.on("message", (message) => {
                 .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
                 .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
                 .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
+
             message.channel.send(lastVideo)
         })
     }
@@ -433,6 +434,24 @@ client.on("message", (message) => {
                 alias: ["membercounter", "member counter", "counter membri"],
                 info: "Prima di creare il comando è necessario creare il canale dove vengono segnati i numeri di membri, potete scegliere nel creare un canale testuale o vocale. Una volta fatto copiare l'id nel codice",
                 video: "https://youtu.be/FNUIyrRoitg?t=19"
+            },
+            avatar: {
+                description: "Ottenere l'**immagine profilo** di un utente",
+                alias: ["avatar"],
+                info: "",
+                video: ""
+            },
+            roleinfo: {
+                description: "Ottenere le informazioni su un **ruolo** del server",
+                alias: ["roleinfo", "rolestats", "role info", "role stats"],
+                info: "",
+                video: ""
+            },
+            canale: {
+                description: "Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)",
+                alias: ["canale", "getcanale", "get canale", "canale specifico"],
+                info: "",
+                video: ""
             }
         }
         var command = message.content.slice(5).trim();
@@ -481,6 +500,8 @@ client.on("message", (message) => {
                 - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
                 - \`serverinfo\` Ottenere le informazioni sul **server**\r
                 - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
+                - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
+                - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
                 ` )
 
 
@@ -505,6 +526,7 @@ client.on("message", (message) => {
                 - \`file\` Mandare in allegato qualsiasi ** file **\r
                 - \`embed\` Realizzare un **messaggio embed**\r
                 - \`memberCounter\` Canale di **statistica membri**\r
+                - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
                 ` )
 
             message.channel.send(paginaInziale).then(msg => {
