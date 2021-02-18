@@ -312,8 +312,6 @@ client.on("message", (message) => {
             message.channel.send("Utente non trovato")
         }
 
-        console.log(utente)
-
         var embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription("L'avatar di questo utente")
