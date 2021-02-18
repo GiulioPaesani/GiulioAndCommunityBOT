@@ -163,7 +163,6 @@ client.on("message", (message) => {
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
         ytch.getChannelVideos(channelId, sortBy).then((response) => {
-            console.log(response[0])
             var lastVideo = new Discord.MessageEmbed()
                 .setTitle(response.items[0].title)
                 .setColor("#41A9F6")
