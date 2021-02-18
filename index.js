@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
-const fs = require('file-system');
 const Parser = require('expr-eval').Parser;
 const ytch = require('yt-channel-info');
 const { Permissions } = require('discord.js');
 const mysql = require('mysql');
+const ytnotifier = require('youtube-notifier');
 client.login(process.env.token);
 
 client.on("ready", () => {
@@ -949,3 +949,32 @@ setInterval(function () {
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000 * 10)
+
+//YOUTUBE NOTIFICATION
+const Notifier = new ytnotifier({
+    channels: ['UC6WJ32r35demIRvxV-xDU2g'],
+    checkInterval: 30
+});
+
+Notifier.on('video', video => {
+    var canale = client.channels.cache.get("793781905740922900");
+
+    const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
+    const sortBy = 'newest'
+    ytch.getChannelVideos(channelId, sortBy).then((response) => {
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":film_frames: NEW VIDEO :film_frames:")
+            .setColor("#41A9F6")
+            .setDescription("È uscito un nuovo video su **GiulioAndCommunity**, vai subito a vederlo...\r :point_right: " + video.url) //Mettere video.url
+            .setImage(response.items[0].videoThumbnails[3].url)
+            .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
+            .addField(":alarm_clock: Published", "```" + video.publishDate + "```", true) //Mettere video.publishDate
+
+        canale.send(embed)
+    })
+
+
+    canale.send("<@801109543035207752>").then(msg => {
+        //msg.delete({ timeout: 5000 })
+    })
+});
