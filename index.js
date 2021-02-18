@@ -162,8 +162,11 @@ client.on("message", (message) => {
     //https://www.npmjs.com/package/yt-channel-info
     const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
     const sortBy = 'newest'
+    console.log("ehi");
     ytch.getChannelVideos(channelId, sortBy).then((response) => {
-      console.log(response[0])
+        console.log("ciao");
+        console.log(response);
+      /*console.log(response[0])
       var lastVideo = new Discord.MessageEmbed()
         .setTitle(response.items[0].title)
         .setColor("#41A9F6")
@@ -173,7 +176,7 @@ client.on("message", (message) => {
         .addField(":eyes: Views", "```" + response.items[0].viewCount + "```", true)
         .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
         .addField(":alarm_clock: Published", "```" + response.items[0].publishedText + "```", true)
-      message.channel.send(lastVideo)
+      message.channel.send(lastVideo)*/
     })
   }
     //GITHUB
