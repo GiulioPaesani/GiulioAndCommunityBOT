@@ -96,9 +96,7 @@ client.on("message", (message) => {
         .setColor("ff0000")
 
     if (message.author.bot) return;
-    if(message.channel.type == "dm"){
-        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
-    }
+    
 
 
     var trovato = false;
@@ -113,6 +111,10 @@ client.on("message", (message) => {
         }
     }
 
+    if(message.channel.type == "dm" && trovato){
+        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati");
+        return
+    }
 
     if (trovato && !message.member.hasPermission("ADMINISTRATOR")) {
         if (message.channel == "804688929109966848" || message.channel == "793781905740922900" || message.channel == "802181386869276702" || message.channel == "793781906478858269") {
