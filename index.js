@@ -100,7 +100,6 @@ client.on("message", (message) => {
 
 
     var trovato = false;
-    var id;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
             if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x])) {
@@ -111,7 +110,7 @@ client.on("message", (message) => {
         }
     }
 
-    if(message.channel.type == "dm"){
+    if(message.channel.type == "dm" && message.content.startsWith("!")){
         message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati");
         return
     }
