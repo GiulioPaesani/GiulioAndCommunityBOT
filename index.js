@@ -111,7 +111,7 @@ client.on("message", (message) => {
         }
     }
 
-    if(message.channel.type == "dm" && trovato){
+    if(message.channel.type == "dm"){
         message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati");
         return
     }
