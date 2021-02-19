@@ -4,6 +4,7 @@ const moment = require('moment');
 const Parser = require('expr-eval').Parser;
 const ytch = require('yt-channel-info');
 const { Permissions } = require('discord.js');
+const fs = require("file-system");
 const mysql = require('mysql');
 const ytnotifier = require('youtube-notifier');
 client.login(process.env.token);
