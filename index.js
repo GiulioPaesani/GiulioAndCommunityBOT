@@ -30,15 +30,10 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!code", "!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github"],
+            comandi: ["!code", "!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github", "!cuser", "!cserver"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
-        }/*,
-        giulioAndCommunityBot: {
-            comandi: ["!cuser", "!cserver"],
-            id: "802184359120863272",
-            canaliPermessi: ["801019779480944660", "793781899796938802"]
-        }*/,
+        },
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
             id: "159985870458322944",
