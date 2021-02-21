@@ -37,7 +37,7 @@ client.on("message", (message) => {
         giulioAndCommunityBot: {
             comandi: ["!cuser", "!cserver"],
             id: "802184359120863272",
-            canaliPermessi: ["801019779480944660", "793781898689773589", "793781901240172544"]
+            canaliPermessi: ["801019779480944660", "793781899796938802"]
         },
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
