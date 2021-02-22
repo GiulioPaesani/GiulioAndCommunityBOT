@@ -948,12 +948,12 @@ setInterval(function () {
 
 //YOUTUBE NOTIFICATION
 const Notifier = new ytnotifier({
-    channels: ['UC6WJ32r35demIRvxV-xDU2g'],
+    channels: ['UCK6QwAdGWOWN9AT1_UQFGtA'],
     checkInterval: 30
 });
 
 Notifier.on('video', video => {
-    var canale = client.channels.cache.get("793781905740922900");
+    var canale = client.channels.cache.get("793781898317004800");
 
     const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
     const sortBy = 'newest'
@@ -969,8 +969,7 @@ Notifier.on('video', video => {
         canale.send(embed)
     })
 
-
-    canale.send("<@801109543035207752>").then(msg => {
-        //msg.delete({ timeout: 5000 })
+    canale.send("<@&801109543035207752>").then(msg => {
+        msg.delete({ timeout: 5000 })
     })
 });
