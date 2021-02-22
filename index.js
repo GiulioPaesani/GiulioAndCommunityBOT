@@ -917,6 +917,11 @@ client.on("messageDelete", message => {
                 .setColor("#148eff");
 
             message.channel.send(embed)
+
+            message.channel.send(numero)
+                .then(msg => {
+                    msg.react("🟢");
+                })
         }
     } catch {
         return
