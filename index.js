@@ -913,7 +913,7 @@ client.on("messageDelete", message => {
             var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI"]
             var embed = new Discord.MessageEmbed()
                 .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                .setDescription(message.author.toString() + " ha eliminato ha eliminato il numero `" + numero + "`")
+                .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
                 .setColor("#148eff");
 
             message.channel.send(embed)
