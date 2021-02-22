@@ -910,7 +910,7 @@ client.on("messageDelete", message => {
         var numero = Parser.evaluate(message.content);
 
         if (message.channel == "793781899796938802") {
-            var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI"]
+            var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
             var embed = new Discord.MessageEmbed()
                 .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
                 .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
