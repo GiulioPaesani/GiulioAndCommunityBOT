@@ -905,6 +905,24 @@ client.on("message", (message) => {
 }
 )
 
+client.on("messageDelete", message => {
+    try {
+        var numero = Parser.evaluate(message.content);
+
+        if (message.channel == "793781899796938802") {
+            var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI"]
+            var embed = new Discord.MessageEmbed()
+                .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                .setDescription(message.author.toString() + " ha eliminato ha eliminato il numero `" + numero + "`")
+                .setColor("#148eff");
+
+            message.channel.send(embed)
+        }
+    } catch {
+        return
+    }
+})
+
 //Counter member + Welcome message
 client.on("guildMemberAdd", member => {
     if (member.user.bot) return
