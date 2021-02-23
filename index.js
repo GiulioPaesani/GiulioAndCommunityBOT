@@ -483,22 +483,22 @@ client.on("message", (message) => {
                 .setDescription("Qui troverai tutti i comandi relativi alla **moderazione**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code ban`, `!code clear`)")
                 .setColor("#DF8612")
                 .addField("💿Tutti i codici", `
-                - \`ban\` **Bannare** un utente permanentemente\r
-                - \`kick\` **Espellere** un utente dal server\r
-                - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
-                ` )
+                  - \`ban\` **Bannare** un utente permanentemente\r
+                  - \`kick\` **Espellere** un utente dal server\r
+                  - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
+                  ` )
 
             var paginaUtility = new Discord.MessageEmbed()
                 .setTitle("Utility")
                 .setDescription("Qui troverai tutti i comandi più **utili**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code audio`, `!code file`)")
                 .setColor("#C92F42")
                 .addField("💿Tutti i codici", `
-                - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
-                - \`serverinfo\` Ottenere le informazioni sul **server**\r
-                - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
-                - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
-                - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
-                ` )
+                  - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
+                  - \`serverinfo\` Ottenere le informazioni sul **server**\r
+                  - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
+                  - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
+                  - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
+                  ` )
 
 
             var paginaFunny = new Discord.MessageEmbed()
@@ -511,19 +511,19 @@ client.on("message", (message) => {
                 .setDescription("Qui troverai tutti altre tipologie di funzioni\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
                 .setColor("#45D8CE")
                 .addField("💿Tutti i codici", `
-                - \`audio\` Fare riprodurre al bot un **file audio**\r
-                - \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
-                - \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
-                - \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
-                - \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
-                - \`notifica\` Mandare un **messaggio** a una determinata ora\r
-                - \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
-                - \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
-                - \`file\` Mandare in allegato qualsiasi ** file **\r
-                - \`embed\` Realizzare un **messaggio embed**\r
-                - \`memberCounter\` Canale di **statistica membri**\r
-                - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
-                ` )
+                  - \`audio\` Fare riprodurre al bot un **file audio**\r
+                  - \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
+                  - \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
+                  - \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
+                  - \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
+                  - \`notifica\` Mandare un **messaggio** a una determinata ora\r
+                  - \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
+                  - \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
+                  - \`file\` Mandare in allegato qualsiasi ** file **\r
+                  - \`embed\` Realizzare un **messaggio embed**\r
+                  - \`memberCounter\` Canale di **statistica membri**\r
+                  - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
+                  ` )
 
             message.channel.send(paginaInziale).then(msg => {
                 msg.react('🏠').then(r => {
@@ -772,8 +772,8 @@ client.on("message", (message) => {
                         message.react("🔴");
                     }
                     else { //Numero corretto
-                        numero > serverstats.bestScore ? message.react("🔵") : message.react("🟢")
-                        numero > serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
+                        numero >= serverstats.bestScore ? message.react("🔵") : message.react("🟢")
+                        numero >= serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
                         serverstats.numero = serverstats.numero + 1;
                         serverstats.ultimoUtente = message.author.id
                         serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
@@ -845,14 +845,15 @@ client.on("message", (message) => {
                 if (message.content == "!cserver" || message.content == "!cserver") {
 
                     var leaderboardBestScoreList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
-                    var leaderboardCorrectList = userstatsList.sort((a, b) => (a.correct < b.correct) ? 1 : ((b.correct < a.correct) ? -1 : 0))
 
                     var leaderboardBestScore = "";
+                    var utente;
                     for (var i = 0; i < 10; i++) {
                         if (leaderboardBestScoreList.length - 1 < i) {
                             break
                         }
-                        var utente = client.users.cache.find(u => u.id == leaderboardBestScoreList[i].id).username
+
+                        utente = leaderboardBestScoreList[i].username.slice(0, -5);
                         switch (i) {
                             case 0:
                                 leaderboardBestScore += ":first_place: ";
@@ -871,12 +872,13 @@ client.on("message", (message) => {
                         leaderboardBestScore += utente + " - **" + leaderboardBestScoreList[i].bestScore + "**\r";
                     }
 
+                    var leaderboardCorrectList = userstatsList.sort((a, b) => (a.correct < b.correct) ? 1 : ((b.correct < a.correct) ? -1 : 0))
                     var leaderboardCorrect = "";
                     for (var i = 0; i < 10; i++) {
                         if (leaderboardCorrectList.length - 1 < i) {
                             break
                         }
-                        var utente = client.users.cache.find(u => u.id == leaderboardCorrectList[i].id).username
+                        var utente = leaderboardCorrectList[i].username.slice(0, -5);
                         switch (i) {
                             case 0:
                                 leaderboardCorrect += ":first_place: ";
@@ -984,11 +986,11 @@ client.on("guildMemberAdd", member => {
     //Welcome message
     var canale = client.channels.cache.get("793781893904072715")
     canale.send(`
--------------- 𝐍𝐔𝐎𝐕𝐎 𝐌𝐄𝐌𝐁𝐑𝐎 --------------
-🤙 Ciao ${member.toString()}, benvenuto in GiulioAndCommunity
-👀 Sei il **${utentiCount}° Membro** 
-📜 Prima di fare altro, leggi le <#793781895829258260>
-🚨 Poi vedere tutte le informazioni sul server in <#793781897619570738>`)
+  -------------- 𝐍𝐔𝐎𝐕𝐎 𝐌𝐄𝐌𝐁𝐑𝐎 --------------
+  🤙 Ciao ${member.toString()}, benvenuto in GiulioAndCommunity
+  👀 Sei il **${utentiCount}° Membro** 
+  📜 Prima di fare altro, leggi le <#793781895829258260>
+  🚨 Poi vedere tutte le informazioni sul server in <#793781897619570738>`)
 });
 
 client.on("guildMemberRemove", member => {
