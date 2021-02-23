@@ -949,7 +949,7 @@ client.on("guildMemberAdd", member => {
 📜 Prima di fare altro, leggi le <#793781895829258260>
 🚨 Poi vedere tutte le informazioni sul server in <#793781897619570738>`)
 });
-
+/*
 client.on("guildMemberRemove", member => {
     if (member.user.bot) return
 
@@ -960,7 +960,7 @@ client.on("guildMemberRemove", member => {
     var canale = client.channels.cache.get("800802386587287562")
     canale.setName("👾│members: " + utentiCount)
 });
-
+*/
 //Counter youtube
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
