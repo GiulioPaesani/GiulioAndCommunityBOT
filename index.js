@@ -592,7 +592,7 @@ client.on("message", (message) => {
             })
         }
         else {
-            data = fs.readFileSync("comandi/" + comando + "-GiulioAndCode.js")
+            data = fs.readFileSync("comandi/" + comando + "-GiulioAndCode.txt")
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(comando.toUpperCase())
@@ -620,14 +620,14 @@ client.on("message", (message) => {
 
                 if (args[args.length - 1].toLowerCase() == "here") {
                     message.channel.send(embed)
-                    message.channel.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
+                    message.channel.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
                 }
                 else {
                     utente.send(embed).catch(() => {
                         message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
                         return
                     });
-                    utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.js"] })
+                    utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
                     message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
                         .then(msg => {
                             msg.delete({ timeout: 5000 })
