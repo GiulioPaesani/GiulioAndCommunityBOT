@@ -904,12 +904,25 @@ client.on("message", (message) => {
 
 }
 )
-/*
+
 client.on("messageDelete", message => {
     try {
         var numero = Parser.evaluate(message.content);
 
+
         if (message.channel == "793781899796938802") {
+
+            var serverstats;
+            con.query(`select * from serverstats`, function (err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                serverstats = result[0]; //Get serverstats
+                if (numero < serverstats.numero) {
+                    return
+                }
+            })
             var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
             var embed = new Discord.MessageEmbed()
                 .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
@@ -926,7 +939,7 @@ client.on("messageDelete", message => {
     } catch {
         return
     }
-})*/
+})
 
 //Counter member + Welcome message
 client.on("guildMemberAdd", member => {
