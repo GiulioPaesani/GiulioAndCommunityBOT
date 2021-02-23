@@ -978,16 +978,18 @@ const Notifier = new ytnotifier({
 Notifier.on('video', video => {
     var canale = client.channels.cache.get("793781898317004800");
 
+    var data = new Date(video.publishDate);
+
     const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
     const sortBy = 'newest'
     ytch.getChannelVideos(channelId, sortBy).then((response) => {
         var embed = new Discord.MessageEmbed()
             .setTitle(":film_frames: NEW VIDEO :film_frames:")
             .setColor("#41A9F6")
-            .setDescription("È uscito un nuovo video su **GiulioAndCommunity**, vai subito a vederlo...\r :point_right: " + video.url) //Mettere video.url
+            .setDescription("È uscito un nuovo video su **GiulioAndCommunity**, vai subito a vederlo...\r :point_right: " + video.url)
             .setImage(response.items[0].videoThumbnails[3].url)
             .addField(":film_frames: Duration", "```" + response.items[0].durationText + "```", true)
-            .addField(":alarm_clock: Published", "```" + video.publishDate + "```", true) //Mettere video.publishDate
+            .addField(":alarm_clock: Published", "```" + data.toDateString() + " " + (data.getHours() + 1) + ":" + data.getMinutes() + "```", true)
 
         canale.send(embed)
     })
