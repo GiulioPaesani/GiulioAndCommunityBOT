@@ -844,30 +844,55 @@ client.on("message", (message) => {
 
                 if (message.content == "!cserver" || message.content == "!cserver") {
 
-                    var leaderboardList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                    var leaderboardBestScoreList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                    var leaderboardCorrectList = userstatsList.sort((a, b) => (a.correct < b.correct) ? 1 : ((b.correct < a.correct) ? -1 : 0))
 
-                    var leaderboard = "";
+                    var leaderboardBestScore = "";
                     for (var i = 0; i < 10; i++) {
-                        if (leaderboardList.length - 1 < i) {
+                        if (leaderboardBestScoreList.length - 1 < i) {
                             break
                         }
-                        var utente = client.users.cache.find(u => u.id == leaderboardList[i].id).username
+                        var utente = client.users.cache.find(u => u.id == leaderboardBestScoreList[i].id).username
                         switch (i) {
                             case 0:
-                                leaderboard += ":first_place: ";
+                                leaderboardBestScore += ":first_place: ";
                                 break
                             case 1:
-                                leaderboard += ":second_place: "
+                                leaderboardBestScore += ":second_place: "
                                 break
                             case 2:
-                                leaderboard += ":third_place: "
+                                leaderboardBestScore += ":third_place: "
                                 break
                             default:
-                                leaderboard += "**#" + (i + 1) + "** "
+                                leaderboardBestScore += "**#" + (i + 1) + "** "
 
 
                         }
-                        leaderboard += utente + " - **" + leaderboardList[i].bestScore + "**\r";
+                        leaderboardBestScore += utente + " - **" + leaderboardBestScoreList[i].bestScore + "**\r";
+                    }
+
+                    var leaderboardCorrect = "";
+                    for (var i = 0; i < 10; i++) {
+                        if (leaderboardCorrectList.length - 1 < i) {
+                            break
+                        }
+                        var utente = client.users.cache.find(u => u.id == leaderboardCorrectList[i].id).username
+                        switch (i) {
+                            case 0:
+                                leaderboardCorrect += ":first_place: ";
+                                break
+                            case 1:
+                                leaderboardCorrect += ":second_place: "
+                                break
+                            case 2:
+                                leaderboardCorrect += ":third_place: "
+                                break
+                            default:
+                                leaderboardCorrect += "**#" + (i + 1) + "** "
+
+
+                        }
+                        leaderboardCorrect += utente + " - **" + leaderboardCorrectList[i].bestScore + "**\r";
                     }
 
                     var embed = new Discord.MessageEmbed()
@@ -877,7 +902,8 @@ client.on("message", (message) => {
                         .addField(":1234: Current Number", "```" + serverstats.numero + "```", true)
                         .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstats.ultimoUtente).username + "```" : "```None```", true)
                         .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + client.users.cache.find(u => u.id == leaderboardList[0].id).username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
-                        .addField("Leaderboard", leaderboard, false)
+                        .addField("Leaderboard (by Best Score)", leaderboardBestScore, true)
+                        .addField("Leaderboard (by Correct)", leaderboardCorrect, true)
 
                     message.channel.send(embed)
 
