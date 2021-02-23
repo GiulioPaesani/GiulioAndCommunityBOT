@@ -943,8 +943,6 @@ client.on("messageDelete", message => {
                     return
                 }
                 serverstats = result[0]; //Get serverstats
-                console.log("---------------------------------");
-                console.log(numero + " - " + serverstats.numero)
 
                 if (numero < serverstats.numero) {
                     return
