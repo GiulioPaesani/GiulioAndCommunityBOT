@@ -904,11 +904,9 @@ client.on("message", (message) => {
 
 }
 )
-/*
 client.on("messageDelete", message => {
     try {
         var numero = Parser.evaluate(message.content);
-
 
         if (message.channel == "793781899796938802") {
 
@@ -919,28 +917,33 @@ client.on("messageDelete", message => {
                     return
                 }
                 serverstats = result[0]; //Get serverstats
+                console.log("---------------------------------");
+                console.log(numero + " - " + serverstats.numero)
+
                 if (numero < serverstats.numero) {
                     return
                 }
+
+
+
+                var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                    .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
+                    .setColor("#148eff");
+
+                message.channel.send(embed)
+
+                message.channel.send(numero)
+                    .then(msg => {
+                        msg.react("🟢");
+                    })
             })
-
-            var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
-            var embed = new Discord.MessageEmbed()
-                .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
-                .setColor("#148eff");
-
-            message.channel.send(embed)
-
-            message.channel.send(numero)
-                .then(msg => {
-                    msg.react("🟢");
-                })
         }
     } catch {
         return
     }
-})*/
+})
 
 //Counter member + Welcome message
 client.on("guildMemberAdd", member => {
