@@ -892,7 +892,7 @@ client.on("message", (message) => {
 
 
                         }
-                        leaderboardCorrect += utente + " - **" + leaderboardCorrectList[i].bestScore + "**\r";
+                        leaderboardCorrect += utente + " - **" + leaderboardCorrectList[i].correct + "**\r";
                     }
 
                     var embed = new Discord.MessageEmbed()
@@ -901,7 +901,7 @@ client.on("message", (message) => {
                         .setDescription("La classifica del server su **counting**")
                         .addField(":1234: Current Number", "```" + serverstats.numero + "```", true)
                         .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstats.ultimoUtente).username + "```" : "```None```", true)
-                        .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + client.users.cache.find(u => u.id == leaderboardList[0].id).username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
+                        .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + client.users.cache.find(u => u.id == leaderboardBestScoreList[0].id).username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
                         .addField("Leaderboard (by Best Score)", leaderboardBestScore, true)
                         .addField("Leaderboard (by Correct)", leaderboardCorrect, true)
 
