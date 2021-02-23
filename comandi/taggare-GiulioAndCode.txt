@@ -6,7 +6,7 @@ client.on("message", message => {
         message.channel.send("<@idUtente>");
         //Taggare un ruolo del server
         message.channel.send("<@&idRuolo>");
-        //Tagare un canale o una categoria
-        message.channel.send("<@idCanale/Categoria>");
+        //Taggare un canale o una categoria
+        message.channel.send("<#idCanale/Categoria>");
     }
 })
