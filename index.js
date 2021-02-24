@@ -947,22 +947,14 @@ client.on("messageDelete", message => {
                 serverstats = result[0]; //Get serverstats
 
 
-
-                if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
-                    console.log("1")
-                    return
-                }
-                else if (numero - 1 != serverstats.numero) { //Numero sbagliato
-                    console.log("2")
-                    return
-                }
-
                 if (numero < serverstats.numero) {
-                    console.log("3")
                     return
                 }
 
-                console.log("4")
+                if (numero != serverstats.numero) { //Se giocato lo stesso utente piu volte
+                    return
+                }
+
 
 
                 var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
