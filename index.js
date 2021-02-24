@@ -946,6 +946,15 @@ client.on("messageDelete", message => {
                 }
                 serverstats = result[0]; //Get serverstats
 
+
+
+                if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
+                    return
+                }
+                else if (numero - 1 != serverstats.numero) { //Numero sbagliato
+                    return
+                }
+
                 if (numero < serverstats.numero) {
                     return
                 }
