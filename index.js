@@ -1050,11 +1050,11 @@ Notifier.on('video', video => {
 });*/
 
 //npm i youtube-notification
-/*
+
 const YouTubeNotifier = require('youtube-notification');
 
 const notifier = new YouTubeNotifier({
-    hubCallback: 'https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA',
+    hubCallback: 'localhost',
     port: 8080,
     secret: 'Something',
     path: '/youtube'
@@ -1068,4 +1068,4 @@ notifier.on('notified', data => {
     canale.send(`${data.channel.name} just uploaded a new video titled: ${data.video.title}`);
 });
 
-notifier.subscribe('UC6WJ32r35demIRvxV-xDU2g');*/
+notifier.subscribe('UC6WJ32r35demIRvxV-xDU2g');
