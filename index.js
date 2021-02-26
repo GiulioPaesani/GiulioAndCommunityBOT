@@ -1024,11 +1024,11 @@ const Notifier = new ytnotifier({
 });
 
 Notifier.on('video', video => {
-    var canale = client.channels.cache.get("793781898317004800");
+    var canale = client.channels.cache.get("793781905740922900");
 
     var data = new Date(video.publishDate);
 
-    const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
+    const channelId = 'UC6WJ32r35demIRvxV-xDU2g' //<--- DA CAMBIARE
     const sortBy = 'newest'
     ytch.getChannelVideos(channelId, sortBy).then((response) => {
         var embed = new Discord.MessageEmbed()
@@ -1042,7 +1042,28 @@ Notifier.on('video', video => {
         canale.send(embed)
     })
 
-    canale.send("<@&801109543035207752>").then(msg => {
+    /*canale.send("<@&801109543035207752>").then(msg => {
         msg.delete({ timeout: 5000 })
-    })
+    })*/
+
 });
+
+//npm i youtube-notification
+const YouTubeNotifier = require('youtube-notification');
+
+const notifier = new YouTubeNotifier({
+    hubCallback: 'https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA',
+    port: 8080,
+    secret: 'Something',
+    path: '/youtube'
+});
+
+notifier.setup();
+
+notifier.on('notified', data => {
+    var canale = client.channels.cache.get("793781905740922900");
+
+    canale.send(`${data.channel.name} just uploaded a new video titled: ${data.video.title}`);
+});
+
+notifier.subscribe('UC6WJ32r35demIRvxV-xDU2g');
