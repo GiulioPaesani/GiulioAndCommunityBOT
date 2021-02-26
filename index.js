@@ -1054,7 +1054,7 @@ Notifier.on('video', video => {
 const YouTubeNotifier = require('youtube-notification');
 
 const notifier = new YouTubeNotifier({
-    hubCallback: 'https://example.com/youtube',
+    hubCallback: 'https://giulioandcommunitybot.herokuapp.com/youtube',
     secret: 'CIAO COME VA?',
 });
 
