@@ -1018,7 +1018,7 @@ setInterval(function () {
 }, 1000 * 10)
 
 //YOUTUBE NOTIFICATION
-/*
+
 const Notifier = new ytnotifier({
     channels: ['UCK6QwAdGWOWN9AT1_UQFGtA'],
     checkInterval: 30
@@ -1047,14 +1047,13 @@ Notifier.on('video', video => {
         msg.delete({ timeout: 5000 })
     })
 
-});*/
+});
 
 //npm i youtube-notification
 
 const YouTubeNotifier = require('youtube-notification');
 
 const notifier = new YouTubeNotifier({
-    hubCallback: 'http://127.0.0.1/',
     port: 8080,
     path: '/youtube'
 });
