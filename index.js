@@ -6,7 +6,7 @@ const ytch = require('yt-channel-info');
 const { Permissions } = require('discord.js');
 const fs = require("file-system");
 const mysql = require('mysql');
-const ytnotifier = require('youtube-notifier');
+//const ytnotifier = require('youtube-notifier');
 client.login(process.env.token);
 
 client.on("ready", () => {
@@ -1018,6 +1018,7 @@ setInterval(function () {
 }, 1000 * 10)
 
 //YOUTUBE NOTIFICATION
+/*
 const Notifier = new ytnotifier({
     channels: ['UCK6QwAdGWOWN9AT1_UQFGtA'],
     checkInterval: 30
@@ -1042,11 +1043,11 @@ Notifier.on('video', video => {
         canale.send(embed)
     })
 
-    /*canale.send("<@&801109543035207752>").then(msg => {
+    canale.send("<@&801109543035207752>").then(msg => {
         msg.delete({ timeout: 5000 })
-    })*/
+    })
 
-});
+});*/
 
 //npm i youtube-notification
 const YouTubeNotifier = require('youtube-notification');
