@@ -1050,12 +1050,12 @@ Notifier.on('video', video => {
 });
 
 //npm i youtube-notification
-/*
+
 const YouTubeNotifier = require('youtube-notification');
 
 const notifier = new YouTubeNotifier({
-    port: 8080,
-    path: '/youtube'
+    hubCallback: 'https://example.com/youtube',
+    secret: 'CIAO COME VA?',
 });
 
 notifier.setup();
@@ -1066,4 +1066,4 @@ notifier.on('notified', data => {
     canale.send(`${data.channel.name} just uploaded a new video titled: ${data.video.title}`);
 });
 
-notifier.subscribe('UC6WJ32r35demIRvxV-xDU2g');*/
+notifier.subscribe('UC6WJ32r35demIRvxV-xDU2g');
