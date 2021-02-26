@@ -1056,7 +1056,6 @@ const YouTubeNotifier = require('youtube-notification');
 const notifier = new YouTubeNotifier({
     hubCallback: 'localhost',
     port: 8080,
-    secret: 'Something',
     path: '/youtube'
 });
 
