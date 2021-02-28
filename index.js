@@ -35,10 +35,12 @@ var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
 
-    if (message.channel.id == "793781902728495104" && !message.content.startsWith("!suggest")) {
+    console.log("messaggio")
+    if (message.channel.id == canaleSuggestions && !message.content.startsWith("!suggest")) {
+        console.log("suggest channel")
         message.delete({ timeout: 1000 })
     }
-    if (message.channel.id == "815611596042666034" && !message.content.startsWith("!challenge")) {
+    if (message.channel.id == canaleChallenge && !message.content.startsWith("!challenge")) {
         message.delete({ timeout: 1000 })
     }
 
