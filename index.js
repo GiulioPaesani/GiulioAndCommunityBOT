@@ -34,6 +34,8 @@ var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
+    if (message.author.bot) return;
+
     if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest")) {
         message.delete({ timeout: 1000 })
     }
@@ -115,7 +117,7 @@ client.on("message", (message) => {
         .setTitle(":no_entry_sign: Canale non concesso :no_entry_sign: ")
         .setColor("ff0000")
 
-    if (message.author.bot) return;
+
 
 
 
