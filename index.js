@@ -35,7 +35,7 @@ var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
 
-    console.log("canale: " + message.channel.id == canaleSuggestion)
+    console.log("canale: " + message.channel.id == canaleSuggestions)
     console.log("messaggio: " + message.content.startsWith("!suggest"))
     if (message.channel.id == canaleSuggestions && !message.content.startsWith("!suggest")) {
         message.delete({ timeout: 1000 })
