@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const moment = require('moment');
 const Parser = require('expr-eval').Parser;
 const ytch = require('yt-channel-info');
@@ -22,17 +22,34 @@ var con = mysql.createPool({ //Connessione database Heroku
     port: 3306,
     user: 'b0e6f9bf85a35f',
     password: process.env.passworddb,
+    password: "924316b9faef8e8",
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
+
+var canaleSuggestions = "793781902728495104";
+var embedSuggestion = new Discord.MessageEmbed()
+
+var canaleChallenge = "815611596042666034";
+var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!code", "!serverinfo", "!serverstas", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github", "!cuser", "!cserver"],
+            comandi: ["!code", "!serverinfo", "!serverstast", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github", "!cuser", "!cserver", "!delete"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
+        },
+        giulioAndCommunityBot2: {
+            comandi: ["!suggest", "!sdelete"],
+            id: "802184359120863272",
+            canaliPermessi: ["793781901688963104"]
+        },
+        giulioAndCommunityBot3: {
+            comandi: ["!challenge", "!cdelete"],
+            id: "802184359120863272",
+            canaliPermessi: ["815611328022315028"]
         },
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
@@ -662,9 +679,9 @@ client.on("message", (message) => {
 
     }
 
-    //COUTING
     var canaleCounting = "793781899796938802";
-    if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser")) {
+
+    if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser") || message.content.startsWith("!sdelete") || message.content.startsWith("!cdelete") || message.content.startsWith("!suggest") || message.content.startsWith("!challenge")) {
         var serverstats, userstats, userstatsList;
         con.query(`select * from serverstats`, function (err, result, fields) {
             if (err) {
@@ -679,6 +696,194 @@ client.on("message", (message) => {
                     return
                 }
                 userstatsList = result; //Get all userinfo
+
+                var suggestions = JSON.parse(serverstats.suggestions);
+                var challenges = JSON.parse(serverstats.challenges);
+
+                //SUGGESTIONS
+                if (message.content.startsWith("!sdelete")) {
+                    if (!message.member.hasPermission("ADMINISTRATOR")) {
+                        return
+                    }
+
+                    var id = message.content.slice(9).trim();
+                    if (id == "") {
+                        message.channel.send("Non hai inserito l'id del suggerimento da eliminare")
+                            .then(msg => {
+                                message.delete({ timeout: 5000 })
+                                msg.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+
+                    if (!suggestions[id]) {
+                        message.channel.send("Suggerimento non trovato")
+                            .then(msg => {
+                                message.delete({ timeout: 5000 })
+                                msg.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+                    delete suggestions[id];
+                    updateServerstats(suggestions)
+                    var canale = client.channels.cache.get(canaleSuggestions)
+                    canale.messages.fetch(id)
+                        .then(message => {
+                            message.delete()
+                        })
+                    message.channel.send("Suggerimento eliminato con successo")
+                        .then(msg => {
+                            message.delete({ timeout: 5000 })
+                            msg.delete({ timeout: 5000 })
+                        })
+                }
+
+                if (message.content.startsWith("!suggest")) {
+                    var contenuto = message.content.slice(9);
+
+                    if (contenuto == "") {
+                        message.channel.send("Non hai inserito un suggerimento")
+                            .then(msg => {
+                                message.delete({ timeout: 5000 })
+                                msg.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+
+                    embedSuggestion
+                        .setTitle("💡Suggestions by " + message.member.user.username)
+                        .setDescription(contenuto)
+                        .setThumbnail(message.member.user.avatarURL())
+
+                    var canale = client.channels.cache.find(channel => channel.id == canaleSuggestions);
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("💡Nuovo suggerimento inserito")
+                        .setDescription(contenuto)
+
+                    message.channel.send(embed)
+                        .then(msg => {
+                            message.delete({ timeout: 5000 })
+                            msg.delete({ timeout: 5000 })
+                        })
+
+                    canale.send(embedSuggestion)
+                        .then(msg => {
+                            msg.react("😍")
+                            msg.react("💩")
+                            var messageId = msg.id;
+
+                            embedSuggestion
+                                .setFooter("Suggestion ID: " + messageId)
+
+                            msg.edit(embedSuggestion)
+
+                            suggestions[messageId] = {
+                                suggerimento: contenuto,
+                                user: message.member.user.id,
+                                messageId: messageId,
+                                totVotiPos: [],
+                                totVotiNeg: []
+                            }
+                            updateServerstats(suggestions)
+
+
+                        })
+
+
+
+                }
+
+                //CHALLENGE
+                if (message.content.startsWith("!cdelete")) {
+                    if (!message.member.hasPermission("ADMINISTRATOR")) {
+                        return
+                    }
+
+                    var id = message.content.slice(9).trim();
+                    if (id == "") {
+                        message.channel.send("Non hai inserito l'id della challenge da eliminare")
+                            .then(msg => {
+                                message.delete({ timeout: 5000 })
+                                msg.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+
+                    if (!challenges[id]) {
+                        message.channel.send("Challenge non trovata")
+                            .then(msg => {
+                                message.delete({ timeout: 5000 })
+                                msg.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+                    delete challenges[id];
+                    updateServerstats2(challenges)
+                    var canale = client.channels.cache.get(canaleChallenge)
+                    canale.messages.fetch(id)
+                        .then(message => {
+                            message.delete()
+                        })
+                    message.channel.send("Challenge eliminata con successo")
+                        .then(msg => {
+                            message.delete({ timeout: 5000 })
+                            msg.delete({ timeout: 5000 })
+                        })
+                }
+
+                if (message.content.startsWith("!challenge")) {
+                    var contenuto = message.content.slice(11);
+
+                    if (contenuto == "") {
+                        message.channel.send("Non hai inserito una sfida")
+                            .then(msg => {
+                                message.delete({ timeout: 5000 })
+                                msg.delete({ timeout: 5000 })
+                            })
+                        return
+                    }
+
+                    embedChallenge
+                        .setTitle("🎯 Challenge by " + message.member.user.username)
+                        .setDescription(contenuto)
+                        .setThumbnail(message.member.user.avatarURL())
+
+                    var canale = client.channels.cache.find(channel => channel.id == canaleChallenge);
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("🎯 Nuova challenge inserita")
+                        .setDescription(contenuto)
+
+                    message.channel.send(embed)
+                        .then(msg => {
+                            message.delete({ timeout: 5000 })
+                            msg.delete({ timeout: 5000 })
+                        })
+
+                    canale.send(embedChallenge)
+                        .then(msg => {
+                            msg.react("👍")
+                            msg.react("👎")
+                            var messageId = msg.id;
+
+                            embedChallenge
+                                .setFooter("Challenge ID: " + messageId)
+
+                            msg.edit(embedChallenge)
+
+                            challenges[messageId] = {
+                                sfida: contenuto,
+                                user: message.member.user.id,
+                                messageId: messageId,
+                                totVotiPos: [],
+                                totVotiNeg: []
+                            }
+                            updateServerstats2(challenges)
+                        })
+                }
+
+                //COUNTING
                 if (message.channel == canaleCounting) {
 
                     try {
@@ -930,8 +1135,8 @@ client.on("message", (message) => {
     }
 
 
-}
-)
+})
+
 client.on("messageDelete", message => {
     try {
         var numero = Parser.evaluate(message.content);
@@ -1009,6 +1214,293 @@ client.on("guildMemberRemove", member => {
     canale.setName("👾│members: " + utentiCount)
 });
 
+client.on("messageReactionAdd", async function (messageReaction, user) {
+    if (user.id == "802184359120863272") return
+
+    // fetch message data if we got a partial event
+    if (messageReaction.message.partial) await messageReaction.message.fetch();
+
+    con.query("SELECT * FROM serverstats", function (err, result) {
+        if (err) {
+            console.log(err)
+        }
+
+        if (messageReaction.message.channel.id == canaleSuggestions) {
+            var suggestions = JSON.parse(result[0].suggestions);
+            if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
+
+            if (messageReaction._emoji.name == "😍") {
+                if (!suggestions[messageReaction.message.id].totVotiNeg.includes(user.id)) {
+                    suggestions[messageReaction.message.id].totVotiPos.push(user.id)
+                    updateServerstats(suggestions)
+                }
+                else {
+                    messageReaction.users.remove(user);
+                }
+
+            }
+            else if (messageReaction._emoji.name == "💩") {
+
+                if (!suggestions[messageReaction.message.id].totVotiPos.includes(user.id)) {
+                    suggestions[messageReaction.message.id].totVotiNeg.push(user.id)
+                    updateServerstats(suggestions)
+                }
+                else {
+                    messageReaction.users.remove(user);
+                }
+
+            }
+
+            var canale = client.channels.cache.get(canaleSuggestions)
+            canale.messages.fetch(messageReaction.message.id)
+                .then(message => {
+
+                    var votiPos = suggestions[messageReaction.message.id].totVotiPos.length
+                    var votiNeg = suggestions[messageReaction.message.id].totVotiNeg.length
+
+                    var opinion = votiPos - votiNeg
+
+                    const newEmbed = new Discord.MessageEmbed()
+                        .setTitle("💡Suggestions by " + client.users.cache.get(suggestions[messageReaction.message.id].user).username)
+                        .setDescription(suggestions[messageReaction.message.id].suggerimento)
+                        .setThumbnail(client.users.cache.get(suggestions[messageReaction.message.id].user).avatarURL())
+                        .setFooter("Suggestion ID: " + messageReaction.message.id)
+
+                    if (votiPos == 0 && votiNeg == 0) {
+
+                    }
+                    else {
+                        var upvotes = 100 * votiPos / (votiPos + votiNeg)
+                        if (upvotes % 1 != 0) {
+                            upvotes = upvotes.toFixed(2)
+
+                        }
+                        var downvotes = 100 * votiNeg / (votiPos + votiNeg)
+                        if (downvotes % 1 != 0) {
+                            downvotes = downvotes.toFixed(2)
+                        }
+                        newEmbed
+                            .addField("🥇Votes", "Opinion: " + (opinion > 0 ? "+" + opinion : opinion) + "\rUpvotes: " + votiPos + " - " + upvotes + "%\rDownvotes: " + votiNeg + " - " + downvotes + "%")
+                    }
+
+                    message.edit(newEmbed)
+
+
+                })
+        }
+        if (messageReaction.message.channel.id == canaleChallenge) {
+            var challenges = JSON.parse(result[0].challenges);
+            if (!challenges.hasOwnProperty(messageReaction.message.id)) return
+
+            if (messageReaction._emoji.name == "👍") {
+                if (!challenges[messageReaction.message.id].totVotiNeg.includes(user.id)) {
+                    challenges[messageReaction.message.id].totVotiPos.push(user.id)
+                    updateServerstats2(challenges)
+                }
+                else {
+                    messageReaction.users.remove(user);
+                }
+
+            }
+            else if (messageReaction._emoji.name == "👎") {
+
+                if (!challenges[messageReaction.message.id].totVotiPos.includes(user.id)) {
+                    challenges[messageReaction.message.id].totVotiNeg.push(user.id)
+                    updateServerstats2(challenges)
+                }
+                else {
+                    messageReaction.users.remove(user);
+                }
+
+            }
+
+            var canale = client.channels.cache.get(canaleChallenge)
+            canale.messages.fetch(messageReaction.message.id)
+                .then(message => {
+                    var votiPos = challenges[messageReaction.message.id].totVotiPos.length
+                    var votiNeg = challenges[messageReaction.message.id].totVotiNeg.length
+
+                    var opinion = votiPos - votiNeg
+
+                    const newEmbed = new Discord.MessageEmbed()
+                        .setTitle("🎯 Challenge by " + client.users.cache.get(challenges[messageReaction.message.id].user).username)
+                        .setDescription(challenges[messageReaction.message.id].sfida)
+                        .setThumbnail(client.users.cache.get(challenges[messageReaction.message.id].user).avatarURL())
+                        .setFooter("Challenge ID: " + messageReaction.message.id)
+
+                    if (votiPos == 0 && votiNeg == 0) {
+
+                    }
+                    else {
+                        var upvotes = 100 * votiPos / (votiPos + votiNeg)
+                        if (upvotes % 1 != 0) {
+                            upvotes = upvotes.toFixed(2)
+
+                        }
+                        var downvotes = 100 * votiNeg / (votiPos + votiNeg)
+                        if (downvotes % 1 != 0) {
+                            downvotes = downvotes.toFixed(2)
+                        }
+                        newEmbed
+                            .addField("🥇Votes", "Opinion: " + (opinion > 0 ? "+" + opinion : opinion) + "\rUpvotes: " + votiPos + " - " + upvotes + "%\rDownvotes: " + votiNeg + " - " + downvotes + "%")
+                    }
+
+                    message.edit(newEmbed)
+
+
+                })
+        }
+    })
+})
+
+client.on("messageReactionRemove", async function (messageReaction, user) {
+    if (user.id == "802184359120863272") return
+    // fetch message data if we got a partial event
+    if (messageReaction.message.partial) await messageReaction.message.fetch();
+
+    con.query("SELECT * FROM serverstats", function (err, result) {
+        if (err) {
+            console.log(err)
+        }
+
+        if (messageReaction.message.channel.id == canaleSuggestions) {
+            var suggestions = JSON.parse(result[0].suggestions);
+            if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
+            if (messageReaction._emoji.name == "😍") {
+
+
+                if (suggestions[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id) < 0) {
+                    suggestions[messageReaction.message.id].totVotiPos.splice(suggestions[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id), 1)
+                    updateServerstats(suggestions)
+                }
+
+
+            }
+            else if (messageReaction._emoji.name == "💩") {
+                if (suggestions[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id) < 0) {
+                    suggestions[messageReaction.message.id].totVotiNeg.splice(suggestions[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id), 1)
+                    updateServerstats(suggestions)
+                }
+
+            }
+
+
+            var canale = client.channels.cache.get(canaleSuggestions)
+            canale.messages.fetch(messageReaction.message.id)
+                .then(message => {
+
+                    var votiPos = suggestions[messageReaction.message.id].totVotiPos.length
+                    var votiNeg = suggestions[messageReaction.message.id].totVotiNeg.length
+
+                    var opinion = votiPos - votiNeg
+
+                    const newEmbed = new Discord.MessageEmbed()
+                        .setTitle("💡Suggestions by " + client.users.cache.get(suggestions[messageReaction.message.id].user).username)
+                        .setDescription(suggestions[messageReaction.message.id].suggerimento)
+                        .setThumbnail(client.users.cache.get(suggestions[messageReaction.message.id].user).avatarURL())
+                        .setFooter("Suggestion ID: " + messageReaction.message.id)
+
+
+                    if (votiPos == 0 && votiNeg == 0) {
+
+                    }
+                    else {
+                        var upvotes = 100 * votiPos / (votiPos + votiNeg)
+                        if (upvotes % 1 != 0) {
+                            upvotes = upvotes.toFixed(2)
+                        }
+                        var downvotes = 100 * votiNeg / (votiPos + votiNeg)
+                        if (downvotes % 1 != 0) {
+                            downvotes = downvotes.toFixed(2)
+                        }
+                        newEmbed
+                            .addField("🥇Votes", "Opinion: " + (opinion > 0 ? "+" + opinion : opinion) + "\rUpvotes: " + votiPos + " - " + upvotes + "%\rDownvotes: " + votiNeg + " - " + downvotes + "%")
+                    }
+
+                    message.edit(newEmbed)
+
+
+                })
+        }
+        if (messageReaction.message.channel.id == canaleChallenge) {
+            var challenges = JSON.parse(result[0].challenges);
+            if (!challenges.hasOwnProperty(messageReaction.message.id)) return
+            if (messageReaction._emoji.name == "👍") {
+
+                if (challenges[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id) < 0) {
+                    challenges[messageReaction.message.id].totVotiPos.splice(challenges[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id), 1)
+                    updateServerstats2(challenges)
+                }
+
+
+            }
+            else if (messageReaction._emoji.name == "👎") {
+                if (challenges[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id) < 0) {
+                    challenges[messageReaction.message.id].totVotiNeg.splice(challenges[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id), 1)
+                    updateServerstats2(challenges)
+                }
+
+            }
+
+
+            var canale = client.channels.cache.get(canaleChallenge)
+            canale.messages.fetch(messageReaction.message.id)
+                .then(message => {
+
+                    var votiPos = challenges[messageReaction.message.id].totVotiPos.length
+                    var votiNeg = challenges[messageReaction.message.id].totVotiNeg.length
+
+                    var opinion = votiPos - votiNeg
+
+                    const newEmbed = new Discord.MessageEmbed()
+                        .setTitle("🎯 Challenge by " + client.users.cache.get(challenges[messageReaction.message.id].user).username)
+                        .setDescription(challenges[messageReaction.message.id].sfida)
+                        .setThumbnail(client.users.cache.get(challenges[messageReaction.message.id].user).avatarURL())
+                        .setFooter("Challenge ID: " + messageReaction.message.id)
+
+
+                    if (votiPos == 0 && votiNeg == 0) {
+
+                    }
+                    else {
+                        var upvotes = 100 * votiPos / (votiPos + votiNeg)
+                        if (upvotes % 1 != 0) {
+                            upvotes = upvotes.toFixed(2)
+                        }
+                        var downvotes = 100 * votiNeg / (votiPos + votiNeg)
+                        if (downvotes % 1 != 0) {
+                            downvotes = downvotes.toFixed(2)
+                        }
+                        newEmbed
+                            .addField("🥇Votes", "Opinion: " + (opinion > 0 ? "+" + opinion : opinion) + "\rUpvotes: " + votiPos + " - " + upvotes + "%\rDownvotes: " + votiNeg + " - " + downvotes + "%")
+                    }
+
+                    message.edit(newEmbed)
+
+
+                })
+        }
+
+    })
+})
+
+function updateServerstats(suggestions) {
+    con.query("UPDATE serverstats SET suggestions = '" + JSON.stringify(suggestions) + "'", function (err) {
+        if (err) {
+            console.log(err)
+            return
+        }
+    })
+}
+function updateServerstats2(challenges) {
+    con.query("UPDATE serverstats SET challenges = '" + JSON.stringify(challenges) + "'", function (err) {
+        if (err) {
+            console.log(err)
+            return
+        }
+    })
+}
+
 //Counter youtube
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
@@ -1018,7 +1510,7 @@ setInterval(function () {
 }, 1000 * 10)
 
 //YOUTUBE NOTIFICATION
-
+/*
 const Notifier = new ytnotifier({
     channels: ['UCK6QwAdGWOWN9AT1_UQFGtA'],
     checkInterval: 30
@@ -1048,22 +1540,4 @@ Notifier.on('video', video => {
     })
 
 });
-
-//npm i youtube-notification
-/*
-const YouTubeNotifier = require('youtube-notification');
-
-const notifier = new YouTubeNotifier({
-    hubCallback: 'https://giulioandcommunitybot.herokuapp.com/youtube',
-    secret: 'CIAO COME VA?',
-});
-
-notifier.setup();
-
-notifier.on('notified', data => {
-    var canale = client.channels.cache.get("793781905740922900");
-
-    canale.send(`${data.channel.name} just uploaded a new video titled: ${data.video.title}`);
-});
-
-notifier.subscribe('UC6WJ32r35demIRvxV-xDU2g');*/
+*/
