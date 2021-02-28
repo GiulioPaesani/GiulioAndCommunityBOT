@@ -34,6 +34,14 @@ var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
+
+    if (message.channel.id == canaleSuggestions && !message.content.startsWith("!suggest")) {
+        message.delete({ timeout: 1000 })
+    }
+    if (message.channel.id == canaleChallenge && !message.content.startsWith("!challenge")) {
+        message.delete({ timeout: 1000 })
+    }
+
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
