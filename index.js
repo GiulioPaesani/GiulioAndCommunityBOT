@@ -1552,9 +1552,24 @@ Notifier.on('video', video => {
 
 const express = require('express')
 const app = express()
+var xml2js = require('xml2js');
 
-app.get('/', function (req, res) {
-    res.send('Hello World')
-})
+var parser = new xml2js.Parser();
+const YouTubeNotifier = require('youtube-notification');
 
-app.listen(3000)
+const notifier = new YouTubeNotifier({
+    hubCallback: 'https://example.com/youtube',
+    port: 8080,
+    secret: 'Something',
+    path: '/youtube'
+});
+notifier.setup();
+
+notifier.on('notified', data => {
+    console.log(data);
+    client.channels.cache.get("793781905740922900").send("Sei qualcuno sta leggendo questo vuol dire che sta funzionando tutto, spero...    ")
+    client.channels.cache.get("793781905740922900").send(
+        `${data.channel.name} just uploaded a new video titled: ${data.video.title}`);
+});
+
+notifier.subscribe('UCYZ3uwiIy1LrwrAywLeQSlQ');
