@@ -36,6 +36,15 @@ var embedChallenge = new Discord.MessageEmbed()
 client.on("message", (message) => {
     if (message.author.bot) return;
 
+    if (message.channel.type == "dm" && message.content.startsWith("!")) {
+        message.delete({ timeout: 5000 })
+        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
+            .then(msg => {
+                msg.delete({ timeout: 5000 })
+            })
+        return
+    }
+
     if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest")) {
         message.delete({ timeout: 1000 })
     }
@@ -117,10 +126,6 @@ client.on("message", (message) => {
         .setTitle(":no_entry_sign: Canale non concesso :no_entry_sign: ")
         .setColor("ff0000")
 
-
-
-
-
     var trovato = false;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
@@ -132,14 +137,7 @@ client.on("message", (message) => {
         }
     }
 
-    if (message.channel.type == "dm" && message.content.startsWith("!")) {
-        message.delete({ timeout: 5000 })
-        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
-            .then(msg => {
-                msg.delete({ timeout: 5000 })
-            })
-        return
-    }
+
 
     if (trovato && !message.member.hasPermission("ADMINISTRATOR")) {
         if (message.channel == "804688929109966848" || message.channel == "793781905740922900" || message.channel == "802181386869276702" || message.channel == "793781906478858269") {
@@ -1550,3 +1548,13 @@ Notifier.on('video', video => {
 
 });
 */
+
+
+const express = require('express')
+const app = express()
+
+app.get('/', function (req, res) {
+    res.send('Hello World')
+})
+
+app.listen(3000)
