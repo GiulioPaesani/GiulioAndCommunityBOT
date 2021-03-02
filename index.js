@@ -120,36 +120,38 @@ client.on("message", (message) => {
         "-!cdelete": [],
     }
 
-    var trovato = false;
+    var trovatoGiulioAndCommunityBot = false;
     var nomeComando;
+
+    var trovatoBot = false
 
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
             if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x])) {
                 if (!eval("BOT." + Object.keys(BOT)[i]).canaliPermessi.includes(message.channel.id)) {
-                    trovato = true;
+                    trovatoBot = true;
                 }
             }
         }
     }
 
 
-    if (!trovato) {
+    if (!trovatoBot) {
         for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {
             if (Object.keys(comandiGiulioAndCommunityBot)[i][0] == "-") {
                 if (message.content.startsWith(Object.keys(comandiGiulioAndCommunityBot)[i].slice(1))) {
-                    trovato = true;
+                    trovatoGiulioAndCommunityBot = true;
                     nomeComando = Object.keys(comandiGiulioAndCommunityBot)[i]
                     if (message.content.length != Object.keys(comandiGiulioAndCommunityBot)[i].length - 1) {
                         if (message.content.slice(Object.keys(comandiGiulioAndCommunityBot)[i].length - 1)[0] != " ") {
-                            trovato = false;
+                            trovatoGiulioAndCommunityBot = false;
                         }
                     }
                 }
             }
             else {
                 if (message.content == Object.keys(comandiGiulioAndCommunityBot)[i]) {
-                    trovato = true;
+                    trovatoGiulioAndCommunityBot = true;
                     nomeComando = Object.keys(comandiGiulioAndCommunityBot)[i]
 
                 }
@@ -158,7 +160,7 @@ client.on("message", (message) => {
     }
 
     var canaleNotConcesso = false;
-    if (trovato) { //Comando esistente
+    if (trovatoGiulioAndCommunityBot && !trovatoBot) { //Comando esistente
         for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {//Controllo canale corretto
             for (var j = 0; j < eval("comandiGiulioAndCommunityBot['" + nomeComando + "']").length; j++) {
                 if (eval("comandiGiulioAndCommunityBot['" + nomeComando + "']")[j] != message.channel.id) {
@@ -210,6 +212,25 @@ client.on("message", (message) => {
         }
     }
 
+    if (trovatoBot) { //Comando esistente
+        if (canaleNotConcesso) {
+            var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
+
+            if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Canale non concesso")
+                    .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+                    .setColor("#F15A24")
+                    .setDescription("Non puoi utilizzare il comando `" + message.content + "` in questo canale")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
+                return
+            }
+        }
+    }
     message.content = message.content.trim().toLowerCase();
 
 
