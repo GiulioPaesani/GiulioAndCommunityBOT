@@ -46,11 +46,6 @@ client.on("message", (message) => {
 
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
-        mee6: {
-            comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
-            id: "159985870458322944",
-            canaliPermessi: ["801019779480944660"]
-        },
         voiceMaster: {
             comandi: ["%voice", "%voice lock", "%voice unlock", "%voice name", "%voice limit", "%voice permit", "%voice reject", "%voice claim", "@voicemaster myprefix", "%aboutme", "%stats", "%ping", "%invite"],
             id: "472911936951156740",
@@ -139,15 +134,6 @@ client.on("message", (message) => {
 
 
     if (canaleNotConcessoBot) { //Comando bot in canale non concesso
-        comandiMee6 = ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"]
-        for (var i = 0; i++; i) {
-            if (message.content.startsWith(comandiMee6[i])) {
-                if (!message.member.hasPermission("ADMINISTRATOR"))
-                    return
-            }
-        }
-
-
         var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
         if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
