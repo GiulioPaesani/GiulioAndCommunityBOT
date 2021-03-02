@@ -111,10 +111,11 @@ client.on("message", (message) => {
         "!test": [],
         "-!code": ["801019779480944660"],
         "!serverinfo": ["801019779480944660"],
-        "!server": ["801019779480944660"],
+        "!serverstats": ["801019779480944660"],
         "-!userinfo": ["801019779480944660"],
-        "-!user": ["801019779480944660"],
+        "-!userstats": ["801019779480944660"],
         "-!roleinfo": ["801019779480944660"],
+        "-!rolestats": ["801019779480944660"],
         "-!avatarinfo": ["801019779480944660"],
         "!youtube": ["801019779480944660"],
         "!lastvideo": ["801019779480944660"],
@@ -315,7 +316,7 @@ client.on("message", (message) => {
         message.channel.send(serverStats)
     }
     //USERINFO
-    if (message.content.startsWith("!user") || message.content.startsWith("!user")) {
+    if (message.content.startsWith("!userinfo") || message.content.startsWith("!userstats")) {
         if (message.content.trim() == "!userinfo" || message.content.trim() == "!userstats" || message.content.trim() == "!user") {
             var utente = message.member;
         }
