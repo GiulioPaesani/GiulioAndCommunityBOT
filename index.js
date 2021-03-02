@@ -55,7 +55,7 @@ client.on("message", (message) => {
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
         giulioAndCommunityBot: {
-            comandi: ["!test", "!code", "!serverinfo", "!serverstast", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github", "!cuser", "!cserver", "!delete"],
+            comandi: ["!code", "!serverinfo", "!serverstast", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github", "!cuser", "!cserver", "!delete"],
             id: "802184359120863272",
             canaliPermessi: ["801019779480944660"]
         },
@@ -123,14 +123,13 @@ client.on("message", (message) => {
     }
 
     var canaleNonConcesso = new Discord.MessageEmbed()
-        .setTitle("Canale non concesso")
-        .setColor("#F15A24")
-        .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+        .setTitle(":no_entry_sign: Canale non concesso :no_entry_sign: ")
+        .setColor("ff0000")
 
     var trovato = false;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
-            if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x]) + "") {
+            if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x])) {
                 if (!eval("BOT." + Object.keys(BOT)[i]).canaliPermessi.includes(message.channel.id)) {
                     trovato = true;
                 }
@@ -145,24 +144,15 @@ client.on("message", (message) => {
 
         }
         else {
-            canaleNonConcesso.setDescription("Non è possibile utilizzare il comando `" + message.content + "` in questo canale")
+            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare il comando `" + message.content + "` in questo canale!");
             message.channel.send(canaleNonConcesso)
                 .then(msg => {
-                    msg.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 5000 })
                 })
-            message.delete({ timeout: 7000 })
+            message.delete({ timeout: 5000 })
             return
 
         }
-    }
-    if (!trovato && message.content.startsWith("!")) {
-        var comandoErrato = new Discord.MessageEmbed()
-            .setTitle("Comando inesistente")
-            .setColor("#FF931E")
-            .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
-            .setDescription("Il comando `" + message.content + "` non esiste")
-
-        message.channel.send(comandoErrato)
     }
 
     message.content = message.content.trim().toLowerCase();
