@@ -123,8 +123,9 @@ client.on("message", (message) => {
     }
 
     var canaleNonConcesso = new Discord.MessageEmbed()
-        .setTitle(":no_entry_sign: Canale non concesso :no_entry_sign: ")
-        .setColor("ff0000")
+        .setTitle("Canale non concesso")
+        .setColor("#F15A24")
+        .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
 
     var trovato = false;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
@@ -144,7 +145,7 @@ client.on("message", (message) => {
 
         }
         else {
-            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare il comando `" + message.content + "` in questo canale!");
+            canaleNonConcesso.setDescription("Non è possibile utilizzare il comando `" + message.content + "` in questo canale")
             message.channel.send(canaleNonConcesso)
                 .then(msg => {
                     msg.delete({ timeout: 5000 })
@@ -1549,7 +1550,7 @@ Notifier.on('video', video => {
 });
 */
 
-
+/*
 const express = require('express')
 const app = express()
 var xml2js = require('xml2js');
@@ -1572,4 +1573,4 @@ notifier.on('notified', data => {
         `${data.channel.name} just uploaded a new video titled: ${data.video.title}`);
 });
 
-notifier.subscribe('UCYZ3uwiIy1LrwrAywLeQSlQ');
+notifier.subscribe('UCYZ3uwiIy1LrwrAywLeQSlQ');*/
