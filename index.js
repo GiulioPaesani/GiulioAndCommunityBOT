@@ -366,7 +366,16 @@ client.on("message", (message) => {
         var ruolo = message.guild.roles.cache.get(idRuolo);
 
         if (!ruolo) {
-            message.channel.send("Non ho trovato questo ruolo")
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Sintassi comando errata")
+                .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                .setColor("#ED1C24")
+                .setDescription("Ruolo non trovato\r`!roleinfo [role]`")
+
+            message.channel.send(embed).then(msg => {
+                message.delete({ timeout: 7000 })
+                msg.delete({ timeout: 7000 })
+            })
             return
         }
 
@@ -409,7 +418,17 @@ client.on("message", (message) => {
         }
 
         if (!utente) {
-            message.channel.send("Utente non trovato")
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Sintassi comando errata")
+                .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                .setColor("#ED1C24")
+                .setDescription("Utente non trovato\r`!avatar [user]`")
+
+            message.channel.send(embed).then(msg => {
+                message.delete({ timeout: 7000 })
+                msg.delete({ timeout: 7000 })
+            })
+            return
         }
 
         var embed = new Discord.MessageEmbed()
@@ -799,20 +818,30 @@ client.on("message", (message) => {
 
                     var id = message.content.slice(9).trim();
                     if (id == "") {
-                        message.channel.send("Non hai inserito l'id del suggerimento da eliminare")
-                            .then(msg => {
-                                message.delete({ timeout: 5000 })
-                                msg.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Inserire un id valido\r`!sdelete [id]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
                     if (!suggestions[id]) {
-                        message.channel.send("Suggerimento non trovato")
-                            .then(msg => {
-                                message.delete({ timeout: 5000 })
-                                msg.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Suggerimento non trovato\r`!sdelete [id]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
                     delete suggestions[id];
@@ -833,11 +862,16 @@ client.on("message", (message) => {
                     var contenuto = message.content.slice(9);
 
                     if (contenuto == "") {
-                        message.channel.send("Non hai inserito un suggerimento")
-                            .then(msg => {
-                                message.delete({ timeout: 5000 })
-                                msg.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Inserire un suggerimento\r`!suggest [suggestion]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
