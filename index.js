@@ -822,7 +822,7 @@ client.on("message", (message) => {
                             .setTitle("Sintassi comando errata")
                             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                             .setColor("#ED1C24")
-                            .setDescription("Inserire un id valido\r`!sdelete [id]`")
+                            .setDescription("Inserire un id\r`!sdelete [id]`")
 
                         message.channel.send(embed).then(msg => {
                             message.delete({ timeout: 7000 })
@@ -866,7 +866,7 @@ client.on("message", (message) => {
                             .setTitle("Sintassi comando errata")
                             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                             .setColor("#ED1C24")
-                            .setDescription("Inserire un suggerimento\r`!suggest [suggestion]`")
+                            .setDescription("Inserire un suggerimento\r`!suggest [suggerimento]`")
 
                         message.channel.send(embed).then(msg => {
                             message.delete({ timeout: 7000 })
@@ -937,20 +937,30 @@ client.on("message", (message) => {
 
                     var id = message.content.slice(9).trim();
                     if (id == "") {
-                        message.channel.send("Non hai inserito l'id della challenge da eliminare")
-                            .then(msg => {
-                                message.delete({ timeout: 5000 })
-                                msg.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Inserire un id\r`!cdelete [id]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
                     if (!challenges[id]) {
-                        message.channel.send("Challenge non trovata")
-                            .then(msg => {
-                                message.delete({ timeout: 5000 })
-                                msg.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Challenge non trovato\r`!cdelete [id]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
                     delete challenges[id];
@@ -971,11 +981,16 @@ client.on("message", (message) => {
                     var contenuto = message.content.slice(11);
 
                     if (contenuto == "") {
-                        message.channel.send("Non hai inserito una sfida")
-                            .then(msg => {
-                                message.delete({ timeout: 5000 })
-                                msg.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Inserire una challenge\r`!challenge [sfida]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
@@ -1141,11 +1156,16 @@ client.on("message", (message) => {
                         var utente = message.mentions.members.first()
                     }
                     if (!utente) {
-                        message.channel.send(":no_entry_sign: Non ho trovato questo utente")
-                            .then(msg => {
-                                msg.delete({ timeout: 5000 })
-                                message.delete({ timeout: 5000 })
-                            })
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Sintassi comando errata")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("Utente non trovato\r`!userinfo [user]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
