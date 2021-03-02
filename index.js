@@ -148,12 +148,21 @@ client.on("message", (message) => {
             canaleNonConcesso.setDescription("Non è possibile utilizzare il comando `" + message.content + "` in questo canale")
             message.channel.send(canaleNonConcesso)
                 .then(msg => {
-                    msg.delete({ timeout: 5000 })
+                    msg.delete({ timeout: 7000 })
                 })
-            message.delete({ timeout: 5000 })
+            message.delete({ timeout: 7000 })
             return
 
         }
+    }
+    if (!trovato && message.content.startsWith("!")) {
+        var comandoErrato = new Discord.MessageEmbed()
+            .setTitle("Comando inesistente")
+            .setColor("#FF931E")
+            .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
+            .setDescription("Il comando `" + message.content + "` non esiste")
+
+        message.channel.send(comandoErrato)
     }
 
     message.content = message.content.trim().toLowerCase();
