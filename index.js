@@ -164,7 +164,7 @@ client.on("message", (message) => {
     console.log(trovatoBot)
 
     var canaleNotConcesso = false;
-    if (trovatoGiulioAndCommunityBot && !trovatoBot) { //Comando esistente
+    if (trovatoGiulioAndCommunityBot) { //Comando esistente
         for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {//Controllo canale corretto
             for (var j = 0; j < eval("comandiGiulioAndCommunityBot['" + nomeComando + "']").length; j++) {
                 if (eval("comandiGiulioAndCommunityBot['" + nomeComando + "']")[j] != message.channel.id) {
@@ -200,7 +200,7 @@ client.on("message", (message) => {
         }
     }
     else {
-        if (message.content.startsWith("!")) {
+        if (message.content.startsWith("!") && !trovato) {
             //Comando non esistente
             var embed = new Discord.MessageEmbed()
                 .setTitle("Comando non eistente")
