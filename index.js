@@ -214,7 +214,7 @@ client.on("message", (message) => {
         if (message.content.startsWith("!") && !trovatoBot) {
 
             var comandiMee6 = ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"]
-            for (var i = 0; i++; i) {
+            for (var i = 0; i < comandiMee6.length; i++) {
                 if (message.content.startsWith(comandiMee6[i])) {
                     return
                 }
