@@ -34,16 +34,8 @@ var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
-    if (message.author.bot) return;
-
-    if (message.channel.type == "dm" && message.content.startsWith("!")) {
-        message.delete({ timeout: 5000 })
-        message.channel.send(":no_entry: Non puoi usare i comandi di <@802184359120863272> nei messaggi privati")
-            .then(msg => {
-                msg.delete({ timeout: 5000 })
-            })
-        return
-    }
+    if (message.author.bot) return
+    if (message.channel.type == "dm") return
 
     if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest")) {
         message.delete({ timeout: 1000 })
@@ -127,10 +119,6 @@ client.on("message", (message) => {
         "-!challenge": ["815611328022315028"],
         "-!cdelete": [],
     }
-
-    var canaleNonConcesso = new Discord.MessageEmbed()
-        .setTitle(":no_entry_sign: Canale non concesso :no_entry_sign: ")
-        .setColor("ff0000")
 
     var trovato = false;
     var nomeComando;
@@ -219,18 +207,6 @@ client.on("message", (message) => {
         })
         return
     }
-
-    /*var embed = new Discord.MessageEmbed()
-        .setTitle("Sintassi errata")
-        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-        .setColor("#ED1C24")
-        .setDescription("Non puoi eseguire il comando `ban` perchè non hai il permesso")
-
-    message.channel.send(embed).then(msg => {
-            message.delete({ timeout: 7000 })
-            msg.delete({ timeout: 7000 })
-        })
-        return*/
 
     message.content = message.content.trim().toLowerCase();
 
