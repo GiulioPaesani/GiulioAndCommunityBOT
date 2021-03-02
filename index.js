@@ -54,21 +54,6 @@ client.on("message", (message) => {
 
     //CANCELLARE COMANDO IN CANALE SBAGLIATO
     var BOT = {
-        giulioAndCommunityBot: {
-            comandi: ["!code", "!serverinfo", "!serverstast", "!userinfo", "!userstats", "!roleinfo", "!avatar", "!youtube", "!lastvideo", "!github", "!cuser", "!cserver", "!delete"],
-            id: "802184359120863272",
-            canaliPermessi: ["801019779480944660"]
-        },
-        giulioAndCommunityBot2: {
-            comandi: ["!suggest", "!sdelete"],
-            id: "802184359120863272",
-            canaliPermessi: ["793781901688963104"]
-        },
-        giulioAndCommunityBot3: {
-            comandi: ["!challenge", "!cdelete"],
-            id: "802184359120863272",
-            canaliPermessi: ["815611328022315028"]
-        },
         mee6: {
             comandi: ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"],
             id: "159985870458322944",
@@ -122,11 +107,33 @@ client.on("message", (message) => {
 
     }
 
+    var comandiGiulioAndCommunityBot = {
+        "!test": [],
+        "-!code": ["801019779480944660"],
+        "!serverinfo": ["801019779480944660"],
+        "!server": ["801019779480944660"],
+        "-!userinfo": ["801019779480944660"],
+        "-!user": ["801019779480944660"],
+        "-!roleinfo": ["801019779480944660"],
+        "-!avatarinfo": ["801019779480944660"],
+        "!youtube": ["801019779480944660"],
+        "!lastvideo": ["801019779480944660"],
+        "!github": ["801019779480944660"],
+        "-!cuser": ["801019779480944660", "793781899796938802"],
+        "-!cserver": ["801019779480944660", "793781899796938802"],
+        "-!suggest": ["793781901688963104"],
+        "-!sdelete": [],
+        "-!challenge": ["815611328022315028"],
+        "-!cdelete": [],
+    }
+
     var canaleNonConcesso = new Discord.MessageEmbed()
         .setTitle(":no_entry_sign: Canale non concesso :no_entry_sign: ")
         .setColor("ff0000")
 
     var trovato = false;
+    var nomeComando;
+
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
             if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x])) {
@@ -138,21 +145,78 @@ client.on("message", (message) => {
     }
 
 
+    if (!trovato) {
+        for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {
+            if (Object.keys(comandiGiulioAndCommunityBot)[i][0] == "-") {
+                if (message.content.startsWith(Object.keys(comandiGiulioAndCommunityBot)[i].slice(1))) {
+                    trovato = true;
+                    nomeComando = Object.keys(comandiGiulioAndCommunityBot)[i]
+                    if (message.content.length != Object.keys(comandiGiulioAndCommunityBot)[i].length - 1) {
+                        if (message.content.slice(Object.keys(comandiGiulioAndCommunityBot)[i].length - 1)[0] != " ") {
+                            trovato = false;
+                        }
+                    }
+                }
+            }
+            else {
+                if (message.content == Object.keys(comandiGiulioAndCommunityBot)[i]) {
+                    trovato = true;
+                    nomeComando = Object.keys(comandiGiulioAndCommunityBot)[i]
 
-    if (trovato && !message.member.hasPermission("ADMINISTRATOR")) {
-        if (message.channel == "804688929109966848" || message.channel == "793781905740922900" || message.channel == "802181386869276702" || message.channel == "793781906478858269") {
-
+                }
+            }
         }
-        else {
-            canaleNonConcesso.setDescription(message.author.toString() + " non puoi utilizzare il comando `" + message.content + "` in questo canale!");
-            message.channel.send(canaleNonConcesso)
-                .then(msg => {
-                    msg.delete({ timeout: 5000 })
+    }
+
+    var canaleNotConcesso = false;
+    if (trovato) { //Comando esistente
+        for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {//Controllo canale corretto
+            for (var j = 0; j < eval("comandiGiulioAndCommunityBot['" + nomeComando + "']").length; j++) {
+                if (eval("comandiGiulioAndCommunityBot['" + nomeComando + "']")[j] != message.channel.id) {
+                    canaleNotConcesso = true;
+                }
+                else {
+                    canaleNotConcesso = false;
+                    break
+                }
+            }
+        }
+
+        if (nomeComando[0] == "-") {
+            nomeComando = nomeComando.slice(1)
+        }
+
+        if (canaleNotConcesso) {
+            var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
+
+            if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Canale non concesso")
+                    .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+                    .setColor("#F15A24")
+                    .setDescription("Non puoi utilizzare il comando `" + nomeComando + "` in questo canale")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
                 })
-            message.delete({ timeout: 5000 })
-            return
-
+                return
+            }
         }
+    }
+    else {
+        if (message.content.startsWith("!")) //Comando non esistente
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Comando non eistente")
+                .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
+                .setColor("#FF931E")
+                .setDescription("Il comando `" + message.content + "` non esiste")
+
+        message.channel.send(embed).then(msg => {
+            message.delete({ timeout: 7000 })
+            msg.delete({ timeout: 7000 })
+        })
+        return
     }
 
     message.content = message.content.trim().toLowerCase();
