@@ -159,6 +159,10 @@ client.on("message", (message) => {
         }
     }
 
+    console.log("---")
+    console.log(trovatoGiulioAndCommunityBot)
+    console.log(trovatoBot)
+
     var canaleNotConcesso = false;
     if (trovatoGiulioAndCommunityBot && !trovatoBot) { //Comando esistente
         for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {//Controllo canale corretto
