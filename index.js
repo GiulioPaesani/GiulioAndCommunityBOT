@@ -134,7 +134,23 @@ client.on("message", (message) => {
             }
         }
     }
+    if (trovatoBot) { //Comando bot in canale non concesso
+        var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
+        if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Canale non concesso")
+                .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+                .setColor("#F15A24")
+                .setDescription("Non puoi utilizzare il comando `" + message.content + "` in questo canale")
+
+            message.channel.send(embed).then(msg => {
+                message.delete({ timeout: 7000 })
+                msg.delete({ timeout: 7000 })
+            })
+            return
+        }
+    }
 
     if (!trovatoBot) {
         for (var i = 0; i < Object.keys(comandiGiulioAndCommunityBot).length; i++) {
@@ -158,10 +174,6 @@ client.on("message", (message) => {
             }
         }
     }
-
-    console.log("---")
-    console.log(trovatoGiulioAndCommunityBot)
-    console.log(trovatoBot)
 
     var canaleNotConcesso = false;
     if (trovatoGiulioAndCommunityBot) { //Comando esistente
@@ -216,25 +228,6 @@ client.on("message", (message) => {
         }
     }
 
-    if (trovatoBot) { //Comando esistente
-        if (canaleNotConcesso) {
-            var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
-
-            if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Canale non concesso")
-                    .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
-                    .setColor("#F15A24")
-                    .setDescription("Non puoi utilizzare il comando `" + message.content + "` in questo canale")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-        }
-    }
     message.content = message.content.trim().toLowerCase();
 
 
