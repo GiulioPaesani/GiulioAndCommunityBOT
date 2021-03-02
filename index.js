@@ -212,6 +212,15 @@ client.on("message", (message) => {
     }
     else {
         if (message.content.startsWith("!") && !trovatoBot) {
+
+            var comandiMee6 = ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"]
+            for (var i = 0; i++; i) {
+                if (message.content.startsWith(comandiMee6[i])) {
+                    return
+                }
+            }
+
+
             //Comando non esistente
             var embed = new Discord.MessageEmbed()
                 .setTitle("Comando non eistente")
