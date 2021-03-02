@@ -10,7 +10,6 @@ const ytnotifier = require('youtube-notifier');
 client.login(process.env.token);
 
 client.on("ready", () => {
-    console.log("------------ONLINE------------")
 })
 
 var con = mysql.createPool({ //Connessione database Heroku
@@ -223,7 +222,7 @@ client.on("message", (message) => {
 
             //Comando non esistente
             var embed = new Discord.MessageEmbed()
-                .setTitle("Comando non eistente")
+                .setTitle("Comando non esistente")
                 .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
                 .setColor("#FF931E")
                 .setDescription("Il comando `" + message.content + "` non esiste")
