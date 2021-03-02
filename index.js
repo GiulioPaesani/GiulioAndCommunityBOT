@@ -120,9 +120,9 @@ client.on("message", (message) => {
         "-!cdelete": [],
     }
 
-    var trovatoGiulioAndCommunityBot = false;
     var nomeComando;
 
+    var trovatoGiulioAndCommunityBot = false;
     var trovatoBot = false
 
     for (var i = 0; i < Object.keys(BOT).length; i++) {
@@ -200,7 +200,7 @@ client.on("message", (message) => {
         }
     }
     else {
-        if (message.content.startsWith("!") && !trovato) {
+        if (message.content.startsWith("!") && !trovatoBot) {
             //Comando non esistente
             var embed = new Discord.MessageEmbed()
                 .setTitle("Comando non eistente")
