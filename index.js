@@ -219,12 +219,34 @@ client.on("message", (message) => {
         return
     }
 
+    /*var embed = new Discord.MessageEmbed()
+        .setTitle("Non hai il permesso")
+        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        .setColor("#9E005D")
+        .setDescription("Non puoi eseguire il comando `ban` perchè non hai il permesso")
+
+    message.channel.send(embed).then(msg => {
+            message.delete({ timeout: 7000 })
+            msg.delete({ timeout: 7000 })
+        })
+        return*/
+
     message.content = message.content.trim().toLowerCase();
 
 
     //TEST
-    if (message.content == "!test" && message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.content == "!test") {
         if (!message.member.hasPermission("ADMINISTRATOR")) {
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Non hai il permesso")
+                .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                .setColor("#9E005D")
+                .setDescription("Non puoi eseguire il comando `!test` perchè non hai il permesso")
+
+            message.channel.send(embed).then(msg => {
+                message.delete({ timeout: 7000 })
+                msg.delete({ timeout: 7000 })
+            })
             return
         }
         message.channel.send("FUNZIONA TUTTO! Forse...")
@@ -774,6 +796,16 @@ client.on("message", (message) => {
                 //SUGGESTIONS
                 if (message.content.startsWith("!sdelete")) {
                     if (!message.member.hasPermission("ADMINISTRATOR")) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Non hai il permesso")
+                            .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                            .setColor("#9E005D")
+                            .setDescription("Non puoi eseguire il comando `!sdelete` perchè non hai il permesso")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
@@ -868,6 +900,16 @@ client.on("message", (message) => {
                 //CHALLENGE
                 if (message.content.startsWith("!cdelete")) {
                     if (!message.member.hasPermission("ADMINISTRATOR")) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Non hai il permesso")
+                            .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                            .setColor("#9E005D")
+                            .setDescription("Non puoi eseguire il comando `!cdelete` perchè non hai il permesso")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
                         return
                     }
 
