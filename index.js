@@ -134,6 +134,8 @@ client.on("message", (message) => {
             }
         }
     }
+
+    console.log(trovatoBot)
     if (trovatoBot) { //Comando bot in canale non concesso
         var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
@@ -229,7 +231,6 @@ client.on("message", (message) => {
     }
 
     message.content = message.content.trim().toLowerCase();
-
 
     //TEST
     if (message.content == "!test") {
