@@ -130,7 +130,7 @@ client.on("message", (message) => {
     var trovato = false;
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
-            if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x]) + " ") {
+            if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x]) + "") {
                 if (!eval("BOT." + Object.keys(BOT)[i]).canaliPermessi.includes(message.channel.id)) {
                     trovato = true;
                 }
