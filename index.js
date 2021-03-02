@@ -137,8 +137,17 @@ client.on("message", (message) => {
         }
     }
 
-    console.log(trovatoBot)
+
     if (canaleNotConcessoBot) { //Comando bot in canale non concesso
+        comandiMee6 = ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"]
+        for (var i = 0; i++; i) {
+            if (message.content.startsWith(comandiMee6[i])) {
+                if (!message.member.hasPermission("ADMINISTRATOR"))
+                    return
+            }
+        }
+
+
         var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
         if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
