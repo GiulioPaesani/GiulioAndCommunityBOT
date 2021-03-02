@@ -122,21 +122,23 @@ client.on("message", (message) => {
 
     var nomeComando;
 
+    var canaleNotConcessoBot = false;
     var trovatoGiulioAndCommunityBot = false;
     var trovatoBot = false
 
     for (var i = 0; i < Object.keys(BOT).length; i++) {
         for (var x = 0; x < eval("BOT." + Object.keys(BOT)[0]).comandi.length; x++) {
             if (message.content.startsWith(eval("BOT." + Object.keys(BOT)[i]).comandi[x])) {
+                trovatoBot = true;
                 if (!eval("BOT." + Object.keys(BOT)[i]).canaliPermessi.includes(message.channel.id)) {
-                    trovatoBot = true;
+                    canaleNotConcessoBot = true
                 }
             }
         }
     }
 
     console.log(trovatoBot)
-    if (trovatoBot) { //Comando bot in canale non concesso
+    if (canaleNotConcessoBot) { //Comando bot in canale non concesso
         var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
         if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
