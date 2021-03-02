@@ -194,18 +194,20 @@ client.on("message", (message) => {
         }
     }
     else {
-        if (message.content.startsWith("!")) //Comando non esistente
+        if (message.content.startsWith("!")) {
+            //Comando non esistente
             var embed = new Discord.MessageEmbed()
                 .setTitle("Comando non eistente")
                 .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
                 .setColor("#FF931E")
                 .setDescription("Il comando `" + message.content + "` non esiste")
 
-        message.channel.send(embed).then(msg => {
-            message.delete({ timeout: 7000 })
-            msg.delete({ timeout: 7000 })
-        })
-        return
+            message.channel.send(embed).then(msg => {
+                message.delete({ timeout: 7000 })
+                msg.delete({ timeout: 7000 })
+            })
+            return
+        }
     }
 
     message.content = message.content.trim().toLowerCase();
