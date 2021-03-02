@@ -220,9 +220,9 @@ client.on("message", (message) => {
     }
 
     /*var embed = new Discord.MessageEmbed()
-        .setTitle("Non hai il permesso")
-        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-        .setColor("#9E005D")
+        .setTitle("Sintassi errata")
+        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        .setColor("#ED1C24")
         .setDescription("Non puoi eseguire il comando `ban` perchè non hai il permesso")
 
     message.channel.send(embed).then(msg => {
@@ -323,7 +323,16 @@ client.on("message", (message) => {
             var utente = message.mentions.members.first()
         }
         if (!utente) {
-            message.channel.send("Non ho trovato questo utente")
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Sintassi comando errata")
+                .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                .setColor("#ED1C24")
+                .setDescription("Utente non trovato\r`!userinfo [user]`")
+
+            message.channel.send(embed).then(msg => {
+                message.delete({ timeout: 7000 })
+                msg.delete({ timeout: 7000 })
+            })
             return
         }
 
