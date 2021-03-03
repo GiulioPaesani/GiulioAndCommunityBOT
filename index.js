@@ -821,6 +821,8 @@ client.on("message", (message) => {
                 }
                 userstatsList = result; //Get all userinfo
 
+                console.log(serverstats)
+
                 var suggestions = JSON.parse(serverstats.suggestions);
                 var challenges = JSON.parse(serverstats.challenges);
 
