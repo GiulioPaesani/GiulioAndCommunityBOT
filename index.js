@@ -13,7 +13,8 @@ client.on("ready", () => {
     console.log("------------ONLINE------------")
     var canale = client.channels.cache.get("793781905740922900")
     var embed = new Discord.MessageEmbed()
-        .setTitle(":green_circle: GiulioAndCommunityBOT è ONLINE :green_circle:")
+        .setDescription("GiulioAndCommunityBOT è ONLINE")
+        .setColor("#75AD57")
     canale.send(embed)
 })
 
@@ -26,7 +27,6 @@ var con = mysql.createPool({ //Connessione database Heroku
     port: 3306,
     user: 'b0e6f9bf85a35f',
     password: process.env.passworddb,
-    password: "924316b9faef8e8",
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
@@ -825,8 +825,6 @@ client.on("message", (message) => {
                     return
                 }
                 userstatsList = result; //Get all userinfo
-
-                console.log(serverstats)
 
                 var suggestions = JSON.parse(serverstats.suggestions);
                 var challenges = JSON.parse(serverstats.challenges);
