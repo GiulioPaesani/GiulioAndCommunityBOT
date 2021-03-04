@@ -10,6 +10,11 @@ const ytnotifier = require('youtube-notifier');
 client.login(process.env.token);
 
 client.on("ready", () => {
+    console.log("------------ONLINE------------")
+    var canale = client.channels.cache.get("793781905740922900")
+    var embed = new Discord.MessageEmbed()
+        .setTitle(":green_circle: GiulioAndCommunityBOT è ONLINE :green_circle:")
+    canale.send(embed)
 })
 
 var con = mysql.createPool({ //Connessione database Heroku
