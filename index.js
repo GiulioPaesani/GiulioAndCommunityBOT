@@ -252,7 +252,7 @@ client.on("message", (message) => {
             })
             return
         }
-        message.channel.send("FUNZIONA TUTTO! Forse...")
+        message.channel.send(":green_circle: FUNZIONA TUTTO! Forse...")
     }
     //YOUTUBE
     if (message.content == "!youtube") {
