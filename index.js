@@ -44,10 +44,10 @@ client.on("message", (message) => {
     if (message.author.bot) return
     if (message.channel.type == "dm") return
 
-    if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest")) {
+    if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest")&& !message.content.startsWith("!suggerisci")&& !message.content.startsWith("!suggerimento")) {
         message.delete({ timeout: 1000 })
     }
-    if (message.channel.id == "815611328022315028" && !message.content.startsWith("!challenge")) {
+    if (message.channel.id == "815611328022315028" && !message.content.startsWith("!challenge")&& !message.content.startsWith("!sfida")) {
         message.delete({ timeout: 1000 })
     }
 
@@ -93,24 +93,51 @@ client.on("message", (message) => {
 
     var comandiGiulioAndCommunityBot = {
         "!test": [],
+
         "-!code": ["801019779480944660"],
+
+        "!server": ["801019779480944660"],
         "!serverinfo": ["801019779480944660"],
         "!serverstats": ["801019779480944660"],
+
+        "-!user": ["801019779480944660"],
         "-!userinfo": ["801019779480944660"],
         "-!userstats": ["801019779480944660"],
+
+        "-!role": ["801019779480944660"],
         "-!roleinfo": ["801019779480944660"],
         "-!rolestats": ["801019779480944660"],
-        "-!avatarinfo": ["801019779480944660"],
+
+        "-!avatar": ["801019779480944660"],
+
         "!youtube": ["801019779480944660"],
+
         "!lastvideo": ["801019779480944660"],
+        "!ultimovideo": ["801019779480944660"],
+
         "!github": ["801019779480944660"],
+
         "-!cuser": ["801019779480944660", "793781899796938802"],
+        "-!cuserstats": ["801019779480944660", "793781899796938802"],
+        "-!cuserinfo": ["801019779480944660", "793781899796938802"],
+
         "-!cserver": ["801019779480944660", "793781899796938802"],
+        "-!cserverstats": ["801019779480944660", "793781899796938802"],
+        "-!cserverinfo": ["801019779480944660", "793781899796938802"],
+
         "-!suggest": ["793781901688963104"],
-        "-!sdelete": [],
+        "-!suggerisci": ["793781901688963104"],
+        "-!suggerimento": ["793781901688963104"],
+
         "-!challenge": ["815611328022315028"],
+        "-!sfida": ["815611328022315028"],
+
+        "-!sdelete": [],
         "-!cdelete": [],
-        "!help": ["801019779480944660"]
+
+        "!help": ["801019779480944660"],
+        "!aiuto": ["801019779480944660"],
+        "!comandi": ["801019779480944660"],
     }
 
     var nomeComando;
@@ -260,7 +287,7 @@ client.on("message", (message) => {
         message.channel.send(":green_circle: FUNZIONA TUTTO! Forse...")
     }
     //HELP
-    if (message.content == "!help") {
+    if (message.content == "!help" || message.content == "!aiuto" || message.content == "!comandi") {
         var totalPage = 5;
         var page = 0;
         var page0 = new Discord.MessageEmbed()
@@ -389,7 +416,7 @@ client.on("message", (message) => {
         })
     }
     //LAST VIDEO
-    if (message.content == "!lastvideo") {
+    if (message.content == "!lastvideo" || message.content == "!ultimovideo") {
         //https://www.npmjs.com/package/yt-channel-info
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
@@ -417,7 +444,7 @@ client.on("message", (message) => {
         message.channel.send(embed)
     }
     //SERVERINFO
-    if (message.content == "!server" || message.content == "!serverinfo" || message.content == "!serverstats") {
+    if (message.content.startsWith("!server")) {
         var server = message.member.guild;
         var botCount = server.members.cache.filter(member => member.user.bot).size
         var memberCount = server.memberCount - botCount;
@@ -440,8 +467,8 @@ client.on("message", (message) => {
         message.channel.send(serverStats)
     }
     //USERINFO
-    if (message.content.startsWith("!userinfo") || message.content.startsWith("!userstats")) {
-        if (message.content.trim() == "!userinfo" || message.content.trim() == "!userstats" || message.content.trim() == "!user") {
+    if (message.content.startsWith("!user")) {
+        if (message.content == "!user" || message.content == "!userstats" || message.content == "!userinfo") {
             var utente = message.member;
         }
         else {
@@ -507,9 +534,8 @@ client.on("message", (message) => {
         message.channel.send(userStats)
     }
     //ROLEINFO
-    if (message.content.trim().startsWith("!roleinfo")) {
-        var idRuolo = message.content.slice(13, -1);
-        var ruolo = message.guild.roles.cache.get(idRuolo);
+    if (message.content.startsWith("!role")) {
+        var ruolo = message.mentions.roles.first()
 
         if (!ruolo) {
             var embed = new Discord.MessageEmbed()
