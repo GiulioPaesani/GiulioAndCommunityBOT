@@ -266,6 +266,7 @@ client.on("message", (message) => {
         var page0 = new Discord.MessageEmbed()
             .setTitle("Tutti i comandi")
             .setDescription("Tutti i comandi del bot <@802184359120863272>")
+            .setThumbnail("https://i.postimg.cc/HkwQSy31/Profilo-bot.png")
 
         var page1 = new Discord.MessageEmbed()
             .setTitle(":bar_chart: Statistics")
