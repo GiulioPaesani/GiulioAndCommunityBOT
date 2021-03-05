@@ -953,7 +953,7 @@ client.on("message", (message) => {
 
     var canaleCounting = "793781899796938802";
 
-    if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser") || message.content.startsWith("!sdelete") || message.content.startsWith("!cdelete") || message.content.startsWith("!suggest") || message.content.startsWith("!challenge")) {
+    if (message.channel == canaleCounting || message.content.startsWith("!cserver") || message.content.startsWith("!cuser") || message.content.startsWith("!sdelete") || message.content.startsWith("!cdelete") || message.content.startsWith("!suggest") || message.content.startsWith("!challenge") || message.content.startsWith("!sfida") || message.content.startsWith("!suggerimento") || message.content.startsWith("!suggerisci")) {
         var serverstats, userstats, userstatsList;
         con.query(`select * from serverstats`, function (err, result, fields) {
             if (err) {
@@ -1030,8 +1030,13 @@ client.on("message", (message) => {
                         })
                 }
 
-                if (message.content.startsWith("!suggest")) {
-                    var contenuto = message.content.slice(9);
+                if (message.content.startsWith("!suggest") ||message.content.startsWith("!suggerisci") ||message.content.startsWith("!suggerimento")) {
+                    if(message.content.startsWith("!suggest"))
+                        var contenuto = message.content.slice(9);
+                    if(message.content.startsWith("!suggerisci"))
+                        var contenuto = message.content.slice(12);
+                    if(message.content.startsWith("!suggerimento"))
+                        var contenuto = message.content.slice(14);
 
                     if (contenuto == "") {
                         var embed = new Discord.MessageEmbed()
@@ -1149,8 +1154,11 @@ client.on("message", (message) => {
                         })
                 }
 
-                if (message.content.startsWith("!challenge")) {
-                    var contenuto = message.content.slice(11);
+                if (message.content.startsWith("!challenge") || message.content.startsWith("!sfida")) {
+                    if(message.content.startsWith("!challenge"))
+                        var contenuto = message.content.slice(11);
+                    if(message.content.startsWith("!sfida"))
+                        var contenuto = message.content.slice(7);
 
                     if (contenuto == "") {
                         var embed = new Discord.MessageEmbed()
@@ -1320,8 +1328,8 @@ client.on("message", (message) => {
 
                 }
 
-                if (message.content.startsWith("!cuser") || message.content.startsWith("!cuser")) {
-                    if (message.content.trim() == "!cuser" || message.content.trim() == "!cuser") {
+                if (message.content.startsWith("!cuser")) {
+                    if (message.content == "!cuser" || message.content == "!cuserinfo" || message.content == "!cuserstats") {
                         var utente = message.member;
                     }
                     else {
@@ -1374,7 +1382,7 @@ client.on("message", (message) => {
                     message.channel.send(embed)
                 }
 
-                if (message.content == "!cserver" || message.content == "!cserver") {
+                if (message.content == "!cserver" || message.content == "!cserverinfo" || message.content == "!cserverstats") {
 
                     var leaderboardBestScoreList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
 
