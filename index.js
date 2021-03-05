@@ -65,20 +65,10 @@ client.on("message", (message) => {
             id: "437808476106784770",
             canaliPermessi: ["801019779480944660"]
         },
-        suggester: {
-            comandi: [".suggest"],
-            id: "564426594144354315",
-            canaliPermessi: ["793781901688963104"]
-        },
         carlBot: {
             comandi: ["?aesthetics", "?clap", "?double", "?clap", "?fancy", "?fraktur", "?smallcaps", "?clap", "?double"],
             id: "235148962103951360",
             canaliPermessi: ["801019779480944660"]
-        },
-        couting: {
-            comandi: ["c!server", "c!cs", "c!slb", "c!user"],
-            id: "510016054391734273",
-            canaliPermessi: ["801019779480944660", "793781899796938802"]
         },
         dankMemer: {
             comandi: ["pls"],
@@ -117,6 +107,7 @@ client.on("message", (message) => {
         "-!sdelete": [],
         "-!challenge": ["815611328022315028"],
         "-!cdelete": [],
+        "!help": ["801019779480944660"]
     }
 
     var nomeComando;
@@ -246,6 +237,8 @@ client.on("message", (message) => {
 
     message.content = message.content.trim().toLowerCase();
 
+
+
     //TEST
     if (message.content == "!test") {
         if (!message.member.hasPermission("ADMINISTRATOR")) {
@@ -262,6 +255,122 @@ client.on("message", (message) => {
             return
         }
         message.channel.send(":green_circle: FUNZIONA TUTTO! Forse...")
+    }
+    //HELP
+    if (message.content == "!help") {
+        var totalPage = 5;
+        var page = 0;
+        var page0 = new Discord.MessageEmbed()
+            .setTitle("Tutti i comandi")
+            .setDescription("Tutti i comandi del bot <@802184359120863272>")
+
+        var page1 = new Discord.MessageEmbed()
+            .setTitle(":bar_chart: Statistics")
+            .setDescription("Comandi relativi alla infomazioni e statistiche")
+            .addField(":desktop: Commands", `
+            -\`!serverinfo\`
+            Informazioni complete sul server
+            Alias: \`!serverstats\` \`!server\`
+
+            -\`!userinfo [user]\`
+            Informazioni su un utente
+            Alias: \`!userstats\` \`!user\`
+
+            -\`!roleinfo [role]\`
+            Informazioni su un ruolo
+            Alias: \`!rolestats\` \`!role\`
+
+            -\`!avatar [user]\`
+            Ottenere l'immagine profilo di un utente\r
+            `)
+            .addField(":no_entry: Canali concessi", "<#801019779480944660>")
+            .setFooter("Page 1/" + totalPage)
+
+        var page2 = new Discord.MessageEmbed()
+            .setTitle(":100: Couting")
+            .setDescription("Comandi del giochino di Couting")
+            .addField(":desktop: Commands", `
+            -\`!cserver\`
+            Statistiche di Couting del server
+            Alias: \`!cserverstats\` \`!cserverinfo\`
+
+            -\`!cuser [user]\`
+            Statistiche di Couting di un utente
+            Alias: \`!cuserstats\` \`!cuserinfo\`
+
+            `)
+            .addField(":no_entry: Canali concessi", "<#801019779480944660>\r<#793781899796938802>")
+            .setFooter("Page 2/" + totalPage)
+
+        var page3 = new Discord.MessageEmbed()
+            .setTitle(":film_frames: YouTube")
+            .setDescription("Comandi relativi al canale")
+            .addField(":desktop: Commands", `
+            -\`!youtube\`
+            Ottenere il link del canale YouTube
+
+            -\`!lastvideo\`
+            Ottenere il link dell'ultimo video uscito
+            Alias: \`!ultimovideo\`
+
+            -\`!github\`
+            Ottenere il link del GitHub di GiulioAndCommunityBOTù
+
+            -\`!code (codice)\`
+            Informazioni e codice relativi a funzioni e comandi in Discord.js
+            `)
+            .addField(":no_entry: Canali concessi", "<#801019779480944660>")
+            .setFooter("Page 3/" + totalPage)
+
+        var page4 = new Discord.MessageEmbed()
+            .setTitle(":bulb: Suggestions")
+            .setDescription("Comandi per suggerimenti")
+            .addField(":desktop: Commands", `
+            -\`!suggest [suggerimento]\`
+            Eseguire un suggerimento per il canale/server
+            Alias: \`!suggerisci\` \`!suggerimento\`
+            `)
+            .addField(":no_entry: Canali concessi", "<#793781901688963104>")
+            .setFooter("Page 4/" + totalPage)
+
+        var page5 = new Discord.MessageEmbed()
+            .setTitle(":dart: Challenge")
+            .setDescription("Comandi per sfide")
+            .addField(":desktop: Commands", `
+            -\`!challenge [sfida]\`
+            Proprorre una sfida
+            Alias: \`!sfida\`
+            `)
+            .addField(":no_entry: Canali concessi", "<#815611328022315028>")
+            .setFooter("Page 5/" + totalPage)
+
+        message.channel.send(page0).then(msg => {
+            msg.react('◀').then(r => {
+                msg.react('▶')
+
+                // Filters
+                const reactIndietro = (reaction, user) => reaction.emoji.name === '◀' && user.id === message.author.id
+                const reactAvanti = (reaction, user) => reaction.emoji.name === '▶' && user.id === message.author.id
+
+                const paginaIndietro = msg.createReactionCollector(reactIndietro)
+                const paginaAvanti = msg.createReactionCollector(reactAvanti)
+
+                paginaIndietro.on('collect', (r, u) => {
+                    page--
+                    page < 1 ? page = totalPage : ""
+                    msg.edit(eval("page" + page))
+                    r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                })
+                paginaAvanti.on('collect', (r, u) => {
+                    page++
+                    page > totalPage ? page = 1 : ""
+                    msg.edit(eval("page" + page))
+                    r.users.remove(r.users.cache.filter(u => u === message.author).first())
+                })
+            })
+        })
+
+
     }
     //YOUTUBE
     if (message.content == "!youtube") {
