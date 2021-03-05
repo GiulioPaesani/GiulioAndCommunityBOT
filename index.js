@@ -11,6 +11,9 @@ client.login(process.env.token);
 
 client.on("ready", () => {
     console.log("------------ONLINE------------")
+
+    client.user.setActivity('!help', { type: 'WATCHING' });
+
     var canale = client.channels.cache.get("793781905740922900")
     var embed = new Discord.MessageEmbed()
         .setDescription("GiulioAndCommunityBOT è ONLINE")
