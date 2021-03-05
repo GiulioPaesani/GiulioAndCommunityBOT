@@ -318,7 +318,7 @@ client.on("message", (message) => {
             Alias: \`!ultimovideo\`
 
             -\`!github\`
-            Ottenere il link del GitHub di GiulioAndCommunityBOTù
+            Ottenere il link del GitHub di GiulioAndCommunityBOT
 
             -\`!code (codice)\`
             Informazioni e codice relativi a funzioni e comandi in Discord.js
