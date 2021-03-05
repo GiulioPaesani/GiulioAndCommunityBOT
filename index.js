@@ -232,11 +232,15 @@ client.on("message", (message) => {
                 .setColor("#FF931E")
                 .setDescription("Il comando `" + message.content + "` non esiste")
 
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 7000 })
-                msg.delete({ timeout: 7000 })
-            })
-            return
+            if (!message.member.hasPermission("ADMINISTRATOR")) {
+
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
+                return
+            }
         }
     }
 
