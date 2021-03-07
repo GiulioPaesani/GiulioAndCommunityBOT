@@ -318,15 +318,15 @@ client.on("message", (message) => {
             .setFooter("Page 1/" + totalPage)
 
         var page2 = new Discord.MessageEmbed()
-            .setTitle(":100: Couting")
-            .setDescription("Comandi del giochino di Couting")
+            .setTitle(":100: Counting")
+            .setDescription("Comandi del giochino di Counting")
             .addField(":desktop: Commands", `
             -\`!cserver\`
-            Statistiche di Couting del server
+            Statistiche di Counting del server
             Alias: \`!cserverstats\` \`!cserverinfo\`
 
             -\`!cuser [user]\`
-            Statistiche di Couting di un utente
+            Statistiche di Counting di un utente
             Alias: \`!cuserstats\` \`!cuserinfo\`
 
             `)
