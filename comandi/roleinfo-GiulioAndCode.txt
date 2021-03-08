@@ -1,3 +1,5 @@
+const { Permissions } = require('discord.js');
+
 client.on("message", message => {
     if (message.content.startsWith("!roleinfo")) {
         var idRuolo = message.content.slice(13, -1);
