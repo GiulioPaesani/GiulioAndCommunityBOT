@@ -598,7 +598,7 @@ con.query(`select * from serverstats`, function (err, result, fields) {
 
             }
             //AVATAR
-            if (message.content.trim().startsWith("!avatar")) {
+            if (message.content.startsWith("!avatar")) {
                 if (message.content.trim() == "!avatar") {
                     var utente = message.member;
                 }
@@ -1013,7 +1013,10 @@ con.query(`select * from serverstats`, function (err, result, fields) {
                     return
                 }
                 delete suggestions[id];
-                updateServerstats(suggestions)
+
+                serverstats.suggestions = suggestions
+                updateDatabase(serverstats, userstatsList, message)
+
                 var canale = client.channels.cache.get(canaleSuggestions)
                 canale.messages.fetch(id)
                     .then(message => {
@@ -1027,12 +1030,8 @@ con.query(`select * from serverstats`, function (err, result, fields) {
             }
 
             if (message.content.startsWith("!suggest") || message.content.startsWith("!suggerisci") || message.content.startsWith("!suggerimento")) {
-                if (message.content.startsWith("!suggest"))
-                    var contenuto = message.content.slice(9);
-                if (message.content.startsWith("!suggerisci"))
-                    var contenuto = message.content.slice(12);
-                if (message.content.startsWith("!suggerimento"))
-                    var contenuto = message.content.slice(14);
+                var args = message.content.slice(/\s+/)
+                var contenuto = args[1]
 
                 if (contenuto == "") {
                     var embed = new Discord.MessageEmbed()
