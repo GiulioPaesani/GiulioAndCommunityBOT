@@ -796,6 +796,19 @@ client.on("message", (message) => {
                     var utente = message.mentions.members.first()
                     if (utente) {
                         command = command.slice(0, -22).trim()
+                        if (utente.user.bot) {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Non a un Bot")
+                                .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                                .setColor("#5FB3F9")
+                                .setDescription("Non puoi mandare codice a un Bot")
+
+                            message.channel.send(embed).then(msg => {
+                                message.delete({ timeout: 7000 })
+                                msg.delete({ timeout: 7000 })
+                            })
+                            return
+                        }
                     }
                     if (!utente) {
                         var utente = message.member
@@ -804,6 +817,7 @@ client.on("message", (message) => {
                 else {
                     var utente = message.member
                 }
+
 
                 if (message.content.trim() == "!code") {
                     var paginaInziale = new Discord.MessageEmbed()
