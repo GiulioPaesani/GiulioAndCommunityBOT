@@ -1560,7 +1560,8 @@ con.query(`select * from serverstats`, function (err, result, fields) {
                     if (messageReaction._emoji.name == "😍") {
                         if (!suggestions[messageReaction.message.id].totVotiNeg.includes(user.id)) {
                             suggestions[messageReaction.message.id].totVotiPos.push(user.id)
-                            updateServerstats(suggestions)
+                            serverstats.suggestions = suggestions
+                            updateDatabase(serverstats, userstats, message)
                         }
                         else {
                             messageReaction.users.remove(user);
@@ -1571,7 +1572,8 @@ con.query(`select * from serverstats`, function (err, result, fields) {
 
                         if (!suggestions[messageReaction.message.id].totVotiPos.includes(user.id)) {
                             suggestions[messageReaction.message.id].totVotiNeg.push(user.id)
-                            updateServerstats(suggestions)
+                            serverstats.suggestions = suggestions
+                            updateDatabase(serverstats, userstats, message)
                         }
                         else {
                             messageReaction.users.remove(user);
@@ -1623,7 +1625,8 @@ con.query(`select * from serverstats`, function (err, result, fields) {
                     if (messageReaction._emoji.name == "👍") {
                         if (!challenges[messageReaction.message.id].totVotiNeg.includes(user.id)) {
                             challenges[messageReaction.message.id].totVotiPos.push(user.id)
-                            updateServerstats2(challenges)
+                            serverstats.challenges = challenges
+                            updateDatabase(serverstats, userstats, message)
                         }
                         else {
                             messageReaction.users.remove(user);
@@ -1634,7 +1637,8 @@ con.query(`select * from serverstats`, function (err, result, fields) {
 
                         if (!challenges[messageReaction.message.id].totVotiPos.includes(user.id)) {
                             challenges[messageReaction.message.id].totVotiNeg.push(user.id)
-                            updateServerstats2(challenges)
+                            serverstats.challenges = challenges
+                            updateDatabase(serverstats, userstats, message)
                         }
                         else {
                             messageReaction.users.remove(user);
