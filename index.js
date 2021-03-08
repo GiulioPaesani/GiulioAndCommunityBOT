@@ -324,7 +324,7 @@ client.on("message", (message) => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Sono ONLINE")
                     .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                    .setColor("#3fce37")
+                    .setColor("#78B159")
                     .setDescription("I comandi di <@802184359120863272> sono attivi e funzionanti, forse...")
 
                 message.channel.send(embed)
