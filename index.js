@@ -1275,6 +1275,20 @@ client.on("message", (message) => {
                     return
                 }
 
+                if (contenuto.includes("\"")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Senza virgolette")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Inserire una sfida senza virgolette")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
                 var challenges = JSON.parse(serverstats.challenges);
 
                 embedChallenge
@@ -1287,7 +1301,7 @@ client.on("message", (message) => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Challenge inserita")
                     .setThumbnail("https://i.postimg.cc/G2xfhJpy/479-4791861-file-twemoji-1f4a1-svg-light-bulb-emoji-twitter.png")
-                    .setColor("#C66F4B")
+                    .setColor("#FFAC33")
                     .setDescription(contenuto)
 
                 message.channel.send(embed).then(msg => {
