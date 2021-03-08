@@ -1082,6 +1082,8 @@ client.on("message", (message) => {
                     return
                 }
 
+                var suggestions = serverstats.suggestions
+
                 embedSuggestion
                     .setTitle("💡Suggestions by " + message.member.user.username)
                     .setDescription(contenuto)
