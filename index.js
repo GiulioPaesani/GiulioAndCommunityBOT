@@ -291,7 +291,7 @@ client.on("message", (message) => {
                         .setColor("#FF931E")
                         .setDescription("Il comando `" + message.content + "` non esiste")
 
-                    if (!message.member.hasPermission("ADMINISTRATOR")) {
+                    if (message.channel != "793781905740922900") {
 
 
                         message.channel.send(embed).then(msg => {
