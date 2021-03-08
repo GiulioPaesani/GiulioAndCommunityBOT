@@ -1541,6 +1541,7 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
         }
 
         if (messageReaction.message.channel.id == canaleSuggestions) {
+            console.log("ciao")
             var suggestions = JSON.parse(result[0].suggestions);
             if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
 
