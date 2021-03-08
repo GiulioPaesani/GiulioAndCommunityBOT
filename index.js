@@ -1046,7 +1046,7 @@ client.on("message", (message) => {
                 delete suggestions[id];
 
                 serverstats.suggestions = suggestions
-                updateDatabase(serverstats, userstats, message)
+                updateServerstats(serverstats)
 
                 var canale = client.channels.cache.get(canaleSuggestions)
                 canale.messages.fetch(id)
@@ -1119,7 +1119,7 @@ client.on("message", (message) => {
                         }
 
                         serverstats.suggestions = suggestions
-                        updateDatabase(serverstats, userstats, message)
+                        updateServerstats(serverstats)
                     })
 
 
@@ -1173,7 +1173,7 @@ client.on("message", (message) => {
                 delete challenges[id];
 
                 serverstats.challenges = challenges;
-                updateDatabase(serverstats, userstats, message)
+                updateServerstats(serverstats)
 
                 var canale = client.channels.cache.get(canaleChallenge)
                 canale.messages.fetch(id)
@@ -1243,7 +1243,7 @@ client.on("message", (message) => {
                             totVotiNeg: []
                         }
                         serverstats.challenges = challenges;
-                        updateDatabase(serverstats, userstats, message)
+                        updateServerstats(serverstats)
                     })
             }
 
@@ -1329,7 +1329,8 @@ client.on("message", (message) => {
                     }
 
                 }
-                updateDatabase(serverstats, userstats, message)
+                updateServerstats(serverstats)
+                updateUserstats(userstats, message)
 
             }
 
@@ -1551,7 +1552,7 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                 if (!suggestions[messageReaction.message.id].totVotiNeg.includes(user.id)) {
                     suggestions[messageReaction.message.id].totVotiPos.push(user.id)
                     serverstats.suggestions = suggestions
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
                 }
                 else {
                     messageReaction.users.remove(user);
@@ -1563,7 +1564,8 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                 if (!suggestions[messageReaction.message.id].totVotiPos.includes(user.id)) {
                     suggestions[messageReaction.message.id].totVotiNeg.push(user.id)
                     serverstats.suggestions = suggestions
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
                 else {
                     messageReaction.users.remove(user);
@@ -1616,7 +1618,8 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                 if (!challenges[messageReaction.message.id].totVotiNeg.includes(user.id)) {
                     challenges[messageReaction.message.id].totVotiPos.push(user.id)
                     serverstats.challenges = challenges
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
                 else {
                     messageReaction.users.remove(user);
@@ -1628,7 +1631,8 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                 if (!challenges[messageReaction.message.id].totVotiPos.includes(user.id)) {
                     challenges[messageReaction.message.id].totVotiNeg.push(user.id)
                     serverstats.challenges = challenges
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
                 else {
                     messageReaction.users.remove(user);
@@ -1697,7 +1701,8 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                 if (suggestions[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id) < 0) {
                     suggestions[messageReaction.message.id].totVotiPos.splice(suggestions[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id), 1)
                     serverstats.suggestions = suggestions
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
 
 
@@ -1706,7 +1711,8 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                 if (suggestions[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id) < 0) {
                     suggestions[messageReaction.message.id].totVotiNeg.splice(suggestions[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id), 1)
                     serverstats.suggestions = suggestions
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
 
             }
@@ -1757,7 +1763,8 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                 if (challenges[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id) < 0) {
                     challenges[messageReaction.message.id].totVotiPos.splice(challenges[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id), 1)
                     serverstats.challenges = challenges
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
 
 
@@ -1766,7 +1773,8 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                 if (challenges[messageReaction.message.id].totVotiPos.findIndex(x => x == user.id) < 0) {
                     challenges[messageReaction.message.id].totVotiNeg.splice(challenges[messageReaction.message.id].totVotiNeg.findIndex(x => x == user.id), 1)
                     serverstats.challenges = challenges
-                    updateDatabase(serverstats, userstats, message)
+                    updateServerstats(serverstats)
+
                 }
 
             }
@@ -1821,14 +1829,16 @@ setInterval(function () {
     })
 }, 1000 * 10)
 
-
-function updateDatabase(serverstats, userstats, message) {
+function updateServerstats(serverstats) {
     con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = ${serverstats.ultimoUtente}, bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(suggestions)}, challenges = '${JSON.stringify(challenges)}'`, (err) => {
         if (err) {
             console.log(err)
             return
         }
     })
+}
+
+function updateUserstats(userstats, message) {
     con.query(`UPDATE userstats SET username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id}`, (err) => {
         if (err) {
             console.log(err)
