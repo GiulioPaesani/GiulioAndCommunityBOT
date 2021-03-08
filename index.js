@@ -982,13 +982,18 @@ client.on("message", (message) => {
                                     msg.delete({ timeout: 7000 })
                                 })
                                 return
+                            }).then(() => {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Ecco il codice")
+                                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                                .setColor("#16A0F4")
+                                .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+
+                            message.channel.send(embed).then(msg => {
+                                message.delete({ timeout: 7000 })
+                                msg.delete({ timeout: 7000 })
                             })
-                            utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
-                            message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-                                .then(msg => {
-                                    msg.delete({ timeout: 5000 })
-                                })
-                            message.delete({ timeout: 5000 })
+                            })
                         }
                     }
                     else {
@@ -1009,8 +1014,7 @@ client.on("message", (message) => {
                                     msg.delete({ timeout: 7000 })
                                 })
                                 return
-                            });
-
+                            }).then(() => {
                             var embed = new Discord.MessageEmbed()
                                 .setTitle("Ecco il codice")
                                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
@@ -1021,6 +1025,9 @@ client.on("message", (message) => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
                             })
+                            })
+
+                            
 
                         }
 
