@@ -1209,6 +1209,7 @@ client.on("message", (message) => {
             }
 
             //COUNTING
+            var canaleCounting = "793781899796938802";
             if (message.channel == canaleCounting) {
 
                 try {
@@ -1446,7 +1447,6 @@ client.on("message", (message) => {
 
 
             }
-            var canaleCounting = "793781899796938802";
 
             function updateDatabase(userstats, serverstats) {
                 con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = "${serverstats.ultimoUtente}", bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}`, function (err, result, fields) {
@@ -1463,7 +1463,6 @@ client.on("message", (message) => {
             }
         })
     })
-
 })
 
 client.on("messageDelete", message => {
