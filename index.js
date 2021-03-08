@@ -1096,7 +1096,7 @@ client.on("message", (message) => {
                     .setTitle("Suggerimento eliminato")
                     .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                     .setColor("#16A0F4")
-                    .setDescription("Suggerimento " + id + " eliminato dalla lista")
+                    .setDescription("Suggestion ID: " + id + " eliminato dalla lista")
 
                 message.channel.send(embed).then(msg => {
                     message.delete({ timeout: 2000 })
@@ -1243,11 +1243,16 @@ client.on("message", (message) => {
                     .then(message => {
                         message.delete()
                     })
-                message.channel.send("Challenge eliminata con successo")
-                    .then(msg => {
-                        message.delete({ timeout: 5000 })
-                        msg.delete({ timeout: 5000 })
-                    })
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Challenge eliminata")
+                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                    .setColor("#16A0F4")
+                    .setDescription("Challenge ID: " + id + " eliminata dalla lista")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 2000 })
+                    msg.delete({ timeout: 2000 })
+                })
             }
 
             if (message.content.startsWith("!challenge") || message.content.startsWith("!sfida")) {
@@ -1280,14 +1285,15 @@ client.on("message", (message) => {
                 var canale = client.channels.cache.find(channel => channel.id == canaleChallenge);
 
                 var embed = new Discord.MessageEmbed()
-                    .setTitle("🎯 Nuova challenge inserita")
+                    .setTitle("Challenge inserita")
+                    .setThumbnail("https://i.postimg.cc/G2xfhJpy/479-4791861-file-twemoji-1f4a1-svg-light-bulb-emoji-twitter.png")
+                    .setColor("#C66F4B")
                     .setDescription(contenuto)
 
-                message.channel.send(embed)
-                    .then(msg => {
-                        message.delete({ timeout: 5000 })
-                        msg.delete({ timeout: 5000 })
-                    })
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
 
                 canale.send(embedChallenge)
                     .then(msg => {
@@ -1413,11 +1419,16 @@ client.on("message", (message) => {
 
                 var index = userstatsList.findIndex(x => x.id == utente.user.id);
                 if (index < 0) { //Se questo utente non c'è nel database
-                    message.channel.send(":x: Questo utente non ha mai giocato a Counting")
-                        .then(msg => {
-                            msg.delete({ timeout: 5000 })
-                            message.delete({ timeout: 5000 })
-                        })
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non ha mai giocato")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Questo utente non ha mai giocato a Couting")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
                     return
                 }
 
