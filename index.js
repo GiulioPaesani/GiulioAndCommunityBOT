@@ -1028,6 +1028,8 @@ client.on("message", (message) => {
                     return
                 }
 
+                var suggestions = JSON.parse(serverstats.suggestions);
+
                 if (!suggestions[id]) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Sintassi comando errata")
@@ -1541,7 +1543,6 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
         }
 
         if (messageReaction.message.channel.id == canaleSuggestions) {
-            console.log("ciao")
             var suggestions = JSON.parse(result[0].suggestions);
             if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
 
