@@ -305,9 +305,6 @@ client.on("message", (message) => {
 
             message.content = message.content.trim().toLowerCase();
 
-
-
-
             //TEST
             if (message.content == "!test") {
                 if (!message.member.hasPermission("ADMINISTRATOR")) {
@@ -324,6 +321,13 @@ client.on("message", (message) => {
                     return
                 }
                 message.channel.send(":green_circle: FUNZIONA TUTTO! Forse...")
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Sono ONLINE")
+                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                    .setColor("#3fce37")
+                    .setDescription("I comandi di <@802184359120863272> sono attivi e funzionanti, forse...")
+
+                message.channel.send(embed)
             }
             //HELP
             if (message.content == "!help" || message.content == "!aiuto" || message.content == "!comandi") {
