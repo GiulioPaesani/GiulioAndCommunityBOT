@@ -1830,7 +1830,7 @@ setInterval(function () {
 }, 1000 * 10)
 
 function updateServerstats(serverstats) {
-    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = ${serverstats.ultimoUtente}, bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(suggestions)}, challenges = '${JSON.stringify(challenges)}'`, (err) => {
+    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = ${serverstats.ultimoUtente}, bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}, challenges = '${JSON.stringify(serverstats.challenges)}'`, (err) => {
         if (err) {
             console.log(err)
             return
