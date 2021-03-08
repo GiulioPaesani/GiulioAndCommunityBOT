@@ -36,8 +36,6 @@ var embedSuggestion = new Discord.MessageEmbed()
 var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
 
-
-
 client.on("message", (message) => {
     if (message.author.bot) return
     if (message.channel.type == "dm") return
@@ -517,10 +515,10 @@ client.on("message", (message) => {
                 }
                 if (!utente) {
                     var embed = new Discord.MessageEmbed()
-                        .setTitle("Sintassi comando errata")
+                        .setTitle("Utente non trovato")
                         .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                         .setColor("#ED1C24")
-                        .setDescription("Utente non trovato\r`!userinfo [user]`")
+                        .setDescription("`!userinfo [user]`")
 
                     message.channel.send(embed).then(msg => {
                         message.delete({ timeout: 7000 })
