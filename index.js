@@ -320,10 +320,8 @@ client.on("message", (message) => {
                     })
                     return
                 }
-                message.channel.send(":green_circle: FUNZIONA TUTTO! Forse...")
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Sono ONLINE")
-                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                     .setColor("#78B159")
                     .setDescription("I comandi di <@802184359120863272> sono attivi e funzionanti, forse...")
 
@@ -540,6 +538,10 @@ client.on("message", (message) => {
                         elencoRuoli += "[Altri " + (ruoli.length - i - 1) + "...]";
                         i = ruoli.length + 1;
                     }
+                }
+
+                if (elencoRuoli == "") {
+                    elencoRuoli = "Nessun ruolo";
                 }
 
                 var elencoPermessi = "";
@@ -914,14 +916,18 @@ client.on("message", (message) => {
                     }
                 }
                 if (!comando) {
+
                     var embed = new Discord.MessageEmbed()
-                        .setTitle(":interrobang: Non trovato")
-                        .setDescription(message.member.toString() + " `" + command + "` è un codice che non esiste o non è stato ancora aggiunto\rScrivi `!code` per sapere quali sono i comandi disponibili")
-                        .setColor("#f23b38")
+                        .setTitle("Codice non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!code (codice)`")
+
                     message.channel.send(embed).then(msg => {
-                        msg.delete({ timeout: 5000 });
-                        message.delete({ timeout: 5000 })
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
                     })
+                    return
                 }
                 else {
                     data = fs.readFileSync("comandi/" + comando + "-GiulioAndCode.txt")
@@ -956,7 +962,16 @@ client.on("message", (message) => {
                         }
                         else {
                             utente.send(embed).catch(() => {
-                                message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
+                                var embed = new Discord.MessageEmbed()
+                                    .setTitle("DM non concessi")
+                                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                                    .setColor("#5FB3F9")
+                                    .setDescription("Questo utente non può ricevere messaggi privati")
+
+                                message.channel.send(embed).then(msg => {
+                                    message.delete({ timeout: 7000 })
+                                    msg.delete({ timeout: 7000 })
+                                })
                                 return
                             });
                             utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
