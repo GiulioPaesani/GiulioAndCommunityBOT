@@ -973,7 +973,7 @@ client.on("message", (message) => {
                                     msg.delete({ timeout: 7000 })
                                 })
                                 return
-                            });
+                            })
                             utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
                             message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
                                 .then(msg => {
@@ -985,14 +985,20 @@ client.on("message", (message) => {
                     else {
                         embed.addField(":wrench: Codes:", "```js\r" + data + "```");
                         if (args[args.length - 1].toLowerCase() == "here") {
-                            message.channel.send(embed).catch(() => {
-                                message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
-                                return
-                            });
+                            message.channel.send(embed)
                         }
                         else {
                             utente.send(embed).catch(() => {
-                                message.channel.send(":no_entry_sign: Questo utente non può ricevere DM")
+                                var embed = new Discord.MessageEmbed()
+                                    .setTitle("DM non concessi")
+                                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                                    .setColor("#5FB3F9")
+                                    .setDescription("Questo utente non può ricevere messaggi privati")
+
+                                message.channel.send(embed).then(msg => {
+                                    message.delete({ timeout: 7000 })
+                                    msg.delete({ timeout: 7000 })
+                                })
                                 return
                             });
                             message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
