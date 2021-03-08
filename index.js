@@ -9,18 +9,13 @@ const fs = require("file-system");
 const mysql = require('mysql');
 const ytnotifier = require('youtube-notifier');
 
-client.login(process.env.token);
+//client.login(process.env.token);
+client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.hQpOwnwHvUMCJrB3QXVJAh8NKAE")
 
 client.on("ready", () => {
     console.log("------------ONLINE------------")
 
     client.user.setActivity('!help', { type: 'WATCHING' });
-
-    var canale = client.channels.cache.get("793781905740922900")
-    var embed = new Discord.MessageEmbed()
-        .setDescription("GiulioAndCommunityBOT è ONLINE")
-        .setColor("#75AD57")
-    canale.send(embed)
 })
 
 var con = mysql.createPool({ //Connessione database Heroku
@@ -31,7 +26,8 @@ var con = mysql.createPool({ //Connessione database Heroku
     host: 'eu-cdbr-west-03.cleardb.net',
     port: 3306,
     user: 'b0e6f9bf85a35f',
-    password: process.env.passworddb,
+    //password: process.env.passworddb,
+    password: "64876aaa0106d0f",
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
@@ -71,6 +67,7 @@ client.on("message", (message) => {
             var index = userstatsList.findIndex(x => x.id == message.author.id);
             var userstats;
             if (index < 0) { //Se questo utente non c'è nel database
+
                 userstatsList[userstatsList.length] = {
                     id: message.author.id,
                     username: message.member.user.tag,
@@ -1082,7 +1079,7 @@ client.on("message", (message) => {
                     return
                 }
 
-                var suggestions = serverstats.suggestions
+                var suggestions = JSON.parse(serverstats.suggestions);
 
                 embedSuggestion
                     .setTitle("💡Suggestions by " + message.member.user.username)
@@ -1143,6 +1140,8 @@ client.on("message", (message) => {
                     })
                     return
                 }
+
+                var challenges = JSON.parse(serverstats.challenges)
 
                 var id = message.content.slice(9).trim();
                 if (id == "") {
@@ -1209,6 +1208,8 @@ client.on("message", (message) => {
                     return
                 }
 
+                var challenges = JSON.parse(serverstats.challenges);
+
                 embedChallenge
                     .setTitle("🎯 Challenge by " + message.member.user.username)
                     .setDescription(contenuto)
@@ -1269,12 +1270,9 @@ client.on("message", (message) => {
                     message.channel.send(embed)
 
                     userstats.incorrect = userstats.incorrect + 1;
-                    serverstats = {
-                        numero: 0,
-                        ultimoUtente: "NessunUtente",
-                        bestScore: serverstats.bestScore,
-                        timeBestScore: serverstats.timeBestScore
-                    }
+
+                    serverstats.numero = 0;
+                    serverstats.ultimoUtente = "NessunUtente";
 
                     message.react("🔴");
                 }
@@ -1304,12 +1302,9 @@ client.on("message", (message) => {
                     message.channel.send(embed)
 
                     userstats.incorrect = userstats.incorrect + 1;
-                    serverstats = {
-                        numero: 0,
-                        ultimoUtente: "NessunUtente",
-                        bestScore: serverstats.bestScore,
-                        timeBestScore: serverstats.timeBestScore
-                    }
+
+                    serverstats.numero = 0;
+                    serverstats.ultimoUtente = "NessunUtente";
 
                     message.react("🔴");
                 }
@@ -1320,15 +1315,12 @@ client.on("message", (message) => {
                     serverstats.ultimoUtente = message.author.id
                     serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
 
-                    userstats = {
-                        "username": message.member.user.tag,
-                        "lastScore": numero,
-                        "timeBestScore": numero > userstats.bestScore ? new Date().getTime() : userstats.timeBestScore,
-                        "timeLastScore": new Date().getTime(),
-                        "bestScore": numero > userstats.bestScore ? userstats.bestScore = numero : userstats.bestScore,
-                        "correct": userstats.correct + 1,
-                        "incorrect": userstats.incorrect,
-                    }
+                    userstats.username = message.member.user.tag;
+                    userstats.lastScore = numero;
+                    userstats.timeBestScore = numero > userstats.bestScore ? new Date().getTime() : userstats.timeBestScore;
+                    userstats.timeLastScore = new Date().getTime();
+                    userstats.bestScore = numero > userstats.bestScore ? userstats.bestScore = numero : userstats.bestScore;
+                    userstats.correct = userstats.correct + 1;
 
                 }
                 updateServerstats(serverstats)
@@ -1540,12 +1532,13 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
     // fetch message data if we got a partial event
     if (messageReaction.message.partial) await messageReaction.message.fetch();
 
-    con.query("SELECT * FROM serverstats", function (err, result) {
+    con.query("SELECT * FROM serverstats", (err, result) => {
         if (err) {
             console.log(err)
         }
         var serverstats = result[0];
         var suggestions = JSON.parse(serverstats.suggestions);
+        var challenges = JSON.parse(serverstats.challenges);
 
         if (messageReaction.message.channel.id == canaleSuggestions) {
             if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
@@ -1613,7 +1606,6 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                 })
         }
         if (messageReaction.message.channel.id == canaleChallenge) {
-            var challenges = JSON.parse(result[0].challenges);
             if (!challenges.hasOwnProperty(messageReaction.message.id)) return
 
             if (messageReaction._emoji.name == "👍") {
@@ -1686,13 +1678,13 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
 
     if (messageReaction.message.partial) await messageReaction.message.fetch();
 
-    con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
+    con.query("SELECT * FROM serverstats", (err, result) => {
         if (err) {
-            console.log(err);
-            return
+            console.log(err)
         }
         var serverstats = result[0];
         var suggestions = JSON.parse(serverstats.suggestions);
+        var challenges = JSON.parse(serverstats.challenges);
 
         if (messageReaction.message.channel.id == canaleSuggestions) {
             var suggestions = JSON.parse(serverstats.suggestions);
@@ -1758,7 +1750,6 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                 })
         }
         if (messageReaction.message.channel.id == canaleChallenge) {
-            var challenges = JSON.parse(result[0].challenges);
             if (!challenges.hasOwnProperty(messageReaction.message.id)) return
             if (messageReaction._emoji.name == "👍") {
 
@@ -1832,8 +1823,12 @@ setInterval(function () {
 }, 1000 * 10)
 
 function updateServerstats(serverstats) {
-    console.log(serverstats.suggestions)
-    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = ${serverstats.ultimoUtente}, bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}'`, (err) => {
+    if (typeof serverstats.challenges === 'string' || serverstats.challenges instanceof String)
+        serverstats.challenges = JSON.parse(serverstats.challenges)
+    if (typeof serverstats.suggestions === 'string' || serverstats.suggestions instanceof String)
+        serverstats.suggestions = JSON.parse(serverstats.suggestions)
+
+    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}'`, (err) => {
         if (err) {
             console.log(err)
             return
@@ -1842,7 +1837,7 @@ function updateServerstats(serverstats) {
 }
 
 function updateUserstats(userstats, message) {
-    con.query(`UPDATE userstats SET username = "${message.member.user.tag}", lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id}`, (err) => {
+    con.query(`UPDATE userstats SET username = '${message.member.user.tag}', lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id}`, (err) => {
         if (err) {
             console.log(err)
             return
