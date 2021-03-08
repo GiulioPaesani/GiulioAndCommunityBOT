@@ -1541,11 +1541,10 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
         if (err) {
             console.log(err)
         }
+        var serverstats = result[0];
+        var suggestions = JSON.parse(serverstats.suggestions);
 
         if (messageReaction.message.channel.id == canaleSuggestions) {
-            console.log("ciao")
-
-            var suggestions = JSON.parse(result[0].suggestions);
             if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
 
             if (messageReaction._emoji.name == "😍") {
@@ -1686,9 +1685,11 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
             console.log(err);
             return
         }
+        var serverstats = result[0];
+        var suggestions = JSON.parse(serverstats.suggestions);
 
         if (messageReaction.message.channel.id == canaleSuggestions) {
-            var suggestions = JSON.parse(result[0].suggestions);
+            var suggestions = JSON.parse(serverstats.suggestions);
             if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
             if (messageReaction._emoji.name == "😍") {
 
