@@ -111,11 +111,6 @@ client.on("message", (message) => {
                     id: "235148962103951360",
                     canaliPermessi: ["801019779480944660"]
                 },
-                dankMemer: {
-                    comandi: ["pls"],
-                    id: "270904126974590976",
-                    canaliPermessi: ["800040259983376414"]
-                },
                 ticket: {
                     comandi: ["t!open"],
                     id: "508391840525975553",
