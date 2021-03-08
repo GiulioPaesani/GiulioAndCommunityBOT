@@ -9,8 +9,7 @@ const fs = require("file-system");
 const mysql = require('mysql');
 const ytnotifier = require('youtube-notifier');
 
-//client.login(process.env.token);
-client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.hQpOwnwHvUMCJrB3QXVJAh8NKAE")
+client.login(process.env.token);
 
 client.on("ready", () => {
     console.log("------------ONLINE------------")
@@ -26,8 +25,7 @@ var con = mysql.createPool({ //Connessione database Heroku
     host: 'eu-cdbr-west-03.cleardb.net',
     port: 3306,
     user: 'b0e6f9bf85a35f',
-    //password: process.env.passworddb,
-    password: "64876aaa0106d0f",
+    password: process.env.passworddb,
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
