@@ -1091,11 +1091,17 @@ client.on("message", (message) => {
                     .then(message => {
                         message.delete()
                     })
-                message.channel.send("Suggerimento eliminato con successo")
-                    .then(msg => {
-                        message.delete({ timeout: 5000 })
-                        msg.delete({ timeout: 5000 })
-                    })
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Suggerimento eliminato")
+                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                    .setColor("#16A0F4")
+                    .setDescription("Suggerimento " + id + " eliminato dalla lista")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 2000 })
+                    msg.delete({ timeout: 2000 })
+                })
             }
 
             if (message.content.startsWith("!suggest") || message.content.startsWith("!suggerisci") || message.content.startsWith("!suggerimento")) {
@@ -1121,7 +1127,16 @@ client.on("message", (message) => {
                 }
 
                 if (contenuto.includes("\"")) {
-                    message.channel.send("Inserisci un suggerimento senza virgolette")
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Senza virgolette")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Inserire un suggerimento senza virgolette")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
                     return
                 }
 
@@ -1135,14 +1150,15 @@ client.on("message", (message) => {
                 var canale = client.channels.cache.find(channel => channel.id == canaleSuggestions);
 
                 var embed = new Discord.MessageEmbed()
-                    .setTitle("💡Nuovo suggerimento inserito")
+                    .setTitle("Suggerimento inserito")
+                    .setThumbnail("https://i.postimg.cc/TPTBD4WP/479-4791861-file-twemoji-1f4a1-svg-light-bulb-emoji-twitter.png")
+                    .setColor("#FED883")
                     .setDescription(contenuto)
 
-                message.channel.send(embed)
-                    .then(msg => {
-                        message.delete({ timeout: 5000 })
-                        msg.delete({ timeout: 5000 })
-                    })
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
 
                 canale.send(embedSuggestion)
                     .then(msg => {
