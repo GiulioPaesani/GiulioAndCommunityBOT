@@ -1536,6 +1536,266 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             }
+
+            if (message.content.startsWith("!slowmode")) {
+                if (!message.member.hasPermission("MANAGE_CHANNELS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!slowmode` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!message.guild.me.hasPermission("MANAGE_CHANNELS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non ho il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non posso cancellare messaggi perchè non ne ho il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var time = message.content.split(/\s+/)[1];
+                if (!time) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Inserire un tempo")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!slowmode [time]/off`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                if (time != "off" && time != "no") {
+                    time = ms(time)
+
+                    if (!time) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Tempo non valido")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("`!slowmode [time]/off`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+
+                    if (time > 21600000) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Troppa slowmode")
+                            .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                            .setColor("#8F8F8F")
+                            .setDescription("Non puoi impostare una slowmode superiore a 6 ore")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+
+                    var tempo = ms(time, { long: true });
+                    tempo = tempo + " "
+                    tempo = tempo.replace("second ", "secondo")
+                    tempo = tempo.replace("seconds", "secondi")
+                    tempo = tempo.replace("minute ", "minuto ")
+                    tempo = tempo.replace("minutes", "minuti")
+                    tempo = tempo.replace("hour ", "ora ")
+                    tempo = tempo.replace("hours", "ore")
+                    tempo = tempo.replace("day ", "giorno ")
+                    tempo = tempo.replace("day", "giorni")
+                    tempo = tempo.replace("week ", "settimana ")
+                    tempo = tempo.replace("weeks", "settimane")
+                    tempo = tempo.replace("month ", "mese ")
+                    tempo = tempo.replace("months", "mesi")
+                }
+
+                if (time == "off" || time == "no") {
+                    time = 0
+                }
+
+                message.channel.setRateLimitPerUser(parseInt(time) / 1000)
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Slowmode impostata")
+                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                    .setColor("#16A0F4")
+                if (time == 0) {
+                    embed.setDescription("Slowmode disattivata")
+                }
+                else {
+                    embed.setDescription("Slowmode impostata a " + tempo)
+                }
+                message.channel.send(embed)
+            }
+
+            if (message.content.startsWith("!clear")) {
+                if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!clear` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non ho il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non posso cancellare messaggi perchè non ne ho il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                try {
+                    count = parseInt(message.content.split(/\s+/)[1]) + 1;
+                } catch {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Valore non valido")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!clear [count]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!count) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Tempo non valido")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!clear [count]`")
+
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (count <= 100) {
+                    console.log("cancellati " + count)
+                    message.channel.bulkDelete(count, true)
+                    count = 0
+                }
+                while (count > 0) {
+                    if (count <= 100) {
+                        console.log("cancellati " + count)
+                        message.channel.bulkDelete(count, true)
+                        count = 0
+                    }
+                    else {
+                        console.log("cancellati 100")
+                        message.channel.bulkDelete(100, true)
+                        count -= 100
+
+                    }
+                }
+
+                setTimeout(function () {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Messaggi eliminati")
+                        .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                        .setColor("#16A0F4")
+                        .setDescription("Sono stati eliminati " + parseInt(message.content.split(/\s+/)[1]) + " messaggi")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 4000 })
+                        msg.delete({ timeout: 4000 })
+                    })
+                }, 2000)
+            }
+
+            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "sesso anale", "vaffanculo", "fanculo", "s3sso0 4n4l3", "anale", "culo", "tette", "twerk", "minkia", "beata minkia", "buttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "pene", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "dio", "porco", "dio cane", "bastardo", "sborra", "squirt", "peni", "inculatevi", "sborratevi", "squirtate"]
+            var parolacciaTrovata = false
+            var messaggioCensurato = message.content;
+            var paroleMessaggio = message.content.split(/\s+/);
+            for (var i = 0; i < paroleMessaggio.length; i++) {
+                for (var j = 0; j < parolacce.length; j++) {
+
+                    if (paroleMessaggio[i] == parolacce[j]) {
+
+                        if (message.member.hasPermission("ADMINISTRATOR")) {
+                            //return;
+                        }
+                        var lunghezzaCensored = ""
+                        for (var z = 2; z < parolacce[j].length; z++) {
+                            lunghezzaCensored += "#"
+                        }
+                        parolacciaTrovata = true;
+                        messaggioCensurato = messaggioCensurato.replace(new RegExp(parolacce[j], 'g'), parolacce[j][0] + lunghezzaCensored + parolacce[j][parolacce[j].length - 1]);
+                    }
+                }
+            }
+            if (parolacciaTrovata) {
+                message.delete();
+                var canale = client.channels.cache.get(canaleLog)
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
+                    .setColor("#6143CB")
+                    .addField("Message", messaggioCensurato)
+                    .addField("Channel", message.channel.toString())
+                    .setFooter("User ID: " + message.member.user.id)
+
+                message.channel.send(embed)
+
+                var embedLog = new Discord.MessageEmbed()
+                    .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
+                    .setColor("#6143CB")
+                    .addField("Message", message.content)
+                    .addField("Channel", message.channel.toString())
+                    .setFooter("User ID: " + message.member.user.id)
+
+                canale.send(embedLog)
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Hai detto una parolaccia")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
+                    .addField("Message", messaggioCensurato)
+                    .addField("Channel", message.channel.toString())
+
+                message.member.send(embedUtente)
+                    .catch(() => {
+                        return
+                    })
+
+            }
         })
     })
 
