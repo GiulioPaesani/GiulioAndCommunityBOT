@@ -37,6 +37,8 @@ var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
 
 client.on("message", (message) => {
+    message.content = message.content.trim().toLowerCase();
+
     if (message.author.bot) return
     if (message.channel.type == "dm") return
 
@@ -298,7 +300,6 @@ client.on("message", (message) => {
                 }
             }
 
-            message.content = message.content.trim().toLowerCase();
 
             //TEST
             if (message.content == "!test") {
@@ -983,16 +984,16 @@ client.on("message", (message) => {
                                 })
                                 return
                             }).then(() => {
-                            var embed = new Discord.MessageEmbed()
-                                .setTitle("Ecco il codice")
-                                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                                .setColor("#16A0F4")
-                                .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                                var embed = new Discord.MessageEmbed()
+                                    .setTitle("Ecco il codice")
+                                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                                    .setColor("#16A0F4")
+                                    .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
 
-                            message.channel.send(embed).then(msg => {
-                                message.delete({ timeout: 7000 })
-                                msg.delete({ timeout: 7000 })
-                            })
+                                message.channel.send(embed).then(msg => {
+                                    message.delete({ timeout: 7000 })
+                                    msg.delete({ timeout: 7000 })
+                                })
                             })
                         }
                     }
@@ -1015,19 +1016,19 @@ client.on("message", (message) => {
                                 })
                                 return
                             }).then(() => {
-                            var embed = new Discord.MessageEmbed()
-                                .setTitle("Ecco il codice")
-                                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                                .setColor("#16A0F4")
-                                .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+                                var embed = new Discord.MessageEmbed()
+                                    .setTitle("Ecco il codice")
+                                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                                    .setColor("#16A0F4")
+                                    .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
 
-                            message.channel.send(embed).then(msg => {
-                                message.delete({ timeout: 7000 })
-                                msg.delete({ timeout: 7000 })
-                            })
+                                message.channel.send(embed).then(msg => {
+                                    message.delete({ timeout: 7000 })
+                                    msg.delete({ timeout: 7000 })
+                                })
                             })
 
-                            
+
 
                         }
 
