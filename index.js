@@ -8,6 +8,7 @@ const { Permissions } = require('discord.js');
 const fs = require("file-system");
 const mysql = require('mysql');
 const ytnotifier = require('youtube-notifier');
+const ms = require("ms")
 
 client.login(process.env.token);
 
@@ -35,6 +36,8 @@ var embedSuggestion = new Discord.MessageEmbed()
 
 var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
+
+var canaleLog = "793781904973365299";
 
 client.on("message", (message) => {
     message.content = message.content.trim().toLowerCase();
@@ -74,7 +77,8 @@ client.on("message", (message) => {
                     timeBestScore: 0,
                     timeLastScore: 0,
                     correct: 0,
-                    incorrect: 0
+                    incorrect: 0,
+                    warn: "{}"
                 }
 
                 var index = userstatsList.findIndex(x => x.id == message.author.id);
@@ -129,9 +133,9 @@ client.on("message", (message) => {
             var comandiGiulioAndCommunityBot = {
                 "!test": [],
 
-                "!slowmode": [],
+                "-!slowmode": [],
 
-                "!clear": [],
+                "-!clear": [],
 
                 "-!code": ["801019779480944660"],
 
@@ -1573,6 +1577,7 @@ client.on("message", (message) => {
                     return
                 }
 
+                console.log("ciao")
                 var time = message.content.split(/\s+/)[1];
                 if (!time) {
                     var embed = new Discord.MessageEmbed()
@@ -1699,7 +1704,7 @@ client.on("message", (message) => {
 
                 if (!count) {
                     var embed = new Discord.MessageEmbed()
-                        .setTitle("Tempo non valido")
+                        .setTitle("Valore non valido")
                         .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                         .setColor("#ED1C24")
                         .setDescription("`!clear [count]`")
