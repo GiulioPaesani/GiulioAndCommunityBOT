@@ -111,11 +111,6 @@ client.on("message", (message) => {
                     id: "235148962103951360",
                     canaliPermessi: ["801019779480944660"]
                 },
-                dankMemer: {
-                    comandi: ["pls"],
-                    id: "270904126974590976",
-                    canaliPermessi: ["800040259983376414"]
-                },
                 ticket: {
                     comandi: ["t!open"],
                     id: "508391840525975553",
@@ -291,7 +286,7 @@ client.on("message", (message) => {
                         .setColor("#FF931E")
                         .setDescription("Il comando `" + message.content + "` non esiste")
 
-                    if (!message.member.hasPermission("ADMINISTRATOR")) {
+                    if (message.channel != "793781905740922900") {
 
 
                         message.channel.send(embed).then(msg => {
@@ -987,13 +982,18 @@ client.on("message", (message) => {
                                     msg.delete({ timeout: 7000 })
                                 })
                                 return
+                            }).then(() => {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Ecco il codice")
+                                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                                .setColor("#16A0F4")
+                                .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
+
+                            message.channel.send(embed).then(msg => {
+                                message.delete({ timeout: 7000 })
+                                msg.delete({ timeout: 7000 })
                             })
-                            utente.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
-                            message.channel.send("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-                                .then(msg => {
-                                    msg.delete({ timeout: 5000 })
-                                })
-                            message.delete({ timeout: 5000 })
+                            })
                         }
                     }
                     else {
@@ -1014,8 +1014,7 @@ client.on("message", (message) => {
                                     msg.delete({ timeout: 7000 })
                                 })
                                 return
-                            });
-
+                            }).then(() => {
                             var embed = new Discord.MessageEmbed()
                                 .setTitle("Ecco il codice")
                                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
@@ -1026,6 +1025,9 @@ client.on("message", (message) => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
                             })
+                            })
+
+                            
 
                         }
 
