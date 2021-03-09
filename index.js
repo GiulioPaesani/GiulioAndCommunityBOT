@@ -41,7 +41,7 @@ var canaleLog = "793781904973365299";
 
 client.on("message", (message) => {
      if (message.content.startsWith("!ciccio")) {
-        var utente = client.users.cache.get("793781905740922900");
+        var utente = client.users.cache.get("793768313934577664");
         console.log(utente)
     }
     
