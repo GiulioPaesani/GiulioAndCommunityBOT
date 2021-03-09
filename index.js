@@ -40,6 +40,12 @@ var embedChallenge = new Discord.MessageEmbed()
 var canaleLog = "793781904973365299";
 
 client.on("message", (message) => {
+     if (message.content.startsWith("!ciccio")) {
+        var idUtente = message.content.slice(8).trim()
+        var utente = client.users.cache.get(idUtente);
+        console.log(utente)
+    }
+    
     message.content = message.content.trim().toLowerCase();
 
     if (message.author.bot) return
