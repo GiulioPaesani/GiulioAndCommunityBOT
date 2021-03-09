@@ -129,6 +129,10 @@ client.on("message", (message) => {
             var comandiGiulioAndCommunityBot = {
                 "!test": [],
 
+                "!slowmode": [],
+
+                "!clear": [],
+
                 "-!code": ["801019779480944660"],
 
                 "!server": ["801019779480944660"],
