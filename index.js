@@ -1724,12 +1724,10 @@ client.on("message", (message) => {
                 }
                 while (count > 0) {
                     if (count <= 100) {
-                        console.log("cancellati " + count)
                         message.channel.bulkDelete(count, true)
                         count = 0
                     }
                     else {
-                        console.log("cancellati 100")
                         message.channel.bulkDelete(100, true)
                         count -= 100
 
