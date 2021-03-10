@@ -2919,7 +2919,7 @@ client.on("message", (message) => {
                     if (paroleMessaggio[i] == parolacce[j]) {
 
                         if (message.member.hasPermission("ADMINISTRATOR")) {
-                            //return; //< TO
+                            return;
                         }
                         var lunghezzaCensored = ""
                         for (var z = 2; z < parolacce[j].length; z++) {
