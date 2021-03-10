@@ -40,11 +40,6 @@ var embedChallenge = new Discord.MessageEmbed()
 var canaleLog = "793781904973365299";
 
 client.on("message", (message) => {
-     if (message.content.startsWith("!ciccio")) {
-        var utente = client.users.cache.get("793768313934577664");
-        console.log(utente)
-    }
-    
     message.content = message.content.trim().toLowerCase();
 
     if (message.author.bot) return
@@ -186,6 +181,31 @@ client.on("message", (message) => {
                 "!help": ["801019779480944660"],
                 "!aiuto": ["801019779480944660"],
                 "!comandi": ["801019779480944660"],
+
+                "-!warn": [],
+
+                "-!infractions": ["801019779480944660"],
+                "-!infraction": ["801019779480944660"],
+                "-!infrazioni": ["801019779480944660"],
+
+                "-!clearinfractions": [],
+                "-!clearinfraction": [],
+                "-!clearinfrazioni": [],
+                "-!clearwarn": [],
+
+                "-!ban": [],
+
+                "-!unban": [],
+
+                "-!mute": [],
+                "-!unmute": [],
+
+                "-!kick": [],
+
+                "-!tempmute": [],
+
+                "-!tempban": [],
+
             }
 
             var nomeComando;
@@ -209,7 +229,7 @@ client.on("message", (message) => {
             if (canaleNotConcessoBot) { //Comando bot in canale non concesso
                 var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
-                if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
+                if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")))) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Canale non concesso")
                         .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
@@ -285,15 +305,6 @@ client.on("message", (message) => {
             }
             else {
                 if (message.content.startsWith("!") && !trovatoBot) {
-
-                    var comandiMee6 = ["!ban", "!tempban", "!clear", "!nfractions", "!kick", "!mute", "!tempmute", "!slowmode", "!unban", "!unmute", "!warm"]
-                    for (var i = 0; i < comandiMee6.length; i++) {
-                        if (message.content.startsWith(comandiMee6[i])) {
-                            return
-                        }
-                    }
-
-
                     //Comando non esistente
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Comando non esistente")
@@ -1422,7 +1433,7 @@ client.on("message", (message) => {
 
                 }
                 updateServerstats(serverstats)
-                updateUserstats(userstats, message)
+                updateUserstats(userstats, message.member)
 
             }
 
@@ -1753,6 +1764,1142 @@ client.on("message", (message) => {
                 }, 2000)
             }
 
+            if (message.content.startsWith("!warn")) {
+                var utente = message.mentions.members.first();
+
+                if (!message.member.hasPermission("KICK_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!warn` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!warn [user] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi warnare questo utente")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var index = userstatsList.findIndex(x => x.id == utente.user.id);
+                if (index < 0) {
+                    userstatsList[userstatsList.length] = {
+                        id: utente.user.id,
+                        username: utente.user.tag,
+                        lastScore: 0,
+                        bestScore: 0,
+                        timeBestScore: 0,
+                        timeLastScore: 0,
+                        correct: 0,
+                        incorrect: 0,
+                        warn: "{}"
+                    }
+
+                    var index = userstatsList.length;
+
+                    con.query(`INSERT INTO userstats VALUES (${utente.user.id}, '${utente.user.tag}', 0, 0, 0, 0, 0, 0, "{}")`, (err) => {
+                        if (err) {
+                            console.log(err);
+                            return
+                        }
+                    })
+                }
+                var userstats = userstatsList[index]
+
+                var args = message.content.split(/\s+/);
+                var reason = "";
+                if (args.length == 2) {
+                    reason = "Nessun motivo";
+                }
+                else {
+                    for (var i = 2; i < args.length; i++) {
+                        reason += args[i] + " "
+                    }
+                }
+
+                var warn = JSON.parse(userstats.warn);
+                warn[Object.keys(warn).length] = {
+                    reason: reason,
+                    time: new Date().getTime()
+                }
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[WARN] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato warnato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente)
+                    .catch(() => {
+                        return
+                    })
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed)
+
+                userstats.warn = warn
+                updateUserstats(userstats, utente)
+            }
+            if (message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")) {
+                if (message.content == "!infractions") {
+                    var utente = message.member;
+                }
+                else {
+                    var utente = message.mentions.members.first();
+                    if (!utente) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Utente non trovato")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("`!infractions [user]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+                }
+
+
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("INFRACTIONS - " + utente.user.tag)
+                    .setDescription("Tutte le infrazioni di questo utente")
+                    .setThumbnail(utente.user.avatarURL())
+
+                var index = userstatsList.findIndex(x => x.id == utente.user.id);
+                if (index < 0) {
+                    embed
+                        .addField(":interrobang: Total", "```Nessuna infrazione```", false)
+                }
+                else {
+                    var userstats = userstatsList[index]
+                    var warn = JSON.parse(userstats.warn);
+
+                    if (Object.keys(warn).length == 0) {
+                        embed
+                            .addField(":interrobang: Total", "```Nessuna infrazione```", false)
+                    }
+                    else {
+                        var ultimi10d = 0
+                        var ultime24h = 0
+                        var elencoInfrazioni = ""
+
+                        for (var i = 0; i < Object.keys(warn).length; i++) {
+                            var time = warn[Object.keys(warn)[i]].time;
+                            var timeOra = new Date().getTime();
+                            var diff = timeOra - time;
+
+                            if (diff <= 86400000) {
+                                ultime24h++;
+                            }
+                            if (diff <= 864000000) {
+                                ultimi10d++;
+                            }
+
+                        }
+
+                        for (var i = 0; i < 10; i++) {
+                            if (Object.keys(warn).length - 1 < i) {
+                                break
+                            }
+
+                            elencoInfrazioni += "#" + Object.keys(warn)[Object.keys(warn).length - 1 - i] + " - " + warn[Object.keys(warn)[Object.keys(warn).length - 1 - i]].reason.trim() + " (" + moment(warn[Object.keys(warn)[Object.keys(warn).length - 1 - i]].time).fromNow() + ")\r"
+                        }
+
+                        embed
+                            .addField(":interrobang: Total", "```" + Object.keys(warn).length + "```", false)
+                            .addField(":exclamation: Last 24 hours", "```" + ultime24h + "```", true)
+                            .addField(":question: Last 10 days", "```" + ultimi10d + "```", true)
+                            .addField(":no_entry_sign: Last 10 infractions", "```" + elencoInfrazioni + "```", false)
+                    }
+
+                }
+
+                message.channel.send(embed)
+            }
+            if (message.content.startsWith("!clearinfractions") || message.content.startsWith("!clearwarn") || message.content.startsWith("!clearinfraction") || message.content.startsWith("!clearinfrazioni")) {
+                if (!message.member.hasPermission("KICK_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!clearinfractions` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var utente = message.mentions.members.first();
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!clearinfractions [user] (code warn)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var args = message.content.split(/\s+/)
+                var code = args[2];
+
+                var index = userstatsList.findIndex(x => x.id == utente.user.id);
+                if (index < 0) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente senza infrazioni")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Questo utente non ha nessuna infrazione")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                else {
+                    var userstats = userstatsList[index]
+                    var warn = JSON.parse(userstats.warn);
+
+                    if (Object.keys(warn).length == 0) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Utente senza infrazioni")
+                            .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                            .setColor("#8F8F8F")
+                            .setDescription("Questo utente non ha nessuna infrazione")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+
+                    if (!code) {
+                        warn = "{}";
+                        userstats.warn = warn
+                        updateUserstats(userstats, utente)
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Infrazioni eliminate")
+                            .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                            .setColor("#16A0F4")
+                            .setDescription("Tutte le infrazioni sono state eliminate")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                    }
+                    else {
+                        if (!warn.hasOwnProperty(code)) {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Infrazione non trovata")
+                                .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                                .setColor("#ED1C24")
+                                .setDescription("`!clearinfractions [user] (code warn)`")
+
+                            message.channel.send(embed).then(msg => {
+                                message.delete({ timeout: 7000 })
+                                msg.delete({ timeout: 7000 })
+                            })
+                            return
+                        }
+
+
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Infrazione eliminata")
+                            .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                            .setColor("#16A0F4")
+                            .setDescription("Infrazione `" + warn[code].reason.trim() + "` eliminata")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+
+                        delete warn[code]
+
+                        userstats.warn = warn
+                        updateUserstats(userstats, utente)
+                    }
+                }
+            }
+
+            if (message.content.startsWith("!ban")) {
+                var utente = message.mentions.members.first();
+
+                if (!message.member.hasPermission('BAN_MEMBERS')) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!ban` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!ban [user] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!utente.bannable) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non ho il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non posso bannare questo utente perchè non ne ho il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var args = message.content.split(/\s+/);
+
+
+                if (tempban.hasOwnProperty(utente.user.id)) {
+                    var tempo = ms(tempban[utente.user.id].time * 1000, { long: true });
+                    tempo = tempo + " "
+                    tempo = tempo.replace("second ", "secondo")
+                    tempo = tempo.replace("seconds", "secondi")
+                    tempo = tempo.replace("minute ", "minuto ")
+                    tempo = tempo.replace("minutes", "minuti")
+                    tempo = tempo.replace("hour ", "ora ")
+                    tempo = tempo.replace("hours", "ore")
+                    tempo = tempo.replace("day ", "giorno ")
+                    tempo = tempo.replace("day", "giorni")
+                    tempo = tempo.replace("week ", "settimana ")
+                    tempo = tempo.replace("weeks", "settimane")
+                    tempo = tempo.replace("month ", "mese ")
+                    tempo = tempo.replace("months", "mesi")
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente già bannato")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Questo utente è bannato per ancora " + tempo)
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var reason = "";
+                if (args.length == 2) { //Se non viene inserito un motivo
+                    reason = "Nessun motivo";
+                }
+                else {
+                    for (var i = 2; i < args.length; i++) {
+                        reason += args[i] + " "
+                    }
+                }
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[BAN] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato bannato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente)
+                    .catch(() => {
+                        return
+                    })
+                    .then(() => {
+                        if (reason == "Nessun motivo") {
+                            utente.ban()
+                        }
+                        else {
+                            utente.ban({ reason: reason })
+                        }
+                    })
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed)
+            }
+
+            if (message.content.startsWith("!unban")) {
+
+                if (!message.member.hasPermission('BAN_MEMBERS')) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!unban` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var utente = client.users.cache.get(idUtente);
+
+                var args = message.content.split(/\s+/)
+                if (args[1].length != 18) {
+
+                    var idUtente = args[1].slice(3, -1)
+                }
+                else {
+                    var idUtente = args[1]
+                }
+
+                var fetchUtente = client.users.fetch(idUtente).catch(() => {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!unban [user]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                })
+                fetchUtente.then(function (utente) {
+
+                    message.member.guild.members.unban(idUtente).catch((err) => {
+                        if (err.code == 50035) {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Utente non trovato")
+                                .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                                .setColor("#ED1C24")
+                                .setDescription("`!unban [user]`")
+
+                            message.channel.send(embed).then(msg => {
+                                message.delete({ timeout: 7000 })
+                                msg.delete({ timeout: 7000 })
+                            })
+                            return
+                        }
+                        else {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Utente non bannato")
+                                .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                                .setColor("#8F8F8F")
+                                .setDescription("Questo utente non è stato bannato")
+
+                            message.channel.send(embed).then(msg => {
+                                message.delete({ timeout: 7000 })
+                                msg.delete({ timeout: 7000 })
+                            })
+                            return
+                        }
+                    })
+
+                    if (tempban.hasOwnProperty(idUtente)) {
+                        delete tempban[idUtente]
+                    }
+
+
+                    var embed = new Discord.MessageEmbed()
+                        .setAuthor("[UNBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL())
+                        .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                        .setColor("#6143CB")
+                        .addField("Moderator", message.author.toString())
+                        .setFooter("User ID: " + utente.id)
+
+                    message.channel.send(embed)
+
+                    var embedUtente = new Discord.MessageEmbed()
+                        .setTitle("Sei stato sbannato")
+                        .setColor("#6143CB")
+                        .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                        .addField("Moderator", message.author.toString())
+
+                    utente.send(embedUtente)
+                        .catch(() => {
+                            return
+                        })
+
+                    var canale = client.channels.cache.get(canaleLog);
+                    canale.send(embed)
+                })
+            }
+
+            if (message.content.startsWith("!mute")) {
+                if (!message.member.hasPermission("MUTE_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!mute` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+
+                var utente = message.mentions.members.first();
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!mute [user] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                var args = message.content.split(/\s+/);
+
+                var reason = "";
+                for (var i = 3; i < args.length; i++) {
+                    reason += args[i] + " ";
+                }
+                if (reason == "") {
+                    reason = "Nessun motivo";
+                }
+
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi mutare questo utente")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (utente.roles.cache.has("800299630897659934")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente già mutato")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+
+                    if (tempmute.hasOwnProperty(utente.user.id)) {
+                        var tempo = ms(tempmute[utente.user.id].time * 1000, { long: true });
+                        tempo = tempo + " "
+                        tempo = tempo.replace("second ", "secondo")
+                        tempo = tempo.replace("seconds", "secondi")
+                        tempo = tempo.replace("minute ", "minuto ")
+                        tempo = tempo.replace("minutes", "minuti")
+                        tempo = tempo.replace("hour ", "ora ")
+                        tempo = tempo.replace("hours", "ore")
+                        tempo = tempo.replace("day ", "giorno ")
+                        tempo = tempo.replace("day", "giorni")
+                        tempo = tempo.replace("week ", "settimana ")
+                        tempo = tempo.replace("weeks", "settimane")
+                        tempo = tempo.replace("month ", "mese ")
+                        tempo = tempo.replace("months", "mesi")
+
+                        embed
+                            .setDescription("Questo utente è mutato per ancora " + tempo)
+                    } else {
+                        embed
+                            .setDescription("Questo utente è gia mutato")
+                    }
+
+
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var ruolo = message.guild.roles.cache.get("800299630897659934");
+                utente.roles.add(ruolo);
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[MUTE] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed);
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato mutato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente).catch(() => {
+                    return
+                })
+            }
+
+            if (message.content.startsWith("!unmute")) {
+                if (!message.member.hasPermission("MUTE_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!unmute` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+
+                var utente = message.mentions.members.first();
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!unmute [user]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!utente.roles.cache.has("800299630897659934")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non mutato")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Questo utente non è mutato")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (tempmute.hasOwnProperty(utente.user.id)) {
+                    delete tempmute[utente.user.id]
+                }
+
+                var ruolo = message.guild.roles.cache.get("800299630897659934");
+                utente.roles.remove(ruolo);
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[UNMUTE] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .setColor("#6143CB")
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed);
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato smutato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente).catch(() => {
+                    return
+                })
+            }
+
+            if (message.content.startsWith("!kick")) {
+                var utente = message.mentions.members.first();
+
+                if (!message.member.hasPermission("KICK_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!kick` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!kick [user] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (!utente.kickable) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non ho il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non posso espellere questo utente perchè non ne ho il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var args = message.content.split(/\s+/);
+
+                var reason = "";
+                if (args.length == 2) { //Se non viene inserito un motivo
+                    reason = "Nessun motivo";
+                }
+                else {
+                    for (var i = 2; i < args.length; i++) {
+                        reason += args[i] + " "
+                    }
+                }
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[KICK] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato espulso")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
+                    .addField("Reason", reason)
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente)
+                    .catch(() => {
+                        return
+                    })
+                    .then(() => {
+                        if (reason == "Nessun motivo") {
+                            utente.ban()
+                        }
+                        else {
+                            utente.kick({ reason: reason })
+                        }
+                    })
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed)
+            }
+
+            if (message.content.startsWith("!tempmute")) {
+                if (!message.member.hasPermission("MUTE_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!tempmute` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+
+                var utente = message.mentions.members.first();
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!tempmute [user] [time] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (tempmute.hasOwnProperty(utente.user.id) || utente.roles.cache.has("800299630897659934")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente già mutato")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+
+                    if (tempmute.hasOwnProperty(utente.user.id)) {
+                        var tempo = ms(tempmute[utente.user.id].time * 1000, { long: true });
+                        tempo = tempo + " "
+                        tempo = tempo.replace("second ", "secondo")
+                        tempo = tempo.replace("seconds", "secondi")
+                        tempo = tempo.replace("minute ", "minuto ")
+                        tempo = tempo.replace("minutes", "minuti")
+                        tempo = tempo.replace("hour ", "ora ")
+                        tempo = tempo.replace("hours", "ore")
+                        tempo = tempo.replace("day ", "giorno ")
+                        tempo = tempo.replace("day", "giorni")
+                        tempo = tempo.replace("week ", "settimana ")
+                        tempo = tempo.replace("weeks", "settimane")
+                        tempo = tempo.replace("month ", "mese ")
+                        tempo = tempo.replace("months", "mesi")
+
+                        embed
+                            .setDescription("Questo utente è mutato per ancora " + tempo)
+                    } else {
+                        embed
+                            .setDescription("Questo utente è gia mutato")
+                    }
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var args = message.content.split(/\s+/);
+                var time = args[2];
+                if (!time) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Inserire un tempo")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!tempmute [user] [time] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                time = ms(time)
+
+                if (!time) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Tempo non valido")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!tempmute [user] [time] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var reason = "";
+                for (var i = 3; i < args.length; i++) {
+                    reason += args[i] + " ";
+                }
+                if (reason == "") {
+                    reason = "Nessun motivo";
+                }
+
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi mutare questo utente")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+
+                var ruolo = message.guild.roles.cache.get("800299630897659934");
+                utente.roles.add(ruolo);
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[TEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", reason)
+                    .addField("Time", ms(time, { long: true }))
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed);
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato mutato temporaneamente")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .addField("Reason", reason)
+                    .addField("Time", ms(time, { long: true }))
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente).catch(() => {
+                    return
+                })
+
+                tempmute[utente.user.id] = {
+                    "moderator": message.author.id,
+                    "time": time / 1000,
+                    "reason": reason
+                }
+
+                serverstats.tempmute = tempmute
+                updateServerstats(serverstats)
+            }
+
+            if (message.content.startsWith("!tempban")) {
+                if (!message.member.hasPermission("BAN_MEMBERS")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!tempban` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var utente = message.mentions.members.first();
+                if (!utente) {
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!tempban [user] [time] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                var args = message.content.split(/\s+/);
+
+                if (tempban.hasOwnProperty(utente.user.id)) {
+                    var tempo = ms(tempban[utente.user.id].time * 1000, { long: true });
+                    tempo = tempo + " "
+                    tempo = tempo.replace("second ", "secondo")
+                    tempo = tempo.replace("seconds", "secondi")
+                    tempo = tempo.replace("minute ", "minuto ")
+                    tempo = tempo.replace("minutes", "minuti")
+                    tempo = tempo.replace("hour ", "ora ")
+                    tempo = tempo.replace("hours", "ore")
+                    tempo = tempo.replace("day ", "giorno ")
+                    tempo = tempo.replace("day", "giorni")
+                    tempo = tempo.replace("week ", "settimana ")
+                    tempo = tempo.replace("weeks", "settimane")
+                    tempo = tempo.replace("month ", "mese ")
+                    tempo = tempo.replace("months", "mesi")
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente già bannato")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Questo utente è bannato per ancora " + tempo)
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var time = args[2];
+                if (!time) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Inserire un tempo")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!tempban [user] [time] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                time = ms(time)
+
+                if (!time) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Tempo non valido")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!tempban [user] [time] (reason)`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var reason = "";
+                for (var i = 3; i < args.length; i++) {
+                    reason += args[i] + " ";
+                }
+                if (reason == "") {
+                    reason = "Nessun motivo";
+                }
+
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi bannare questo utente")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[TEMPBAN] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", reason)
+                    .addField("Time", ms(time, { long: true }))
+                    .addField("Moderator", message.author.toString())
+                    .setFooter("User ID: " + utente.user.id)
+
+                message.channel.send(embed)
+
+                var canale = client.channels.cache.get(canaleLog);
+                canale.send(embed);
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato bannato temporaneamente")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .addField("Reason", reason)
+                    .addField("Time", ms(time, { long: true }))
+                    .addField("Moderator", message.author.toString())
+
+                utente.send(embedUtente).catch(() => {
+                    console.log("ciao")
+                    return
+                })
+
+                tempban[utente.user.id] = {
+                    "moderator": message.author.id,
+                    "time": time / 1000,
+                    "reason": reason
+                }
+
+                if (reason == "Nessun motivo") {
+                    utente.ban();
+                }
+                else {
+                    utente.ban({ reason: reason })
+                }
+
+                serverstats.tempban = tempban
+                updateServerstats(serverstats)
+            }
+
             var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "sesso anale", "vaffanculo", "fanculo", "s3sso0 4n4l3", "anale", "culo", "tette", "twerk", "minkia", "beata minkia", "buttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "pene", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "dio", "porco", "dio cane", "bastardo", "sborra", "squirt", "peni", "inculatevi", "sborratevi", "squirtate"]
             var parolacciaTrovata = false
             var messaggioCensurato = message.content;
@@ -1763,7 +2910,7 @@ client.on("message", (message) => {
                     if (paroleMessaggio[i] == parolacce[j]) {
 
                         if (message.member.hasPermission("ADMINISTRATOR")) {
-                            //return;
+                            //return; //< TO
                         }
                         var lunghezzaCensored = ""
                         for (var z = 2; z < parolacce[j].length; z++) {
@@ -1777,6 +2924,41 @@ client.on("message", (message) => {
             if (parolacciaTrovata) {
                 message.delete();
                 var canale = client.channels.cache.get(canaleLog)
+
+                var index = userstatsList.findIndex(x => x.id == message.member.user.id);
+
+                if (index < 0) {
+                    var index = userstatsList.length
+
+                    userstatsList[userstatsList.length] = {
+                        id: message.author.id,
+                        username: message.member.user.tag,
+                        lastScore: 0,
+                        bestScore: 0,
+                        timeBestScore: 0,
+                        timeLastScore: 0,
+                        correct: 0,
+                        incorrect: 0,
+                        warn: "{}"
+                    }
+
+                    con.query(`INSERT INTO userstats VALUES (${message.member.user.id}, '${message.member.user.tag}',0, 0, 0, 0, 0, 0, '{}')`, (err) => {
+                        if (err) {
+                            console.log(err);
+                            return
+                        }
+                    })
+                }
+
+                var userstats = userstatsList[index]
+                var warn = JSON.parse(userstats.warn);
+                warn[Object.keys(warn).length] = {
+                    reason: "Bad word",
+                    time: new Date().getTime()
+                }
+
+                userstats.warn = warn
+                updateUserstats(userstats, message.member)
 
                 var embed = new Discord.MessageEmbed()
                     .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL())
@@ -2189,8 +3371,12 @@ function updateServerstats(serverstats) {
         serverstats.challenges = JSON.parse(serverstats.challenges)
     if (typeof serverstats.suggestions === 'string' || serverstats.suggestions instanceof String)
         serverstats.suggestions = JSON.parse(serverstats.suggestions)
+    if (typeof serverstats.tempmute === 'string' || serverstats.tempmute instanceof String)
+        serverstats.tempmute = JSON.parse(serverstats.tempmute)
+    if (typeof serverstats.tempban === 'string' || serverstats.tempban instanceof String)
+        serverstats.tempban = JSON.parse(serverstats.tempban)
 
-    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}'`, (err) => {
+    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}', tempmute = '${JSON.stringify(serverstats.tempmute)}', tempban = '${JSON.stringify(serverstats.tempban)}'`, (err) => {
         if (err) {
             console.log(err)
             return
@@ -2198,11 +3384,15 @@ function updateServerstats(serverstats) {
     })
 }
 
-function updateUserstats(userstats, message) {
-    con.query(`UPDATE userstats SET username = '${message.member.user.tag}', lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore} WHERE id = ${message.author.id}`, (err) => {
+function updateUserstats(userstats, utente) {
+    if (typeof userstats.warn === 'string' || userstats.warn instanceof String)
+        userstats.warn = JSON.parse(userstats.warn)
+
+    con.query(`UPDATE userstats SET username = '${utente.user.tag}', lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore}, warn = '${JSON.stringify(userstats.warn)}' WHERE id = ${utente.user.id}`, (err) => {
         if (err) {
             console.log(err)
             return
         }
     })
 }
+
