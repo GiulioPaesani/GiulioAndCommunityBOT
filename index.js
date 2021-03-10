@@ -1361,7 +1361,7 @@ client.on("message", (message) => {
                         var index = userstatsList.findIndex(x => x.id == message.author.id);
                         userstats = userstatsList[index];
 
-                        con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0)`, (err) => {
+                        con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0, '{}')`, (err) => {
                             if (err) {
                                 console.log(err);
                                 return
