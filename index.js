@@ -58,6 +58,8 @@ client.on("message", (message) => {
             return
         }
         var serverstats = result[0]; //Get serverstats
+        var tempmute = JSON.parse(serverstats.tempmute)
+        var tempban = JSON.parse(serverstats.tempban)
 
         con.query(`SELECT * FROM userstats`, function (err, result, fields) {
             if (err) {
@@ -65,35 +67,6 @@ client.on("message", (message) => {
                 return
             }
             var userstatsList = result;
-            var index = userstatsList.findIndex(x => x.id == message.author.id);
-            var userstats;
-            if (index < 0) { //Se questo utente non c'è nel database
-
-                userstatsList[userstatsList.length] = {
-                    id: message.author.id,
-                    username: message.member.user.tag,
-                    lastScore: 0,
-                    bestScore: 0,
-                    timeBestScore: 0,
-                    timeLastScore: 0,
-                    correct: 0,
-                    incorrect: 0,
-                    warn: "{}"
-                }
-
-                var index = userstatsList.findIndex(x => x.id == message.author.id);
-                userstats = userstatsList[index];
-
-                con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0)`, (err) => {
-                    if (err) {
-                        console.log(err);
-                        return
-                    }
-                })
-            }
-            else {
-                userstats = userstatsList[index];
-            }
 
             //CANCELLARE COMANDO IN CANALE SBAGLIATO
             var BOT = {
@@ -1365,6 +1338,37 @@ client.on("message", (message) => {
 
                 try {
                     var numero = Parser.evaluate(message.content); //Get numero scritto o risultato espressione
+
+                    var index = userstatsList.findIndex(x => x.id == message.author.id);
+                    var userstats;
+
+                    if (index < 0) { //Se questo utente non c'è nel database
+
+                        userstatsList[userstatsList.length] = {
+                            id: message.author.id,
+                            username: message.member.user.tag,
+                            lastScore: 0,
+                            bestScore: 0,
+                            timeBestScore: 0,
+                            timeLastScore: 0,
+                            correct: 0,
+                            incorrect: 0,
+                            warn: "{}"
+                        }
+
+                        var index = userstatsList.findIndex(x => x.id == message.author.id);
+                        userstats = userstatsList[index];
+
+                        con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0)`, (err) => {
+                            if (err) {
+                                console.log(err);
+                                return
+                            }
+                        })
+                    }
+                    else {
+                        userstats = userstatsList[index];
+                    }
                 }
                 catch {
                     return //Stringa o valori/espressioni non compresibili
@@ -2586,6 +2590,7 @@ client.on("message", (message) => {
             }
 
             if (message.content.startsWith("!tempmute")) {
+
                 if (!message.member.hasPermission("MUTE_MEMBERS")) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
@@ -2904,7 +2909,7 @@ client.on("message", (message) => {
                 updateServerstats(serverstats)
             }
 
-            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "sesso anale", "vaffanculo", "fanculo", "s3sso0 4n4l3", "anale", "culo", "tette", "twerk", "minkia", "beata minkia", "buttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "pene", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "dio", "porco", "dio cane", "bastardo", "sborra", "squirt", "peni", "inculatevi", "sborratevi", "squirtate"]
+            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "sesso anale", "vaffanculo", "fanculo", "s3sso0 4n4l3", "anale", "culo", "tette", "twerk", "minkia", "beata minkia", "buttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "pene", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "dio", "porco", "porcodio", "dioporco", "dio cane", "bastardo", "sborra", "squirt", "peni", "inculatevi", "sborratevi", "squirtate"]
             var parolacciaTrovata = false
             var messaggioCensurato = message.content;
             var paroleMessaggio = message.content.split(/\s+/);
