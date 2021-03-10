@@ -3375,6 +3375,96 @@ setInterval(function () {
     })
 }, 1000 * 10)
 
+setInterval(function () {
+    con.query("SELECT * FROM serverstats", (err, result) => {
+        if (err) {
+            console.log(err);
+            return
+        }
+        var serverstats = result[0];
+        var tempmute = JSON.parse(serverstats.tempmute);
+        var tempban = JSON.parse(serverstats.tempban);
+
+        for (var i = 0; i < Object.keys(tempmute).length; i++) {
+            tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
+            if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
+                var canale = client.channels.cache.get(canaleLog)
+                var server = client.guilds.cache.get("793776260350083113");
+
+                try {
+                    var utente = server.members.cache.find(x => x.id == Object.keys(tempmute)[i])
+                }
+                catch {
+                    delete tempmute[Object.keys(tempmute)[i]]
+                    return
+                }
+
+                utente.roles.remove("800299630897659934");
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                    .addField("Moderator", "<@802184359120863272>")
+                    .setFooter("User ID: " + Object.keys(tempmute)[i])
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato smutato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                    .addField("Moderator", "<@802184359120863272>")
+
+                utente.send(embedUtente).catch(() => {
+                    return
+                })
+
+                canale.send(embed);
+                delete tempmute[Object.keys(tempmute)[i]]
+            }
+        }
+
+        for (var i = 0; i < Object.keys(tempban).length; i++) {
+            tempban[Object.keys(tempban)[i]].time = tempban[Object.keys(tempban)[i]].time - 5;
+            if (tempban[Object.keys(tempban)[i]].time <= 0) {
+                var canale = client.channels.cache.get(canaleLog)
+                var server = client.guilds.cache.get("793776260350083113");
+
+                server.members.unban(Object.keys(tempban)[i])
+
+                var utente = client.users.cache.get(Object.keys(tempban)[i]);
+
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL())
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", tempban[Object.keys(tempban)[i]].reason)
+                    .addField("Moderator", "<@802184359120863272>")
+                    .setFooter("User ID: " + Object.keys(tempban)[i])
+
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato sbannato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .addField("Reason", tempban[Object.keys(tempban)[i]].reason)
+                    .addField("Moderator", "<@802184359120863272>")
+
+                utente.send(embedUtente).catch(() => {
+                    return
+                })
+
+                canale.send(embed);
+                delete tempban[Object.keys(tempban)[i]]
+            }
+        }
+
+        serverstats.tempmute = tempmute
+        serverstats.tempban = tempban
+        updateServerstats(serverstats)
+
+    })
+}, 5000)
+
 function updateServerstats(serverstats) {
     if (typeof serverstats.challenges === 'string' || serverstats.challenges instanceof String)
         serverstats.challenges = JSON.parse(serverstats.challenges)
