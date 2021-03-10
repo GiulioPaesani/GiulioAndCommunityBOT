@@ -1880,7 +1880,7 @@ client.on("message", (message) => {
                 updateUserstats(userstats, utente)
             }
             if (message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")) {
-                if (message.content == "!infractions") {
+                if (message.content == "!infractions" || message.content == "!infraction" || message.content == "!infrazioni") {
                     var utente = message.member;
                 }
                 else {
