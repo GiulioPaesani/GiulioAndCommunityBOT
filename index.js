@@ -1675,93 +1675,97 @@ client.on("message", (message) => {
             }
 
             if (message.content.startsWith("!clear")) {
-                if (!message.member.hasPermission("MANAGE_MESSAGES")) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Non hai il permesso")
-                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                        .setColor("#9E005D")
-                        .setDescription("Non puoi eseguire il comando `!clear` perchè non hai il permesso")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
-                if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Non ho il permesso")
-                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                        .setColor("#9E005D")
-                        .setDescription("Non posso cancellare messaggi perchè non ne ho il permesso")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
-
-                try {
-                    count = parseInt(message.content.split(/\s+/)[1]) + 1;
-                } catch {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Valore non valido")
-                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                        .setColor("#ED1C24")
-                        .setDescription("`!clear [count]`")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
-
-                if (!count) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Valore non valido")
-                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                        .setColor("#ED1C24")
-                        .setDescription("`!clear [count]`")
+                if (!message.content.startsWith("!clearwarn") && !message.content.startsWith("!clearinfractions") && !message.content.startsWith("!clearinfraction") && !message.content.startsWith("!clearinfrazioni")) {
 
 
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
+                    if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Non hai il permesso")
+                            .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                            .setColor("#9E005D")
+                            .setDescription("Non puoi eseguire il comando `!clear` perchè non hai il permesso")
 
-                if (count <= 100) {
-                    console.log("cancellati " + count)
-                    message.channel.bulkDelete(count, true)
-                    count = 0
-                }
-                while (count > 0) {
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+                    if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Non ho il permesso")
+                            .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                            .setColor("#9E005D")
+                            .setDescription("Non posso cancellare messaggi perchè non ne ho il permesso")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+
+                    try {
+                        count = parseInt(message.content.split(/\s+/)[1]) + 1;
+                    } catch {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Valore non valido")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("`!clear [count]`")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+
+                    if (!count) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Valore non valido")
+                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                            .setColor("#ED1C24")
+                            .setDescription("`!clear [count]`")
+
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 7000 })
+                            msg.delete({ timeout: 7000 })
+                        })
+                        return
+                    }
+
                     if (count <= 100) {
+                        console.log("cancellati " + count)
                         message.channel.bulkDelete(count, true)
                         count = 0
                     }
-                    else {
-                        message.channel.bulkDelete(100, true)
-                        count -= 100
+                    while (count > 0) {
+                        if (count <= 100) {
+                            message.channel.bulkDelete(count, true)
+                            count = 0
+                        }
+                        else {
+                            message.channel.bulkDelete(100, true)
+                            count -= 100
 
+                        }
                     }
+
+                    setTimeout(function () {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Messaggi eliminati")
+                            .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                            .setColor("#16A0F4")
+                            .setDescription("Sono stati eliminati " + parseInt(message.content.split(/\s+/)[1]) + " messaggi")
+
+                        message.channel.send(embed).then(msg => {
+                            message.delete({ timeout: 4000 })
+                            msg.delete({ timeout: 4000 })
+                        })
+                    }, 2000)
                 }
-
-                setTimeout(function () {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Messaggi eliminati")
-                        .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                        .setColor("#16A0F4")
-                        .setDescription("Sono stati eliminati " + parseInt(message.content.split(/\s+/)[1]) + " messaggi")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 4000 })
-                        msg.delete({ timeout: 4000 })
-                    })
-                }, 2000)
             }
 
             if (message.content.startsWith("!warn")) {
