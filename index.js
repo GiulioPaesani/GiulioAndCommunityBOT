@@ -42,7 +42,7 @@ var canaleLog = "793781904973365299";
 client.on("message", (message) => {
     message.content = message.content.trim().toLowerCase();
 
-    if (message.channel == "804688929109966848") return
+    if (message.channel == "804688929109966848" && !message.content.startsWith("!clear")) return
 
     if (message.author.bot) return
     if (message.channel.type == "dm") return
