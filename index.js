@@ -39,6 +39,11 @@ var embedChallenge = new Discord.MessageEmbed()
 
 var canaleLog = "793781904973365299";
 
+var canaleTicket = "819483244512673843";
+var categoriaTicket = "819492461491257344";
+var canaleTutteCandidature = ""
+var serverId = "793776260350083113";
+
 client.on("message", (message) => {
     message.content = message.content.trim().toLowerCase();
 
@@ -296,6 +301,287 @@ client.on("message", (message) => {
                         })
                         return
                     }
+                }
+            }
+
+
+            var moderators = JSON.parse(serverstats.moderators);
+
+            if (message.channel.parentID == categoriaTicket) {
+                if (message.content.includes('"') || message.content.includes("'") || message.content.includes("`")) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("ERRORE")
+                        .setDescription("Scrivere un messaggio senza virgolette, può causare problemi")
+                        .setColor("#DD2E44")
+                    message.channel.send(embed)
+                    return
+                }
+            }
+
+
+            if (message.channel.parentID == categoriaTicket) {
+                if (moderators.hasOwnProperty(message.author.id)) {
+                    if (moderators[message.member.user.id].aboutMe != "" && !message.author.bot) {
+                        message.delete()
+                    }
+
+                    if (moderators[message.member.user.id].nome == "") {
+                        var canale = client.channels.cache.get(moderators[message.member.user.id].channelId);
+                        canale.setName("🔵│" + message.member.user.username)
+
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("NOME")
+                            .setDescription("Nome inserito:\r**" + message.content + "**")
+                            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                            .addField("Confermi?", "Clicca sulla reazione per confermare l'inserimento oppure riscrivere il messaggio")
+                            .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                        message.channel.send(embed).then((msg) => {
+                            msg.react("✅")
+
+                            const react = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.member.user.id
+
+                            const collection = msg.createReactionCollector(react)
+
+                            collection.on('collect', (r, u) => {
+                                if (moderators[message.member.user.id].nome == "") {
+
+
+                                    moderators[message.member.user.id].nome = message.content
+                                    var embed = new Discord.MessageEmbed()
+                                        .setDescription("**NOME** inserito")
+                                        .setColor("#77B058")
+
+                                    message.channel.send(embed)
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("ETÀ")
+                                        .setDescription("Inserisci la tua **età**, quindi quanti anni hai\r(Es. '16', '16 e mezzo', 'quasi 23')")
+                                        .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                                        .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+                                    message.channel.send(embed)
+
+                                    serverstats.moderators = moderators
+                                    updateServerstats(serverstats)
+                                }
+                            })
+                        })
+
+                    }
+                    else if (moderators[message.member.user.id].eta == "") {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("ETÀ")
+                            .setDescription("Età inserita:\r**" + message.content + "**")
+                            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                            .addField("Confermi?", "Clicca sulla reazione per confermare l'inserimento oppure riscrivere il messaggio")
+                            .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                        message.channel.send(embed).then((msg) => {
+                            msg.react("✅")
+
+                            const react = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.member.user.id
+
+                            const collection = msg.createReactionCollector(react)
+
+                            collection.on('collect', (r, u) => {
+                                if (moderators[message.member.user.id].eta == "") {
+
+                                    moderators[message.member.user.id].eta = message.content
+                                    var embed = new Discord.MessageEmbed()
+                                        .setDescription("**ETÀ** inserita")
+                                        .setColor("#77B058")
+
+                                    message.channel.send(embed)
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("LIVELLO DI PROGRAMMAZIONE")
+                                        .setDescription("Inserisci ora quanto te la cavi a **programmare,** principalmente in discord.js, magari aggiungendo se hai mai creato qualcosa oppure qualsiasi cosa che mi fa pensare 'Wow, questo sa programmare bene'\r(Es. 'Io me la cavo abbastanza, per esempio ho creato un grande bot nel mio server, so anche creare funzioni piu complesse...')")
+                                        .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                                        .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+                                    message.channel.send(embed)
+
+                                    serverstats.moderators = moderators
+                                    updateServerstats(serverstats)
+                                }
+                            })
+                        })
+                    }
+                    else if (moderators[message.member.user.id].levelProgrammazione == "") {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("LIVELLO DI PROGRAMMAZIONE")
+                            .setDescription("Livello inserito:\r**" + message.content + "**")
+                            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                            .addField("Confermi?", "Clicca sulla reazione per confermare l'inserimento oppure riscrivere il messaggio")
+                            .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                        message.channel.send(embed).then((msg) => {
+                            msg.react("✅")
+
+                            const react = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.member.user.id
+
+                            const collection = msg.createReactionCollector(react)
+
+                            collection.on('collect', (r, u) => {
+                                if (moderators[message.member.user.id].levelProgrammazione == "") {
+
+                                    moderators[message.member.user.id].levelProgrammazione = message.content
+                                    var embed = new Discord.MessageEmbed()
+                                        .setDescription("**LIVELLO DI PROGRAMMAZIONE** inserito")
+                                        .setColor("#77B058")
+
+                                    message.channel.send(embed)
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("ESPERIENZA MODERAZIONE")
+                                        .setDescription("Inserisci se hai **esperienza** nell'ambito della moderazione in un server discord, come sempre cerca di raccontarmi il più possibile\r(Es. 'Ho moderato per circa un annetto un server di 10 milioni di persone, ho anche partecipato a progetti sempre all'interno del server, mi sono divertito molto, mi piacerebbe rifare questa esperienza')")
+                                        .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                                        .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+                                    message.channel.send(embed)
+
+                                    serverstats.moderators = moderators
+                                    updateServerstats(serverstats)
+                                }
+                            })
+                        })
+                    }
+                    else if (moderators[message.member.user.id].esperienza == "") {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("ESPERIENZA MODERAZIONE")
+                            .setDescription("Esperienza inserita:\r**" + message.content + "**")
+                            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                            .addField("Confermi?", "Clicca sulla reazione per confermare l'inserimento oppure riscrivere il messaggio")
+                            .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                        message.channel.send(embed).then((msg) => {
+                            msg.react("✅")
+
+                            const react = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.member.user.id
+
+                            const collection = msg.createReactionCollector(react)
+
+                            collection.on('collect', (r, u) => {
+                                if (moderators[message.member.user.id].esperienza == "") {
+
+                                    moderators[message.member.user.id].esperienza = message.content
+                                    var embed = new Discord.MessageEmbed()
+                                        .setDescription("**ESPERIENZA MODERAZIONE** inserita")
+                                        .setColor("#77B058")
+
+                                    message.channel.send(embed)
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("TEMPO DISPONIBILE")
+                                        .setDescription("Inserisci quanto **tempo hai a disposizione** per stare nel server, ovviamente moderare o per magari aiutare gli utenti, se sei molto attivo ecc...\r(Es. 'Io sono disponibile principalmente il pomeriggio, dato che la mattina ho scuola, ma anche la sera, visto che sto spesso al pc')")
+                                        .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                                        .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+                                    message.channel.send(embed)
+
+                                    serverstats.moderators = moderators
+                                    updateServerstats(serverstats)
+                                }
+                            })
+                        })
+                    }
+                    else if (moderators[message.member.user.id].timeDisponibile == "") {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("TEMPO DISPONIBILE")
+                            .setDescription("Tempo disponibile inserito:\r**" + message.content + "**")
+                            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                            .addField("Confermi?", "Clicca sulla reazione per confermare l'inserimento oppure riscrivere il messaggio")
+                            .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                        message.channel.send(embed).then((msg) => {
+                            msg.react("✅")
+
+                            const react = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.member.user.id
+
+                            const collection = msg.createReactionCollector(react)
+
+                            collection.on('collect', (r, u) => {
+                                if (moderators[message.member.user.id].timeDisponibile == "") {
+
+                                    moderators[message.member.user.id].timeDisponibile = message.content
+                                    var embed = new Discord.MessageEmbed()
+                                        .setDescription("**TEMPO DISPONIBILE** inserito")
+                                        .setColor("#77B058")
+
+                                    message.channel.send(embed)
+
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("ABOUT YOU")
+                                        .setDescription("Inserisci adesso, se ti va, qualcos'altro di te, presentati, raccontami come hai conoscuto il canale di Giulio, perchè ti piace programmare, perchè sei qua su Discord...\r('Ciao, allora io faccio il muratore nella vita, ma ho una dote nascosta da programmatore, quindi per caso ho conosciuto Giulio su youtube anche se il suo canale mi ha schifo, mi capita sempre nella home e non ci posso fare a meno di cliccare...')")
+                                        .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                                        .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+                                    message.channel.send(embed)
+
+                                    serverstats.moderators = moderators
+                                    updateServerstats(serverstats)
+                                }
+                            })
+                        })
+                    }
+                    else if (moderators[message.member.user.id].aboutMe == "") {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("ABOUT YOU")
+                            .setDescription("Descrizione di te inserita:\r**" + message.content + "**")
+                            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                            .addField("Confermi?", "Clicca sulla reazione per confermare l'inserimento oppure riscrivere il messaggio")
+                            .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                        message.channel.send(embed).then((msg) => {
+                            msg.react("✅")
+
+                            const react = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.member.user.id
+
+                            const collection = msg.createReactionCollector(react)
+
+                            collection.on('collect', (r, u) => {
+                                if (moderators[message.member.user.id].aboutMe == "") {
+
+                                    moderators[message.member.user.id].aboutMe = message.content
+
+                                    var canale = client.channels.cache.get(moderators[message.member.user.id].channelId);
+                                    canale.setName("🟢│" + message.member.user.username)
+
+                                    var embed = new Discord.MessageEmbed()
+                                        .setDescription("**ABOUT YOU** inserito")
+                                        .setColor("#77B058")
+
+                                    message.channel.send(embed)
+                                    message.channel.send("---------------------")
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("CANDIDATURA EFFETTUATA")
+                                        .setColor("#16A0F4")
+                                        .setThumbnail(message.member.user.avatarURL())
+                                        .setDescription("Grazie per aver completato la candidatura, a breve ti verrà inviato il riscontro")
+                                        .addField("Nome", moderators[message.member.user.id].nome, false)
+                                        .addField("Età", moderators[message.member.user.id].eta, false)
+                                        .addField("Livello di programazzione", moderators[message.member.user.id].levelProgrammazione, false)
+                                        .addField("Esperienza", moderators[message.member.user.id].esperienza, false)
+                                        .addField("Tempo disponibile", moderators[message.member.user.id].timeDisponibile, false)
+                                        .addField("About you", moderators[message.member.user.id].aboutMe, false)
+                                    message.channel.send(embed)
+
+                                    var embed = new Discord.MessageEmbed()
+                                        .setTitle("NUOVA CANDIDATURA")
+                                        .setColor("#16A0F4")
+                                        .setThumbnail(message.member.user.avatarURL())
+                                        .addField("Nome", moderators[message.member.user.id].nome, false)
+                                        .addField("Età", moderators[message.member.user.id].eta, false)
+                                        .addField("Livello di programazzione", moderators[message.member.user.id].levelProgrammazione, false)
+                                        .addField("Esperienza", moderators[message.member.user.id].esperienza, false)
+                                        .addField("Tempo disponibile", moderators[message.member.user.id].timeDisponibile, false)
+                                        .addField("About you", moderators[message.member.user.id].aboutMe, false)
+                                        .addField("USER", "Tag: " + message.member.user.toString() + "\rId: " + message.member.user.id + "\rChannel: <#" + moderators[message.member.user.id].channelId + ">")
+
+                                    var canale = client.channels.cache.get(canaleTutteCandidature);
+                                    canale.send(embed);
+
+                                    serverstats.moderators = moderators
+                                    updateServerstats(serverstats)
+                                }
+                            })
+                        })
+                    }
+
+
+
                 }
             }
 
@@ -3095,6 +3381,70 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
         var suggestions = JSON.parse(serverstats.suggestions);
         var challenges = JSON.parse(serverstats.challenges);
 
+
+        var moderators = JSON.parse(serverstats.moderators);
+        if (messageReaction.message.channel.id == canaleTicket) {
+            if (moderators.hasOwnProperty(user.id)) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Hai gia fatto la richiesta")
+                    .setDescription("Hai gia una richiesta aperta\rPuoi richiedere di diventare moderatore una sola volta")
+                user.send(embed)
+                return;
+            }
+            moderators[user.id] = {
+                username: user.username + "#" + user.discriminator,
+                channelId: "",
+                nome: "",
+                eta: "",
+                levelProgrammazione: "",
+                esperienza: "",
+                timeDisponibile: "",
+                aboutMe: "",
+            }
+
+            var server = client.guilds.cache.get(serverId);
+            server.channels.create("🔴│" + user.username, {
+                type: 'text',
+                permissionOverwrites: [ //SISTEMARE PERMESSI
+                    { deny: "VIEW_CHANNEL", id: messageReaction.message.guild.id },
+                    { allow: "VIEW_CHANNEL", id: user.id }
+                ]
+            }).then(canale => {
+                canale.setParent(categoriaTicket, { lockPermissions: false })
+                moderators[user.id].channelId = canale.id
+
+                canale.send(user.toString())
+                    .then((msg) => {
+                        msg.delete();
+                    })
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("RICHIESTA CANDIDATURA")
+                    .setColor("#16A0F4")
+                    .setThumbnail(user.avatarURL())
+                    .setDescription("Grazie per essere qui per candidarti come mod di GiulioAndCommunity\r\rOra ti basta rispondere a diverse domande per farti scegliere, quindi cerca di dare il meglio di te ma di essere te stesso per essere scelto dal mio capo Giulio, buon divertimento")
+
+
+                canale.send(embed)
+
+                canale.send("---------------------")
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("NOME")
+                    .setDescription("Inserisci il tuo **nome**, **nickname** o come ti piace essere chiamato\r(Es. 'Gianni', 'Giacomo04', 'xxxCicciopanza23xxx')")
+                    .setAuthor(user.username + "#" + user.discriminator, user.avatarURL())
+                    .setFooter("ATTENZIONE: Scrivere un unico messaggio, non di più")
+
+                canale.send(embed)
+
+                serverstats.moderators = moderators
+                updateServerstats(serverstats)
+
+
+            })
+
+        }
+
         if (messageReaction.message.channel.id == canaleSuggestions) {
             if (!suggestions.hasOwnProperty(messageReaction.message.id)) return
 
@@ -3476,8 +3826,10 @@ function updateServerstats(serverstats) {
         serverstats.tempmute = JSON.parse(serverstats.tempmute)
     if (typeof serverstats.tempban === 'string' || serverstats.tempban instanceof String)
         serverstats.tempban = JSON.parse(serverstats.tempban)
+    if (typeof serverstats.moderators === 'string' || serverstats.moderators instanceof String)
+        serverstats.moderators = JSON.parse(serverstats.moderators)
 
-    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}', tempmute = '${JSON.stringify(serverstats.tempmute)}', tempban = '${JSON.stringify(serverstats.tempban)}'`, (err) => {
+    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}', tempmute = '${JSON.stringify(serverstats.tempmute)}', tempban = '${JSON.stringify(serverstats.tempban)}', moderators = '${JSON.stringify(serverstats.moderators)}'`, (err) => {
         if (err) {
             console.log(err)
             return
