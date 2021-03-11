@@ -39,9 +39,9 @@ var embedChallenge = new Discord.MessageEmbed()
 
 var canaleLog = "793781904973365299";
 
-var canaleTicket = "819483244512673843";
-var categoriaTicket = "819492461491257344";
-var canaleTutteCandidature = ""
+var canaleTicket = "819588055496523826";
+var categoriaTicket = "819587870636638218";
+var canaleTutteCandidature = "819589934901362718"
 var serverId = "793776260350083113";
 
 client.on("message", (message) => {
