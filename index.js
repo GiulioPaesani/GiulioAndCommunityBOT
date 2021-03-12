@@ -3744,14 +3744,14 @@ setInterval(function () {
                 var server = client.guilds.cache.get("793776260350083113");
 
                 try {
-                    var utente = server.members.cache.find(x => x.id == Object.keys(tempmute)[i])
+                    var utente = server.members.cache.find(x => x.id == Object.keys(tempmute)[i]);
+                    utente.roles.remove("800299630897659934");
                 }
                 catch {
                     delete tempmute[Object.keys(tempmute)[i]]
                     return
                 }
-
-                utente.roles.remove("800299630897659934");
+                
                 var embed = new Discord.MessageEmbed()
                     .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
                     .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
