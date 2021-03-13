@@ -881,6 +881,24 @@ client.on("message", (message) => {
             //ROLEINFO
             if (message.content.startsWith("!role")) {
                 var ruolo = message.mentions.roles.first()
+                if (!ruolo) { //Per id
+                    var args = message.content.split(/\s+/);
+                    var ruolo = Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.id == args[1]))[Object.keys(Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.id == args[1])))[0]];
+                    if (!ruolo) { //Per nome
+                        if (message.content.startsWith("!rolestats")) {
+                            var nome = message.content.slice(11).trim()
+                        }
+                        else if (message.content.startsWith("!roleinfo")) {
+                            var nome = message.content.slice(10).trim()
+
+                        }
+                        else {
+                            var nome = message.content.slice(6).trim()
+                        }
+                        console.log(nome)
+                        var ruolo = Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.name.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.name.toLowerCase() == nome.toLowerCase())))[0]];
+                    }
+                }
 
                 if (!ruolo) {
                     var embed = new Discord.MessageEmbed()
