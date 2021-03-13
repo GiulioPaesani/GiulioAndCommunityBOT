@@ -788,7 +788,6 @@ client.on("message", (message) => {
             if (message.content.startsWith("!user")) {
                 if (message.content == "!user" || message.content == "!userstats" || message.content == "!userinfo") {
                     var utente = message.member;
-                    var ruoli = utente._roles;
                 }
                 else {
                     var utente = message.mentions.members.first()
@@ -945,11 +944,31 @@ client.on("message", (message) => {
             }
             //AVATAR
             if (message.content.startsWith("!avatar")) {
-                if (message.content.trim() == "!avatar") {
+                if (message.content == "!avatar") {
                     var utente = message.member;
                 }
                 else {
-                    var utente = message.mentions.members.first();
+                    var utente = message.mentions.members.first()
+                    if (!utente) { //Per id
+                        var args = message.content.split(/\s+/);
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                        if (!utente) { //Per username
+                            if (message.content.startsWith("!userstats")) {
+                                var nome = message.content.slice(11).trim()
+                            }
+                            else if (message.content.startsWith("!userinfo")) {
+                                var nome = message.content.slice(10).trim()
+
+                            }
+                            else {
+                                var nome = message.content.slice(6).trim()
+                            }
+                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+                            if (!utente) { //Per tag
+                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+                            }
+                        }
+                    }
                 }
 
                 if (!utente) {
@@ -1579,7 +1598,6 @@ client.on("message", (message) => {
                     msg.delete({ timeout: 2000 })
                 })
             }
-
             if (message.content.startsWith("!challenge") || message.content.startsWith("!sfida")) {
                 if (message.content.startsWith("!challenge"))
                     var contenuto = message.content.slice(11).trim();
@@ -1765,13 +1783,33 @@ client.on("message", (message) => {
                 updateUserstats(userstats, message.member)
 
             }
-
+            //CUSER
             if (message.content.startsWith("!cuser")) {
-                if (message.content == "!cuser" || message.content == "!cuserinfo" || message.content == "!cuserstats") {
+                if (message.content == "!cuser" || message.content == "!cuserstats" || message.content == "!cuserinfo") {
                     var utente = message.member;
                 }
                 else {
                     var utente = message.mentions.members.first()
+                    if (!utente) { //Per id
+                        var args = message.content.split(/\s+/);
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                        if (!utente) { //Per username
+                            if (message.content.startsWith("!userstats")) {
+                                var nome = message.content.slice(12).trim()
+                            }
+                            else if (message.content.startsWith("!userinfo")) {
+                                var nome = message.content.slice(11).trim()
+
+                            }
+                            else {
+                                var nome = message.content.slice(7).trim()
+                            }
+                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+                            if (!utente) { //Per tag
+                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+                            }
+                        }
+                    }
                 }
                 if (!utente) {
                     var embed = new Discord.MessageEmbed()
@@ -1824,7 +1862,7 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             }
-
+            //CSERVER
             if (message.content == "!cserver" || message.content == "!cserverinfo" || message.content == "!cserverstats") {
 
                 var leaderboardBestScoreList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
@@ -1892,7 +1930,7 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             }
-
+            //SLOWMODE
             if (message.content.startsWith("!slowmode")) {
                 if (!message.member.hasPermission("MANAGE_CHANNELS")) {
                     var embed = new Discord.MessageEmbed()
@@ -2002,7 +2040,7 @@ client.on("message", (message) => {
                 }
                 message.channel.send(embed)
             }
-
+            //CLEAR
             if (message.content.startsWith("!clear")) {
                 if (!message.content.startsWith("!clearwarn") && !message.content.startsWith("!clearinfractions") && !message.content.startsWith("!clearinfraction") && !message.content.startsWith("!clearinfrazioni")) {
 
@@ -2096,9 +2134,9 @@ client.on("message", (message) => {
                     }, 2000)
                 }
             }
-
+            //WARN
             if (message.content.startsWith("!warn")) {
-                var utente = message.mentions.members.first();
+                var utente = message.mentions.members.first()
 
                 if (!message.member.hasPermission("KICK_MEMBERS")) {
                     var embed = new Discord.MessageEmbed()
@@ -2212,24 +2250,32 @@ client.on("message", (message) => {
                 userstats.warn = warn
                 updateUserstats(userstats, utente)
             }
+            //INFRACTIONS
             if (message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")) {
                 if (message.content == "!infractions" || message.content == "!infraction" || message.content == "!infrazioni") {
                     var utente = message.member;
                 }
                 else {
-                    var utente = message.mentions.members.first();
-                    if (!utente) {
-                        var embed = new Discord.MessageEmbed()
-                            .setTitle("Utente non trovato")
-                            .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                            .setColor("#ED1C24")
-                            .setDescription("`!infractions [user]`")
+                    var utente = message.mentions.members.first()
+                    if (!utente) { //Per id
+                        var args = message.content.split(/\s+/);
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                        if (!utente) { //Per username
+                            if (message.content.startsWith("!infractions")) {
+                                var nome = message.content.slice(13).trim()
+                            }
+                            else if (message.content.startsWith("!infraction")) {
+                                var nome = message.content.slice(12).trim()
 
-                        message.channel.send(embed).then(msg => {
-                            message.delete({ timeout: 7000 })
-                            msg.delete({ timeout: 7000 })
-                        })
-                        return
+                            }
+                            else {
+                                var nome = message.content.slice(12).trim()
+                            }
+                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+                            if (!utente) { //Per tag
+                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+                            }
+                        }
                     }
                 }
 
@@ -2291,6 +2337,7 @@ client.on("message", (message) => {
 
                 message.channel.send(embed)
             }
+            //CLEARINFRACTIONS
             if (message.content.startsWith("!clearinfractions") || message.content.startsWith("!clearwarn") || message.content.startsWith("!clearinfraction") || message.content.startsWith("!clearinfrazioni")) {
                 if (!message.member.hasPermission("KICK_MEMBERS")) {
                     var embed = new Discord.MessageEmbed()
@@ -2405,7 +2452,7 @@ client.on("message", (message) => {
                     }
                 }
             }
-
+            //BAN
             if (message.content.startsWith("!ban")) {
                 var utente = message.mentions.members.first();
 
@@ -2526,7 +2573,7 @@ client.on("message", (message) => {
                 var canale = client.channels.cache.get(canaleLog);
                 canale.send(embed)
             }
-
+            //UNBAN
             if (message.content.startsWith("!unban")) {
 
                 if (!message.member.hasPermission('BAN_MEMBERS')) {
@@ -2627,7 +2674,7 @@ client.on("message", (message) => {
                     canale.send(embed)
                 })
             }
-
+            //MUTE
             if (message.content.startsWith("!mute")) {
                 if (!message.member.hasPermission("MUTE_MEMBERS")) {
                     var embed = new Discord.MessageEmbed()
@@ -2747,7 +2794,7 @@ client.on("message", (message) => {
                     return
                 })
             }
-
+            //UNMUTE
             if (message.content.startsWith("!unmute")) {
                 if (!message.member.hasPermission("MUTE_MEMBERS")) {
                     var embed = new Discord.MessageEmbed()
@@ -2822,7 +2869,7 @@ client.on("message", (message) => {
                     return
                 })
             }
-
+            //KICK
             if (message.content.startsWith("!kick")) {
                 var utente = message.mentions.members.first();
 
@@ -2913,7 +2960,7 @@ client.on("message", (message) => {
                 var canale = client.channels.cache.get(canaleLog);
                 canale.send(embed)
             }
-
+            //TEMPMUTE
             if (message.content.startsWith("!tempmute")) {
 
                 if (!message.member.hasPermission("MUTE_MEMBERS")) {
@@ -3074,7 +3121,7 @@ client.on("message", (message) => {
                 serverstats.tempmute = tempmute
                 updateServerstats(serverstats)
             }
-
+            //TEMPBAN
             if (message.content.startsWith("!tempban")) {
                 if (!message.member.hasPermission("BAN_MEMBERS")) {
                     var embed = new Discord.MessageEmbed()
@@ -3241,7 +3288,7 @@ client.on("message", (message) => {
             for (var i = 0; i < paroleMessaggio.length; i++) {
                 for (var j = 0; j < parolacce.length; j++) {
 
-                    if (paroleMessaggio[i] == parolacce[j]) {
+                    if (paroleMessaggio[i].toLowerCase() == parolacce[j].toLowerCase()) {
 
                         if (message.member.hasPermission("ADMINISTRATOR")) {
                             return;
