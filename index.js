@@ -321,10 +321,6 @@ client.on("message", (message) => {
 
             if (message.channel.parentID == categoriaTicket) {
                 if (moderators.hasOwnProperty(message.author.id)) {
-                    if (moderators[message.member.user.id].aboutMe != "" && !message.author.bot) {
-                        message.delete()
-                    }
-
                     if (moderators[message.member.user.id].nome == "") {
                         var canale = client.channels.cache.get(moderators[message.member.user.id].channelId);
                         canale.setName("🔵│" + message.member.user.username)
