@@ -796,17 +796,19 @@ client.on("message", (message) => {
                         var args = message.content.split(/\s+/);
                         var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
                         if (!utente) { //Per username
-                            var nome = "";
-                            for (var i = 1; i < args.length; i++) {
-                                nome += args[i]
+                            if (message.content.startsWith("!userstats")) {
+                                var nome = message.content.slice(11).trim()
                             }
-                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase())))[0]];
-                            if (!utente) { //Per username
-                                var nome = "";
-                                for (var i = 1; i < args.length; i++) {
-                                    nome += args[i]
-                                }
-                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase())))[0]];
+                            else if (message.content.startsWith("!userinfo")) {
+                                var nome = message.content.slice(10).trim()
+
+                            }
+                            else {
+                                var nome = message.content.slice(6).trim()
+                            }
+                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+                            if (!utente) { //Per tag
+                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
                             }
                         }
                     }
