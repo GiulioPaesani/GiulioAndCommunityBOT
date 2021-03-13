@@ -788,10 +788,30 @@ client.on("message", (message) => {
             if (message.content.startsWith("!user")) {
                 if (message.content == "!user" || message.content == "!userstats" || message.content == "!userinfo") {
                     var utente = message.member;
+                    var ruoli = utente._roles;
                 }
                 else {
                     var utente = message.mentions.members.first()
+                    if (!utente) { //Per id
+                        var args = message.content.split(/\s+/);
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                        if (!utente) { //Per username
+                            var nome = "";
+                            for (var i = 1; i < args.length; i++) {
+                                nome += args[i]
+                            }
+                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase())))[0]];
+                            if (!utente) { //Per username
+                                var nome = "";
+                                for (var i = 1; i < args.length; i++) {
+                                    nome += args[i]
+                                }
+                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase())))[0]];
+                            }
+                        }
+                    }
                 }
+
                 if (!utente) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Utente non trovato")
@@ -806,8 +826,9 @@ client.on("message", (message) => {
                     return
                 }
 
+                var ruoli = utente._roles
+
                 var elencoRuoli = "";
-                var ruoli = utente._roles;
                 for (var i = 0; i < ruoli.length; i++) {
                     var ruolo = message.guild.roles.cache.find(role => role.id == ruoli[i]);
                     elencoRuoli += "- " + ruolo.name + "\r";
@@ -3747,7 +3768,7 @@ setInterval(function () {
                     delete tempmute[Object.keys(tempmute)[i]]
                     return
                 }
-                
+
                 var embed = new Discord.MessageEmbed()
                     .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
                     .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
