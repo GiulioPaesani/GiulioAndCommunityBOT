@@ -1712,76 +1712,75 @@ client.on("message", (message) => {
                     else {
                         userstats = userstatsList[index];
                     }
+
+                    if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
+                        var titleRandom = ["MA SAPETE COME SI GIOCA?", "MA È COSÌ DIFFICILE QUESTO GIOCO?", "NOOOO, PERCHÈ..."]
+                        var embed = new Discord.MessageEmbed()
+                            .setColor("#EB3140")
+                            .setDescription("Ogni utente può scrivere un solo numero alla volta")
+                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        message.channel.send(embed)
+
+                        userstats.incorrect = userstats.incorrect + 1;
+
+                        serverstats.numero = 0;
+                        serverstats.ultimoUtente = "NessunUtente";
+
+                        message.react("🔴");
+                    }
+                    else if (numero - 1 != serverstats.numero) { //Numero sbagliato
+                        var embed = new Discord.MessageEmbed()
+                            .setColor("#EB3140")
+                            .setDescription("Numero errato, dovevi inserire `" + (serverstats.numero + 1) + "`")
+
+                        if (serverstats.numero == 0) {
+                            var titleRandom = ["RIUSCIAMO A COMINCIARE ALMENO?", "DAI... ALMENO ARRIVIAMO A 10", "NON SO SE LO SAI MA IL PRIMO NUMERO È 1"]
+                            embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        }
+                        else if (serverstats.numero <= 10) {
+                            embed.setTitle(`FORTUNA CHE ERAVAMO SOLO A ${serverstats.numero}`)
+                        }
+                        else if (serverstats.numero <= 30) {
+                            embed.setTitle(`MA SIETE SICURI DI SAPER CONTARE?`)
+                        }
+                        else if (serverstats.numero <= 50) {
+                            var titleRandom = ["NOOOO, PERCHÈ...", "MEGLIO SE TORNATE A PROGRAMMARE", "PROPRIO ORA DOVEVATE SBAGLIARE?", "DAIII, STAVAMO FACENDO IL RECORD", message.member.user.username + " HAI ROVINATO I SOGNI DI TUTTI"]
+                            embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        }
+                        else {
+                            var titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", "MEGLIO SE TORNATE A PROGRAMMARE", "SIETE DELLE CAPRE"]
+                            embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                        }
+                        message.channel.send(embed)
+
+                        userstats.incorrect = userstats.incorrect + 1;
+
+                        serverstats.numero = 0;
+                        serverstats.ultimoUtente = "NessunUtente";
+
+                        message.react("🔴");
+                    }
+                    else { //Numero corretto
+                        numero >= serverstats.bestScore ? message.react("🔵") : message.react("🟢")
+                        numero >= serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
+                        serverstats.numero = serverstats.numero + 1;
+                        serverstats.ultimoUtente = message.author.id
+                        serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
+
+                        userstats.username = message.member.user.tag;
+                        userstats.lastScore = numero;
+                        userstats.timeBestScore = numero > userstats.bestScore ? new Date().getTime() : userstats.timeBestScore;
+                        userstats.timeLastScore = new Date().getTime();
+                        userstats.bestScore = numero > userstats.bestScore ? userstats.bestScore = numero : userstats.bestScore;
+                        userstats.correct = userstats.correct + 1;
+
+                    }
+                    updateServerstats(serverstats)
+                    updateUserstats(userstats, message.member)
                 }
                 catch {
-                    return //Stringa o valori/espressioni non compresibili
-                }
-
-                if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
-                    var titleRandom = ["MA SAPETE COME SI GIOCA?", "MA È COSÌ DIFFICILE QUESTO GIOCO?", "NOOOO, PERCHÈ..."]
-                    var embed = new Discord.MessageEmbed()
-                        .setColor("#EB3140")
-                        .setDescription("Ogni utente può scrivere un solo numero alla volta")
-                    embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                    message.channel.send(embed)
-
-                    userstats.incorrect = userstats.incorrect + 1;
-
-                    serverstats.numero = 0;
-                    serverstats.ultimoUtente = "NessunUtente";
-
-                    message.react("🔴");
-                }
-                else if (numero - 1 != serverstats.numero) { //Numero sbagliato
-                    var embed = new Discord.MessageEmbed()
-                        .setColor("#EB3140")
-                        .setDescription("Numero errato, dovevi inserire `" + (serverstats.numero + 1) + "`")
-
-                    if (serverstats.numero == 0) {
-                        var titleRandom = ["RIUSCIAMO A COMINCIARE ALMENO?", "DAI... ALMENO ARRIVIAMO A 10", "NON SO SE LO SAI MA IL PRIMO NUMERO È 1"]
-                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                    }
-                    else if (serverstats.numero <= 10) {
-                        embed.setTitle(`FORTUNA CHE ERAVAMO SOLO A ${serverstats.numero}`)
-                    }
-                    else if (serverstats.numero <= 30) {
-                        embed.setTitle(`MA SIETE SICURI DI SAPER CONTARE?`)
-                    }
-                    else if (serverstats.numero <= 50) {
-                        var titleRandom = ["NOOOO, PERCHÈ...", "MEGLIO SE TORNATE A PROGRAMMARE", "PROPRIO ORA DOVEVATE SBAGLIARE?", "DAIII, STAVAMO FACENDO IL RECORD", message.member.user.username + " HAI ROVINATO I SOGNI DI TUTTI"]
-                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                    }
-                    else {
-                        var titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", "MEGLIO SE TORNATE A PROGRAMMARE", "SIETE DELLE CAPRE"]
-                        embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                    }
-                    message.channel.send(embed)
-
-                    userstats.incorrect = userstats.incorrect + 1;
-
-                    serverstats.numero = 0;
-                    serverstats.ultimoUtente = "NessunUtente";
-
-                    message.react("🔴");
-                }
-                else { //Numero corretto
-                    numero >= serverstats.bestScore ? message.react("🔵") : message.react("🟢")
-                    numero >= serverstats.bestScore ? serverstats.timeBestScore = new Date().getTime().toString() : serverstats.timeBestScore;
-                    serverstats.numero = serverstats.numero + 1;
-                    serverstats.ultimoUtente = message.author.id
-                    serverstats.bestScore = numero > serverstats.bestScore ? serverstats.bestScore = numero : serverstats.bestScore
-
-                    userstats.username = message.member.user.tag;
-                    userstats.lastScore = numero;
-                    userstats.timeBestScore = numero > userstats.bestScore ? new Date().getTime() : userstats.timeBestScore;
-                    userstats.timeLastScore = new Date().getTime();
-                    userstats.bestScore = numero > userstats.bestScore ? userstats.bestScore = numero : userstats.bestScore;
-                    userstats.correct = userstats.correct + 1;
 
                 }
-                updateServerstats(serverstats)
-                updateUserstats(userstats, message.member)
-
             }
             //CUSER
             if (message.content.startsWith("!cuser")) {
@@ -3291,7 +3290,7 @@ client.on("message", (message) => {
                     if (paroleMessaggio[i].toLowerCase() == parolacce[j].toLowerCase()) {
 
                         if (message.member.hasPermission("ADMINISTRATOR")) {
-                            //return;
+                            return;
                         }
                         var lunghezzaCensored = ""
                         for (var z = 2; z < parolacce[j].length; z++) {
