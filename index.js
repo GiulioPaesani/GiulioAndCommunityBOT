@@ -3291,7 +3291,7 @@ client.on("message", (message) => {
                     if (paroleMessaggio[i].toLowerCase() == parolacce[j].toLowerCase()) {
 
                         if (message.member.hasPermission("ADMINISTRATOR")) {
-                            return;
+                            //return;
                         }
                         var lunghezzaCensored = ""
                         for (var z = 2; z < parolacce[j].length; z++) {
