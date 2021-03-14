@@ -3010,98 +3010,44 @@ client.on("message", (message) => {
                 updateServerstats(serverstats)
             }
 
-            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "sesso anale", "vaffanculo", "fanculo", "s3sso0 4n4l3", "anale", "culo", "tette", "twerk", "minkia", "beata minkia", "buttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "pene", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "dio", "porco", "porcodio", "dioporco", "dio cane", "bastardo", "sborra", "squirt", "peni", "inculatevi", "sborratevi", "squirtate"]
+            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "sesso anale", "vaffanculo", "fanculo", "s3sso0 4n4l3", "anale", "culo", "tette", "twerk", "minkia", "beata minkia", "buttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "porco", "porcodio", "dioporco", "dio cane", "bastardo", "sborra", "squirt", "inculatevi", "sborratevi", "squirtate"]
+            var parolacce2 = ["dio", "pene", "peni"]
             var parolacciaTrovata = false
             var messaggioCensurato = message.content;
-            var paroleMessaggio = message.content.split(/\s+/);
+            var paroleMessaggio = message.content.toLowerCase().split(/\s+/);
             for (var i = 0; i < paroleMessaggio.length; i++) {
-                for (var j = 0; j < parolacce.length; j++) {
+                for (var j = 0; j < parolacce2.length; j++) {
 
-                    if (paroleMessaggio[i].toLowerCase() == parolacce[j].toLowerCase()) {
+                    if (paroleMessaggio[i].toLowerCase() == parolacce2[j].toLowerCase()) {
 
                         if (utenteMod) {
                             return;
                         }
                         var lunghezzaCensored = ""
-                        for (var z = 2; z < parolacce[j].length; z++) {
+                        for (var z = 2; z < parolacce2[j].length; z++) {
                             lunghezzaCensored += "#"
                         }
                         parolacciaTrovata = true;
-                        messaggioCensurato = messaggioCensurato.replace(new RegExp(parolacce[j], 'g'), parolacce[j][0] + lunghezzaCensored + parolacce[j][parolacce[j].length - 1]);
+                        messaggioCensurato = messaggioCensurato.replace(new RegExp(parolacce2[j], 'g'), parolacce2[j][0] + lunghezzaCensored + parolacce2[j][parolacce2[j].length - 1]);
                     }
                 }
             }
-            if (parolacciaTrovata) {
-                message.delete();
-                var canale = client.channels.cache.get(canaleLog)
-
-                var index = userstatsList.findIndex(x => x.id == message.member.user.id);
-
-                if (index < 0) {
-                    var index = userstatsList.length
-
-                    userstatsList[userstatsList.length] = {
-                        id: message.author.id,
-                        username: message.member.user.tag,
-                        lastScore: 0,
-                        bestScore: 0,
-                        timeBestScore: 0,
-                        timeLastScore: 0,
-                        correct: 0,
-                        incorrect: 0,
-                        warn: "{}"
+            var messaggioUnito = paroleMessaggio.join("");
+            for (var i = 0; i < parolacce.length; i++) {
+                if (messaggioUnito.includes(parolacce[i])) {
+                    if (utenteMod) {
+                        return;
                     }
 
-                    con.query(`INSERT INTO userstats VALUES (${message.member.user.id}, '${message.member.user.tag}',0, 0, 0, 0, 0, 0, '{}')`, (err) => {
-                        if (err) {
-                            console.log(err);
-                            return
-                        }
-                    })
+                    var lunghezzaCensored = ""
+                    for (var z = 2; z < parolacce[i].length; z++) {
+                        lunghezzaCensored += "#"
+                    }
+
+                    parolacciaTrovata = true;
+                    messaggioCensurato = messaggioCensurato.replace(new RegExp(parolacce[i], 'g'), parolacce[i][0] + lunghezzaCensored + parolacce[i][parolacce[i].length - 1]);
+
                 }
-
-                var userstats = userstatsList[index]
-                var warn = JSON.parse(userstats.warn);
-                warn[Object.keys(warn).length] = {
-                    reason: "Bad word",
-                    time: new Date().getTime()
-                }
-
-                userstats.warn = warn
-                updateUserstats(userstats, message.member)
-
-                var embed = new Discord.MessageEmbed()
-                    .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL())
-                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
-                    .setColor("#6143CB")
-                    .addField("Message", messaggioCensurato)
-                    .addField("Channel", message.channel.toString())
-                    .setFooter("User ID: " + message.member.user.id)
-
-                message.channel.send(embed)
-
-                var embedLog = new Discord.MessageEmbed()
-                    .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL())
-                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
-                    .setColor("#6143CB")
-                    .addField("Message", message.content)
-                    .addField("Channel", message.channel.toString())
-                    .setFooter("User ID: " + message.member.user.id)
-
-                canale.send(embedLog)
-
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Hai detto una parolaccia")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
-                    .addField("Message", messaggioCensurato)
-                    .addField("Channel", message.channel.toString())
-
-                message.member.send(embedUtente)
-                    .catch(() => {
-                        return
-                    })
-
             }
         })
     })
