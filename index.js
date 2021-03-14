@@ -1200,19 +1200,10 @@ client.on("message", (message) => {
                     return
                 }
 
-                if (contenuto.includes("\"")) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Senza virgolette")
-                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                        .setColor("#8F8F8F")
-                        .setDescription("Inserire un suggerimento senza virgolette")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
+                contenuto = contenuto.replace(/\n/g, ' ');
+                contenuto = contenuto.replace(/\"/g, '');
+                contenuto = contenuto.replace(/\'/g, '');
+                contenuto = contenuto.replace(/\`/g, '');
 
                 var suggestions = JSON.parse(serverstats.suggestions);
 
@@ -1349,19 +1340,10 @@ client.on("message", (message) => {
                     return
                 }
 
-                if (contenuto.includes("\"")) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Senza virgolette")
-                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                        .setColor("#8F8F8F")
-                        .setDescription("Inserire una sfida senza virgolette")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
+                contenuto = contenuto.replace(/\n/g, ' ');
+                contenuto = contenuto.replace(/\"/g, '');
+                contenuto = contenuto.replace(/\'/g, '');
+                contenuto = contenuto.replace(/\`/g, '');
 
                 var challenges = JSON.parse(serverstats.challenges);
 
