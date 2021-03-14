@@ -195,6 +195,7 @@ client.on("message", (message) => {
 
             var utenteMod = false;
             for (var i = 0; i < ruoliMod; i++) {
+                console.log(ruoliMod[i])
                 if (message.member.roles.cache.has(ruoliMod[i])) utenteMod = true;
                 if (message.member.hasPermission("ADMINISTRATOR")) utenteMod = true;
             }
