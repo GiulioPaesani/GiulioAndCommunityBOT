@@ -194,12 +194,9 @@ client.on("message", (message) => {
             var nomeComando;
 
             var utenteMod = false;
-            for (var i = 0; i < ruoliMod; i++) {
-                console.log(ruoliMod[i])
+            for (var i = 0; i < ruoliMod.length; i++) {
                 if (message.member.roles.cache.has(ruoliMod[i])) utenteMod = true;
-                if (message.member.hasPermission("ADMINISTRATOR")) utenteMod = true;
             }
-            console.log(utenteMod)
 
             var canaleNotConcessoBot = false;
             var trovatoGiulioAndCommunityBot = false;
