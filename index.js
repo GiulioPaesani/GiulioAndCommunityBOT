@@ -853,7 +853,7 @@ client.on("message", (message) => {
                 }
                 var command = message.content.slice(5).trim();
                 var data, comando, info, video, description;
-
+                console.log(utenteMod)
                 var args = command.split(" ");
                 if (args[args.length - 1].toLowerCase() == "here" && utenteMod && args.length != 1) {
                     command = command.slice(0, -5)
