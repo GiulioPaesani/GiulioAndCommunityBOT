@@ -39,6 +39,7 @@ var embedChallenge = new Discord.MessageEmbed()
 
 var canaleLog = "793781904973365299";
 
+var ruoli
 
 client.on("message", (message) => {
     message.content = message.content.trim().toLowerCase();
@@ -297,20 +298,6 @@ client.on("message", (message) => {
                         })
                         return
                     }
-                }
-            }
-
-
-            var moderators = JSON.parse(serverstats.moderators);
-
-            if (message.channel.parentID == categoriaTicket) {
-                if (message.content.includes('"') || message.content.includes("'") || message.content.includes("`")) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("ERRORE")
-                        .setDescription("Scrivere un messaggio senza virgolette, può causare problemi")
-                        .setColor("#DD2E44")
-                    message.channel.send(embed)
-                    return
                 }
             }
 
