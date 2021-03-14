@@ -196,7 +196,9 @@ client.on("message", (message) => {
             var utenteMod = false;
             for (var i = 0; i < ruoliMod; i++) {
                 if (message.member.roles.cache.has(ruoliMod[i])) utenteMod = true;
+                if (message.member.hasPermission("ADMINISTRATOR")) utenteMod = true;
             }
+            console.log(utenteMod)
 
             var canaleNotConcessoBot = false;
             var trovatoGiulioAndCommunityBot = false;
@@ -853,7 +855,7 @@ client.on("message", (message) => {
                 }
                 var command = message.content.slice(5).trim();
                 var data, comando, info, video, description;
-                console.log(utenteMod)
+
                 var args = command.split(" ");
                 if (args[args.length - 1].toLowerCase() == "here" && utenteMod && args.length != 1) {
                     command = command.slice(0, -5)
