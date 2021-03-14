@@ -39,7 +39,12 @@ var embedChallenge = new Discord.MessageEmbed()
 
 var canaleLog = "793781904973365299";
 
-var ruoli
+var ruoliMod = [
+    "793796029878370326", //ADMIN
+    "820031809046708254", //MOD "FINTO"
+    "799925821904125962", //MOD
+    "793804156430188594", //BOT
+]
 
 client.on("message", (message) => {
     message.content = message.content.trim().toLowerCase();
@@ -62,6 +67,7 @@ client.on("message", (message) => {
             return
         }
         var serverstats = result[0]; //Get serverstats
+
         var tempmute = JSON.parse(serverstats.tempmute)
         var tempban = JSON.parse(serverstats.tempban)
 
@@ -187,6 +193,11 @@ client.on("message", (message) => {
 
             var nomeComando;
 
+            var utenteMod = false;
+            for (var i = 0; i < ruoliMod; i++) {
+                if (message.member.roles.cache.has(ruoliMod[i])) utenteMod = true;
+            }
+
             var canaleNotConcessoBot = false;
             var trovatoGiulioAndCommunityBot = false;
             var trovatoBot = false
@@ -265,7 +276,7 @@ client.on("message", (message) => {
                 if (canaleNotConcesso) {
                     var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
-                    if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && message.content.startsWith("!code"))) {
+                    if (!canaliAdmin.includes(message.channel.id) && !(utenteMod && message.content.startsWith("!code"))) {
                         var embed = new Discord.MessageEmbed()
                             .setTitle("Canale non concesso")
                             .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
@@ -303,7 +314,7 @@ client.on("message", (message) => {
 
             //TEST
             if (message.content == "!test") {
-                if (!message.member.hasPermission("ADMINISTRATOR")) {
+                if (!utenteMod) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
                         .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -844,11 +855,11 @@ client.on("message", (message) => {
                 var data, comando, info, video, description;
 
                 var args = command.split(" ");
-                if (args[args.length - 1].toLowerCase() == "here" && message.member.hasPermission("ADMINISTRATOR") && args.length != 1) {
+                if (args[args.length - 1].toLowerCase() == "here" && utenteMod && args.length != 1) {
                     command = command.slice(0, -5)
                 }
 
-                if (message.member.hasPermission("ADMINISTRATOR")) {
+                if (utenteMod) {
                     var utente = message.mentions.members.first()
                     if (utente) {
                         command = command.slice(0, -22).trim()
@@ -1100,7 +1111,7 @@ client.on("message", (message) => {
 
             //SUGGESTIONS
             if (message.content.startsWith("!sdelete")) {
-                if (!message.member.hasPermission("ADMINISTRATOR")) {
+                if (!utenteMod) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
                         .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -1252,7 +1263,7 @@ client.on("message", (message) => {
 
             //CHALLENGE
             if (message.content.startsWith("!cdelete")) {
-                if (!message.member.hasPermission("ADMINISTRATOR")) {
+                if (!utenteMod) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
                         .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -1679,7 +1690,6 @@ client.on("message", (message) => {
                     return
                 }
 
-                console.log("ciao")
                 var time = message.content.split(/\s+/)[1];
                 if (!time) {
                     var embed = new Discord.MessageEmbed()
@@ -1885,7 +1895,7 @@ client.on("message", (message) => {
                     return
                 }
 
-                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326") || utente.roles.cache.has("820031809046708254")) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
                         .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -2434,7 +2444,7 @@ client.on("message", (message) => {
                     reason = "Nessun motivo";
                 }
 
-                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326") || utente.roles.cache.has("820031809046708254")) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
                         .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -2940,7 +2950,7 @@ client.on("message", (message) => {
                     reason = "Nessun motivo";
                 }
 
-                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326")) {
+                if (utente.roles.cache.has("799925821904125962") || utente.roles.cache.has("793804156430188594") || utente.roles.cache.has("793796029878370326") || utente.roles.cache.has("820031809046708254")) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non hai il permesso")
                         .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -3009,7 +3019,7 @@ client.on("message", (message) => {
 
                     if (paroleMessaggio[i].toLowerCase() == parolacce[j].toLowerCase()) {
 
-                        if (message.member.hasPermission("ADMINISTRATOR")) {
+                        if (utenteMod) {
                             return;
                         }
                         var lunghezzaCensored = ""
