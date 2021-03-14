@@ -1946,7 +1946,7 @@ client.on("message", (message) => {
                 var embedUtente = new Discord.MessageEmbed()
                     .setTitle("Sei stato warnato")
                     .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
                     .addField("Reason", reason)
                     .addField("Moderator", message.author.toString())
 
