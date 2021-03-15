@@ -3280,6 +3280,9 @@ client.on("message", (message) => {
             }
 
             //LEVELING
+            var index = userstatsList.findIndex(x => x.id == message.author.id);
+            var userstats
+
             if (index < 0) {
                 userstatsList[userstatsList.length] = {
                     id: message.author.id,
