@@ -3041,6 +3041,7 @@ client.on("message", (message) => {
                 }
 
                 var index = userstatsList.findIndex(x => x.id == utente.user.id);
+                var userstats
                 if (index < 0) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Non ha mai scritto")
@@ -3147,6 +3148,8 @@ client.on("message", (message) => {
                     return
                 }
 
+                var index = userstatsList.findIndex(x => x.id == message.author.id);
+                var userstats
                 if (index < 0) {
                     userstatsList[userstatsList.length] = {
                         id: message.author.id,
