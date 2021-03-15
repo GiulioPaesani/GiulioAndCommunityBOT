@@ -3579,10 +3579,8 @@ function updateServerstats(serverstats) {
         serverstats.tempmute = JSON.parse(serverstats.tempmute)
     if (typeof serverstats.tempban === 'string' || serverstats.tempban instanceof String)
         serverstats.tempban = JSON.parse(serverstats.tempban)
-    if (typeof serverstats.moderators === 'string' || serverstats.moderators instanceof String)
-        serverstats.moderators = JSON.parse(serverstats.moderators)
 
-    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}', tempmute = '${JSON.stringify(serverstats.tempmute)}', tempban = '${JSON.stringify(serverstats.tempban)}', moderators = '${JSON.stringify(serverstats.moderators)}'`, (err) => {
+    con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}', tempmute = '${JSON.stringify(serverstats.tempmute)}', tempban = '${JSON.stringify(serverstats.tempban)}'`, (err) => {
         if (err) {
             console.log(err)
             return
