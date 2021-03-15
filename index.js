@@ -9,6 +9,7 @@ const fs = require("file-system");
 const mysql = require('mysql');
 const ytnotifier = require('youtube-notifier');
 const ms = require("ms")
+const humanNumber = require('human-number')
 
 client.login(process.env.token);
 
@@ -38,6 +39,8 @@ var canaleChallenge = "815611596042666034";
 var embedChallenge = new Discord.MessageEmbed()
 
 var canaleLog = "793781904973365299";
+
+var canaleLevel = "793781905740922900"
 
 var ruoliMod = [
     "793796029878370326", //ADMIN
@@ -189,6 +192,13 @@ client.on("message", (message) => {
 
                 "-!tempban": [],
 
+                "-!rank": ["801019779480944660"],
+                "-!level": ["801019779480944660"],
+                "!leaderboard": ["801019779480944660"],
+                "!lb": ["801019779480944660"],
+
+                "-!setlevel": [],
+                "-!setrank": [],
             }
 
             var nomeComando;
@@ -2984,6 +2994,418 @@ client.on("message", (message) => {
                 serverstats.tempban = tempban
                 updateServerstats(serverstats)
             }
+            //RANK
+            if (message.content.startsWith("!rank") || message.content.startsWith("!level")) {
+                if (message.content == "!rank" || message.content == "!level") {
+                    var utente = message.member;
+                }
+                else {
+                    var utente = message.mentions.members.first()
+                    if (!utente) { //Per id
+                        var args = message.content.split(/\s+/);
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                        if (!utente) { //Per username
+                            if (message.content.startsWith("!userstats")) {
+                                var nome = message.content.slice(11).trim()
+                            }
+                            else if (message.content.startsWith("!userinfo")) {
+                                var nome = message.content.slice(10).trim()
+
+                            }
+                            else {
+                                var nome = message.content.slice(6).trim()
+                            }
+                            var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+                            if (!utente) { //Per tag
+                                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+                            }
+                        }
+                    }
+                }
+
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!rank [user]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var index = userstatsList.findIndex(x => x.id == utente.user.id);
+                if (index < 0) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non ha mai scritto")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription("Questo utente non ha esperienza")
+
+                    message.channel.send(embed)
+                    return
+                }
+                userstats = userstatsList[index];
+
+                var progress = "";
+                var nProgress = parseInt(7 * (userstats.xp - calcoloXpNecessario(userstats.level)) / calcoloXpNecessario(userstats.level + 1))
+                for (var i = 0; i < nProgress; i++) {
+                    progress += ":white_medium_small_square:";
+                }
+                for (var i = 0; i < 7 - nProgress; i++) {
+                    progress += ":white_small_square:";
+                }
+
+                var leaderboardList = userstatsList.sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
+                var position = leaderboardList.findIndex(x => x.id == utente.user.id) + 1
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(utente.user.tag)
+                    .setDescription("Informazioni sul livellamento di questo utente")
+                    .setThumbnail(utente.user.avatarURL())
+                    .addField("Level " + userstats.level, progress + "\rXP: " + humanNumber(userstats.xp) + "/" + humanNumber(calcoloXpNecessario(userstats.level + 1)) + " - Rank: #" + position)
+
+                message.channel.send(embed)
+            }
+            //LEADERBOARD
+            if (message.content == "!leaderboard" || message.content == "!lb") {
+                var leaderboardList = userstatsList.sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
+
+                var leaderboard = "";
+                var utente;
+                for (var i = 0; i < 10; i++) {
+                    if (leaderboardList.length - 1 < i) {
+                        break
+                    }
+
+                    utente = leaderboardList[i].username.slice(0, -5);
+                    switch (i) {
+                        case 0:
+                            leaderboard += ":first_place: ";
+                            break
+                        case 1:
+                            leaderboard += ":second_place: "
+                            break
+                        case 2:
+                            leaderboard += ":third_place: "
+                            break
+                        default:
+                            leaderboard += "**#" + (i + 1) + "** "
+
+
+                    }
+                    leaderboard += utente + " - **Level " + leaderboardList[i].level + "** (XP: " + humanNumber(leaderboardList[i].xp) + ")\r";
+                }
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("GiulioAndCommunity")
+                    .setDescription("Leaderboard dei livelli di tutti gli utenti nel server")
+                    .setThumbnail(message.member.guild.iconURL())
+                    .addField("Leaderboard", leaderboard)
+
+                message.channel.send(embed)
+            }
+            //SETLEVEL
+            if (message.content.startsWith("!setlevel") || message.content.startsWith("!setrank")) {
+                if (!utenteMod) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Non hai il permesso")
+                        .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                        .setColor("#9E005D")
+                        .setDescription("Non puoi eseguire il comando `!setlevel` perchè non hai il permesso")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var args = message.content.split(/\s+/);
+                var utente = message.mentions.members.first()
+                if (!utente) { //Per id
+                    var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                }
+
+                if (!utente) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Utente non trovato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!setlevel [user] [level]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                if (index < 0) {
+                    userstatsList[userstatsList.length] = {
+                        id: message.author.id,
+                        username: message.member.user.tag,
+                        lastScore: 0,
+                        bestScore: 0,
+                        timeBestScore: 0,
+                        timeLastScore: 0,
+                        correct: 0,
+                        incorrect: 0,
+                        warn: "{}",
+                        level: 0,
+                        xp: 0,
+                        cooldownXp: 0,
+                    }
+
+                    var index = userstatsList.findIndex(x => x.id == message.author.id);
+                    var userstats = userstatsList[index];
+
+                    addUserToUserstats(message.member)
+                }
+                else {
+                    var userstats = userstatsList[index];
+                }
+
+                if (!args[2]) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Livello non impostato")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!setlevel [user] [level]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+                var setLevel = parseInt(args[2]);
+                if (!setLevel && setLevel != 0) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Livello non valido")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!setlevel [user] [level]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+                if (setLevel < 0) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Livello non valido")
+                        .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                        .setColor("#ED1C24")
+                        .setDescription("`!setlevel [user] [level]`")
+
+                    message.channel.send(embed).then(msg => {
+                        message.delete({ timeout: 7000 })
+                        msg.delete({ timeout: 7000 })
+                    })
+                    return
+                }
+
+
+                userstats.level = setLevel;
+
+                userstats.xp = calcoloXpNecessario(userstats.level);
+
+                if (userstats.level >= 100) {
+                    utente.roles.add("800740873351462932")
+                    removeAllLevelRole(utente, "800740873351462932")
+                }
+                else if (userstats.level >= 50) {
+                    utente.roles.add("800740473437945927")
+                    removeAllLevelRole(utente, "800740473437945927")
+                }
+                else if (userstats.level >= 45) {
+                    utente.roles.add("800740423999815710")
+                    removeAllLevelRole(utente, "800740423999815710")
+                }
+                else if (userstats.level >= 40) {
+                    utente.roles.add("799990896849977344")
+                    removeAllLevelRole(utente, "799990896849977344")
+                }
+                else if (userstats.level >= 35) {
+                    utente.roles.add("799990865001971722")
+                    removeAllLevelRole(utente, "799990865001971722")
+                }
+                else if (userstats.level >= 30) {
+                    utente.roles.add("799990832224272405")
+                    removeAllLevelRole(utente, "799990832224272405")
+                }
+                else if (userstats.level >= 25) {
+                    utente.roles.add("799990806357213194")
+                    removeAllLevelRole(utente, "799990806357213194")
+                }
+                else if (userstats.level >= 20) {
+                    utente.roles.add("799990773708750878")
+                    removeAllLevelRole(utente, "799990773708750878")
+                }
+                else if (userstats.level >= 15) {
+                    utente.roles.add("799990735839559690")
+                    removeAllLevelRole(utente, "799990735839559690")
+                }
+                else if (userstats.level >= 10) {
+                    utente.roles.add("799990705216159791")
+                    removeAllLevelRole(utente, "799990705216159791")
+                }
+                else if (userstats.level >= 5) {
+                    utente.roles.add("799990260393443338")
+                    removeAllLevelRole(utente, "799990260393443338")
+                }
+                else {
+                    removeAllLevelRole(utente)
+                }
+
+
+                updateUserstats(userstats, utente)
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Livello impostato")
+                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                    .setColor("#16A0F4")
+                    .setDescription("Livello " + userstats.level + " impostato a " + utente.toString())
+
+                message.channel.send(embed)
+            }
+
+            //LEVELING
+            if (index < 0) {
+                userstatsList[userstatsList.length] = {
+                    id: message.author.id,
+                    username: message.member.user.tag,
+                    lastScore: 0,
+                    bestScore: 0,
+                    timeBestScore: 0,
+                    timeLastScore: 0,
+                    correct: 0,
+                    incorrect: 0,
+                    warn: "{}",
+                    level: 0,
+                    xp: 0,
+                    cooldownXp: 0,
+                }
+
+                var index = userstatsList.findIndex(x => x.id == message.author.id);
+                userstats = userstatsList[index];
+
+                addUserToUserstats(message.member)
+            }
+            else {
+                userstats = userstatsList[index];
+            }
+
+
+            if (userstats.cooldownXp <= 0) {
+                var boost = 0;
+                if (message.member.roles.cache.has("800740473437945927")) {
+                    boost = 20;
+                }
+
+                userstats.cooldownXp = 60;
+                var xp = Math.floor(Math.random() * (40 - 15 + 1)) + 15;
+                userstats.xp += xp + (boost * xp / 100);
+
+                if (userstats.xp >= calcoloXpNecessario(userstats.level + 1)) {
+                    userstats.level++;
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("LEVEL " + userstats.level + " - " + message.member.user.tag)
+                        .setThumbnail(message.author.avatarURL())
+                        .setDescription(message.member.toString() + " hai raggiunto un nuovo livello")
+
+                    switch (userstats.level) {
+                        case 5: {
+                            message.member.roles.add("799990260393443338")
+                            removeAllLevelRole(message.member, "799990260393443338")
+                            embed
+                                .setColor("#f86f6f")
+                                .addField("Nuovi privilegi", "Con il <@&799990260393443338> hai sbloccato nuove funzioni\r- **Streaming** nelle chat vocali\rAggiungere **reazioni** ai messaggi")
+                        } break
+                        case 10: {
+                            message.member.roles.add("799990705216159791")
+                            removeAllLevelRole(message.member, "799990705216159791")
+                            embed
+                                .setColor("#ff653f")
+                                .addField("Nuovi privilegi", "Con il <@&799990705216159791> hai sbloccato nuove funzioni\r- Mandare **emoji esterne**\rPartecipare a eventuali **eventi futuri**\rAllegare **file** nelle chat testuali")
+                        } break
+                        case 15: {
+                            message.member.roles.add("799990735839559690")
+                            removeAllLevelRole(message.member, "799990735839559690")
+                            embed
+                                .setColor("#feb144")
+                                .addField("Nuovi privilegi", "Con il <@&799990735839559690> hai sbloccato nuove funzioni\r- Cambiare il proprio **nickname**")
+                        } break
+                        case 20: {
+                            message.member.roles.add("799990773708750878")
+                            removeAllLevelRole(message.member, "799990773708750878")
+                            embed
+                                .setColor("#ffe159")
+                                .addField("Nuovi privilegi", "Con il <@&799990773708750878> hai sbloccato nuove funzioni\r- Comandi <@235148962103951360> per **formattazione** messaggi (?aesthetics [test], ?clap [test], ?fancy [test], ecc...)")
+                        } break
+                        case 25: {
+                            message.member.roles.add("799990806357213194")
+                            removeAllLevelRole(message.member, "799990806357213194")
+                            embed
+                                .setColor("#edff6d")
+                        } break
+                        case 30: {
+                            message.member.roles.add("799990832224272405")
+                            removeAllLevelRole(message.member, "799990832224272405")
+                            embed
+                                .setColor("#9ee09e")
+                                .addField("Nuovi privilegi", "Con il <@&799990832224272405> hai sbloccato nuove funzioni\r- Scrivere nella chat <#801379978045816863>")
+                        } break
+                        case 35: {
+                            removeAllLevelRole(message.member, "799990865001971722")
+                            message.member.roles.add("799990865001971722")
+                            embed
+                                .setColor("#8fffd1")
+                        } break
+                        case 40: {
+                            message.member.roles.add("799990896849977344")
+                            removeAllLevelRole(message.member, "799990896849977344")
+                            embed
+                                .setColor("#9ee09e")
+                        } break
+                        case 45: {
+                            message.member.roles.add("800740423999815710")
+                            removeAllLevelRole(message.member, "800740423999815710")
+                            embed
+                                .setColor("#9ec1cf")
+                        } break
+                        case 50: {
+                            message.member.roles.add("800740473437945927")
+                            removeAllLevelRole(message.member, "800740473437945927")
+                            embed
+                                .setColor("#cc99c9")
+                                .addField("Nuovi privilegi", "Con il <@&800740473437945927> hai sbloccato nuove funzioni\r- 20% di **Boost** di esperienza nel livellamento")
+                        } break
+                        case 100: {
+                            message.member.roles.add("800740873351462932")
+                            removeAllLevelRole(message.member, "800740873351462932")
+                            embed
+                                .setColor("#c95fff")
+                                .addField("Nuovi privilegi", "Con il <@&800740473437945927> hai sbloccato nuove funzioni\r- **Priorità di parola** nelle chat vocali")
+                        } break
+                    }
+
+                    var canale = client.channels.cache.get(canaleLevel);
+                    canale.send(embed)
+                    canale.send(message.member.toString())
+                        .then(msg => {
+                            msg.delete();
+                        })
+                }
+                updateUserstats(userstats, message.member)
+            }
 
             var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "vaffanculo", "fanculo", "culo", "tette", "twerk", "minkia", "beata minkia", "puttana", "troia", "troie", "inculata", "inculato", "m4rd4", "cazzo", "merda", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "porco", "porcodio", "dioporco", "dio cane", "bastardo", "sborra", "squirt", "inculatevi", "sborratevi", "squirtate"]
             var parolacce2 = ["dio", "pene", "peni", "anale"]
@@ -3473,35 +3895,84 @@ setInterval(function () {
             return
         }
         var serverstats = result[0];
-        var tempmute = JSON.parse(serverstats.tempmute);
-        var tempban = JSON.parse(serverstats.tempban);
 
-        for (var i = 0; i < Object.keys(tempmute).length; i++) {
+        con.query("SELECT * FROM userstats", (err, result) => {
+            if (err) {
+                console.log(err);
+                return
+            }
+            var userstatsList = result;
 
-            tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
+            var tempmute = JSON.parse(serverstats.tempmute);
+            var tempban = JSON.parse(serverstats.tempban);
 
-            if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
+            //TEMPMUTE
+            for (var i = 0; i < Object.keys(tempmute).length; i++) {
 
-                var canale = client.channels.cache.get(canaleLog)
-                var server = client.guilds.cache.get("793776260350083113");
+                tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
 
-                try {
-                    var utente = server.members.cache.find(x => x.id == Object.keys(tempmute)[i]);
-                    utente.roles.remove("800299630897659934");
+                if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
+
+                    var canale = client.channels.cache.get(canaleLog)
+                    var server = client.guilds.cache.get("793776260350083113");
+
+                    try {
+                        var utente = server.members.cache.find(x => x.id == Object.keys(tempmute)[i]);
+                        utente.roles.remove("800299630897659934");
+
+                        var embed = new Discord.MessageEmbed()
+                            .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
+                            .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                            .setColor("#6143CB")
+                            .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                            .addField("Moderator", "<@802184359120863272>")
+                            .setFooter("User ID: " + Object.keys(tempmute)[i])
+
+                        var embedUtente = new Discord.MessageEmbed()
+                            .setTitle("Sei stato smutato")
+                            .setColor("#6143CB")
+                            .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                            .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                            .addField("Moderator", "<@802184359120863272>")
+
+                        utente.send(embedUtente).catch(() => {
+
+                        })
+
+                        canale.send(embed);
+                        delete tempmute[Object.keys(tempmute)[i]]
+                    }
+                    catch {
+                        delete tempmute[Object.keys(tempmute)[i]]
+                    }
+
+
+                }
+            }
+            //TEMPBAN
+            for (var i = 0; i < Object.keys(tempban).length; i++) {
+                tempban[Object.keys(tempban)[i]].time = tempban[Object.keys(tempban)[i]].time - 5;
+                if (tempban[Object.keys(tempban)[i]].time <= 0) {
+                    var canale = client.channels.cache.get(canaleLog)
+                    var server = client.guilds.cache.get("793776260350083113");
+
+                    server.members.unban(Object.keys(tempban)[i])
+
+                    var utente = client.users.cache.get(Object.keys(tempban)[i]);
 
                     var embed = new Discord.MessageEmbed()
-                        .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
-                        .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                        .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL())
+                        .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                         .setColor("#6143CB")
-                        .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                        .addField("Reason", tempban[Object.keys(tempban)[i]].reason)
                         .addField("Moderator", "<@802184359120863272>")
-                        .setFooter("User ID: " + Object.keys(tempmute)[i])
+                        .setFooter("User ID: " + Object.keys(tempban)[i])
 
                     var embedUtente = new Discord.MessageEmbed()
-                        .setTitle("Sei stato smutato")
+                        .setTitle("Sei stato sbannato")
                         .setColor("#6143CB")
-                        .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                        .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                        .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                        .addField("Reason", tempban[Object.keys(tempban)[i]].reason)
                         .addField("Moderator", "<@802184359120863272>")
 
                     utente.send(embedUtente).catch(() => {
@@ -3509,54 +3980,27 @@ setInterval(function () {
                     })
 
                     canale.send(embed);
-                    delete tempmute[Object.keys(tempmute)[i]]
+                    delete tempban[Object.keys(tempban)[i]]
                 }
-                catch {
-                    delete tempmute[Object.keys(tempmute)[i]]
+            }
+            //COOLDOWN XP
+            for (var i = 0; i < userstatsList.length; i++) {
+                if (userstatsList[i].cooldownXp > 0) {
+                    userstatsList[i].cooldownXp = userstatsList[i].cooldownXp - 5;
+
+                    var server = client.guilds.cache.get("793776260350083113");
+                    var utente = server.members.cache.find(user => user.id == userstatsList[i].id)
+
+                    if (utente)
+                        updateUserstats(userstatsList[i], utente)
                 }
-
-
             }
-        }
 
-        for (var i = 0; i < Object.keys(tempban).length; i++) {
-            tempban[Object.keys(tempban)[i]].time = tempban[Object.keys(tempban)[i]].time - 5;
-            if (tempban[Object.keys(tempban)[i]].time <= 0) {
-                var canale = client.channels.cache.get(canaleLog)
-                var server = client.guilds.cache.get("793776260350083113");
+            serverstats.tempmute = tempmute
+            serverstats.tempban = tempban
+            updateServerstats(serverstats)
 
-                server.members.unban(Object.keys(tempban)[i])
-
-                var utente = client.users.cache.get(Object.keys(tempban)[i]);
-
-                var embed = new Discord.MessageEmbed()
-                    .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL())
-                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                    .setColor("#6143CB")
-                    .addField("Reason", tempban[Object.keys(tempban)[i]].reason)
-                    .addField("Moderator", "<@802184359120863272>")
-                    .setFooter("User ID: " + Object.keys(tempban)[i])
-
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Sei stato sbannato")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                    .addField("Reason", tempban[Object.keys(tempban)[i]].reason)
-                    .addField("Moderator", "<@802184359120863272>")
-
-                utente.send(embedUtente).catch(() => {
-
-                })
-
-                canale.send(embed);
-                delete tempban[Object.keys(tempban)[i]]
-            }
-        }
-
-        serverstats.tempmute = tempmute
-        serverstats.tempban = tempban
-        updateServerstats(serverstats)
-
+        })
     })
 }, 5000)
 
@@ -3591,7 +4035,7 @@ function updateUserstats(userstats, utente) {
     if (typeof userstats.warn === 'string' || userstats.warn instanceof String)
         userstats.warn = JSON.parse(userstats.warn)
 
-    con.query(`UPDATE userstats SET username = '${utente.user.tag}', lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore}, warn = '${JSON.stringify(userstats.warn)}' WHERE id = ${utente.user.id}`, (err) => {
+    con.query(`UPDATE userstats SET username = '${utente.user.tag}', lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore}, warn = '${JSON.stringify(userstats.warn)}', level = ${userstats.level}, xp = ${userstats.xp}, cooldownXp = ${userstats.cooldownXp} WHERE id = ${utente.user.id}`, (err) => {
         if (err) {
             console.log(err)
             return
@@ -3599,3 +4043,36 @@ function updateUserstats(userstats, utente) {
     })
 }
 
+
+function calcoloXpNecessario(level) {
+    var xpNecessarioFinoA10 = [0, 70, 250, 370, 550, 840, 1200, 1950, 2500, 3000, 3900]
+
+    if (level < 10) {
+        xpNecessario = xpNecessarioFinoA10[level]
+    }
+    else {
+        xpNecessario = (level) * (level) * 50
+    }
+    return xpNecessario
+}
+
+function removeAllLevelRole(utente, tranneQuesto) {
+    var ruoli = [
+        "799990260393443338", //LEVEL 5
+        "799990705216159791", //LEVEL 10
+        "799990735839559690", //LEVEL 15
+        "799990773708750878", //LEVEL 20
+        "799990806357213194", //LEVEL 25
+        "799990832224272405", //LEVEL 30
+        "799990865001971722", //LEVEL 35
+        "799990896849977344", //LEVEL 40
+        "800740423999815710", //LEVEL 45
+        "800740473437945927", //LEVEL 50
+        "800740873351462932", //LEVEL 100
+    ]
+
+    for (var i = 0; i < ruoli.length; i++) {
+        if (tranneQuesto != ruoli[i])
+            utente.roles.remove(ruoli[i])
+    }
+}
