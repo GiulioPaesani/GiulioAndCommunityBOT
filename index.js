@@ -3523,7 +3523,7 @@ client.on("message", (message) => {
 
 
 })
-
+/*
 client.on("messageDelete", message => {
     con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
         if (err) {
@@ -3560,7 +3560,7 @@ client.on("messageDelete", message => {
             return
         }
     })
-})
+})*/
 
 //Counter member + Welcome message
 client.on("guildMemberAdd", member => {
