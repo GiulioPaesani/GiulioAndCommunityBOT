@@ -739,7 +739,7 @@ client.on("message", (message) => {
 
             //CODE
             if (message.content.startsWith("!code")) {
-                message.channel.send("Mi spiace il comando !code è temporaneamente disattivato a causa di una libreria, che porca vacca non funziona piu... Giulio calmo, calmo Giulio.... Ma perchè non va! ahhhhhh distruggo tutto adesso")
+                message.channel.send(":red_circle: Mi spiace il comando !code è temporaneamente disattivato a causa di una libreria, che porca vacca non funziona piu... Giulio calmo, calmo Giulio.... Ma perchè non va! ahhhhhh distruggo tutto adesso")
             }
             if (message.content.startsWith("!udfsdfcode")) {
                 var comandi = {
@@ -3132,6 +3132,12 @@ client.on("message", (message) => {
                 var utente = message.mentions.members.first()
                 if (!utente) { //Per id
                     var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+                    if (!utente) { //Per name
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase())))[0]];
+                    }
+                    if (!utente) { //Per tag
+                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase())))[0]];
+                    }
                 }
 
                 if (!utente) {
