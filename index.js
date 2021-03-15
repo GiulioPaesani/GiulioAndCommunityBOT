@@ -3555,7 +3555,7 @@ setInterval(function () {
                     .addField("Moderator", "<@802184359120863272>")
 
                 utente.send(embedUtente).catch(() => {
-                    return
+                    
                 })
 
                 canale.send(embed);
