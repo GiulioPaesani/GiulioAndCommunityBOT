@@ -739,6 +739,9 @@ client.on("message", (message) => {
 
             //CODE
             if (message.content.startsWith("!code")) {
+                message.channel.send("Mi spiace il comando !code è temporaneamente disattivato a causa di una libreria, che porca vacca non funziona piu... Giulio calmo, calmo Giulio.... Ma perchè non va! ahhhhhh distruggo tutto adesso")
+            }
+            if (message.content.startsWith("!udfsdfcode")) {
                 var comandi = {
                     ban: {
                         description: "**Bannare** un utente permanentemente",
