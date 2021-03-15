@@ -2990,7 +2990,7 @@ client.on("message", (message) => {
                 updateServerstats(serverstats)
             }
 
-            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "vaffanculo", "fanculo", "culo", "tette", "twerk", "minkia", "beata minkia", "puttana", "troia", "inculata", "inculato", "m4rd4", "cazzo", "merda", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "porco", "porcodio", "dioporco", "dio cane", "bastardo", "sborra", "squirt", "inculatevi", "sborratevi", "squirtate"]
+            var parolacce = ["stronzo", "coglione", "sesso", "fuck", "s3ss0", "vaffanculo", "fanculo", "culo", "tette", "twerk", "minkia", "beata minkia", "puttana", "troia", "troie", "inculata", "inculato", "m4rd4", "cazzo", "merda", "p3n3", "v4gin4", "vagina", "pornhub", "minchione", "minkione", "minkia", "porco dio", "porco", "porcodio", "dioporco", "dio cane", "bastardo", "sborra", "squirt", "inculatevi", "sborratevi", "squirtate"]
             var parolacce2 = ["dio", "pene", "peni", "anale"]
             var parolacciaTrovata = false
             var messaggioCensurato = message.content;
