@@ -1408,7 +1408,10 @@ client.on("message", (message) => {
                             timeLastScore: 0,
                             correct: 0,
                             incorrect: 0,
-                            warn: "{}"
+                            warn: "{}",
+                            level: 0,
+                            xp: 0,
+                            cooldownXp: 0
                         }
 
                         var index = userstatsList.findIndex(x => x.id == message.author.id);
@@ -1896,7 +1899,10 @@ client.on("message", (message) => {
                         timeLastScore: 0,
                         correct: 0,
                         incorrect: 0,
-                        warn: "{}"
+                        warn: "{}",
+                        level: 0,
+                        xp: 0,
+                        cooldownXp: 0
                     }
 
                     var index = userstatsList.length;
@@ -3036,7 +3042,10 @@ client.on("message", (message) => {
                         timeLastScore: 0,
                         correct: 0,
                         incorrect: 0,
-                        warn: "{}"
+                        warn: "{}",
+                        level: 0,
+                        xp: 0,
+                        cooldownXp: 0
                     }
                     addUserToUserstats(message.member)
                 }
