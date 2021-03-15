@@ -624,7 +624,7 @@ client.on("message", (message) => {
                         else {
                             var nome = message.content.slice(6).trim()
                         }
-                        
+
                         var ruolo = Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.name.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.name.toLowerCase() == nome.toLowerCase())))[0]];
                     }
                 }
@@ -1414,12 +1414,7 @@ client.on("message", (message) => {
                         var index = userstatsList.findIndex(x => x.id == message.author.id);
                         userstats = userstatsList[index];
 
-                        con.query(`INSERT INTO userstats VALUES (${message.author.id}, '${message.member.user.tag}', 0, 0, 0, 0, 0, 0, '{}')`, (err) => {
-                            if (err) {
-                                console.log(err);
-                                return
-                            }
-                        })
+                        addUserToUserstats(message.member)
                     }
                     else {
                         userstats = userstatsList[index];
@@ -1905,13 +1900,7 @@ client.on("message", (message) => {
                     }
 
                     var index = userstatsList.length;
-
-                    con.query(`INSERT INTO userstats VALUES (${utente.user.id}, '${utente.user.tag}', 0, 0, 0, 0, 0, 0, "{}")`, (err) => {
-                        if (err) {
-                            console.log(err);
-                            return
-                        }
-                    })
+                    addUserToUserstats(utente)
                 }
                 var userstats = userstatsList[index]
 
@@ -3049,13 +3038,7 @@ client.on("message", (message) => {
                         incorrect: 0,
                         warn: "{}"
                     }
-
-                    con.query(`INSERT INTO userstats VALUES (${message.member.user.id}, '${message.member.user.tag}',0, 0, 0, 0, 0, 0, '{}')`, (err) => {
-                        if (err) {
-                            console.log(err);
-                            return
-                        }
-                    })
+                    addUserToUserstats(message.member)
                 }
 
                 var userstats = userstatsList[index]
@@ -3553,7 +3536,7 @@ setInterval(function () {
                     .addField("Moderator", "<@802184359120863272>")
 
                 utente.send(embedUtente).catch(() => {
-                    
+
                 })
 
                 canale.send(embed);
@@ -3567,6 +3550,15 @@ setInterval(function () {
 
     })
 }, 5000)
+
+function addUserToUserstats(utente) {
+    con.query(`INSERT INTO userstats VALUES (${utente.user.id}, '${utente.user.tag}', 0, 0, 0, 0, 0, 0, '{}', 0, 0, 0)`, (err) => {
+        if (err) {
+            console.log(err);
+            return
+        }
+    })
+}
 
 function updateServerstats(serverstats) {
     if (typeof serverstats.challenges === 'string' || serverstats.challenges instanceof String)
