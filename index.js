@@ -3136,6 +3136,8 @@ client.on("message", (message) => {
                         var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == args[1].toLowerCase())))[0]];
                     }
                     if (!utente) { //Per tag
+                        console.log(utente.user.username.toLowerCase())
+                        console.log(args[1].toLowerCase())
                         var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == args[1].toLowerCase())))[0]];
                     }
                 }
