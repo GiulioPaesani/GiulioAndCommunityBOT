@@ -3486,10 +3486,10 @@ setInterval(function () {
         var tempmute = JSON.parse(serverstats.tempmute);
         var tempban = JSON.parse(serverstats.tempban);
 
-        console.log(tempmute)
         
         for (var i = 0; i < Object.keys(tempmute).length; i++) {
             tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
+            console.log(tempmute[Object.keys(tempmute)[i]].time)
             if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
                 var canale = client.channels.cache.get(canaleLog)
                 var server = client.guilds.cache.get("793776260350083113");
