@@ -3486,6 +3486,8 @@ setInterval(function () {
         var tempmute = JSON.parse(serverstats.tempmute);
         var tempban = JSON.parse(serverstats.tempban);
 
+        console.log(tempmute)
+        
         for (var i = 0; i < Object.keys(tempmute).length; i++) {
             tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
             if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
