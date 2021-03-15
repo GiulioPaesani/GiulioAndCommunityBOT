@@ -3486,44 +3486,46 @@ setInterval(function () {
         var tempmute = JSON.parse(serverstats.tempmute);
         var tempban = JSON.parse(serverstats.tempban);
 
-        
         for (var i = 0; i < Object.keys(tempmute).length; i++) {
+
             tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
-            console.log(tempmute[Object.keys(tempmute)[i]].time)
+
             if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
+
                 var canale = client.channels.cache.get(canaleLog)
                 var server = client.guilds.cache.get("793776260350083113");
 
                 try {
                     var utente = server.members.cache.find(x => x.id == Object.keys(tempmute)[i]);
                     utente.roles.remove("800299630897659934");
+
+                    var embed = new Discord.MessageEmbed()
+                        .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
+                        .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                        .setColor("#6143CB")
+                        .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                        .addField("Moderator", "<@802184359120863272>")
+                        .setFooter("User ID: " + Object.keys(tempmute)[i])
+
+                    var embedUtente = new Discord.MessageEmbed()
+                        .setTitle("Sei stato smutato")
+                        .setColor("#6143CB")
+                        .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                        .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
+                        .addField("Moderator", "<@802184359120863272>")
+
+                    utente.send(embedUtente).catch(() => {
+
+                    })
+
+                    canale.send(embed);
+                    delete tempmute[Object.keys(tempmute)[i]]
                 }
                 catch {
                     delete tempmute[Object.keys(tempmute)[i]]
-                    return
                 }
 
-                var embed = new Discord.MessageEmbed()
-                    .setAuthor("[UNTEMPMUTE] " + utente.user.tag, utente.user.avatarURL())
-                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                    .setColor("#6143CB")
-                    .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
-                    .addField("Moderator", "<@802184359120863272>")
-                    .setFooter("User ID: " + Object.keys(tempmute)[i])
 
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Sei stato smutato")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                    .addField("Reason", tempmute[Object.keys(tempmute)[i]].reason)
-                    .addField("Moderator", "<@802184359120863272>")
-
-                utente.send(embedUtente).catch(() => {
-                    return
-                })
-
-                canale.send(embed);
-                delete tempmute[Object.keys(tempmute)[i]]
             }
         }
 
