@@ -624,7 +624,7 @@ client.on("message", (message) => {
                         else {
                             var nome = message.content.slice(6).trim()
                         }
-                        console.log(nome)
+                        
                         var ruolo = Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.name.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.roles.cache.filter(ruolo => ruolo.name.toLowerCase() == nome.toLowerCase())))[0]];
                     }
                 }
@@ -1815,7 +1815,6 @@ client.on("message", (message) => {
                     }
 
                     if (count <= 100) {
-                        console.log("cancellati " + count)
                         message.channel.bulkDelete(count, true)
                         count = 0
                     }
@@ -2971,7 +2970,6 @@ client.on("message", (message) => {
                     .addField("Moderator", message.author.toString())
 
                 utente.send(embedUtente).catch(() => {
-                    console.log("ciao")
                     return
                 })
 
