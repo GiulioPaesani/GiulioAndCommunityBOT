@@ -3889,7 +3889,7 @@ setInterval(function () {
             //TEMPMUTE
             for (var i = 0; i < Object.keys(tempmute).length; i++) {
 
-                tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 5;
+                tempmute[Object.keys(tempmute)[i]].time = tempmute[Object.keys(tempmute)[i]].time - 8;
 
                 if (tempmute[Object.keys(tempmute)[i]].time <= 0) {
 
@@ -3931,7 +3931,7 @@ setInterval(function () {
             }
             //TEMPBAN
             for (var i = 0; i < Object.keys(tempban).length; i++) {
-                tempban[Object.keys(tempban)[i]].time = tempban[Object.keys(tempban)[i]].time - 5;
+                tempban[Object.keys(tempban)[i]].time = tempban[Object.keys(tempban)[i]].time - 8;
                 if (tempban[Object.keys(tempban)[i]].time <= 0) {
                     var canale = client.channels.cache.get(canaleLog)
                     var server = client.guilds.cache.get("793776260350083113");
@@ -3966,7 +3966,7 @@ setInterval(function () {
             //COOLDOWN XP
             for (var i = 0; i < userstatsList.length; i++) {
                 if (userstatsList[i].cooldownXp > 0) {
-                    userstatsList[i].cooldownXp = userstatsList[i].cooldownXp - 5;
+                    userstatsList[i].cooldownXp = userstatsList[i].cooldownXp - 8;
 
                     var server = client.guilds.cache.get("793776260350083113");
                     var utente = server.members.cache.find(user => user.id == userstatsList[i].id)
@@ -3982,7 +3982,7 @@ setInterval(function () {
 
         })
     })
-}, 5000)
+}, 8000)
 
 function addUserToUserstats(utente) {
     con.query(`INSERT INTO userstats VALUES (${utente.user.id}, '${utente.user.tag}', 0, 0, 0, 0, 0, 0, '{}', 0, 0, 0)`, (err) => {
