@@ -5,7 +5,7 @@ const moment = require('moment');
 const Parser = require('expr-eval').Parser;
 const ytch = require('yt-channel-info');
 const { Permissions } = require('discord.js');
-const fs = require("file-system");
+//const fs = require("file-system");
 const mysql = require('mysql');
 const ms = require("ms")
 
@@ -736,11 +736,11 @@ client.on("message", (message) => {
             }
 
             //CODE
-            /*
+
             if (message.content.startsWith("!code")) {
                 message.channel.send(":red_circle: Mi spiace il comando !code è temporaneamente disattivato a causa di una libreria, che porca vacca non funziona piu... Giulio calmo, calmo Giulio.... Ma perchè non va! ahhhhhh distruggo tutto adesso")
-            }*/
-            if (message.content.startsWith("!code")) {
+            }
+            /*if (message.content.startsWith("!code")) {
                 var comandi = {
                     ban: {
                         description: "**Bannare** un utente permanentemente",
@@ -1119,7 +1119,7 @@ client.on("message", (message) => {
 
                 }
 
-            }
+            }*/
 
             //SUGGESTIONS
             if (message.content.startsWith("!sdelete")) {
