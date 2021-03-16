@@ -3070,7 +3070,7 @@ client.on("message", (message) => {
                     .setTitle(utente.user.tag)
                     .setDescription("Informazioni sul livellamento di questo utente")
                     .setThumbnail(utente.user.avatarURL())
-                    .addField("Level " + userstats.level, progress + "\rXP: " + humanNumber(userstats.xp) + "/" + humanNumber(calcoloXpNecessario(userstats.level + 1)) + " - Rank: #" + position)
+                    .addField("Level " + userstats.level, progress + "\rXP: " + humanNumber(userstats.xp - calcoloXpNecessario(userstats.level)) + "/" + humanNumber(calcoloXpNecessario(userstats.level + 1) - calcoloXpNecessario(userstats.level)) + " - Rank: #" + position)
 
                 message.channel.send(embed)
             }
