@@ -3159,6 +3159,8 @@ client.on("message", (message) => {
                 var index = userstatsList.findIndex(x => x.id == utente.user.id);
                 var userstats
                 if (index < 0) {
+                    var index = userstatsList.length
+
                     userstatsList[userstatsList.length] = {
                         id: message.author.id,
                         username: message.member.user.tag,
@@ -3174,13 +3176,12 @@ client.on("message", (message) => {
                         cooldownXp: 0,
                     }
 
-                    var index = userstatsList.findIndex(x => x.id == utente.user.id);
-                    var userstats = userstatsList[index];
+                    userstats = userstatsList[index];
 
                     addUserToUserstats(message.member)
                 }
                 else {
-                    var userstats = userstatsList[index];
+                    userstats = userstatsList[index];
                 }
 
                 if (!args[2]) {
