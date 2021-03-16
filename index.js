@@ -3329,7 +3329,7 @@ client.on("message", (message) => {
                         warn: "{}",
                         level: 0,
                         xp: 0,
-                        cooldownXp: 0,
+                        cooldownXp: 0
                     }
 
                     var index = userstatsList.findIndex(x => x.id == message.author.id);
@@ -3925,7 +3925,7 @@ setInterval(function () {
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000 * 10)
-
+/*
 setInterval(function () {
     con.query("SELECT * FROM serverstats", (err, result) => {
         if (err) {
@@ -4040,7 +4040,7 @@ setInterval(function () {
 
         })
     })
-}, 8000)
+}, 8000)*/
 
 function addUserToUserstats(utente) {
     con.query(`INSERT INTO userstats VALUES (${utente.user.id}, '${utente.user.tag}', 0, 0, 0, 0, 0, 0, '{}', 0, 0, 0)`, (err) => {
@@ -4052,10 +4052,6 @@ function addUserToUserstats(utente) {
 }
 
 function updateServerstats(serverstats) {
-    /*if (typeof serverstats.challenges === 'string' || serverstats.challenges instanceof String)
-        serverstats.challenges = JSON.parse(serverstats.challenges)
-    if (typeof serverstats.suggestions === 'string' || serverstats.suggestions instanceof String)
-        serverstats.suggestions = JSON.parse(serverstats.suggestions)*/
     if (typeof serverstats.tempmute === 'string' || serverstats.tempmute instanceof String)
         serverstats.tempmute = JSON.parse(serverstats.tempmute)
     if (typeof serverstats.tempban === 'string' || serverstats.tempban instanceof String)
