@@ -32,6 +32,19 @@ var con = mysql.createPool({ //Connessione database Heroku
     charset: 'utf8mb4'
 })
 
+var con2 = mysql.createPool({ //Connessione database Heroku
+    connectionLimit: 1000,
+    connectTimeout: 60 * 60 * 1000,
+    acquireTimeout: 60 * 60 * 1000,
+    timeout: 60 * 60 * 1000,
+    host: 'eu-cdbr-west-03.cleardb.net',
+    port: 3306,
+    user: 'b44c8fb2dca755',
+    password: process.env.passworddb2,
+    database: 'heroku_1b715b329449d5b',
+    charset: 'utf8mb4'
+})
+
 var canaleSuggestions = "793781902728495104";
 var embedSuggestion = new Discord.MessageEmbed()
 
@@ -70,6 +83,7 @@ client.on("message", (message) => {
             return
         }
         var serverstats = result[0]; //Get serverstats
+        console.log(serverstats)
 
         var tempmute = JSON.parse(serverstats.tempmute)
         var tempban = JSON.parse(serverstats.tempban)
@@ -3078,6 +3092,7 @@ client.on("message", (message) => {
             if (message.content == "!leaderboard" || message.content == "!lb") {
                 var leaderboardList = userstatsList.sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
 
+                console.log(leaderboardList)
                 var leaderboard = "";
                 var utente;
                 for (var i = 0; i < 10; i++) {
