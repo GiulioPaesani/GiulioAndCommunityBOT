@@ -738,10 +738,11 @@ client.on("message", (message) => {
             }
 
             //CODE
+            /*
             if (message.content.startsWith("!code")) {
                 message.channel.send(":red_circle: Mi spiace il comando !code è temporaneamente disattivato a causa di una libreria, che porca vacca non funziona piu... Giulio calmo, calmo Giulio.... Ma perchè non va! ahhhhhh distruggo tutto adesso")
-            }
-            if (message.content.startsWith("!udfsdfcode")) {
+            }*/
+            if (message.content.startsWith("!code")) {
                 var comandi = {
                     ban: {
                         description: "**Bannare** un utente permanentemente",
@@ -911,22 +912,22 @@ client.on("message", (message) => {
                         .setDescription("Qui troverai tutti i comandi relativi alla **moderazione**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code ban`, `!code clear`)")
                         .setColor("#DF8612")
                         .addField("💿Tutti i codici", `
-                - \`ban\` **Bannare** un utente permanentemente\r
-                - \`kick\` **Espellere** un utente dal server\r
-                - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
-                ` )
+    - \`ban\` **Bannare** un utente permanentemente\r
+    - \`kick\` **Espellere** un utente dal server\r
+    - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
+    ` )
 
                     var paginaUtility = new Discord.MessageEmbed()
                         .setTitle("Utility")
                         .setDescription("Qui troverai tutti i comandi più **utili**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code audio`, `!code file`)")
                         .setColor("#C92F42")
                         .addField("💿Tutti i codici", `
-                - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
-                - \`serverinfo\` Ottenere le informazioni sul **server**\r
-                - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
-                - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
-                - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
-                ` )
+    - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
+    - \`serverinfo\` Ottenere le informazioni sul **server**\r
+    - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
+    - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
+    - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
+    ` )
 
 
                     var paginaFunny = new Discord.MessageEmbed()
@@ -939,19 +940,19 @@ client.on("message", (message) => {
                         .setDescription("Qui troverai tutti altre tipologie di funzioni\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
                         .setColor("#45D8CE")
                         .addField("💿Tutti i codici", `
-                - \`audio\` Fare riprodurre al bot un **file audio**\r
-                - \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
-                - \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
-                - \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
-                - \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
-                - \`notifica\` Mandare un **messaggio** a una determinata ora\r
-                - \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
-                - \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
-                - \`file\` Mandare in allegato qualsiasi ** file **\r
-                - \`embed\` Realizzare un **messaggio embed**\r
-                - \`memberCounter\` Canale di **statistica membri**\r
-                - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
-                ` )
+    - \`audio\` Fare riprodurre al bot un **file audio**\r
+    - \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
+    - \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
+    - \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
+    - \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
+    - \`notifica\` Mandare un **messaggio** a una determinata ora\r
+    - \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
+    - \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
+    - \`file\` Mandare in allegato qualsiasi ** file **\r
+    - \`embed\` Realizzare un **messaggio embed**\r
+    - \`memberCounter\` Canale di **statistica membri**\r
+    - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
+    ` )
 
                     message.channel.send(paginaInziale).then(msg => {
                         msg.react('🏠').then(r => {
@@ -3557,7 +3558,7 @@ client.on("guildMemberAdd", member => {
     canale.send(`
 -------------- 𝐍𝐔𝐎𝐕𝐎 𝐌𝐄𝐌𝐁𝐑𝐎 --------------
 🤙 Ciao ${member.toString()}, benvenuto in GiulioAndCommunity
-👀 Sei il **${utentiCount}° Membro** 
+👀 Sei il **${utentiCount}° Membro**
 📜 Prima di fare altro, leggi le <#793781895829258260>
 🚨 Poi vedere tutte le informazioni sul server in <#793781897619570738>`)
 });
