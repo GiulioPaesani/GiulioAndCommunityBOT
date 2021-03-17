@@ -9,7 +9,7 @@ const mysql = require('mysql');
 client.login(process.env.token);
 
 client.on("ready", () => {
-    console.log("------------ONLINE------------")
+    console.log("-----GIULIOANDCOMMUNITYBOT ONLINE-----")
 
     client.user.setActivity('!help', { type: 'WATCHING' });
 })
@@ -22,7 +22,7 @@ var con = mysql.createPool({ //Connessione database Heroku
     host: 'eu-cdbr-west-03.cleardb.net',
     port: 3306,
     user: 'b931cc6e8128b6',
-    password: "4cfad8b8",
+    password: process.env.passworddb,
     database: 'heroku_e1befae4f922504',
     charset: 'utf8mb4'
 })
