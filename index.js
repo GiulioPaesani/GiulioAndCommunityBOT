@@ -208,6 +208,11 @@ client.on("message", (message) => {
         if (canaleNotConcessoBot) { //Comando bot in canale non concesso
             var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
+            if (message.member.hasPermission("ADMINISTRATOR") && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni"))) {
+                console.log("ciao")
+                return
+            }
+
             if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")))) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Canale non concesso")
