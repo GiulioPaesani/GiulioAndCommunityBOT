@@ -208,10 +208,9 @@ client.on("message", (message) => {
         if (canaleNotConcessoBot) { //Comando bot in canale non concesso
             var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
-            if (message.member.hasPermission("ADMINISTRATOR") && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni"))) {
-                console.log("ciao")
-                return
-            }
+            console.log(message.member.hasPermission("ADMINISTRATOR"))
+            console.log(message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni"))
+
 
             if (!canaliAdmin.includes(message.channel.id) && !(message.member.hasPermission("ADMINISTRATOR") && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")))) {
                 var embed = new Discord.MessageEmbed()
@@ -852,12 +851,12 @@ client.on("message", (message) => {
             }
             var command = message.content.slice(5).trim();
             var data, comando, info, video, description;
-
+        
             var args = command.split(" ");
             if (args[args.length - 1].toLowerCase() == "here" && utenteMod && args.length != 1) {
                 command = command.slice(0, -5)
             }
-
+        
             if (utenteMod) {
                 var utente = message.mentions.members.first()
                 if (utente) {
@@ -868,7 +867,7 @@ client.on("message", (message) => {
                             .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                             .setColor("#8F8F8F")
                             .setDescription("Non puoi mandare codice a un Bot")
-
+        
                         message.channel.send(embed).then(msg => {
                             message.delete({ timeout: 7000 })
                             msg.delete({ timeout: 7000 })
@@ -883,82 +882,82 @@ client.on("message", (message) => {
             else {
                 var utente = message.member
             }
-
-
+        
+        
             if (message.content.trim() == "!code") {
                 var paginaInziale = new Discord.MessageEmbed()
                     .setTitle("CodeAndCommand")
                     .setDescription("Tutti i codici per tutti i comandi del tuo bot")
                     .addField("❓Come funziona", "Questo comando ti permette di avere accesso a **tutti i codici** o **funzioni** che sono stati affrontati su **GiulioAndCode** da utilizzare nel tuo Bot Discord\rQua c'è l'elenco di tutti i comandi che puoi usare per avere precisamente il comando, la funzione e il suo funzionamente (`!code [comando]`)")
                     .addField("🌐Sezioni", "`🏠Home`\r`🔨Moderazione (Come !ban, !clear, !kick, ecc..)`\r`🧰Utility (Welcome message, !userinfo, !serverinfo, ecc..)`\r`🤣Fun`\r`🔰Altro (Notifiche, Messaggi random, Mandare file, ecc..)`")
-
+        
                 var paginaModerazione = new Discord.MessageEmbed()
                     .setTitle("Moderazione")
                     .setDescription("Qui troverai tutti i comandi relativi alla **moderazione**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code ban`, `!code clear`)")
                     .setColor("#DF8612")
                     .addField("💿Tutti i codici", `
-- \`ban\` **Bannare** un utente permanentemente\r
-- \`kick\` **Espellere** un utente dal server\r
-- \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
-` )
-
+        - \`ban\` **Bannare** un utente permanentemente\r
+        - \`kick\` **Espellere** un utente dal server\r
+        - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
+        ` )
+        
                 var paginaUtility = new Discord.MessageEmbed()
                     .setTitle("Utility")
                     .setDescription("Qui troverai tutti i comandi più **utili**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code audio`, `!code file`)")
                     .setColor("#C92F42")
                     .addField("💿Tutti i codici", `
-- \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
-- \`serverinfo\` Ottenere le informazioni sul **server**\r
-- \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
-- \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
-- \`avatar\` Ottenere l'**immagine profilo** di un utente\r
-` )
-
-
+        - \`benvenuto\` Messaggio di **benvenuto** o **addio**\r
+        - \`serverinfo\` Ottenere le informazioni sul **server**\r
+        - \`userinfo\` Ottenere le informazioni di un **utente specifico**\r
+        - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
+        - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
+        ` )
+        
+        
                 var paginaFunny = new Discord.MessageEmbed()
                     .setTitle("Fun")
                     .setDescription("Qua non c'è ancora nulla mi spiace...")
                     .setColor("#F3C249")
-
+        
                 var paginaAltro = new Discord.MessageEmbed()
                     .setTitle("Altro")
                     .setDescription("Qui troverai tutti altre tipologie di funzioni\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
                     .setColor("#45D8CE")
                     .addField("💿Tutti i codici", `
-- \`audio\` Fare riprodurre al bot un **file audio**\r
-- \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
-- \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
-- \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
-- \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
-- \`notifica\` Mandare un **messaggio** a una determinata ora\r
-- \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
-- \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
-- \`file\` Mandare in allegato qualsiasi ** file **\r
-- \`embed\` Realizzare un **messaggio embed**\r
-- \`memberCounter\` Canale di **statistica membri**\r
-- \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
-` )
-
+        - \`audio\` Fare riprodurre al bot un **file audio**\r
+        - \`reazione\` Fare **reagire** il bot a un messaggio che ha inviato\r
+        - \`messaggioPrivato\` Mandare dal bot un **messaggio privato** a un utente specifico o a chi ha scritto il comando\r
+        - \`azioneReazione\` Far eseguire una azione quando un utente **clicca** una reazione\r
+        - \`random\` Mandare un **messaggio casuale** tra alcuni scelti\r
+        - \`notifica\` Mandare un **messaggio** a una determinata ora\r
+        - \`soloRuolo\` Fare eseguire un comando solo a utenti che hanno un certo **ruolo**\r
+        - \`taggare\` **Taggare** utenti, ruoli, canali e categorie\r
+        - \`file\` Mandare in allegato qualsiasi ** file **\r
+        - \`embed\` Realizzare un **messaggio embed**\r
+        - \`memberCounter\` Canale di **statistica membri**\r
+        - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
+        ` )
+        
                 message.channel.send(paginaInziale).then(msg => {
                     msg.react('🏠').then(r => {
                         msg.react('🔨')
                         msg.react('🧰')
                         msg.react('🤣')
                         msg.react('🔰')
-
+        
                         // Filters
                         const reactHome = (reaction, user) => reaction.emoji.name === '🏠' && user.id === message.author.id
                         const reactMod = (reaction, user) => reaction.emoji.name === '🔨' && user.id === message.author.id
                         const reactUtl = (reaction, user) => reaction.emoji.name === '🧰' && user.id === message.author.id
                         const reactFun = (reaction, user) => reaction.emoji.name === '🤣' && user.id === message.author.id
                         const reactAlt = (reaction, user) => reaction.emoji.name === '🔰' && user.id === message.author.id
-
+        
                         const paginaHome = msg.createReactionCollector(reactHome)
                         const paginamod = msg.createReactionCollector(reactMod)
                         const paginaUtl = msg.createReactionCollector(reactUtl)
                         const paginaFun = msg.createReactionCollector(reactFun)
                         const paginaAlt = msg.createReactionCollector(reactAlt)
-
+        
                         paginaHome.on('collect', (r, u) => {
                             msg.edit(paginaInziale)
                             r.users.remove(r.users.cache.filter(u => u === message.author).first())
@@ -983,7 +982,7 @@ client.on("message", (message) => {
                 })
                 return
             }
-
+        
             for (var i = 0; i < Object.keys(comandi).length; i++) {
                 for (var x = 0; x < eval("comandi." + Object.keys(comandi)[i]).alias.length; x++) {
                     if (command == eval("comandi." + Object.keys(comandi)[i]).alias[x]) {
@@ -996,13 +995,13 @@ client.on("message", (message) => {
                 }
             }
             if (!comando) {
-
+        
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Codice non trovato")
                     .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                     .setColor("#ED1C24")
                     .setDescription("`!code (codice)`")
-
+        
                 message.channel.send(embed).then(msg => {
                     message.delete({ timeout: 7000 })
                     msg.delete({ timeout: 7000 })
@@ -1011,7 +1010,7 @@ client.on("message", (message) => {
             }
             else {
                 data = fs.readFileSync("comandi/" + comando + "-GiulioAndCode.txt")
-
+        
                 var embed = new Discord.MessageEmbed()
                     .setTitle(comando.toUpperCase())
                 if (video) {
@@ -1022,20 +1021,20 @@ client.on("message", (message) => {
                     embed
                         .setDescription(description)
                 }
-
+        
                 if (info) {
                     embed
                         .addField(":name_badge: Info", info)
                 }
-
-
+        
+        
                 if (data.length > 1000) {
                     data = data.slice(0, 950);
-
+        
                     embed
                         .addField(":wrench: Codes:", "```js\r" + data + "```")
                         .addField(":warning: Il codice è troppo lungo", "Per ricevere il codice completo puoi scaricare il file allegato")
-
+        
                     if (args[args.length - 1].toLowerCase() == "here") {
                         message.channel.send(embed)
                         message.channel.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
@@ -1047,7 +1046,7 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                                 .setColor("#8F8F8F")
                                 .setDescription("Questo utente non può ricevere messaggi privati")
-
+        
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
@@ -1059,7 +1058,7 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                                 .setColor("#16A0F4")
                                 .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-
+        
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
@@ -1079,7 +1078,7 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                                 .setColor("#8F8F8F")
                                 .setDescription("Questo utente non può ricevere messaggi privati")
-
+        
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
@@ -1091,21 +1090,21 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                                 .setColor("#16A0F4")
                                 .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-
+        
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
                             })
                         })
-
-
-
+        
+        
+        
                     }
-
+        
                 }
-
+        
             }
-
+        
         }*/
 
         //SUGGESTIONS
