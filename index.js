@@ -307,7 +307,6 @@ client.on("message", (message) => {
             }
         }
 
-        console.log("ciao")
         //TEST
         if (message.content == "!test") {
             if (!utenteMod) {
