@@ -271,11 +271,6 @@ client.on("message", (message) => {
             if (canaleNotConcesso) {
                 var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
-
-                console.log(message.member.hasPermission("ADMINISTRATOR"))
-                console.log(message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni"))
-
-
                 if (!canaliAdmin.includes(message.channel.id) && !(utenteMod && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")))) {
                     var embed = new Discord.MessageEmbed()
                         .setTitle("Canale non concesso")
@@ -312,6 +307,7 @@ client.on("message", (message) => {
             }
         }
 
+        console.log("ciao")
         //TEST
         if (message.content == "!test") {
             if (!utenteMod) {
