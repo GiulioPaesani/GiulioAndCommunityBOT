@@ -359,7 +359,7 @@ client.on("message", (message) => {
         }
         //HELP
         if (message.content == "!help" || message.content == "!aiuto" || message.content == "!comandi") {
-            var totalPage = 5;
+            var totalPage = 6;
             var page = 0;
             var page0 = new Discord.MessageEmbed()
                 .setTitle("Tutti i comandi")
@@ -444,6 +444,20 @@ client.on("message", (message) => {
             Alias: \`!sfida\`
             `)
                 .addField(":no_entry: Canali concessi", "<#815611328022315028>")
+                .setFooter("Page 5/" + totalPage)
+
+            var page6 = new Discord.MessageEmbed()
+                .setTitle(":beginner: Leveling")
+                .setDescription("Comandi di livellamento")
+                .addField(":desktop: Commands", `
+            -\`!rank (user)\`
+            Visualizzare il tuo rank o di un utente specifico
+            Alias: \`!level\`
+            -\`!leaderboard\`
+            Visualizzare la classifica dei migliori 10 utenti del server
+            Alias: \`!lb\`
+            `)
+                .addField(":no_entry: Canali concessi", "<#801019779480944660>")
                 .setFooter("Page 5/" + totalPage)
 
             message.channel.send(page0).then(msg => {
