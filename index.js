@@ -453,12 +453,13 @@ client.on("message", (message) => {
             -\`!rank (user)\`
             Visualizzare il tuo rank o di un utente specifico
             Alias: \`!level\`
+
             -\`!leaderboard\`
             Visualizzare la classifica dei migliori 10 utenti del server
             Alias: \`!lb\`
             `)
                 .addField(":no_entry: Canali concessi", "<#801019779480944660>")
-                .setFooter("Page 5/" + totalPage)
+                .setFooter("Page 6/" + totalPage)
 
             message.channel.send(page0).then(msg => {
                 msg.react('◀').then(r => {
