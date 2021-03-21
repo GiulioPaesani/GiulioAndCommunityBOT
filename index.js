@@ -308,63 +308,43 @@ client.on("message", (message) => {
         }
 
         //TEST
-        if (message.content == "!ftest") {
-            if (!utenteMod) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi eseguire il comando `!test` perchè non hai il permesso")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
+        if (message.content == "!test") {
             var testo = "";
-            var GiulioAndTutorial = client.users.cache.get("796398486828089364");
-            var GiulioAndCommunityBOT = client.users.cache.get("802184359120863272");
-            var GiulioAndModeration = client.users.cache.get("821364574212587550");
-            var GiulioAndFun = client.users.cache.get("821364707617013771");
-            var GiulioAndLeveling = client.users.cache.get("821347785722822676");
-            // var status = utente.user.presence.status;
-            // switch (status) {
-            //     case "online": status = "Online"; break;
-            //     case "offline": status = "Offline"; break;
-            //     case "dnd": status = "Do not disturb"; break;
-            //     case "idle": status = "Idle"; break;
-            // }
-            console.log(GiulioAndCommunityBOT)
-            if (GiulioAndCommunityBOT.user.presence.status == "online") {
+            var GiulioAndCommunityBOT = message.guild.members.cache.get('802184359120863272')
+            var GiulioAndTutorial = message.guild.members.cache.get('796398486828089364')
+            var GiulioAndModeration = message.guild.members.cache.get('821364574212587550')
+            var GiulioAndFun = message.guild.members.cache.get('821364707617013771')
+            var GiulioAndLeveling = message.guild.members.cache.get('821347785722822676')
+
+            if (GiulioAndCommunityBOT.presence.status == "online") {
                 testo += "<:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - ONLINE 🟢\r"
             }
             else {
                 testo += "<:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - OFFLINE 🔴\r"
             }
 
-            if (GiulioAndModeration.user.presence.status == "online") {
+            if (GiulioAndModeration.presence.status == "online") {
                 testo += "<:GiulioAndModeration:823196000721960990> GiulioAndModeration - ONLINE 🟢\r"
             }
             else {
                 testo += "<:GiulioAndModeration:823196000721960990> GiulioAndModeration - OFFLINE 🔴\r"
             }
 
-            if (GiulioAndFun.user.presence.status == "online") {
+            if (GiulioAndFun.presence.status == "online") {
                 testo += "<:GiulioAndFun:823196000704528424> GiulioAndFun - ONLINE 🟢\r"
             }
             else {
                 testo += "<:GiulioAndFun:823196000704528424> GiulioAndFun - OFFLINE 🔴\r"
             }
 
-            if (GiulioAndLeveling.user.presence.status == "online") {
+            if (GiulioAndLeveling.presence.status == "online") {
                 testo += "<:GiulioAndLeveling:823196001153187841> GiulioAndLeveling - ONLINE 🟢\r"
             }
             else {
                 testo += "<:GiulioAndLeveling:823196001153187841> GiulioAndLeveling - OFFLINE 🔴\r"
             }
 
-            if (GiulioAndTutorial.user.presence.status == "online") {
+            if (GiulioAndTutorial.presence.status == "online") {
                 testo += "<:GiulioAndTutorial:823196000922894387> GiulioAndTutorial - ONLINE 🟢\r"
             }
             else {
@@ -372,7 +352,6 @@ client.on("message", (message) => {
             }
 
             var embed = new Discord.MessageEmbed()
-                .setTitle("Bot ONLINE")
                 .setColor("#78B159")
                 .addField("Stato di tutti i bot ufficiali", testo)
 
