@@ -767,9 +767,6 @@ client.on("message", (message) => {
 
         //CODE
         if (message.content.startsWith("!code")) {
-            message.channel.send(":red_circle: Mi spiace il comando !code è temporaneamente disattivato a causa di una libreria, che porca vacca non funziona piu... Giulio calmo, calmo Giulio.... Ma perchè non va! ahhhhhh distruggo tutto adesso")
-        }
-        /*if (message.content.startsWith("!code")) {
             var comandi = {
                 ban: {
                     description: "**Bannare** un utente permanentemente",
@@ -894,12 +891,12 @@ client.on("message", (message) => {
             }
             var command = message.content.slice(5).trim();
             var data, comando, info, video, description;
-        
+
             var args = command.split(" ");
             if (args[args.length - 1].toLowerCase() == "here" && utenteMod && args.length != 1) {
                 command = command.slice(0, -5)
             }
-        
+
             if (utenteMod) {
                 var utente = message.mentions.members.first()
                 if (utente) {
@@ -910,7 +907,7 @@ client.on("message", (message) => {
                             .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                             .setColor("#8F8F8F")
                             .setDescription("Non puoi mandare codice a un Bot")
-        
+
                         message.channel.send(embed).then(msg => {
                             message.delete({ timeout: 7000 })
                             msg.delete({ timeout: 7000 })
@@ -925,15 +922,15 @@ client.on("message", (message) => {
             else {
                 var utente = message.member
             }
-        
-        
+
+
             if (message.content.trim() == "!code") {
                 var paginaInziale = new Discord.MessageEmbed()
                     .setTitle("CodeAndCommand")
                     .setDescription("Tutti i codici per tutti i comandi del tuo bot")
                     .addField("❓Come funziona", "Questo comando ti permette di avere accesso a **tutti i codici** o **funzioni** che sono stati affrontati su **GiulioAndCode** da utilizzare nel tuo Bot Discord\rQua c'è l'elenco di tutti i comandi che puoi usare per avere precisamente il comando, la funzione e il suo funzionamente (`!code [comando]`)")
                     .addField("🌐Sezioni", "`🏠Home`\r`🔨Moderazione (Come !ban, !clear, !kick, ecc..)`\r`🧰Utility (Welcome message, !userinfo, !serverinfo, ecc..)`\r`🤣Fun`\r`🔰Altro (Notifiche, Messaggi random, Mandare file, ecc..)`")
-        
+
                 var paginaModerazione = new Discord.MessageEmbed()
                     .setTitle("Moderazione")
                     .setDescription("Qui troverai tutti i comandi relativi alla **moderazione**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code ban`, `!code clear`)")
@@ -943,7 +940,7 @@ client.on("message", (message) => {
         - \`kick\` **Espellere** un utente dal server\r
         - \`clear\` **Cancellare** un tot di messaggi antecedenti al comando\r
         ` )
-        
+
                 var paginaUtility = new Discord.MessageEmbed()
                     .setTitle("Utility")
                     .setDescription("Qui troverai tutti i comandi più **utili**\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code audio`, `!code file`)")
@@ -955,13 +952,13 @@ client.on("message", (message) => {
         - \`roleinfo\` Ottenere le informazioni su un **ruolo** del server\r
         - \`avatar\` Ottenere l'**immagine profilo** di un utente\r
         ` )
-        
-        
+
+
                 var paginaFunny = new Discord.MessageEmbed()
                     .setTitle("Fun")
                     .setDescription("Qua non c'è ancora nulla mi spiace...")
                     .setColor("#F3C249")
-        
+
                 var paginaAltro = new Discord.MessageEmbed()
                     .setTitle("Altro")
                     .setDescription("Qui troverai tutti altre tipologie di funzioni\rUtilizza il comando `!code` più il nome di uno dei comandi sottostanti per ricevere immediatamente il **codice** e la **spiegazione** (`!code taggare`)")
@@ -980,27 +977,27 @@ client.on("message", (message) => {
         - \`memberCounter\` Canale di **statistica membri**\r
         - \`canale\` Ottenere un **canale testuale/vocale** (Per magari mandare un messaggio in quel canale specifico)\r
         ` )
-        
+
                 message.channel.send(paginaInziale).then(msg => {
                     msg.react('🏠').then(r => {
                         msg.react('🔨')
                         msg.react('🧰')
                         msg.react('🤣')
                         msg.react('🔰')
-        
+
                         // Filters
                         const reactHome = (reaction, user) => reaction.emoji.name === '🏠' && user.id === message.author.id
                         const reactMod = (reaction, user) => reaction.emoji.name === '🔨' && user.id === message.author.id
                         const reactUtl = (reaction, user) => reaction.emoji.name === '🧰' && user.id === message.author.id
                         const reactFun = (reaction, user) => reaction.emoji.name === '🤣' && user.id === message.author.id
                         const reactAlt = (reaction, user) => reaction.emoji.name === '🔰' && user.id === message.author.id
-        
+
                         const paginaHome = msg.createReactionCollector(reactHome)
                         const paginamod = msg.createReactionCollector(reactMod)
                         const paginaUtl = msg.createReactionCollector(reactUtl)
                         const paginaFun = msg.createReactionCollector(reactFun)
                         const paginaAlt = msg.createReactionCollector(reactAlt)
-        
+
                         paginaHome.on('collect', (r, u) => {
                             msg.edit(paginaInziale)
                             r.users.remove(r.users.cache.filter(u => u === message.author).first())
@@ -1025,7 +1022,361 @@ client.on("message", (message) => {
                 })
                 return
             }
-        
+
+            //Codici
+            var audioComandi = `client.on("message", message => {
+                if (message.content == "!audio") {
+                    const voiceChannel = message.member.voice.channel;
+                    if (voiceChannel) {
+                        voiceChannel.join()
+                            .then(connection => {
+                                connection.play('audio.mp3'); //Scrivere il nome del file audio nella cartella o il path
+                            });
+                    }
+                    else {
+                        message.channel.send("No voice channel."); //Messaggio se l'utente non è in nessun canale vocale
+                    }
+                }
+            })`
+            var avatarComandi = `client.on("message", message => {
+                if (message.content.startsWith("!avatar")) {
+                    if (message.content.trim() == "!avatar") {
+                        var utente = message.member;
+                    }
+                    else {
+                        var utente = message.mentions.members.first();
+                    }
+            
+                    if (!utente) {
+                        message.channel.send("Utente non trovato")
+                    }
+            
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle(utente.user.tag)
+                        .setDescription("L'avatar di questo utente")
+                        .setImage(utente.user.displayAvatarURL({
+                            dynamic: true,
+                            format: "png",
+                            size: 512
+                        }))
+            
+                    message.channel.send(embed)
+                }
+            })`
+            var azioneReazioneComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    message.channel.send("ciao").then(messaggio => {
+                        messaggio.react('👍');
+                        messaggio.react('👎');
+            
+                        const filtro = (reaction, user) => ['👍', '👎'].includes(reaction.emoji.name) && user.id === message.author.id; //Tra le parentesi quadre inserire tutte le emoji delle reazioni
+            
+                        messaggio.awaitReactions(filtro, { max: 1, time: 30000 }).then(collected => { //Max = numero massimo di volte che l'utente puo cliccare sulla reazione, Time = tempo limite per cliccare
+            
+                            var reazione = collected.first().emoji.name;
+                            if (reazione == "👍") {
+                                message.channel.send("OK"); //Azione che si esegue quando si clicca 👍
+                            }
+                            if (reazione == "👎") {
+                                message.channel.send("NO"); //Azione che si esegue quando si clicca 👎
+                            }
+                            message.delete(); //Cancellare il comando dell'utente
+                            messaggio.delete(); //Cancellare il messaggio del bot
+            
+                        }).catch(collected => {
+                            return message.channel.send("Tempo scaduto"); //Messaggio se il tempo è scaduto (se non è stato inserito un tempo, questa parte non è necessario)
+                        });
+                    })
+                }
+            })`
+            var banComandi = `client.on("message", message => {
+                if (message.content.startsWith("!ban")) {
+                    var utenteKick = message.mentions.members.first();
+            
+                    if (!message.member.hasPermission('BAN_MEMBERS')) { //Controllare che l'utente abbia il permesso di bannare
+                        message.channel.send('Non hai il permesso');
+                        return;
+                    }
+            
+                    if (!utenteKick) {
+                        message.channel.send('Non hai menzionato nessun utente'); //Controllare che sia stato menzionato un utente
+                        return;
+                    }
+            
+                    if (!message.mentions.members.first().kickable) { //Controllare che il bot abbia il permesso di bannare
+                        message.channel.send('Io non ho il permesso');
+                        return
+                    }
+            
+                    utenteKick.ban()
+                        .then(() => message.channel.send("<@" + utenteKick + ">" + " bannato"))
+                }
+            })`
+            var benvenutoComandi = `//Messaggio di benvenuto
+            client.on("guildMemberAdd", (member) => {
+                //console.log(member.guild); Per avere tutte le info del server
+                client.channels.cache.get("793781905740922900").send("Ciao " + member.toString() + " benvunuto in **" + member.guild.name + "**\rSei il **" + member.guild.memberCount + "° membro**");
+            })
+            //Messaggio di Addio
+            client.on("guildMemberRemove", (member) => {
+                client.channels.cache.get("793781905740922900").send("Ciao ciao" + member.toString() + ", torna presto!");
+            })`
+            var canaleComandi = `var canale = client.channels.cache.get("idCanale");
+            canale.send("Messaggio");`
+            var clearComandi = `client.on("message", message => {
+                if (message.content.startsWith("!clear")) {
+                    if (!message.member.hasPermission("MANAGE_MESSAGES")) { //Controllare che l'utente abbia il permesso di cancellare messaggi
+                        message.channel.send('Non hai il permesso');
+                        return;
+                    }
+                    if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) { //Controllare che il bot abbia il permesso di cancellare messaggi
+                        message.channel.send('Non ho il permesso');
+                        return;
+                    }
+            
+                    var count = message.content.slice(7); //Ottenere il numero inserito dall'utente
+                    count = parseInt(count);
+            
+                    if (!count) {
+                        message.channel.send("Inserisci un numero valido")
+                        return
+                    }
+            
+                    message.channel.bulkDelete(count, true)
+                    message.channel.send(count + " messaggi eliminati").then(msg => {
+                        msg.delete({ timeout: 1000 })
+                    })
+            
+                }
+            })`
+            var embedComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    const nomeEmbed = new Discord.MessageEmbed()
+                        .setColor("#34a454") // Colore principale
+                        .setTitle("Titolo") //Titolo
+                        .setURL("UrlTitolo") //Link sul titolo
+                        .setAuthor("Autore") //Autore (nome, link immagine, link sul nome)
+                        .setDescription("Descrizione") //Descrizione
+                        .setThumbnail("UrlCopertina") //Copertina
+                        //Aggiungere elementi
+                        .addField("Titolo", "Contenuto", true / false) //True o false = se questo elemento deve essere in linea con gli altri
+                        .setImage("LinkImmagine") //Immagine
+                        .setFooter("TestoFooter", "UrlImmagineFooter") // Testo piccolino in fondo
+                        .setTimestamp() //Se mettere o no l'orario di arrivo del messaggio
+            
+                    message.channel.send(nomeEmbed)
+                }
+            })`
+            var fileComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    //Per mandare un singolo file
+                    message.channel.send("File:", { files: ["file.jpeg"] });
+                    //Per mandare più file alla volta
+                    message.channel.send("File:", { files: ["file.jpeg", "file2.jpg"] });
+                }
+            })`
+            var kickComandi = `client.on("message", message => {
+                if (message.content.startsWith("!kick")) {
+                    var utenteKick = message.mentions.members.first();
+            
+                    if (!message.member.hasPermission('KICK_MEMBERS')) { //Controllare che l'utente abbia il permesso di bannare
+                        message.channel.send('Non hai il permesso');
+                        return;
+                    }
+            
+                    if (!utenteKick) {
+                        message.channel.send('Non hai menzionato nessun utente'); //Controllare che sia stato menzionato un utente
+                        return;
+                    }
+            
+                    if (!message.mentions.members.first().kickable) { //Controllare che il bot abbia il permesso di bannare
+                        message.channel.send('Io non ho il permesso');
+                        return
+                    }
+            
+                    utenteKick.kick()
+                        .then(() => message.channel.send("<@" + utenteKick + ">" + " kiccato"))
+            
+                }
+            })`
+            var memberCounterComandi = `client.on("guildMemberAdd", member => { //Update canale quando entra un utente dal server
+                var canale = client.channels.cache.get("idCanaleCounter")
+                canale.setName("👾│members: " + member.guild.memberCount)
+            });
+            client.on("guildMemberRemove", member => { //Update canale quando esce un utente dal server
+                var canale = client.channels.cache.get("idCanaleCounter")
+                canale.setName("👾│members: " + member.guild.memberCount)
+            });`
+            var messaggioPrivatoComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    //Se vuoi mandare il messaggio all'utente che scrive il comando
+                    message.author.send("Messaggio privato");
+            
+                    //Se vuoi mandare il messaggio a un utente specifico
+                    var utente = client.users.cache.get("idUtente");
+                    utente.send("messaggio");
+                }
+            })`
+            var notificaComandi = `//Mettere tutto ciò fuori da tutto, quindi anche fuori dal client.on("message") 
+            setInterval(function () {
+                var hour = new Date().getHours();
+                var minutes = new Date().getMinutes();
+            
+                if (hour == "18" && minutes == "32") { //Settare l'ora che si vuole, in questo momento viene mandato un messaggio in un canale tutti i giorni alle 18:32
+                    client.channels.cache.get("idCanale").send("Ciao!");
+                }
+            }, 1000 * 60)`
+            var randomComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    var messaggi = ["Ciao, come va?", "Ehi come stai?", "Tutto bene?"] //Qui potete elencare tutti i messaggi che volete separati da una virgola
+                    var random = Math.floor(Math.random() * messaggi.length);
+                    message.channel.send(messaggi[random]);
+                }
+            })`
+            var reazioneComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    message.channel.send("Messaggio")
+                        .then(function (message) {
+                            message.react("👎"); //Aggiungere o togliere tutte le reazioni che si vogliono
+                            message.react('🍎');
+                            message.react('🍊');
+                            message.react('🍇');
+                        })
+                }
+            })`
+            var roleinfoComandi = `const { Permissions } = require('discord.js');
+    
+            client.on("message", message => {
+                if (message.content.startsWith("!roleinfo")) {
+                    var idRuolo = message.content.slice(13, -1);
+                    var ruolo = message.guild.roles.cache.get(idRuolo);
+            
+                    if (!ruolo) {
+                        message.channel.send("Non ho trovato questo ruolo")
+                        return
+                    }
+            
+                    var memberCount = message.guild.members.cache.filter(member => member.roles.cache.find(role => role == ruolo)).size;
+            
+                    var permessiRuolo = new Permissions(ruolo.permissions.bitfield);
+                    var elencoPermessi = "";
+                    if (permessiRuolo.has("ADMINISTRATOR")) {
+                        elencoPermessi = "👑ADMINISTRATOR";
+                    }
+                    else {
+                        var permissions = ["CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "ADD_REACTIONS", "VIEW_AUDIT_LOG", "PRIORITY_SPEAKER", "STREAM", "VIEW_CHANNEL", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "MANAGE_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "VIEW_GUILD_INSIGHTS", "CONNECT", "SPEAK", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"]
+            
+                        for (var i = 0; i < permissions.length; i++) {
+                            if (permessiRuolo.has(permissions[i])) {
+                                elencoPermessi += "- " + permissions[i] + "\r";
+                            }
+                        }
+                    }
+            
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle(ruolo.name)
+                        .setDescription("Tutte le statistiche di questo ruolo")
+                        .addField("Role ID", ruolo.id, true)
+                        .addField("Members", memberCount, true)
+                        .addField("Color", ruolo.hexColor, true)
+                        .addField("Role created", ruolo.createdAt.toDateString(), true)
+                        .addField("Permissions", elencoPermessi, false)
+            
+                    message.channel.send(embed)
+                }
+            })`
+            var serverinfoComandi = `client.on("message", message => {
+                if (message.content == "!serverinfo") {
+                    var server = message.member.guild;
+            
+                    var botCount = server.members.cache.filter(member => member.user.bot).size;
+                    var utentiCount = server.memberCount - botCount;
+            
+                    var categoryCount = server.channels.cache.filter(c => c.type == "category").size
+                    var textCount = server.channels.cache.filter(c => c.type == "text").size
+                    var voiceCount = server.channels.cache.filter(c => c.type == "voice").size
+            
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle(server.name)
+                        .setDescription("Tutte le info su questo server")
+                        .setThumbnail(server.iconURL())
+                        .addField("Owner", server.owner.user.username, true)
+                        .addField("Server id", server.id, true)
+                        .addField("Server region", server.region, true)
+                        .addField("Members", "Total: " + server.memberCount + " - Users: " + utentiCount + " - Bots: " + botCount, false)
+                        .addField("Channels", "Category: " + categoryCount + " - Text: " + textCount + " - Voice: " + voiceCount, false)
+                        .addField("Server created", server.createdAt.toDateString(), true)
+                .addField("Boost level", "Level " + server.premiumTier + " (Boost: " + server.premiumSubscriptionCount + ")", true)
+    
+            message.channel.send(embed)
+        }
+            })`
+            var soloRuoloComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    if (message.member.roles.cache.has("idRuolo")) {
+                        message.channel.send("Questo utente ha questo ruolo");
+                    } else {
+                        message.channel.send("Questo utente non ha questo ruolo");
+                    }
+                }
+            })`
+            var taggareComandi = `client.on("message", message => {
+                if (message.content == "!comando") {
+                    //Taggare l'utente che scrive il comando
+                    message.channel.send(message.author.toString());
+                    //Taggare un utente specifico
+                    message.channel.send("<@idUtente>");
+                    //Taggare un ruolo del server
+                    message.channel.send("<@&idRuolo>");
+                    //Taggare un canale o una categoria
+                    message.channel.send("<#idCanale/Categoria>");
+                }
+            })
+            `
+            var userinfoComandi = `client.on("message", message => {
+                if (message.content.startsWith("!userinfo")) {
+                    if (message.content == "!userinfo") {
+                        var utente = message.member;
+                    }
+                    else {
+                        var utente = message.mentions.members.first();
+                    }
+            
+                    if (!utente) {
+                        message.channel.send("Non ho trovato questo utente")
+                        return
+                    }
+            
+                    var elencoPermessi = "";
+                    if (utente.hasPermission("ADMINISTRATOR")) {
+                        elencoPermessi = "👑 ADMINISTRATOR";
+                    }
+                    else {
+                        var permessi = ["CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "ADD_REACTIONS", "VIEW_AUDIT_LOG", "PRIORITY_SPEAKER", "STREAM", "VIEW_CHANNEL", "SEND_MESSAGES", "SEND_TTS_MESSAGES", "MANAGE_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "READ_MESSAGE_HISTORY", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "VIEW_GUILD_INSIGHTS", "CONNECT", "SPEAK", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "USE_VAD", "CHANGE_NICKNAME", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"]
+            
+                        for (var i = 0; i < permessi.length; i++) {
+                            if (utente.hasPermission(permessi[i])) {
+                                elencoPermessi += "- " + permessi[i] + "\r";
+                            }
+                        }
+                    }
+            
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle(utente.user.tag)
+                        .setDescription("Tutte le info di questo utente")
+                        .setThumbnail(utente.user.avatarURL())
+                        .addField("User id", utente.user.id, true)
+                        .addField("Status", utente.user.presence.status, true)
+                        .addField("Is a bot?", utente.user.bot ? "Yes" : "No", true)
+                .addField("Account created", utente.user.createdAt.toDateString(), true)
+                .addField("Joined this server", utente.joinedAt.toDateString(), true)
+                .addField("Permissions", elencoPermessi, false)
+                .addField("Roles", utente.roles.cache.map(ruolo => ruolo.name).join("\r"), false)
+    
+            message.channel.send(embed)
+        }
+            })`
+
             for (var i = 0; i < Object.keys(comandi).length; i++) {
                 for (var x = 0; x < eval("comandi." + Object.keys(comandi)[i]).alias.length; x++) {
                     if (command == eval("comandi." + Object.keys(comandi)[i]).alias[x]) {
@@ -1038,13 +1389,12 @@ client.on("message", (message) => {
                 }
             }
             if (!comando) {
-        
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Codice non trovato")
                     .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                     .setColor("#ED1C24")
-                    .setDescription("`!code (codice)`")
-        
+                    .setDescription("`!code(codice)`")
+
                 message.channel.send(embed).then(msg => {
                     message.delete({ timeout: 7000 })
                     msg.delete({ timeout: 7000 })
@@ -1052,8 +1402,8 @@ client.on("message", (message) => {
                 return
             }
             else {
-                data = fs.readFileSync("comandi/" + comando + "-GiulioAndCode.txt")
-        
+                data = eval(comando + "Comandi")
+
                 var embed = new Discord.MessageEmbed()
                     .setTitle(comando.toUpperCase())
                 if (video) {
@@ -1064,20 +1414,20 @@ client.on("message", (message) => {
                     embed
                         .setDescription(description)
                 }
-        
+
                 if (info) {
                     embed
                         .addField(":name_badge: Info", info)
                 }
-        
-        
+
+
                 if (data.length > 1000) {
                     data = data.slice(0, 950);
-        
+
                     embed
                         .addField(":wrench: Codes:", "```js\r" + data + "```")
                         .addField(":warning: Il codice è troppo lungo", "Per ricevere il codice completo puoi scaricare il file allegato")
-        
+
                     if (args[args.length - 1].toLowerCase() == "here") {
                         message.channel.send(embed)
                         message.channel.send({ files: ["comandi/" + comando + "-GiulioAndCode.txt"] })
@@ -1089,7 +1439,7 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                                 .setColor("#8F8F8F")
                                 .setDescription("Questo utente non può ricevere messaggi privati")
-        
+
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
@@ -1101,7 +1451,7 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                                 .setColor("#16A0F4")
                                 .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-        
+
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
@@ -1121,7 +1471,7 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                                 .setColor("#8F8F8F")
                                 .setDescription("Questo utente non può ricevere messaggi privati")
-        
+
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
@@ -1133,22 +1483,22 @@ client.on("message", (message) => {
                                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                                 .setColor("#16A0F4")
                                 .setDescription("Il comando **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
-        
+
                             message.channel.send(embed).then(msg => {
                                 message.delete({ timeout: 7000 })
                                 msg.delete({ timeout: 7000 })
                             })
                         })
-        
-        
-        
+
+
+
                     }
-        
+
                 }
-        
+
             }
-        
-        }*/
+
+        }
 
         //SUGGESTIONS
         if (message.content.startsWith("!sdelete")) {
