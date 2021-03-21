@@ -308,7 +308,7 @@ client.on("message", (message) => {
         }
 
         //TEST
-        if (message.content == "!test") {
+        if (message.content == "!ftest") {
             if (!utenteMod) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il permesso")
@@ -335,6 +335,7 @@ client.on("message", (message) => {
             //     case "dnd": status = "Do not disturb"; break;
             //     case "idle": status = "Idle"; break;
             // }
+            console.log(GiulioAndCommunityBOT)
             if (GiulioAndCommunityBOT.user.presence.status == "online") {
                 testo += "<:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - ONLINE 🟢\r"
             }
