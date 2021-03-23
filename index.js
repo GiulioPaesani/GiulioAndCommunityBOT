@@ -309,6 +309,20 @@ client.on("message", (message) => {
 
         //TEST
         if (message.content == "!test") {
+            if (!utenteMod) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Non hai il permesso")
+                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                    .setColor("#9E005D")
+                    .setDescription("Non puoi eseguire il comando `!test` perchè non hai il permesso")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
+                return
+            }
+            
             var testo = "";
             var GiulioAndCommunityBOT = message.guild.members.cache.get('802184359120863272')
             var GiulioAndTutorial = message.guild.members.cache.get('796398486828089364')
