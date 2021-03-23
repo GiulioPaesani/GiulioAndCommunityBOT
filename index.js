@@ -2104,6 +2104,43 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
     })
 })
 
+client.on("messageDelete", message => {
+    con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
+        if (err) {
+            console.log(err);
+            return
+        }
+        var serverstats = result[0];
+        try {
+            var numero = Parser.evaluate(message.content);
+
+            if (message.channel == "793781899796938802") {
+                if (numero < serverstats.numero) {
+                    return
+                }
+
+                if (numero != serverstats.numero) { //Se giocato lo stesso utente piu volte
+                    return
+                }
+
+                var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
+                    .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
+                    .setColor("#148eff");
+
+                message.channel.send(embed)
+
+                message.channel.send(numero)
+                    .then(msg => {
+                        msg.react("🟢");
+                    })
+            }
+        } catch {
+            return
+        }
+    })
+})
 
 //Counter youtube
 setInterval(function () {
@@ -2112,15 +2149,6 @@ setInterval(function () {
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000 * 10)
-
-function addUserToUserstats(utente) {
-    con.query(`INSERT INTO userstats VALUES (${utente.user.id}, '${utente.user.tag}', 0, 0, 0, 0, 0, 0, '{}', 0, 0, 0)`, (err) => {
-        if (err) {
-            console.log(err);
-            return
-        }
-    })
-}
 
 function updateServerstats(serverstats) {
     if (typeof serverstats.challenges === 'string' || serverstats.challenges instanceof String)
@@ -2133,18 +2161,6 @@ function updateServerstats(serverstats) {
         serverstats.tempban = JSON.parse(serverstats.tempban)
 
     con.query(`UPDATE serverstats SET numero = ${serverstats.numero}, ultimoUtente = '${serverstats.ultimoUtente}', bestScore = ${serverstats.bestScore}, timeBestScore = ${serverstats.timeBestScore}, suggestions = '${JSON.stringify(serverstats.suggestions)}', challenges = '${JSON.stringify(serverstats.challenges)}', tempmute = '${JSON.stringify(serverstats.tempmute)}', tempban = '${JSON.stringify(serverstats.tempban)}'`, (err) => {
-        if (err) {
-            console.log(err)
-            return
-        }
-    })
-}
-
-function updateUserstats(userstats, utente) {
-    if (typeof userstats.warn === 'string' || userstats.warn instanceof String)
-        userstats.warn = JSON.parse(userstats.warn)
-
-    con.query(`UPDATE userstats SET username = '${utente.user.tag}', lastScore = ${userstats.lastScore}, bestScore = ${userstats.bestScore}, timeBestScore = ${userstats.timeBestScore}, correct = ${userstats.correct}, incorrect = ${userstats.incorrect}, timeLastScore = ${userstats.timeLastScore}, warn = '${JSON.stringify(userstats.warn)}' WHERE id = ${utente.user.id}`, (err) => {
         if (err) {
             console.log(err)
             return
