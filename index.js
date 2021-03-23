@@ -780,7 +780,7 @@ client.on("message", (message) => {
         }
 
         //CODE
-        if (message.content.startsWith("!code")) {
+        if (message.content.startsWith("!hhhcode")) {
             var comandi = {
                 ban: {
                     description: "**Bannare** un utente permanentemente",
@@ -2117,44 +2117,6 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
         }
     })
 })
-/*
-client.on("messageDelete", message => {
-    con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
-        if (err) {
-            console.log(err);
-            return
-        }
-        var serverstats = result[0];
-        try {
-            var numero = Parser.evaluate(message.content);
-
-            if (message.channel == "793781899796938802") {
-                if (numero < serverstats.numero) {
-                    return
-                }
-
-                if (numero != serverstats.numero) { //Se giocato lo stesso utente piu volte
-                    return
-                }
-
-                var titleRandom = ["PENSAVI DI FREGARMI EH!", "TE LO ELIMINI E IO LO RISCRIVO...", "PENSI DI ESSERE FURBO? BHE LO SEI", "TI SENTI SIMPATICO?"]
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-                    .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
-                    .setColor("#148eff");
-
-                message.channel.send(embed)
-
-                message.channel.send(numero)
-                    .then(msg => {
-                        msg.react("🟢");
-                    })
-            }
-        } catch {
-            return
-        }
-    })
-})*/
 
 //Counter youtube
 setInterval(function () {
