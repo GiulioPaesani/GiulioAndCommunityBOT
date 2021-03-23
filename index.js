@@ -322,7 +322,7 @@ client.on("message", (message) => {
                 })
                 return
             }
-            
+
             var testo = "";
             var GiulioAndCommunityBOT = message.guild.members.cache.get('802184359120863272')
             var GiulioAndTutorial = message.guild.members.cache.get('796398486828089364')
@@ -2117,7 +2117,7 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
         }
     })
 })
-
+/*
 client.on("messageDelete", message => {
     con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
         if (err) {
@@ -2154,7 +2154,7 @@ client.on("messageDelete", message => {
             return
         }
     })
-})
+})*/
 
 //Counter youtube
 setInterval(function () {
