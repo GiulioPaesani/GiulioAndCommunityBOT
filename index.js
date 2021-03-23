@@ -1803,6 +1803,8 @@ client.on("message", (message) => {
 client.on("guildMemberAdd", member => {
     if (member.user.bot) return
 
+    if (member.guild.id != "793776260350083113") return
+
     var server = member.guild;
     var botCount = server.members.cache.filter(member => member.user.bot).size;
     var utentiCount = server.memberCount - botCount;
@@ -1823,6 +1825,7 @@ client.on("guildMemberAdd", member => {
 
 client.on("guildMemberRemove", member => {
     if (member.user.bot) return
+    if (member.guild.id != "793776260350083113") return
 
     var server = member.guild;
     var botCount = server.members.cache.filter(member => member.user.bot).size;
