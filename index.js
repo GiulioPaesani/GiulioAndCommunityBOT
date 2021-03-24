@@ -536,41 +536,6 @@ client.on("message", (message) => {
         }
         //GITHUB
         if (message.content == "!github") {
-            if (GiulioAndCommunityBOT.presence.status == "online") {
-                testo += "<:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - ONLINE 🟢\r"
-            }
-            else {
-                testo += "<:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - OFFLINE 🔴\r"
-            }
-
-            if (GiulioAndModeration.presence.status == "online") {
-                testo += "<:GiulioAndModeration:823196000721960990> GiulioAndModeration - ONLINE 🟢\r"
-            }
-            else {
-                testo += "<:GiulioAndModeration:823196000721960990> GiulioAndModeration - OFFLINE 🔴\r"
-            }
-
-            if (GiulioAndFun.presence.status == "online") {
-                testo += "<:GiulioAndFun:823196000704528424> GiulioAndFun - ONLINE 🟢\r"
-            }
-            else {
-                testo += "<:GiulioAndFun:823196000704528424> GiulioAndFun - OFFLINE 🔴\r"
-            }
-
-            if (GiulioAndLeveling.presence.status == "online") {
-                testo += "<:GiulioAndLeveling:823196001153187841> GiulioAndLeveling - ONLINE 🟢\r"
-            }
-            else {
-                testo += "<:GiulioAndLeveling:823196001153187841> GiulioAndLeveling - OFFLINE 🔴\r"
-            }
-
-            if (GiulioAndTutorial.presence.status == "online") {
-                testo += "<:GiulioAndTutorial:823196000922894387> GiulioAndTutorial - ONLINE 🟢\r"
-            }
-            else {
-                testo += "<:GiulioAndTutorial:823196000922894387> GiulioAndTutorial - OFFLINE 🔴\r"
-            }
-
             var embed = new Discord.MessageEmbed()
                 .setTitle("GITHUB")
                 .setDescription(`Questi sono i link Github dei codici dei bot ufficiali
