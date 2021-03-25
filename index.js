@@ -1825,7 +1825,7 @@ client.on("guildMemberAdd", member => {
 🤙 Ciao ${member.toString()}, benvenuto in GiulioAndCommunity
 👀 Sei il **${utentiCount}° Membro**
 📜 Prima di fare altro, leggi le <#793781895829258260>
-🚨 Poi vedere tutte le informazioni sul server in <#793781897619570738>`)
+🚨 Puoi vedere tutte le informazioni sul server in <#793781897619570738>`)
 });
 
 client.on("guildMemberRemove", member => {
