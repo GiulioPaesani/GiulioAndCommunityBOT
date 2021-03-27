@@ -41,14 +41,15 @@ var ruoliMod = [
 ]
 
 client.on("message", (message) => {
+    if (message.author.bot) return
+    if (message.channel.type == "dm") return
+
     if (message.guild.id != "793776260350083113") return
 
     message.content = message.content.trim().toLowerCase();
 
     if (message.channel == "804688929109966848" && !message.content.startsWith("!clear")) return
 
-    if (message.author.bot) return
-    if (message.channel.type == "dm") return
 
     if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest") && !message.content.startsWith("!suggerisci") && !message.content.startsWith("!suggerimento")) {
         message.delete({ timeout: 1000 })
