@@ -2075,7 +2075,12 @@ client.on("message", (message) => {
                 .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
                 .setDescription("Sei stato kicckato da <#" + canaleLive + ">, rientra in Sala d'attesa e ritenta di partecipare")
 
-            utente.send(embedUtente)
+            try {
+                utente.send(embedUtente)
+            }
+            catch {
+
+            }
         }
 
         if (message.content.startsWith("!tban")) {
@@ -2167,7 +2172,12 @@ client.on("message", (message) => {
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setDescription("Sei stato bannato da <#" + canaleLive + ">, non potrai più partecipare alle live")
 
-            utente.send(embedUtente)
+            try {
+                utente.send(embedUtente)
+            }
+            catch {
+
+            }
         }
 
         if (message.content.startsWith("!tunban")) {
@@ -2236,7 +2246,12 @@ client.on("message", (message) => {
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setDescription("Sei stato sbannato da <#" + canaleLive + ">, ora puoi di nuovo partecipare alle live")
 
-            utente.send(embedUtente)
+            try {
+                utente.send(embedUtente)
+            }
+            catch {
+
+            }
         }
 
         if (message.content.startsWith("!tchance")) {
@@ -2333,8 +2348,6 @@ client.on("message", (message) => {
             }
         }
     })
-
-
 })
 
 //Counter member + Welcome message
@@ -2687,7 +2700,12 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
                 .setColor("#8F8F8F")
                 .setDescription("Sei entrato in sala d'attesa ma Giulio non è ancora nella stanza <#" + canaleLive + ">")
-            utente.send(embed)
+            try {
+                utente.send(embed)
+            }
+            catch {
+
+            }
             utente.voice.kick()
             return
         }
@@ -2723,7 +2741,12 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
                 .setDescription("Grazie per essere entrato in sala d'attesa, attendi la prossima estrazione per entrare in live\r\r**Probabilità attuale: " + (probabilita[index] * 100).toFixed(2) + "%**")
                 .setFooter("Fai il comando !tchance per sapere sempre la tua probabilità di entrare in live")
 
-            utente.send(embed)
+            try {
+                utente.send(embed)
+            }
+            catch {
+
+            }
         }
     }
 
@@ -2731,6 +2754,14 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         var server = client.guilds.cache.get(idServer);
         var utente = server.members.cache.find(x => x.id == oldMember.id);
         var ruolo = server.roles.cache.get(ruoloOnLive);
+
+        var server = client.guilds.cache.get(idServer);
+        var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
+
+        if (Giulio.voice.channelID != canaleLive && newUserChannel == canaleLive) {
+            utente.kick()
+        }
+
 
         var utenteMod = false;
         for (var i = 0; i < ruoliMod.length; i++) {
@@ -2742,7 +2773,8 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
             return
         }
 
-        utente.send(`
+        try {
+            utente.send(`
         :four_leaf_clover: **SEI STATO SCELTO** :four_leaf_clover: 
 Complimenti, sei stato scelto tra gli utenti in Sala d'attesa. Prima di entrare in live leggi queste **regole**:
 
@@ -2766,49 +2798,52 @@ P.S. Consiglio di non tenere l'audio della live attivo quando siete presenti su 
 
 :green_circle: **ACCETTA LE REGOLE**
 Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contrario si verrà sanzionati con la non riammissione nelle live future`)
-            .then(messaggio => {
-                messaggio.react('✅');
+                .then(messaggio => {
+                    messaggio.react('✅');
 
-                const filter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id == utente.id;
+                    const filter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id == utente.id;
 
-                const collector = messaggio.createReactionCollector(filter, { max: 1, time: 120000 })
+                    const collector = messaggio.createReactionCollector(filter, { max: 1, time: 120000 })
 
-                collector.on('collect', (reaction, user) => {
-                    if (reaction._emoji.name == '✅') {
-                        var server = client.guilds.cache.get(idServer);
-                        var utente = server.members.cache.find(x => x.id == user.id);
-                        var ruolo = server.roles.cache.get(ruoloOnLive);
+                    collector.on('collect', (reaction, user) => {
+                        if (reaction._emoji.name == '✅') {
+                            var server = client.guilds.cache.get(idServer);
+                            var utente = server.members.cache.find(x => x.id == user.id);
+                            var ruolo = server.roles.cache.get(ruoloOnLive);
 
-                        if (!utente.voice.channel || utente.voice.channel.id != canaleLive) {
-                            var embed = new Discord.MessageEmbed()
-                                .setTitle("Non sei più in live")
-                                .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                                .setColor("#8F8F8F")
-                                .setDescription("Sei uscito dal canale <#" + canaleLive + "> quindi aspetta la prossima estrazione per entrare")
+                            if (!utente.voice.channel || utente.voice.channel.id != canaleLive) {
+                                var embed = new Discord.MessageEmbed()
+                                    .setTitle("Non sei più in live")
+                                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                                    .setColor("#8F8F8F")
+                                    .setDescription("Sei uscito dal canale <#" + canaleLive + "> quindi aspetta la prossima estrazione per entrare")
 
-                            utente.send(embed)
+                                utente.send(embed)
+                            }
+                            else {
+                                var canaleOnLive = server.channels.cache.find(x => x == canaleLive);
+                                var general = server.channels.cache.find(x => x == canaleGeneral);
+
+                                utente.voice.setChannel(general).then(() => {
+                                    utente.roles.add(ruolo)
+                                        .then(() => {
+                                            utente.voice.setChannel(canaleOnLive)
+                                            var embed = new Discord.MessageEmbed()
+                                                .setTitle("Sei in live")
+                                                .setThumbnail("https://i.postimg.cc/pTLyx7yV/On-air-acceso.png")
+                                                .setColor("#543C84")
+                                                .setDescription("Rispetta tutte le regole, e mantieni un atteggiamento civile")
+
+                                            utente.send(embed)
+                                        })
+                                })
+                            }
                         }
-                        else {
-                            var canaleOnLive = server.channels.cache.find(x => x == canaleLive);
-                            var general = server.channels.cache.find(x => x == canaleGeneral);
-
-                            utente.voice.setChannel(general).then(() => {
-                                utente.roles.add(ruolo)
-                                    .then(() => {
-                                        utente.voice.setChannel(canaleOnLive)
-                                        var embed = new Discord.MessageEmbed()
-                                            .setTitle("Sei in live")
-                                            .setThumbnail("https://i.postimg.cc/pTLyx7yV/On-air-acceso.png")
-                                            .setColor("#543C84")
-                                            .setDescription("Rispetta tutte le regole, e mantieni un atteggiamento civile")
-
-                                        utente.send(embed)
-                                    })
-                            })
-                        }
-                    }
+                    })
                 })
-            })
+        } catch {
+
+        }
     }
 
     if (oldUserChannel == canaleLive && newUserChannel != canaleLive) {
@@ -2830,7 +2865,13 @@ Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contra
                 .setColor("#16A0F4")
                 .setDescription("Torna presto per poter essere riestratto")
 
-            utente.send(embed)
+            try {
+
+                utente.send(embed)
+            }
+            catch {
+
+            }
         }
 
 
