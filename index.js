@@ -2759,7 +2759,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
 
         if (Giulio.voice.channelID != canaleLive && newUserChannel == canaleLive) {
-            utente.kick()
+            utente.voice.kick()
         }
 
 
