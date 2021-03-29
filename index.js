@@ -2758,11 +2758,6 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         var server = client.guilds.cache.get(idServer);
         var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
 
-        if (Giulio.voice.channelID != canaleLive && newUserChannel == canaleLive) {
-            utente.voice.kick()
-        }
-
-
         var utenteMod = false;
         for (var i = 0; i < ruoliMod.length; i++) {
             if (utente.roles.cache.has(ruoliMod[i])) utenteMod = true;
