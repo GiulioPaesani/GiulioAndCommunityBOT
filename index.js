@@ -1889,12 +1889,12 @@ client.on("message", (message) => {
             var sommaProbabilità = 0;
 
             //sottratte tempo di debuff
-            for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
-                utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
-                if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
-                    delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
-                }
-            }
+            // for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
+            //     utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
+            //     if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
+            //         delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
+            //     }
+            // }
 
 
             salaDAttesa.members.forEach(user => {
@@ -1910,10 +1910,7 @@ client.on("message", (message) => {
                         var debuff = 0;
 
                     utenti.push(user)
-                    if (getRolechance(user) - (debuff * 3 * getRolechance(user) / 100) <= 0)
-                        sommaProbabilità += 0
-                    else
-                        sommaProbabilità += getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)
+                    sommaProbabilità += getRolechance(user, debuff)
                 }
 
             })
@@ -1925,10 +1922,7 @@ client.on("message", (message) => {
                 else
                     var debuff = 0;
 
-                if ((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) <= 0)
-                    probabilita.push(0)
-                else
-                    probabilita.push((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) / sommaProbabilità)
+                probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
             })
 
             if (utenti.length == 0) {
@@ -1955,12 +1949,22 @@ client.on("message", (message) => {
 
                     elencoProbabilita += (probabilita[i] * 100).toFixed(2) + "%\r"
 
+                    if (utentiSceltiPrima[utenti[i].id]) {
+                        if (utentiSceltiPrima[utenti[i].id].time >= 30)
+                            var tempo = utentiSceltiPrima[utenti[i].id].time + 10
+                        else
+                            var tempo = 30
+
+                    }
+                    else {
+                        var tempo = 30
+                    }
+
                     utentiSceltiPrima[utenti[i].id] = {
                         username: utenti[i].user.tag,
-                        time: 30
+                        time: tempo
                     }
                 }
-
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Utenti estratti")
                     .setDescription("Tot user: " + utenti.length + "\rUtenti estratti: " + count)
@@ -1981,6 +1985,7 @@ client.on("message", (message) => {
                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                 .setColor("#16A0F4")
 
+            var utentiScelti = []
             for (var i = 0; i < count; i++) {
                 var utenteScelto = getRandom(probabilita, utenti);
                 var index = utenti.findIndex(user => user == utenteScelto);
@@ -1993,10 +1998,36 @@ client.on("message", (message) => {
 
                 utenteScelto.voice.setChannel(canaleOnLive)
 
+                utentiScelti.push(utenteScelto)
+
+                if (utentiSceltiPrima[utenteScelto.id]) {
+                    if (utentiSceltiPrima[utenteScelto.id].time >= 30)
+                        var tempo = utentiSceltiPrima[utenteScelto.id].time + 10
+                    else
+                        var tempo = 30
+                }
+                else {
+                    var tempo = 30
+                }
+
                 utentiSceltiPrima[utenteScelto.id] = {
                     username: utenteScelto.user.tag,
-                    time: 30
+                    time: tempo
                 }
+            }
+            for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
+                var èSceltoAdesso = false;
+                for (var j = 0; j < utentiScelti.length; j++) {
+                    if (Object.keys(utentiSceltiPrima)[i] == utentiScelti[j])
+                        èSceltoAdesso = true;
+                }
+                if (!èSceltoAdesso) {
+                    utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
+                    if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
+                        delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
+                    }
+                }
+
             }
 
             embed
@@ -2325,10 +2356,7 @@ client.on("message", (message) => {
                         var debuff = 0;
 
                     utenti.push(user)
-                    if (getRolechance(user) - (debuff * 3 * getRolechance(user) / 100) <= 0)
-                        sommaProbabilità += 0
-                    else
-                        sommaProbabilità += getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)
+                    sommaProbabilità += getRolechance(user, debuff)
                 }
 
             })
@@ -2340,10 +2368,7 @@ client.on("message", (message) => {
                 else
                     var debuff = 0;
 
-                if ((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) <= 0)
-                    probabilita.push(0)
-                else
-                    probabilita.push((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) / sommaProbabilità)
+                probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
             })
 
 
@@ -2417,6 +2442,7 @@ client.on("message", (message) => {
                 message.channel.send(embed)
             }
         }
+
     })
 })
 
@@ -2970,45 +2996,51 @@ function updateServerstats(serverstats) {
 }
 
 //Twitch
-function getRolechance(user) {
+function getRolechance(user, debuff) {
     for (var i = 0; i < user._roles.length; i++) {
         switch (user._roles[i]) {
             case "799990260393443338": {
-                return 5
+                return 5 - (debuff * 5 / 100)
             }
             case "799990705216159791": {
-                return 10
+                return 10 - (debuff * 10 / 100)
             }
             case "799990735839559690": {
-                return 15
+                return 15 - (debuff * 15 / 100)
             }
             case "799990773708750878": {
-                return 20
+                return 20 - (debuff * 20 / 100)
             }
             case "799990806357213194": {
-                return 25
+                return 25 - (debuff * 25 / 100)
             }
             case "799990832224272405": {
-                return 30
+                return 30 - (debuff * 30 / 100)
             }
             case "799990865001971722": {
-                return 35
+                return 35 - (debuff * 35 / 100)
             }
             case "799990896849977344": {
-                return 40
+                return 40 - (debuff * 40 / 100)
             }
             case "800740423999815710": {
-                return 45
+                return 45 - (debuff * 45 / 100)
             }
             case "800740473437945927": {
-                return 50
+                return 50 - (debuff * 50 / 100)
             }
             case "800740873351462932": {
-                return 65
+                return 65 - (debuff * 65 / 100)
+            }
+            case "807684294587711545": { //Giulio's Friends
+                return 20 - (debuff * 20 / 100)
+            }
+            case "800009879371644940": { //Server booster
+                return 25 - (debuff * 20 / 100)
             }
         }
     }
-    return 2
+    return 2 - (debuff * 2 / 100)
 }
 function getRandom(probabilita, utenti) {
     var num = Math.random(),
