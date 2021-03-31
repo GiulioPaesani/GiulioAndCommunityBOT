@@ -1888,6 +1888,15 @@ client.on("message", (message) => {
 
             var sommaProbabilità = 0;
 
+            //sottratte tempo di debuff
+            for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
+                utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
+                if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
+                    delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
+                }
+            }
+
+
             salaDAttesa.members.forEach(user => {
                 var userMod = false;
                 for (var i = 0; i < ruoliMod.length; i++) {
@@ -1895,14 +1904,31 @@ client.on("message", (message) => {
                 }
 
                 if (!userMod) {
+                    if (utentiSceltiPrima[user.id])
+                        var debuff = utentiSceltiPrima[user.id].time
+                    else
+                        var debuff = 0;
+
                     utenti.push(user)
-                    sommaProbabilità += getRolechance(user)
+                    if (getRolechance(user) - (debuff * 3 * getRolechance(user) / 100) <= 0)
+                        sommaProbabilità += 0
+                    else
+                        sommaProbabilità += getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)
                 }
 
             })
 
+
             utenti.forEach(user => {
-                probabilita.push(getRolechance(user) / sommaProbabilità)
+                if (utentiSceltiPrima[user.id])
+                    var debuff = utentiSceltiPrima[user.id].time
+                else
+                    var debuff = 0;
+
+                if ((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) <= 0)
+                    probabilita.push(0)
+                else
+                    probabilita.push((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) / sommaProbabilità)
             })
 
             if (utenti.length == 0) {
@@ -1926,8 +1952,15 @@ client.on("message", (message) => {
                 for (var i = 0; i < utenti.length; i++) {
                     utenti[i].voice.setChannel(canaleOnLive)
                     elencoUtenti += utenti[i].user.tag + "\r"
-                    elencoProbabilita += (getRolechance(utenti[i]) / sommaProbabilità * 100).toFixed(2) + "%\r"
+
+                    elencoProbabilita += (probabilita[i] * 100).toFixed(2) + "%\r"
+
+                    utentiSceltiPrima[utenti[i].id] = {
+                        username: utenti[i].user.tag,
+                        time: 30
+                    }
                 }
+
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Utenti estratti")
                     .setDescription("Tot user: " + utenti.length + "\rUtenti estratti: " + count)
@@ -1959,6 +1992,11 @@ client.on("message", (message) => {
                 utenti = Array.from(utenti).filter((element, id) => id != index);
 
                 utenteScelto.voice.setChannel(canaleOnLive)
+
+                utentiSceltiPrima[utenteScelto.id] = {
+                    username: utenteScelto.user.tag,
+                    time: 30
+                }
             }
 
             embed
@@ -1971,6 +2009,7 @@ client.on("message", (message) => {
             var salaDAttesa = client.channels.cache.get(canaleAttesa);
             var canaleOnLive = client.channels.cache.get(canaleLive);
 
+            var count = 0;
             canaleOnLive.members.forEach(user => {
                 var userMod = false;
                 for (var i = 0; i < ruoliMod.length; i++) {
@@ -1979,8 +2018,16 @@ client.on("message", (message) => {
 
                 if (!userMod) {
                     user.voice.setChannel(salaDAttesa)
+                    count++;
                 }
             })
+
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Utenti spostati")
+                .setDescription(count + " utenti spostati in attesa")
+                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                .setColor("#16A0F4")
+            message.channel.send(embed)
         }
 
         if (message.content.startsWith("!tkick")) {
@@ -2272,13 +2319,33 @@ client.on("message", (message) => {
                 }
 
                 if (!userMod) {
+                    if (utentiSceltiPrima[user.id])
+                        var debuff = utentiSceltiPrima[user.id].time
+                    else
+                        var debuff = 0;
+
                     utenti.push(user)
-                    sommaProbabilità += getRolechance(user)
+                    if (getRolechance(user) - (debuff * 3 * getRolechance(user) / 100) <= 0)
+                        sommaProbabilità += 0
+                    else
+                        sommaProbabilità += getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)
                 }
+
             })
+
+
             utenti.forEach(user => {
-                probabilita.push(getRolechance(user) / sommaProbabilità)
+                if (utentiSceltiPrima[user.id])
+                    var debuff = utentiSceltiPrima[user.id].time
+                else
+                    var debuff = 0;
+
+                if ((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) <= 0)
+                    probabilita.push(0)
+                else
+                    probabilita.push((getRolechance(user) - (debuff * 3 * getRolechance(user) / 100)) / sommaProbabilità)
             })
+
 
             if (utenteMod) {
                 if (utenti.length == 0) {
