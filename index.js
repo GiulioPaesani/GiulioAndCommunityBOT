@@ -2998,49 +2998,52 @@ function updateServerstats(serverstats) {
 //Twitch
 function getRolechance(user, debuff) {
     for (var i = 0; i < user._roles.length; i++) {
+        if (user._roles[i] == "800009879371644940") {
+            chanceBoost += 25
+        }
+        if (user._roles[i] == "807684294587711545") {
+            chanceBoost += 20
+        }
+    }
+
+    for (var i = 0; i < user._roles.length; i++) {
         switch (user._roles[i]) {
-            case "800009879371644940": { //Server booster
-                return 25 - (debuff * 20 / 100)
-            }
-            case "807684294587711545": { //Giulio's Friends
-                return 20 - (debuff * 20 / 100)
-            }
             case "799990260393443338": {
-                return 5 - (debuff * 5 / 100)
+                return (5 + chanceBoost) - (debuff * (5 + chanceBoost) / 100)
             }
             case "799990705216159791": {
-                return 10 - (debuff * 10 / 100)
+                return (10 + chanceBoost) - (debuff * (10 + chanceBoost) / 100)
             }
             case "799990735839559690": {
-                return 15 - (debuff * 15 / 100)
+                return (15 + chanceBoost) - (debuff * (15 + chanceBoost) / 100)
             }
             case "799990773708750878": {
-                return 20 - (debuff * 20 / 100)
+                return (20 + chanceBoost) - (debuff * (20 + chanceBoost) / 100)
             }
             case "799990806357213194": {
-                return 25 - (debuff * 25 / 100)
+                return (25 + chanceBoost) - (debuff * (25 + chanceBoost) / 100)
             }
             case "799990832224272405": {
-                return 30 - (debuff * 30 / 100)
+                return (30 + chanceBoost) - (debuff * (30 + chanceBoost) / 100)
             }
             case "799990865001971722": {
-                return 35 - (debuff * 35 / 100)
+                return (35 + chanceBoost) - (debuff * (35 + chanceBoost) / 100)
             }
             case "799990896849977344": {
-                return 40 - (debuff * 40 / 100)
+                return (40 + chanceBoost) - (debuff * (40 + chanceBoost) / 100)
             }
             case "800740423999815710": {
-                return 45 - (debuff * 45 / 100)
+                return (45 + chanceBoost) - (debuff * (45 + chanceBoost) / 100)
             }
             case "800740473437945927": {
-                return 50 - (debuff * 50 / 100)
+                return (50 + chanceBoost) - (debuff * (50 + chanceBoost) / 100)
             }
             case "800740873351462932": {
-                return 65 - (debuff * 65 / 100)
+                return (65 + chanceBoost) - (debuff * (65 + chanceBoost) / 100)
             }
         }
     }
-    return 2 - (debuff * 2 / 100)
+    return (2 + chanceBoost) - (debuff * (2 + chanceBoost) / 100)
 }
 function getRandom(probabilita, utenti) {
     var num = Math.random(),
