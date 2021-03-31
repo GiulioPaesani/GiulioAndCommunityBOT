@@ -2999,6 +2999,12 @@ function updateServerstats(serverstats) {
 function getRolechance(user, debuff) {
     for (var i = 0; i < user._roles.length; i++) {
         switch (user._roles[i]) {
+            case "800009879371644940": { //Server booster
+                return 25 - (debuff * 20 / 100)
+            }
+            case "807684294587711545": { //Giulio's Friends
+                return 20 - (debuff * 20 / 100)
+            }
             case "799990260393443338": {
                 return 5 - (debuff * 5 / 100)
             }
@@ -3031,12 +3037,6 @@ function getRolechance(user, debuff) {
             }
             case "800740873351462932": {
                 return 65 - (debuff * 65 / 100)
-            }
-            case "807684294587711545": { //Giulio's Friends
-                return 20 - (debuff * 20 / 100)
-            }
-            case "800009879371644940": { //Server booster
-                return 25 - (debuff * 20 / 100)
             }
         }
     }
