@@ -49,6 +49,7 @@ var ruoliMod = [
 
 
 var utentiSceltiPrima = []
+
 client.on("message", (message) => {
     if (message.author.bot) return
     if (message.channel.type == "dm") return
@@ -1828,627 +1829,627 @@ client.on("message", (message) => {
         }
 
         //TWITCH
-        if (message.content.startsWith("!tget")) {
-            if (message.member.id != "793768313934577664") {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi eseguire il comando `!tget` perchè non hai il permesso")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var args = message.content.split(/\s+/);
-            if (!args[1]) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Inserire il numero di utenti")
-                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                    .setColor("#ED1C24")
-                    .setDescription("`!tget [count]`")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var count = parseInt(args[1])
-            if (!count && count != 0) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Inserire un numero valido")
-                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                    .setColor("#ED1C24")
-                    .setDescription("`!tget [count]`")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            if (count <= 0) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Inserire un numero positivo")
-                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                    .setColor("#ED1C24")
-                    .setDescription("`!tget [count]`")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
-            var canaleOnLive = client.channels.cache.get(canaleLive);
-
-            var utenti = [];
-            var probabilita = [];
-
-            var sommaProbabilità = 0;
-
-            //sottratte tempo di debuff
-            // for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
-            //     utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
-            //     if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
-            //         delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
-            //     }
-            // }
-
-
-            salaDAttesa.members.forEach(user => {
-                var userMod = false;
-                for (var i = 0; i < ruoliMod.length; i++) {
-                    if (user.roles.cache.has(ruoliMod[i])) userMod = true;
-                }
-
-                if (!userMod) {
-                    if (utentiSceltiPrima[user.id])
-                        var debuff = utentiSceltiPrima[user.id].time
-                    else
-                        var debuff = 0;
-
-                    utenti.push(user)
-                    sommaProbabilità += getRolechance(user, debuff)
-                }
-
-            })
-
-
-            utenti.forEach(user => {
-                if (utentiSceltiPrima[user.id])
-                    var debuff = utentiSceltiPrima[user.id].time
-                else
-                    var debuff = 0;
-
-                probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
-            })
-
-            if (utenti.length == 0) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non c'è nessuno")
-                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                    .setColor("#8F8F8F")
-                    .setDescription("Nessuno vuole entrare in live")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var elencoUtenti = ""
-            var elencoProbabilita = ""
-
-            if (utenti.length <= count) {
-                for (var i = 0; i < utenti.length; i++) {
-                    utenti[i].voice.setChannel(canaleOnLive)
-                    elencoUtenti += utenti[i].user.tag + "\r"
-
-                    elencoProbabilita += (probabilita[i] * 100).toFixed(2) + "%\r"
-
-                    if (utentiSceltiPrima[utenti[i].id]) {
-                        if (utentiSceltiPrima[utenti[i].id].time >= 30)
-                            var tempo = utentiSceltiPrima[utenti[i].id].time + 10
-                        else
-                            var tempo = 30
-
-                    }
-                    else {
-                        var tempo = 30
-                    }
-
-                    utentiSceltiPrima[utenti[i].id] = {
-                        username: utenti[i].user.tag,
-                        time: tempo
-                    }
-                }
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Utenti estratti")
-                    .setDescription("Tot user: " + utenti.length + "\rUtenti estratti: " + count)
-                    .addField("Users", elencoUtenti, true)
-                    .addField("Chance", elencoProbabilita, true)
-                    .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                    .setColor("#16A0F4")
-                message.channel.send(embed)
-                return
-            }
-
-            var elencoUtenti = ""
-            var elencoProbabilita = ""
-
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Utenti estratti")
-                .setDescription("Tot user: " + utenti.length + "\rUtenti estratti: " + count)
-                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                .setColor("#16A0F4")
-
-            var utentiScelti = []
-            for (var i = 0; i < count; i++) {
-                var utenteScelto = getRandom(probabilita, utenti);
-                var index = utenti.findIndex(user => user == utenteScelto);
-
-                elencoUtenti += utenteScelto.user.tag + "\r"
-                elencoProbabilita += (probabilita[index] * 100).toFixed(2) + "%\r"
-
-                probabilita = Array.from(probabilita).filter((element, id) => id != index);
-                utenti = Array.from(utenti).filter((element, id) => id != index);
-
-                utenteScelto.voice.setChannel(canaleOnLive)
-
-                utentiScelti.push(utenteScelto)
-
-                if (utentiSceltiPrima[utenteScelto.id]) {
-                    if (utentiSceltiPrima[utenteScelto.id].time >= 30)
-                        var tempo = utentiSceltiPrima[utenteScelto.id].time + 10
-                    else
-                        var tempo = 30
-                }
-                else {
-                    var tempo = 30
-                }
-
-                utentiSceltiPrima[utenteScelto.id] = {
-                    username: utenteScelto.user.tag,
-                    time: tempo
-                }
-            }
-            for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
-                var èSceltoAdesso = false;
-                for (var j = 0; j < utentiScelti.length; j++) {
-                    if (Object.keys(utentiSceltiPrima)[i] == utentiScelti[j])
-                        èSceltoAdesso = true;
-                }
-                if (!èSceltoAdesso) {
-                    utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
-                    if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
-                        delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
-                    }
-                }
-
-            }
-
-            embed
-                .addField("Users", elencoUtenti, true)
-                .addField("Chance", elencoProbabilita, true)
-            message.channel.send(embed)
-        }
-
-        if (message.content == "!tstop" || message.content == "!tend") {
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
-            var canaleOnLive = client.channels.cache.get(canaleLive);
-
-            var count = 0;
-            canaleOnLive.members.forEach(user => {
-                var userMod = false;
-                for (var i = 0; i < ruoliMod.length; i++) {
-                    if (user.roles.cache.has(ruoliMod[i])) userMod = true;
-                }
-
-                if (!userMod) {
-                    user.voice.setChannel(salaDAttesa)
-                    count++;
-                }
-            })
-
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Utenti spostati")
-                .setDescription(count + " utenti spostati in attesa")
-                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                .setColor("#16A0F4")
-            message.channel.send(embed)
-        }
-
-        if (message.content.startsWith("!tkick")) {
-            if (!utenteMod) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi eseguire il comando `!tkick` perchè non hai il permesso")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var utente = message.mentions.members.first()
-            if (!utente) { //Per id
-                var args = message.content.split(/\s+/);
-                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
-                if (!utente) { //Per username
-
-                    var nome = message.content.slice(7).trim()
-                    var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
-                    if (!utente) { //Per tag
-                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
-                    }
-                }
-            }
-
-
-            if (!utente) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Utente non trovato")
-                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                    .setColor("#ED1C24")
-                    .setDescription("`!tkick [user]`")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var userMod = false;
-            for (var i = 0; i < ruoliMod.length; i++) {
-                if (utente.roles.cache.has(ruoliMod[i])) userMod = true;
-            }
-            if (userMod) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi kickare questo utente")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
-
-            if (!utente.voice.channel || utente.voice.channel.id != canaleLive) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Utente non in live")
-                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                    .setColor("#8F8F8F")
-                    .setDescription("Questo utente non è nel canale ON LIVE")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            utente.voice.setChannel(salaDAttesa)
-            utente.roles.remove(ruoloOnLive)
-
-            var embed = new Discord.MessageEmbed()
-                .setAuthor("[TWITCH KICK] " + utente.user.tag, utente.user.avatarURL())
-                .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
-                .setColor("#6143CB")
-                .setDescription(utente.toString() + "è stato kicckato da <#" + canaleLive + ">")
-
-            message.channel.send(embed)
-
-            var embedUtente = new Discord.MessageEmbed()
-                .setTitle("Sei stato espulso da Twitch")
-                .setColor("#6143CB")
-                .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
-                .setDescription("Sei stato kicckato da <#" + canaleLive + ">, rientra in Sala d'attesa e ritenta di partecipare")
-
-            try {
-                utente.send(embedUtente)
-            }
-            catch {
-
-            }
-        }
-
-        if (message.content.startsWith("!tban")) {
-            if (!utenteMod) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi eseguire il comando `!tban` perchè non hai il permesso")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var utente = message.mentions.members.first()
-            if (!utente) { //Per id
-                var args = message.content.split(/\s+/);
-                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
-                if (!utente) { //Per username
-
-                    var nome = message.content.slice(6).trim()
-                    var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
-                    if (!utente) { //Per tag
-                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
-                    }
-                }
-            }
-
-
-            if (!utente) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Utente non trovato")
-                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                    .setColor("#ED1C24")
-                    .setDescription("`!tban [user]`")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var userMod = false;
-            for (var i = 0; i < ruoliMod.length; i++) {
-                if (utente.roles.cache.has(ruoliMod[i])) userMod = true;
-            }
-            if (userMod) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi bannare questo utente")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
-
-            if (utente.voice.channelID == canaleAttesa || utente.voice.channelID == canaleLive) {
-                utente.voice.kick();
-            }
-
-            salaDAttesa.overwritePermissions([
-                {
-                    id: utente.id,
-                    deny: ["CONNECT"]
-                }
-            ]);
-
-            var embed = new Discord.MessageEmbed()
-                .setAuthor("[TWITCH BAN] " + utente.user.tag, utente.user.avatarURL())
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setColor("#6143CB")
-                .setDescription(utente.toString() + "è stato bannato da <#" + canaleLive + ">")
-
-            message.channel.send(embed)
-
-            var embedUtente = new Discord.MessageEmbed()
-                .setTitle("Sei stato bannato da Twitch")
-                .setColor("#6143CB")
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setDescription("Sei stato bannato da <#" + canaleLive + ">, non potrai più partecipare alle live")
-
-            try {
-                utente.send(embedUtente)
-            }
-            catch {
-
-            }
-        }
-
-        if (message.content.startsWith("!tunban")) {
-            if (!message.member.hasPermission("ADMINISTRATOR")) { //<------------------------- METTERE utentemod
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Non hai il permesso")
-                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-                    .setColor("#9E005D")
-                    .setDescription("Non puoi eseguire il comando `!tunban` perchè non hai il permesso")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-
-            var utente = message.mentions.members.first()
-            if (!utente) { //Per id
-                var args = message.content.split(/\s+/);
-                var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
-                if (!utente) { //Per username
-
-                    var nome = message.content.slice(8).trim()
-                    var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
-                    if (!utente) { //Per tag
-                        var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
-                    }
-                }
-            }
-
-
-            if (!utente) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Utente non trovato")
-                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
-                    .setColor("#ED1C24")
-                    .setDescription("`!tunban [user]`")
-
-                message.channel.send(embed).then(msg => {
-                    message.delete({ timeout: 7000 })
-                    msg.delete({ timeout: 7000 })
-                })
-                return
-            }
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
-
-            salaDAttesa.overwritePermissions([
-                {
-                    id: utente.id,
-                    allow: ["CONNECT"]
-                }
-            ]);
-
-            var embed = new Discord.MessageEmbed()
-                .setAuthor("[TWITCH UNBAN] " + utente.user.tag, utente.user.avatarURL())
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setColor("#6143CB")
-                .setDescription(utente.toString() + "è stato sbannato da <#" + canaleLive + ">")
-
-            message.channel.send(embed)
-
-            var embedUtente = new Discord.MessageEmbed()
-                .setTitle("Sei stato bannato da Twitch")
-                .setColor("#6143CB")
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setDescription("Sei stato sbannato da <#" + canaleLive + ">, ora puoi di nuovo partecipare alle live")
-
-            try {
-                utente.send(embedUtente)
-            }
-            catch {
-
-            }
-        }
-
-        if (message.content.startsWith("!tchance")) {
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
-
-            var utenti = [];
-            var probabilita = [];
-
-            var sommaProbabilità = 0;
-
-            salaDAttesa.members.forEach(user => {
-                var userMod = false;
-                for (var i = 0; i < ruoliMod.length; i++) {
-                    if (user.roles.cache.has(ruoliMod[i])) userMod = true;
-                }
-
-                if (!userMod) {
-                    if (utentiSceltiPrima[user.id])
-                        var debuff = utentiSceltiPrima[user.id].time
-                    else
-                        var debuff = 0;
-
-                    utenti.push(user)
-                    sommaProbabilità += getRolechance(user, debuff)
-                }
-
-            })
-
-
-            utenti.forEach(user => {
-                if (utentiSceltiPrima[user.id])
-                    var debuff = utentiSceltiPrima[user.id].time
-                else
-                    var debuff = 0;
-
-                probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
-            })
-
-
-            if (utenteMod) {
-                if (utenti.length == 0) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Non c'è nessuno")
-                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                        .setColor("#8F8F8F")
-                        .setDescription("Nessuno vuole entrare in live")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
-
-                for (var i = 0; i < utenti.length; i++) {
-                    for (var j = 0; i < utenti.length; i++) {
-                        if (probabilita[i] > probabilita[j]) {
-                            var tmp = probabilita[i];
-                            probabilita[i] = probabilita[j];
-                            probabilita[j] = tmp;
-
-                            var tmp = utenti[i];
-                            utenti[i] = utenti[j];
-                            utenti[j] = tmp;
-                        }
-                    }
-                }
-
-                var elencoUtenti = ""
-                var elencoProbabilita = ""
-
-                for (var i = 0; i < utenti.length; i++) {
-                    elencoUtenti += utenti[i].user.tag + "\r"
-                    elencoProbabilita += (probabilita[i] * 100).toFixed(2) + "%\r"
-                }
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Probabilità")
-                    .setDescription("Tutti gli utenti con le relative probabilità in Sala d'attesa")
-                    .addField("Users", elencoUtenti, true)
-                    .addField("Chance", elencoProbabilita, true)
-                message.channel.send(embed)
-            }
-            else {
-                if (!message.member.voice || message.member.voice.channelID != canaleAttesa) {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Non sei in attesa")
-                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                        .setColor("#8F8F8F")
-                        .setDescription("Per vedere la tua probabilità devi essere nel canale <#" + canaleAttesa + ">")
-
-                    message.channel.send(embed).then(msg => {
-                        message.delete({ timeout: 7000 })
-                        msg.delete({ timeout: 7000 })
-                    })
-                    return
-                }
-
-                var index = utenti.findIndex(user => user == message.member);
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("PROBABILITÀ - " + message.member.user.tag)
-                    .setThumbnail(message.member.user.avatarURL())
-                    .setDescription("La tua probabilità di entrare in live, sali di livello per avere più possibilità")
-                    .addField("Chance: " + (probabilita[index] * 100).toFixed(2) + "%", "Utenti totali: " + utenti.length)
-
-                message.channel.send(embed)
-            }
-        }
+        // if (message.content.startsWith("!tget")) {
+        //     if (message.member.id != "793768313934577664") {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non hai il permesso")
+        //             .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        //             .setColor("#9E005D")
+        //             .setDescription("Non puoi eseguire il comando `!tget` perchè non hai il permesso")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var args = message.content.split(/\s+/);
+        //     if (!args[1]) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Inserire il numero di utenti")
+        //             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        //             .setColor("#ED1C24")
+        //             .setDescription("`!tget [count]`")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var count = parseInt(args[1])
+        //     if (!count && count != 0) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Inserire un numero valido")
+        //             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        //             .setColor("#ED1C24")
+        //             .setDescription("`!tget [count]`")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     if (count <= 0) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Inserire un numero positivo")
+        //             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        //             .setColor("#ED1C24")
+        //             .setDescription("`!tget [count]`")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var salaDAttesa = client.channels.cache.get(canaleAttesa);
+        //     var canaleOnLive = client.channels.cache.get(canaleLive);
+
+        //     var utenti = [];
+        //     var probabilita = [];
+
+        //     var sommaProbabilità = 0;
+
+        //     //sottratte tempo di debuff
+        //     // for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
+        //     //     utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
+        //     //     if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
+        //     //         delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
+        //     //     }
+        //     // }
+
+
+        //     salaDAttesa.members.forEach(user => {
+        //         var userMod = false;
+        //         for (var i = 0; i < ruoliMod.length; i++) {
+        //             if (user.roles.cache.has(ruoliMod[i])) userMod = true;
+        //         }
+
+        //         if (!userMod) {
+        //             if (utentiSceltiPrima[user.id])
+        //                 var debuff = utentiSceltiPrima[user.id].time
+        //             else
+        //                 var debuff = 0;
+
+        //             utenti.push(user)
+        //             sommaProbabilità += getRolechance(user, debuff)
+        //         }
+
+        //     })
+
+
+        //     utenti.forEach(user => {
+        //         if (utentiSceltiPrima[user.id])
+        //             var debuff = utentiSceltiPrima[user.id].time
+        //         else
+        //             var debuff = 0;
+
+        //         probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
+        //     })
+
+        //     if (utenti.length == 0) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non c'è nessuno")
+        //             .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+        //             .setColor("#8F8F8F")
+        //             .setDescription("Nessuno vuole entrare in live")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var elencoUtenti = ""
+        //     var elencoProbabilita = ""
+
+        //     if (utenti.length <= count) {
+        //         for (var i = 0; i < utenti.length; i++) {
+        //             utenti[i].voice.setChannel(canaleOnLive)
+        //             elencoUtenti += utenti[i].user.tag + "\r"
+
+        //             elencoProbabilita += (probabilita[i] * 100).toFixed(2) + "%\r"
+
+        //             if (utentiSceltiPrima[utenti[i].id]) {
+        //                 if (utentiSceltiPrima[utenti[i].id].time >= 30)
+        //                     var tempo = utentiSceltiPrima[utenti[i].id].time + 10
+        //                 else
+        //                     var tempo = 30
+
+        //             }
+        //             else {
+        //                 var tempo = 30
+        //             }
+
+        //             utentiSceltiPrima[utenti[i].id] = {
+        //                 username: utenti[i].user.tag,
+        //                 time: tempo
+        //             }
+        //         }
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Utenti estratti")
+        //             .setDescription("Tot user: " + utenti.length + "\rUtenti estratti: " + count)
+        //             .addField("Users", elencoUtenti, true)
+        //             .addField("Chance", elencoProbabilita, true)
+        //             .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+        //             .setColor("#16A0F4")
+        //         message.channel.send(embed)
+        //         return
+        //     }
+
+        //     var elencoUtenti = ""
+        //     var elencoProbabilita = ""
+
+        //     var embed = new Discord.MessageEmbed()
+        //         .setTitle("Utenti estratti")
+        //         .setDescription("Tot user: " + utenti.length + "\rUtenti estratti: " + count)
+        //         .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+        //         .setColor("#16A0F4")
+
+        //     var utentiScelti = []
+        //     for (var i = 0; i < count; i++) {
+        //         var utenteScelto = getRandom(probabilita, utenti);
+        //         var index = utenti.findIndex(user => user == utenteScelto);
+
+        //         elencoUtenti += utenteScelto.user.tag + "\r"
+        //         elencoProbabilita += (probabilita[index] * 100).toFixed(2) + "%\r"
+
+        //         probabilita = Array.from(probabilita).filter((element, id) => id != index);
+        //         utenti = Array.from(utenti).filter((element, id) => id != index);
+
+        //         utenteScelto.voice.setChannel(canaleOnLive)
+
+        //         utentiScelti.push(utenteScelto)
+
+        //         if (utentiSceltiPrima[utenteScelto.id]) {
+        //             if (utentiSceltiPrima[utenteScelto.id].time >= 30)
+        //                 var tempo = utentiSceltiPrima[utenteScelto.id].time + 10
+        //             else
+        //                 var tempo = 30
+        //         }
+        //         else {
+        //             var tempo = 30
+        //         }
+
+        //         utentiSceltiPrima[utenteScelto.id] = {
+        //             username: utenteScelto.user.tag,
+        //             time: tempo
+        //         }
+        //     }
+        //     for (var i = 0; i < Object.keys(utentiSceltiPrima).length; i++) {
+        //         var èSceltoAdesso = false;
+        //         for (var j = 0; j < utentiScelti.length; j++) {
+        //             if (Object.keys(utentiSceltiPrima)[i] == utentiScelti[j])
+        //                 èSceltoAdesso = true;
+        //         }
+        //         if (!èSceltoAdesso) {
+        //             utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time -= 10;
+        //             if (utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]].time <= 0) {
+        //                 delete utentiSceltiPrima[Object.keys(utentiSceltiPrima)[i]];
+        //             }
+        //         }
+
+        //     }
+
+        //     embed
+        //         .addField("Users", elencoUtenti, true)
+        //         .addField("Chance", elencoProbabilita, true)
+        //     message.channel.send(embed)
+        // }
+
+        // if (message.content == "!tstop" || message.content == "!tend") {
+        //     var salaDAttesa = client.channels.cache.get(canaleAttesa);
+        //     var canaleOnLive = client.channels.cache.get(canaleLive);
+
+        //     var count = 0;
+        //     canaleOnLive.members.forEach(user => {
+        //         var userMod = false;
+        //         for (var i = 0; i < ruoliMod.length; i++) {
+        //             if (user.roles.cache.has(ruoliMod[i])) userMod = true;
+        //         }
+
+        //         if (!userMod) {
+        //             user.voice.setChannel(salaDAttesa)
+        //             count++;
+        //         }
+        //     })
+
+        //     var embed = new Discord.MessageEmbed()
+        //         .setTitle("Utenti spostati")
+        //         .setDescription(count + " utenti spostati in attesa")
+        //         .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+        //         .setColor("#16A0F4")
+        //     message.channel.send(embed)
+        // }
+
+        // if (message.content.startsWith("!tkick")) {
+        //     if (!utenteMod) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non hai il permesso")
+        //             .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        //             .setColor("#9E005D")
+        //             .setDescription("Non puoi eseguire il comando `!tkick` perchè non hai il permesso")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var utente = message.mentions.members.first()
+        //     if (!utente) { //Per id
+        //         var args = message.content.split(/\s+/);
+        //         var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+        //         if (!utente) { //Per username
+
+        //             var nome = message.content.slice(7).trim()
+        //             var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+        //             if (!utente) { //Per tag
+        //                 var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+        //             }
+        //         }
+        //     }
+
+
+        //     if (!utente) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Utente non trovato")
+        //             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        //             .setColor("#ED1C24")
+        //             .setDescription("`!tkick [user]`")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var userMod = false;
+        //     for (var i = 0; i < ruoliMod.length; i++) {
+        //         if (utente.roles.cache.has(ruoliMod[i])) userMod = true;
+        //     }
+        //     if (userMod) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non hai il permesso")
+        //             .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        //             .setColor("#9E005D")
+        //             .setDescription("Non puoi kickare questo utente")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var salaDAttesa = client.channels.cache.get(canaleAttesa);
+
+        //     if (!utente.voice.channel || utente.voice.channel.id != canaleLive) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Utente non in live")
+        //             .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+        //             .setColor("#8F8F8F")
+        //             .setDescription("Questo utente non è nel canale ON LIVE")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     utente.voice.setChannel(salaDAttesa)
+        //     utente.roles.remove(ruoloOnLive)
+
+        //     var embed = new Discord.MessageEmbed()
+        //         .setAuthor("[TWITCH KICK] " + utente.user.tag, utente.user.avatarURL())
+        //         .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
+        //         .setColor("#6143CB")
+        //         .setDescription(utente.toString() + "è stato kicckato da <#" + canaleLive + ">")
+
+        //     message.channel.send(embed)
+
+        //     var embedUtente = new Discord.MessageEmbed()
+        //         .setTitle("Sei stato espulso da Twitch")
+        //         .setColor("#6143CB")
+        //         .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
+        //         .setDescription("Sei stato kicckato da <#" + canaleLive + ">, rientra in Sala d'attesa e ritenta di partecipare")
+
+        //     try {
+        //         utente.send(embedUtente)
+        //     }
+        //     catch {
+
+        //     }
+        // }
+
+        // if (message.content.startsWith("!tban")) {
+        //     if (!utenteMod) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non hai il permesso")
+        //             .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        //             .setColor("#9E005D")
+        //             .setDescription("Non puoi eseguire il comando `!tban` perchè non hai il permesso")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var utente = message.mentions.members.first()
+        //     if (!utente) { //Per id
+        //         var args = message.content.split(/\s+/);
+        //         var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+        //         if (!utente) { //Per username
+
+        //             var nome = message.content.slice(6).trim()
+        //             var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+        //             if (!utente) { //Per tag
+        //                 var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+        //             }
+        //         }
+        //     }
+
+
+        //     if (!utente) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Utente non trovato")
+        //             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        //             .setColor("#ED1C24")
+        //             .setDescription("`!tban [user]`")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var userMod = false;
+        //     for (var i = 0; i < ruoliMod.length; i++) {
+        //         if (utente.roles.cache.has(ruoliMod[i])) userMod = true;
+        //     }
+        //     if (userMod) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non hai il permesso")
+        //             .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        //             .setColor("#9E005D")
+        //             .setDescription("Non puoi bannare questo utente")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var salaDAttesa = client.channels.cache.get(canaleAttesa);
+
+        //     if (utente.voice.channelID == canaleAttesa || utente.voice.channelID == canaleLive) {
+        //         utente.voice.kick();
+        //     }
+
+        //     salaDAttesa.overwritePermissions([
+        //         {
+        //             id: utente.id,
+        //             deny: ["CONNECT"]
+        //         }
+        //     ]);
+
+        //     var embed = new Discord.MessageEmbed()
+        //         .setAuthor("[TWITCH BAN] " + utente.user.tag, utente.user.avatarURL())
+        //         .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+        //         .setColor("#6143CB")
+        //         .setDescription(utente.toString() + "è stato bannato da <#" + canaleLive + ">")
+
+        //     message.channel.send(embed)
+
+        //     var embedUtente = new Discord.MessageEmbed()
+        //         .setTitle("Sei stato bannato da Twitch")
+        //         .setColor("#6143CB")
+        //         .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+        //         .setDescription("Sei stato bannato da <#" + canaleLive + ">, non potrai più partecipare alle live")
+
+        //     try {
+        //         utente.send(embedUtente)
+        //     }
+        //     catch {
+
+        //     }
+        // }
+
+        // if (message.content.startsWith("!tunban")) {
+        //     if (!message.member.hasPermission("ADMINISTRATOR")) { //<------------------------- METTERE utentemod
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Non hai il permesso")
+        //             .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        //             .setColor("#9E005D")
+        //             .setDescription("Non puoi eseguire il comando `!tunban` perchè non hai il permesso")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+
+        //     var utente = message.mentions.members.first()
+        //     if (!utente) { //Per id
+        //         var args = message.content.split(/\s+/);
+        //         var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1]))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.id == args[1])))[0]];
+        //         if (!utente) { //Per username
+
+        //             var nome = message.content.slice(8).trim()
+        //             var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.username.toLowerCase() == nome.toLowerCase())))[0]];
+        //             if (!utente) { //Per tag
+        //                 var utente = Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase()))[Object.keys(Object.fromEntries(message.guild.members.cache.filter(utente => utente.user.tag.toLowerCase() == nome.toLowerCase())))[0]];
+        //             }
+        //         }
+        //     }
+
+
+        //     if (!utente) {
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Utente non trovato")
+        //             .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+        //             .setColor("#ED1C24")
+        //             .setDescription("`!tunban [user]`")
+
+        //         message.channel.send(embed).then(msg => {
+        //             message.delete({ timeout: 7000 })
+        //             msg.delete({ timeout: 7000 })
+        //         })
+        //         return
+        //     }
+        //     var salaDAttesa = client.channels.cache.get(canaleAttesa);
+
+        //     salaDAttesa.overwritePermissions([
+        //         {
+        //             id: utente.id,
+        //             allow: ["CONNECT"]
+        //         }
+        //     ]);
+
+        //     var embed = new Discord.MessageEmbed()
+        //         .setAuthor("[TWITCH UNBAN] " + utente.user.tag, utente.user.avatarURL())
+        //         .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+        //         .setColor("#6143CB")
+        //         .setDescription(utente.toString() + "è stato sbannato da <#" + canaleLive + ">")
+
+        //     message.channel.send(embed)
+
+        //     var embedUtente = new Discord.MessageEmbed()
+        //         .setTitle("Sei stato bannato da Twitch")
+        //         .setColor("#6143CB")
+        //         .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+        //         .setDescription("Sei stato sbannato da <#" + canaleLive + ">, ora puoi di nuovo partecipare alle live")
+
+        //     try {
+        //         utente.send(embedUtente)
+        //     }
+        //     catch {
+
+        //     }
+        // }
+
+        // if (message.content.startsWith("!tchance")) {
+        //     var salaDAttesa = client.channels.cache.get(canaleAttesa);
+
+        //     var utenti = [];
+        //     var probabilita = [];
+
+        //     var sommaProbabilità = 0;
+
+        //     salaDAttesa.members.forEach(user => {
+        //         var userMod = false;
+        //         for (var i = 0; i < ruoliMod.length; i++) {
+        //             if (user.roles.cache.has(ruoliMod[i])) userMod = true;
+        //         }
+
+        //         if (!userMod) {
+        //             if (utentiSceltiPrima[user.id])
+        //                 var debuff = utentiSceltiPrima[user.id].time
+        //             else
+        //                 var debuff = 0;
+
+        //             utenti.push(user)
+        //             sommaProbabilità += getRolechance(user, debuff)
+        //         }
+
+        //     })
+
+
+        //     utenti.forEach(user => {
+        //         if (utentiSceltiPrima[user.id])
+        //             var debuff = utentiSceltiPrima[user.id].time
+        //         else
+        //             var debuff = 0;
+
+        //         probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
+        //     })
+
+
+        //     if (utenteMod) {
+        //         if (utenti.length == 0) {
+        //             var embed = new Discord.MessageEmbed()
+        //                 .setTitle("Non c'è nessuno")
+        //                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+        //                 .setColor("#8F8F8F")
+        //                 .setDescription("Nessuno vuole entrare in live")
+
+        //             message.channel.send(embed).then(msg => {
+        //                 message.delete({ timeout: 7000 })
+        //                 msg.delete({ timeout: 7000 })
+        //             })
+        //             return
+        //         }
+
+        //         for (var i = 0; i < utenti.length; i++) {
+        //             for (var j = 0; i < utenti.length; i++) {
+        //                 if (probabilita[i] > probabilita[j]) {
+        //                     var tmp = probabilita[i];
+        //                     probabilita[i] = probabilita[j];
+        //                     probabilita[j] = tmp;
+
+        //                     var tmp = utenti[i];
+        //                     utenti[i] = utenti[j];
+        //                     utenti[j] = tmp;
+        //                 }
+        //             }
+        //         }
+
+        //         var elencoUtenti = ""
+        //         var elencoProbabilita = ""
+
+        //         for (var i = 0; i < utenti.length; i++) {
+        //             elencoUtenti += utenti[i].user.tag + "\r"
+        //             elencoProbabilita += (probabilita[i] * 100).toFixed(2) + "%\r"
+        //         }
+
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("Probabilità")
+        //             .setDescription("Tutti gli utenti con le relative probabilità in Sala d'attesa")
+        //             .addField("Users", elencoUtenti, true)
+        //             .addField("Chance", elencoProbabilita, true)
+        //         message.channel.send(embed)
+        //     }
+        //     else {
+        //         if (!message.member.voice || message.member.voice.channelID != canaleAttesa) {
+        //             var embed = new Discord.MessageEmbed()
+        //                 .setTitle("Non sei in attesa")
+        //                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+        //                 .setColor("#8F8F8F")
+        //                 .setDescription("Per vedere la tua probabilità devi essere nel canale <#" + canaleAttesa + ">")
+
+        //             message.channel.send(embed).then(msg => {
+        //                 message.delete({ timeout: 7000 })
+        //                 msg.delete({ timeout: 7000 })
+        //             })
+        //             return
+        //         }
+
+        //         var index = utenti.findIndex(user => user == message.member);
+
+        //         var embed = new Discord.MessageEmbed()
+        //             .setTitle("PROBABILITÀ - " + message.member.user.tag)
+        //             .setThumbnail(message.member.user.avatarURL())
+        //             .setDescription("La tua probabilità di entrare in live, sali di livello per avere più possibilità")
+        //             .addField("Chance: " + (probabilita[index] * 100).toFixed(2) + "%", "Utenti totali: " + utenti.length)
+
+        //         message.channel.send(embed)
+        //     }
+        // }
 
         //NOTIFICATION
         if (message.content == "!config" || message.content == "!notifiche" || message.content == "!notification" || message.content == "!notifications") {
@@ -2919,205 +2920,205 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
     })
 })
 
-client.on('voiceStateUpdate', (oldMember, newMember) => {
-    let newUserChannel = newMember.channelID;
-    let oldUserChannel = oldMember.channelID;
+// client.on('voiceStateUpdate', (oldMember, newMember) => {
+//     let newUserChannel = newMember.channelID;
+//     let oldUserChannel = oldMember.channelID;
 
-    if (oldUserChannel == canaleLive && newUserChannel != canaleLive && oldMember.id == "793768313934577664") {
-        var salaDAttesa = client.channels.cache.get(canaleAttesa);
-        var canaleOnLive = client.channels.cache.get(canaleLive);
-        salaDAttesa.members.forEach(user => {
-            user.voice.kick()
-        })
-        canaleOnLive.members.forEach(user => {
-            user.voice.kick()
-        })
-    }
+//     if (oldUserChannel == canaleLive && newUserChannel != canaleLive && oldMember.id == "793768313934577664") {
+//         var salaDAttesa = client.channels.cache.get(canaleAttesa);
+//         var canaleOnLive = client.channels.cache.get(canaleLive);
+//         salaDAttesa.members.forEach(user => {
+//             user.voice.kick()
+//         })
+//         canaleOnLive.members.forEach(user => {
+//             user.voice.kick()
+//         })
+//     }
 
-    if (newUserChannel == canaleAttesa && oldUserChannel != canaleAttesa && oldUserChannel != canaleLive) {
-        var server = client.guilds.cache.get(idServer);
-        var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
+//     if (newUserChannel == canaleAttesa && oldUserChannel != canaleAttesa && oldUserChannel != canaleLive) {
+//         var server = client.guilds.cache.get(idServer);
+//         var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
 
-        if (Giulio.voice.channelID != canaleLive && newUserChannel == canaleAttesa) {
-            var utente = server.members.cache.find(x => x.id == newMember.id);
+//         if (Giulio.voice.channelID != canaleLive && newUserChannel == canaleAttesa) {
+//             var utente = server.members.cache.find(x => x.id == newMember.id);
 
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Giulio non è in live")
-                .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                .setColor("#8F8F8F")
-                .setDescription("Sei entrato in sala d'attesa ma Giulio non è ancora nella stanza <#" + canaleLive + ">")
-            try {
-                utente.send(embed)
-            }
-            catch {
+//             var embed = new Discord.MessageEmbed()
+//                 .setTitle("Giulio non è in live")
+//                 .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+//                 .setColor("#8F8F8F")
+//                 .setDescription("Sei entrato in sala d'attesa ma Giulio non è ancora nella stanza <#" + canaleLive + ">")
+//             try {
+//                 utente.send(embed)
+//             }
+//             catch {
 
-            }
-            utente.voice.kick()
-            return
-        }
-        else {
-            var server = client.guilds.cache.get(idServer);
-            var utente = server.members.cache.find(x => x.id == newMember.id);
+//             }
+//             utente.voice.kick()
+//             return
+//         }
+//         else {
+//             var server = client.guilds.cache.get(idServer);
+//             var utente = server.members.cache.find(x => x.id == newMember.id);
 
-            var salaDAttesa = client.channels.cache.get(canaleAttesa);
+//             var salaDAttesa = client.channels.cache.get(canaleAttesa);
 
-            var utenti = [];
-            var probabilita = [];
+//             var utenti = [];
+//             var probabilita = [];
 
-            var sommaProbabilità = 0;
+//             var sommaProbabilità = 0;
 
-            salaDAttesa.members.forEach(user => {
-                if (user.id != "793768313934577664") {
-                    utenti.push(user)
-                    sommaProbabilità += getRolechance(user)
-                }
+//             salaDAttesa.members.forEach(user => {
+//                 if (user.id != "793768313934577664") {
+//                     utenti.push(user)
+//                     sommaProbabilità += getRolechance(user)
+//                 }
 
-            })
+//             })
 
-            utenti.forEach(user => {
-                probabilita.push(getRolechance(user) / sommaProbabilità)
-            })
+//             utenti.forEach(user => {
+//                 probabilita.push(getRolechance(user) / sommaProbabilità)
+//             })
 
-            var index = utenti.findIndex(user => user == newMember.id);
+//             var index = utenti.findIndex(user => user == newMember.id);
 
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Sei in attesa")
-                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                .setColor("#16A0F4")
-                .setDescription("Grazie per essere entrato in sala d'attesa, attendi la prossima estrazione per entrare in live\r\r**Probabilità attuale: " + (probabilita[index] * 100).toFixed(2) + "%**")
-                .setFooter("Fai il comando !tchance per sapere sempre la tua probabilità di entrare in live")
+//             var embed = new Discord.MessageEmbed()
+//                 .setTitle("Sei in attesa")
+//                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+//                 .setColor("#16A0F4")
+//                 .setDescription("Grazie per essere entrato in sala d'attesa, attendi la prossima estrazione per entrare in live\r\r**Probabilità attuale: " + (probabilita[index] * 100).toFixed(2) + "%**")
+//                 .setFooter("Fai il comando !tchance per sapere sempre la tua probabilità di entrare in live")
 
-            try {
-                utente.send(embed)
-            }
-            catch {
+//             try {
+//                 utente.send(embed)
+//             }
+//             catch {
 
-            }
-        }
-    }
+//             }
+//         }
+//     }
 
-    if (newUserChannel == canaleLive && oldUserChannel != canaleLive && oldUserChannel != canaleGeneral) {
-        var server = client.guilds.cache.get(idServer);
-        var utente = server.members.cache.find(x => x.id == oldMember.id);
-        var ruolo = server.roles.cache.get(ruoloOnLive);
+//     if (newUserChannel == canaleLive && oldUserChannel != canaleLive && oldUserChannel != canaleGeneral) {
+//         var server = client.guilds.cache.get(idServer);
+//         var utente = server.members.cache.find(x => x.id == oldMember.id);
+//         var ruolo = server.roles.cache.get(ruoloOnLive);
 
-        var server = client.guilds.cache.get(idServer);
-        var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
+//         var server = client.guilds.cache.get(idServer);
+//         var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
 
-        var utenteMod = false;
-        for (var i = 0; i < ruoliMod.length; i++) {
-            if (utente.roles.cache.has(ruoliMod[i])) utenteMod = true;
-        }
+//         var utenteMod = false;
+//         for (var i = 0; i < ruoliMod.length; i++) {
+//             if (utente.roles.cache.has(ruoliMod[i])) utenteMod = true;
+//         }
 
-        if (utenteMod) {
-            utente.roles.add(ruolo)
-            return
-        }
+//         if (utenteMod) {
+//             utente.roles.add(ruolo)
+//             return
+//         }
 
-        try {
-            utente.send(`
-        :four_leaf_clover: **SEI STATO SCELTO** :four_leaf_clover: 
-Complimenti, sei stato scelto tra gli utenti in Sala d'attesa. Prima di entrare in live leggi queste **regole**:
+//         try {
+//             utente.send(`
+//         :four_leaf_clover: **SEI STATO SCELTO** :four_leaf_clover: 
+// Complimenti, sei stato scelto tra gli utenti in Sala d'attesa. Prima di entrare in live leggi queste **regole**:
 
-:red_circle: **REGOLE**
-- Utilizzare un **linguaggio non volgare** e un linguaggio civile (no discriminazioni)
-- Non bestemmiare
-- Rispettare Giulio, i Mod e tutti gli utenti presenti in live
+// :red_circle: **REGOLE**
+// - Utilizzare un **linguaggio non volgare** e un linguaggio civile (no discriminazioni)
+// - Non bestemmiare
+// - Rispettare Giulio, i Mod e tutti gli utenti presenti in live
 
-:purple_circle: **PRINCIPALI REGOLE DI TWITCH**
-- Sono vietati contenuti o attività che mostrino, incoraggino, offrano o inducano **comportamenti illegali**
-- Sono vietate tutte le attività che potrebbero mettere in pericolo la tua **vita **o causarti **danni fisici**
-- Twitch non consente la presenza di contenuti che raffigurino, celebrino, incoraggino o sostengono il **terrorismo**, o individui e atti estremisti violenti
-- Su Twitch non sono consentiti comportamenti volti all'**odio** e **molestie** (discriminazioni, denigrazioni, molestie o violenze basate sulle seguenti caratteristiche protette)
-- Sei tenuto a non violare la **riservatezza** delle altre persone
-- Sono proibiti contenuti e attività che possono interrompere, danneggiare, o altrimenti violare l'integrità dei **servizi di Twitch**, oppure l'esperienza o i dispositivi di un altro utente
-- Sono vietati i contenuti e le attività **sessualmente espliciti**
-- Durante i **giochi online** con più utenti, sono proibiti imbrogli, azioni di pirateria informatica, utilizzo di bot, o manomissioni che costituiscano un vantaggio indebito per il proprietario dell'account
-Per maggiori informazioni: <https://www.twitch.tv/p/it-it/legal/community-guidelines/>
+// :purple_circle: **PRINCIPALI REGOLE DI TWITCH**
+// - Sono vietati contenuti o attività che mostrino, incoraggino, offrano o inducano **comportamenti illegali**
+// - Sono vietate tutte le attività che potrebbero mettere in pericolo la tua **vita **o causarti **danni fisici**
+// - Twitch non consente la presenza di contenuti che raffigurino, celebrino, incoraggino o sostengono il **terrorismo**, o individui e atti estremisti violenti
+// - Su Twitch non sono consentiti comportamenti volti all'**odio** e **molestie** (discriminazioni, denigrazioni, molestie o violenze basate sulle seguenti caratteristiche protette)
+// - Sei tenuto a non violare la **riservatezza** delle altre persone
+// - Sono proibiti contenuti e attività che possono interrompere, danneggiare, o altrimenti violare l'integrità dei **servizi di Twitch**, oppure l'esperienza o i dispositivi di un altro utente
+// - Sono vietati i contenuti e le attività **sessualmente espliciti**
+// - Durante i **giochi online** con più utenti, sono proibiti imbrogli, azioni di pirateria informatica, utilizzo di bot, o manomissioni che costituiscano un vantaggio indebito per il proprietario dell'account
+// Per maggiori informazioni: <https://www.twitch.tv/p/it-it/legal/community-guidelines/>
 
-P.S. Consiglio di non tenere l'audio della live attivo quando siete presenti su discord, Giulio terrà la webcam attiva con l'output della live, in modo che voi utenti possiate vedere la diretta senza ritardo
+// P.S. Consiglio di non tenere l'audio della live attivo quando siete presenti su discord, Giulio terrà la webcam attiva con l'output della live, in modo che voi utenti possiate vedere la diretta senza ritardo
 
-:green_circle: **ACCETTA LE REGOLE**
-Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contrario si verrà sanzionati con la non riammissione nelle live future`)
-                .then(messaggio => {
-                    messaggio.react('✅');
+// :green_circle: **ACCETTA LE REGOLE**
+// Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contrario si verrà sanzionati con la non riammissione nelle live future`)
+//                 .then(messaggio => {
+//                     messaggio.react('✅');
 
-                    const filter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id == utente.id;
+//                     const filter = (reaction, user) => ['✅'].includes(reaction.emoji.name) && user.id == utente.id;
 
-                    const collector = messaggio.createReactionCollector(filter, { max: 1, time: 120000 })
+//                     const collector = messaggio.createReactionCollector(filter, { max: 1, time: 120000 })
 
-                    collector.on('collect', (reaction, user) => {
-                        if (reaction._emoji.name == '✅') {
-                            var server = client.guilds.cache.get(idServer);
-                            var utente = server.members.cache.find(x => x.id == user.id);
-                            var ruolo = server.roles.cache.get(ruoloOnLive);
+//                     collector.on('collect', (reaction, user) => {
+//                         if (reaction._emoji.name == '✅') {
+//                             var server = client.guilds.cache.get(idServer);
+//                             var utente = server.members.cache.find(x => x.id == user.id);
+//                             var ruolo = server.roles.cache.get(ruoloOnLive);
 
-                            if (!utente.voice.channel || utente.voice.channel.id != canaleLive) {
-                                var embed = new Discord.MessageEmbed()
-                                    .setTitle("Non sei più in live")
-                                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                                    .setColor("#8F8F8F")
-                                    .setDescription("Sei uscito dal canale <#" + canaleLive + "> quindi aspetta la prossima estrazione per entrare")
+//                             if (!utente.voice.channel || utente.voice.channel.id != canaleLive) {
+//                                 var embed = new Discord.MessageEmbed()
+//                                     .setTitle("Non sei più in live")
+//                                     .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+//                                     .setColor("#8F8F8F")
+//                                     .setDescription("Sei uscito dal canale <#" + canaleLive + "> quindi aspetta la prossima estrazione per entrare")
 
-                                utente.send(embed)
-                            }
-                            else {
-                                var canaleOnLive = server.channels.cache.find(x => x == canaleLive);
-                                var general = server.channels.cache.find(x => x == canaleGeneral);
+//                                 utente.send(embed)
+//                             }
+//                             else {
+//                                 var canaleOnLive = server.channels.cache.find(x => x == canaleLive);
+//                                 var general = server.channels.cache.find(x => x == canaleGeneral);
 
-                                utente.voice.setChannel(general).then(() => {
-                                    utente.roles.add(ruolo)
-                                        .then(() => {
-                                            utente.voice.setChannel(canaleOnLive)
-                                            var embed = new Discord.MessageEmbed()
-                                                .setTitle("Sei in live")
-                                                .setThumbnail("https://i.postimg.cc/pTLyx7yV/On-air-acceso.png")
-                                                .setColor("#543C84")
-                                                .setDescription("Rispetta tutte le regole, e mantieni un atteggiamento civile")
+//                                 utente.voice.setChannel(general).then(() => {
+//                                     utente.roles.add(ruolo)
+//                                         .then(() => {
+//                                             utente.voice.setChannel(canaleOnLive)
+//                                             var embed = new Discord.MessageEmbed()
+//                                                 .setTitle("Sei in live")
+//                                                 .setThumbnail("https://i.postimg.cc/pTLyx7yV/On-air-acceso.png")
+//                                                 .setColor("#543C84")
+//                                                 .setDescription("Rispetta tutte le regole, e mantieni un atteggiamento civile")
 
-                                            utente.send(embed)
-                                        })
-                                })
-                            }
-                        }
-                    })
-                })
-        } catch {
+//                                             utente.send(embed)
+//                                         })
+//                                 })
+//                             }
+//                         }
+//                     })
+//                 })
+//         } catch {
 
-        }
-    }
+//         }
+//     }
 
-    if (oldUserChannel == canaleLive && newUserChannel != canaleLive) {
-        var server = client.guilds.cache.get(idServer);
-        var utente = server.members.cache.find(x => x.id == oldMember.id);
+//     if (oldUserChannel == canaleLive && newUserChannel != canaleLive) {
+//         var server = client.guilds.cache.get(idServer);
+//         var utente = server.members.cache.find(x => x.id == oldMember.id);
 
-        var ruolo = server.roles.cache.get(ruoloOnLive);
-        utente.roles.remove(ruolo) //Add ruolo ON LIVE
+//         var ruolo = server.roles.cache.get(ruoloOnLive);
+//         utente.roles.remove(ruolo) //Add ruolo ON LIVE
 
-        var userMod = false;
-        for (var i = 0; i < ruoliMod.length; i++) {
-            if (utente.roles.cache.has(ruoliMod[i])) userMod = true;
-        }
+//         var userMod = false;
+//         for (var i = 0; i < ruoliMod.length; i++) {
+//             if (utente.roles.cache.has(ruoliMod[i])) userMod = true;
+//         }
 
-        if (!userMod && utente.roles.cache.has(ruoloOnLive)) {
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Grazie per essere stato in live")
-                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-                .setColor("#16A0F4")
-                .setDescription("Torna presto per poter essere riestratto")
+//         if (!userMod && utente.roles.cache.has(ruoloOnLive)) {
+//             var embed = new Discord.MessageEmbed()
+//                 .setTitle("Grazie per essere stato in live")
+//                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+//                 .setColor("#16A0F4")
+//                 .setDescription("Torna presto per poter essere riestratto")
 
-            try {
+//             try {
 
-                utente.send(embed)
-            }
-            catch {
+//                 utente.send(embed)
+//             }
+//             catch {
 
-            }
-        }
+//             }
+//         }
 
 
-    }
-})
+//     }
+// })
 
 //Counter youtube
 setInterval(function () {
