@@ -2968,17 +2968,30 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
             var sommaProbabilità = 0;
 
             salaDAttesa.members.forEach(user => {
-                if (user.id != "793768313934577664") {
+                var userMod = false;
+                for (var i = 0; i < ruoliMod.length; i++) {
+                    if (user.roles.cache.has(ruoliMod[i])) userMod = true;
+                }
+
+                if (!userMod) {
+                    if (utentiSceltiPrima[user.id])
+                        var debuff = utentiSceltiPrima[user.id].time
+                    else
+                        var debuff = 0;
+
                     utenti.push(user)
-                    sommaProbabilità += getRolechance(user)
+                    sommaProbabilità += getRolechance(user, debuff)
                 }
 
             })
 
             utenti.forEach(user => {
-                probabilita.push(getRolechance(user) / sommaProbabilità)
-                console.log("sdfdf", getRolechance(user))
-                console.log(sommaProbabilità)
+                if (utentiSceltiPrima[user.id])
+                    var debuff = utentiSceltiPrima[user.id].time
+                else
+                    var debuff = 0;
+
+                probabilita.push(getRolechance(user, debuff) / sommaProbabilità)
             })
 
             var index = utenti.findIndex(user => user == newMember.id);
