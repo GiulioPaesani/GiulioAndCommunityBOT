@@ -2977,12 +2977,12 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
             utenti.forEach(user => {
                 probabilita.push(getRolechance(user) / sommaProbabilità)
+                console.log("sdfdf", getRolechance(user))
+                console.log(sommaProbabilità)
             })
 
             var index = utenti.findIndex(user => user == newMember.id);
 
-            console.log("p", probabilita)
-            console.log(index)
             var embed = new Discord.MessageEmbed()
                 .setTitle("Sei in attesa")
                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
