@@ -47,6 +47,8 @@ var ruoliMod = [
     "793804156430188594", //BOT
 ]
 
+
+var utentiSceltiPrima = []
 client.on("message", (message) => {
     if (message.author.bot) return
     if (message.channel.type == "dm") return
