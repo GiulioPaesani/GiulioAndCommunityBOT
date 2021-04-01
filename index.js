@@ -3148,6 +3148,7 @@ function updateServerstats(serverstats) {
 
 //Twitch
 function getRolechance(user, debuff) {
+    var chanceBoost = 0;
     for (var i = 0; i < user._roles.length; i++) {
         if (user._roles[i] == "800009879371644940") {
             chanceBoost += 25
