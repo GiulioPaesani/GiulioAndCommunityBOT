@@ -112,6 +112,7 @@ client.on("message", (message) => {
 
         var comandiGiulioAndCommunityBot = {
             "!test": [],
+            "!changelog": [],
 
             "-!code": ["801019779480944660"],
 
