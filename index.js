@@ -462,11 +462,19 @@ client.on("message", (message) => {
             Ottenere il link dell'ultimo video uscito
             Alias: \`!ultimovideo\`
 
+            -\`!twitch\`
+            Ottenere il link del canale Twitch e GiulioAndLive
+            Alias: \`!live\` \`!giulioandlive\`
+
             -\`!github\`
-            Ottenere il link del GitHub di GiulioAndCommunityBOT
+            Ottenere il link del GitHub di tutti i bot ufficiali
 
             -\`!code (codice)\`
             Informazioni e codice relativi a funzioni e comandi in Discord.js
+
+            -\`!config\`
+            Personalizzare le preferenze di notifiche nel server
+            Alias: \`!notifiche\` \`!notification\` \`!notifications\`
             `)
                 .addField(":no_entry: Canali concessi", "<#801019779480944660>")
                 .setFooter("Page 3/" + totalPage)
