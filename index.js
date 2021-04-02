@@ -413,10 +413,10 @@ client.on("message", (message) => {
                 .setDescription(`
             Tutti i comandi di bot ufficali presenti sul server
 
-            <:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - Bot ufficiale con comandi specifici per questo server
-            <:GiulioAndFun:823196000704528424> GiulioAndFun - Bot dedicato ai comandi e hai piccoli giochi di divertimento
-            <:GiulioAndLeveling:823196001153187841> GiulioAndLeveling - Bot esclusivamente per il sistema di livellamento
-            <:GiulioAndModeration:823196000721960990> GiulioAndModeration - Bot con i comandi e funzioni per la moderazione nel server`)
+            <:GiulioAndCommunityBOT:823196000650788944> **GiulioAndCommunity BOT** - Bot ufficiale con comandi specifici per questo server
+            <:GiulioAndFun:823196000704528424> **GiulioAndFun** - Bot dedicato ai comandi e hai piccoli giochi di divertimento
+            <:GiulioAndLeveling:823196001153187841> **GiulioAndLeveling** - Bot esclusivamente per il sistema di livellamento
+            <:GiulioAndModeration:823196000721960990> **GiulioAndModeration** - Bot con i comandi e funzioni per la moderazione nel server`)
                 .setThumbnail("https://i.postimg.cc/HkwQSy31/Profilo-bot.png")
 
             var page1 = new Discord.MessageEmbed()
