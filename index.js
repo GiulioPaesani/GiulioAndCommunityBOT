@@ -130,6 +130,9 @@ client.on("message", (message) => {
             "-!avatar": ["801019779480944660"],
 
             "!youtube": ["801019779480944660"],
+            "!twitch": ["801019779480944660"],
+            "!live": ["801019779480944660"],
+            "!giulioandlive": ["801019779480944660"],
 
             "!lastvideo": ["801019779480944660"],
             "!ultimovideo": ["801019779480944660"],
@@ -540,7 +543,7 @@ client.on("message", (message) => {
                     .setColor("#41A9F6")
                     .setURL(response.authorUrl)
                     .setDescription(":love_you_gesture: Questo è il canale youtube **GiulioAndCode**\rIscriviti, lascia like, e attiva la campanellina")
-                    .setThumbnail(response.authorThumbnails[2].url)
+                    .setThumbnail("https://i.postimg.cc/fLLYRp8J/Profilo2-PNG.png")
                 message.channel.send(youtube);
             })
         }
@@ -562,6 +565,16 @@ client.on("message", (message) => {
 
                 message.channel.send(lastVideo)
             })
+        }
+        //TWITCH
+        if (message.content == "!twitch" || message.content == "!live" || message.content == "!giulioandlive") {
+            var embed = new Discord.MessageEmbed()
+                .setTitle("GiulioAndCode - Twitch")
+                .setColor("#9147FF")
+                .setURL("https://www.twitch.tv/giulioandcode")
+                .setDescription(":purple_circle: Questo è il mio canale **Twitch**\rSeguimi anche li per non perderti live divertenti, ma soprattutto cringe\r\rSe ti va seguimi anche su [GiulioAndLive](https://www.youtube.com/channel/UCdwJnxZFfggSuXrLrc5sfPg) per gli estratti delle migliori live")
+                .setThumbnail("https://i.postimg.cc/XqjcdXN7/Profilo-PNG.png")
+            message.channel.send(embed);
         }
         //GITHUB
         if (message.content == "!github") {
