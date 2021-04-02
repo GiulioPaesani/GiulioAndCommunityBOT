@@ -2478,7 +2478,7 @@ client.on("message", (message) => {
 
             message.channel.send(embed)
                 .then((msg) => {
-                    msg.delete({ timeout: 5000 })
+                    msg.delete({ timeout: 120000 })
                     msg.react("📋")
                     msg.react("📰")
                     msg.react("📝")
