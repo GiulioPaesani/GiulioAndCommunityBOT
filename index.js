@@ -2954,6 +2954,14 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
     let newUserChannel = newMember.channelID;
     let oldUserChannel = oldMember.channelID;
 
+    //KICK FROM #member-counter e #subscriber
+    if (newUserChannel == "800802386587287562" || newUserChannel == "801717800137129994") {
+        var server = client.guilds.cache.get(idServer);
+        var utente = server.members.cache.find(x => x.id == newMember.id);
+        utente.voice.kick()
+    }
+
+
     if (oldUserChannel == canaleLive && newUserChannel != canaleLive && oldMember.id == "793768313934577664") {
         var salaDAttesa = client.channels.cache.get(canaleAttesa);
         var canaleOnLive = client.channels.cache.get(canaleLive);
