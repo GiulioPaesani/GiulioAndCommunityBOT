@@ -618,7 +618,7 @@ client.on("message", (message) => {
             var serverStats = new Discord.MessageEmbed()
                 .setTitle(server.name)
                 .setDescription("Tutte le statistiche su questo server")
-                .setThumbnail(server.iconURL())
+                .setThumbnail(server.iconURL({ dynamic: true }))
                 .addField(":technologist: Owner", "```" + server.owner.user.username + "```", true)
                 .addField(":placard: Server ID", "```" + server.id + "```", true)
                 .addField(":map: Server region", "```" + server.region + "```", true)
@@ -711,7 +711,7 @@ client.on("message", (message) => {
             var userStats = new Discord.MessageEmbed()
                 .setTitle(utente.user.tag)
                 .setDescription("Tutte le statistiche su questo utente")
-                .setThumbnail(utente.user.avatarURL())
+                .setThumbnail(utente.user.avatarURL({ dynamic: true }))
                 .addField(":receipt: User ID", "```" + utente.user.id + "```", true)
                 .addField(":ok_hand: Status", "```" + status + "```", true)
                 .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)
@@ -1440,7 +1440,7 @@ client.on("message", (message) => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(utente.user.tag)
                     .setDescription("Tutte le info di questo utente")
-                    .setThumbnail(utente.user.avatarURL())
+                    .setThumbnail(utente.user.avatarURL({dynamic: true}))
                     .addField("User id", utente.user.id, true)
                     .addField("Status", utente.user.presence.status, true)
                     .addField("Is a bot?", utente.user.bot ? "Yes" : "No", true)
@@ -1678,7 +1678,7 @@ client.on("message", (message) => {
             embedSuggestion
                 .setTitle("💡Suggestions by " + message.member.user.username)
                 .setDescription(contenuto)
-                .setThumbnail(message.member.user.avatarURL())
+                .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
 
             var canale = client.channels.cache.find(channel => channel.id == canaleSuggestions);
 
@@ -1818,7 +1818,7 @@ client.on("message", (message) => {
             embedChallenge
                 .setTitle("🎯 Challenge by " + message.member.user.username)
                 .setDescription(contenuto)
-                .setThumbnail(message.member.user.avatarURL())
+                .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
 
             var canale = client.channels.cache.find(channel => channel.id == canaleChallenge);
 
@@ -2179,7 +2179,7 @@ client.on("message", (message) => {
             utente.roles.remove(ruoloOnLive)
 
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[TWITCH KICK] " + utente.user.tag, utente.user.avatarURL())
+                .setAuthor("[TWITCH KICK] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
                 .setColor("#6143CB")
                 .setDescription(utente.toString() + "è stato kicckato da <#" + canaleLive + ">")
@@ -2276,7 +2276,7 @@ client.on("message", (message) => {
             ]);
 
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[TWITCH BAN] " + utente.user.tag, utente.user.avatarURL())
+                .setAuthor("[TWITCH BAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
                 .setDescription(utente.toString() + "è stato bannato da <#" + canaleLive + ">")
@@ -2350,7 +2350,7 @@ client.on("message", (message) => {
             ]);
 
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[TWITCH UNBAN] " + utente.user.tag, utente.user.avatarURL())
+                .setAuthor("[TWITCH UNBAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
                 .setDescription(utente.toString() + "è stato sbannato da <#" + canaleLive + ">")
@@ -2471,7 +2471,7 @@ client.on("message", (message) => {
 
                 var embed = new Discord.MessageEmbed()
                     .setTitle("PROBABILITÀ - " + message.member.user.tag)
-                    .setThumbnail(message.member.user.avatarURL())
+                    .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
                     .setDescription("La tua probabilità di entrare in live, sali di livello per avere più possibilità")
                     .addField("Chance: " + (probabilita[index] * 100).toFixed(2) + "%", "Utenti totali: " + utenti.length)
 
@@ -2717,7 +2717,7 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                     const newEmbed = new Discord.MessageEmbed()
                         .setTitle("💡Suggestions by " + client.users.cache.get(suggestions[messageReaction.message.id].user).username)
                         .setDescription(suggestions[messageReaction.message.id].suggerimento)
-                        .setThumbnail(client.users.cache.get(suggestions[messageReaction.message.id].user).avatarURL())
+                        .setThumbnail(client.users.cache.get(suggestions[messageReaction.message.id].user).avatarURL({ dynamic: true }))
                         .setFooter("Suggestion ID: " + messageReaction.message.id)
 
                     if (votiPos == 0 && votiNeg == 0) {
@@ -2782,7 +2782,7 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                     const newEmbed = new Discord.MessageEmbed()
                         .setTitle("🎯 Challenge by " + client.users.cache.get(challenges[messageReaction.message.id].user).username)
                         .setDescription(challenges[messageReaction.message.id].sfida)
-                        .setThumbnail(client.users.cache.get(challenges[messageReaction.message.id].user).avatarURL())
+                        .setThumbnail(client.users.cache.get(challenges[messageReaction.message.id].user).avatarURL({ dynamic: true }))
                         .setFooter("Challenge ID: " + messageReaction.message.id)
 
                     if (votiPos == 0 && votiNeg == 0) {
@@ -2861,7 +2861,7 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                     const newEmbed = new Discord.MessageEmbed()
                         .setTitle("💡Suggestions by " + client.users.cache.get(suggestions[messageReaction.message.id].user).username)
                         .setDescription(suggestions[messageReaction.message.id].suggerimento)
-                        .setThumbnail(client.users.cache.get(suggestions[messageReaction.message.id].user).avatarURL())
+                        .setThumbnail(client.users.cache.get(suggestions[messageReaction.message.id].user).avatarURL({ dynamic: true }))
                         .setFooter("Suggestion ID: " + messageReaction.message.id)
 
 
@@ -2922,7 +2922,7 @@ client.on("messageReactionRemove", async function (messageReaction, user) {
                     const newEmbed = new Discord.MessageEmbed()
                         .setTitle("🎯 Challenge by " + client.users.cache.get(challenges[messageReaction.message.id].user).username)
                         .setDescription(challenges[messageReaction.message.id].sfida)
-                        .setThumbnail(client.users.cache.get(challenges[messageReaction.message.id].user).avatarURL())
+                        .setThumbnail(client.users.cache.get(challenges[messageReaction.message.id].user).avatarURL({ dynamic: true }))
                         .setFooter("Challenge ID: " + messageReaction.message.id)
 
 
