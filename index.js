@@ -320,7 +320,7 @@ client.on("message", (message) => {
             }
         }
         else {
-            if (message.content.startsWith("!") && !trovatoBot) {
+            if (message.content.startsWith("!") && !trovatoBot && !message.content.startsWith("!!") && message.content != "!") {
                 //Comando non esistente
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Comando non esistente")
