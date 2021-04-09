@@ -2491,6 +2491,7 @@ client.on("message", (message) => {
                 .addField(message.member.roles.cache.has("826776846749925376") ? "🟣 Twitch - :green_circle: ON" : "🟣 Twitch - :red_circle: OFF", "Notifiche sulle dirette, cosa si farà in live, o eventi")
 
             message.channel.send(embed)
+            message.delete({ timeout: 120000 })
                 .then((msg) => {
                     msg.delete({ timeout: 120000 })
                     msg.react("📋")
