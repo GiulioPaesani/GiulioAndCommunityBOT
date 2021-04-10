@@ -16,7 +16,7 @@ client.on("ready", () => {
     var utente = client.users.cache.get("793768313934577664");
     var embed = new Discord.MessageEmbed()
         .setTitle("GiulioAndCommunity BOT è ONLINE")
-        .setThumbnail(client.user.avatar_url)
+        .setThumbnail("https://i.postimg.cc/pLYkGfD1/Profilo-bot.png")
         .setColor("#71A4FF")
     utente.send(embed);
 })
