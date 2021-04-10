@@ -320,9 +320,17 @@ client.on("message", (message) => {
                         .setDescription("Non puoi utilizzare il comando `" + nomeComando + "` in questo canale")
 
                     var canaliConcessi = ""
-                    for (var i = 0; i < comandiGiulioAndCommunityBot[nomeComando].length; i++) {
-                        canaliConcessi += "<#" + comandiGiulioAndCommunityBot[nomeComando][i] + ">\r"
+                    if (comandiGiulioAndCommunityBot["!" + nomeComando]) {
+                        for (var i = 0; i < comandiGiulioAndCommunityBot["!" + nomeComando].length; i++) {
+                            canaliConcessi += "<#" + comandiGiulioAndCommunityBot["!" + nomeComando][i] + ">\r"
+                        }
                     }
+                    else {
+                        for (var i = 0; i < comandiGiulioAndCommunityBot["-!" + nomeComando].length; i++) {
+                            canaliConcessi += "<#" + comandiGiulioAndCommunityBot["-!" + nomeComando][i] + ">\r"
+                        }
+                    }
+
 
                     embed
                         .addField("Puoi usare questo comando in:", canaliConcessi)
