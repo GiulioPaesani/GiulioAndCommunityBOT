@@ -82,7 +82,7 @@ client.on("message", (message) => {
         message.react("<:GiulioRip:809526422758490163>")
     if (message.content == "sad" || message.content == "piango" || message.content == "triste" || message.content == "sono triste")
         message.react("<:GiulioPiangere:809526423886364722>")
-    if (message.content == "ok" || message.content == "k" || message.content == "okay")
+    if (message.content == "ok" || message.content == "okay")
         message.react("<:GiulioOK:820026506024714310>")
     if (message.content == "love" || message.content == "amore" || message.content == "ti amo")
         message.react("<:GiulioLove:809526404373807154>")
