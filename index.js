@@ -677,10 +677,6 @@ client.on("message", (message) => {
             for (var i = 0; i < ruoli.length; i++) {
                 var ruolo = message.guild.roles.cache.find(role => role.id == ruoli[i]);
                 elencoRuoli += "- " + ruolo.name + "\r";
-                if (i == 2 && ruoli.length != 3) {
-                    elencoRuoli += "[Altri " + (ruoli.length - i - 1) + "...]";
-                    i = ruoli.length + 1;
-                }
             }
 
             if (elencoRuoli == "") {
