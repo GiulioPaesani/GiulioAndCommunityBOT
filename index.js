@@ -779,9 +779,6 @@ client.on("message", (message) => {
                 .addField(":pencil: Role created", "```" + ruolo.createdAt.toDateString() + "```", true)
                 .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
 
-            if (ruolo.hexColor != "#000000")
-                embed.setColor(ruolo.hexColor)
-
             message.channel.send(embed)
 
         }
