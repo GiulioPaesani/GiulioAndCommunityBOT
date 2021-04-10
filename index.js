@@ -68,13 +68,16 @@ client.on("message", (message) => {
 
     if (message.channel == "804688929109966848" && !message.content.startsWith("!clear")) return
 
-
     if (message.channel.id == "793781901688963104" && !message.content.startsWith("!suggest") && !message.content.startsWith("!suggerisci") && !message.content.startsWith("!suggerimento")) {
         message.delete({ timeout: 1000 })
     }
     if (message.channel.id == "815611328022315028" && !message.content.startsWith("!challenge") && !message.content.startsWith("!sfida")) {
         message.delete({ timeout: 1000 })
     }
+
+    //REACTION MESSAGE
+    if (message.content == "wow")
+        message.react("<:GiulioWow:830376945107206174>")
 
     con.query(`SELECT * FROM serverstats`, function (err, result, fields) {
         if (err) {
