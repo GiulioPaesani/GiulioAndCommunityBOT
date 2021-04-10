@@ -774,11 +774,11 @@ client.on("message", (message) => {
                 .setTitle(ruolo.name)
                 .setDescription("Tutte le statistiche di questo ruolo")
                 .setColor(ruolo.hexColor)
-                .addField("Role ID", "```" + ruolo.id + "```", true)
-                .addField("Members", "```" + memberCount + "```", true)
-                .addField("Color", "```" + ruolo.hexColor + "```", true)
-                .addField("Role created", "```" + ruolo.createdAt.toDateString() + "```", true)
-                .addField("Permissions", "```" + elencoPermessi + "```", false)
+                .addField(":receipt: Role ID", "```" + ruolo.id + "```", true)
+                .addField(":busts_in_silhouette: Members", "```" + memberCount + "```", true)
+                .addField(":rainbow: Color", "```" + ruolo.hexColor + "```", true)
+                .addField(":pencil: Role created", "```" + ruolo.createdAt.toDateString() + "```", true)
+                .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
 
             message.channel.send(embed)
 
