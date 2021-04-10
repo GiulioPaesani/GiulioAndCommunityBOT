@@ -773,12 +773,14 @@ client.on("message", (message) => {
             var embed = new Discord.MessageEmbed()
                 .setTitle(ruolo.name)
                 .setDescription("Tutte le statistiche di questo ruolo")
-                .setColor(ruolo.hexColor)
                 .addField(":receipt: Role ID", "```" + ruolo.id + "```", true)
                 .addField(":busts_in_silhouette: Members", "```" + memberCount + "```", true)
                 .addField(":rainbow: Color", "```" + ruolo.hexColor + "```", true)
                 .addField(":pencil: Role created", "```" + ruolo.createdAt.toDateString() + "```", true)
                 .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
+
+            if (ruolo.hexColor != "#000000")
+                embed.setColor(ruolo.hexColor)
 
             message.channel.send(embed)
 
