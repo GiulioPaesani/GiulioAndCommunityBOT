@@ -319,6 +319,14 @@ client.on("message", (message) => {
                         .setColor("#F15A24")
                         .setDescription("Non puoi utilizzare il comando `" + nomeComando + "` in questo canale")
 
+                    var canaliConcessi = ""
+                    for (var i = 0; i < comandiGiulioAndCommunityBot[nomeComando].length; i++) {
+                        canaliConcessi += "<#" + comandiGiulioAndCommunityBot[nomeComando][i] + ">\r"
+                    }
+
+                    embed
+                        .addField("Puoi usare questo comando in:", canaliConcessi)
+
                     message.channel.send(embed).then(msg => {
                         message.delete({ timeout: 7000 })
                         msg.delete({ timeout: 7000 })
