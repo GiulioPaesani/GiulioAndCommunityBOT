@@ -50,7 +50,7 @@ var ruoliMod = [
 
 var utentiSceltiPrima = []
 
-client.on("message", async (message) => {
+client.on("message", (message) => {
     if (message.author.bot) return
     if (message.channel.type == "dm") return
 
@@ -773,6 +773,7 @@ client.on("message", async (message) => {
             var embed = new Discord.MessageEmbed()
                 .setTitle(ruolo.name)
                 .setDescription("Tutte le statistiche di questo ruolo")
+                .setColor(ruolo.hexColor)
                 .addField("Role ID", "```" + ruolo.id + "```", true)
                 .addField("Members", "```" + memberCount + "```", true)
                 .addField("Color", "```" + ruolo.hexColor + "```", true)
