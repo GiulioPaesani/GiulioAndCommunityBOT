@@ -50,7 +50,7 @@ var ruoliMod = [
 
 var utentiSceltiPrima = []
 
-client.on("message", (message) => {
+client.on("message", async (message) => {
     if (message.author.bot) return
     if (message.channel.type == "dm") return
 
