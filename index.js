@@ -320,20 +320,23 @@ client.on("message", (message) => {
                         .setDescription("Non puoi utilizzare il comando `" + nomeComando + "` in questo canale")
 
                     var canaliConcessi = ""
-                    if (comandiGiulioAndCommunityBot["!" + nomeComando]) {
-                        for (var i = 0; i < comandiGiulioAndCommunityBot["!" + nomeComando].length; i++) {
-                            canaliConcessi += "<#" + comandiGiulioAndCommunityBot["!" + nomeComando][i] + ">\r"
-                        }
-                    }
-                    else {
-                        for (var i = 0; i < comandiGiulioAndCommunityBot["-!" + nomeComando].length; i++) {
-                            canaliConcessi += "<#" + comandiGiulioAndCommunityBot["-!" + nomeComando][i] + ">\r"
-                        }
-                    }
+                    console.log("nomecomando", nomeComando)
+                    console.log(comandiGiulioAndCommunityBot["!" + nomeComando])
+                    console.log(comandiGiulioAndCommunityBot["-!" + nomeComando])
+                    // if (comandiGiulioAndCommunityBot["!" + nomeComando]) {
+                    //     for (var i = 0; i < comandiGiulioAndCommunityBot["!" + nomeComando].length; i++) {
+                    //         canaliConcessi += "<#" + comandiGiulioAndCommunityBot["!" + nomeComando][i] + ">\r"
+                    //     }
+                    // }
+                    // else {
+                    //     for (var i = 0; i < comandiGiulioAndCommunityBot["-!" + nomeComando].length; i++) {
+                    //         canaliConcessi += "<#" + comandiGiulioAndCommunityBot["-!" + nomeComando][i] + ">\r"
+                    //     }
+                    // }
 
 
-                    embed
-                        .addField("Puoi usare questo comando in:", canaliConcessi)
+                    // embed
+                    //     .addField("Puoi usare questo comando in:", canaliConcessi)
 
                     message.channel.send(embed).then(msg => {
                         message.delete({ timeout: 7000 })
