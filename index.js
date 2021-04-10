@@ -12,6 +12,13 @@ client.on("ready", () => {
     console.log("-----GIULIOANDCOMMUNITYBOT ONLINE-----")
 
     client.user.setActivity('!help', { type: 'WATCHING' });
+
+    var utente = client.users.cache.get("793768313934577664");
+    var embed = new Discord.MessageEmbed()
+        .setTitle("GiulioAndCommunity BOT è ONLINE")
+        .setThumbnail(client.user.avatar_url)
+        .setColor("#71A4FF")
+    utente.send(embed);
 })
 
 var con = mysql.createPool({ //Connessione database Heroku
