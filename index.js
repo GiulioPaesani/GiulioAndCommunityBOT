@@ -236,6 +236,10 @@ client.on("message", (message) => {
 
             "-!tempban": [],
 
+            "-!bugreport": ["801019779480944660"],
+            "-!bug": ["801019779480944660"],
+            "-!report": ["801019779480944660"],
+
             "-!tget": [],
             "-!tstop": [],
             "-!tend": [],
@@ -455,6 +459,47 @@ client.on("message", (message) => {
                 .addField("Stato di tutti i bot ufficiali", testo)
 
             message.channel.send(embed)
+        }
+        //BUG REPORT
+        if (message.content.startsWith("!bugreport") || message.content.startsWith("!bug") || message.content.startsWith("!report")) {
+            if (message.content.startsWith("!bugreport"))
+                var report = message.content.slice(11).trim()
+            if (message.content.startsWith("!bug"))
+                var report = message.content.slice(5).trim()
+            if (message.content.startsWith("!report"))
+                var report = message.content.slice(8).trim()
+
+            if (!report && !(message.attachments).array()[0]) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Scrivi un report")
+                    .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
+                    .setColor("#ED1C24")
+                    .setDescription("`!bugreport [report]`")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
+                return
+            }
+
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Bug reportato")
+                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                .setColor("#16A0F4")
+                .addField(":bust_in_silhouette: User", "```" + message.member.user.tag + "```", false)
+            if (report)
+                embed.addField(":beetle: Bug", "```" + report + "```", false)
+
+
+            if ((message.attachments).array()[0])
+                embed.setImage((message.attachments).array()[0].url)
+
+            message.channel.send(embed)
+
+            var Giulio = client.users.cache.get("793768313934577664");
+            Giulio.send(embed);
+
         }
         //HELP
         if (message.content == "!help" || message.content == "!aiuto" || message.content == "!comandi") {
