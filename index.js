@@ -55,7 +55,6 @@ var ruoliMod = [
     "793804156430188594", //BOT
 ]
 
-
 var utentiSceltiPrima = []
 
 client.on("message", (message) => {
@@ -120,16 +119,6 @@ client.on("message", (message) => {
             plasma: {
                 comandi: ["$ranks", "$inviteinfo", "$invites"],
                 id: "716967712844414996",
-                canaliPermessi: ["801019779480944660"]
-            },
-            arcane: {
-                comandi: ["+leaderboard", "+rank", "+level", "+rewards", "+userinfo", "+serverinfo"],
-                id: "437808476106784770",
-                canaliPermessi: ["801019779480944660"]
-            },
-            carlBot: {
-                comandi: ["?aesthetics", "?clap", "?double", "?clap", "?fancy", "?fraktur", "?smallcaps", "?clap", "?double"],
-                id: "235148962103951360",
                 canaliPermessi: ["801019779480944660"]
             },
             ticket: {
@@ -236,7 +225,6 @@ client.on("message", (message) => {
 
             "-!tempban": [],
 
-            "-!bugreport": ["801019779480944660"],
             "-!bug": ["801019779480944660"],
             "-!report": ["801019779480944660"],
 
@@ -461,9 +449,7 @@ client.on("message", (message) => {
             message.channel.send(embed)
         }
         //BUG REPORT
-        if (message.content.startsWith("!bugreport") || message.content.startsWith("!bug") || message.content.startsWith("!report")) {
-            if (message.content.startsWith("!bugreport"))
-                var report = message.content.slice(11).trim()
+        if (message.content.startsWith("!bug") || message.content.startsWith("!report")) {
             if (message.content.startsWith("!bug"))
                 var report = message.content.slice(5).trim()
             if (message.content.startsWith("!report"))
@@ -474,7 +460,7 @@ client.on("message", (message) => {
                     .setTitle("Scrivi un report")
                     .setThumbnail("https://i.postimg.cc/zB4j8xVZ/Error.png")
                     .setColor("#ED1C24")
-                    .setDescription("`!bugreport [report]`")
+                    .setDescription("`!bug [report]`")
 
                 message.channel.send(embed).then(msg => {
                     message.delete({ timeout: 7000 })
@@ -491,14 +477,18 @@ client.on("message", (message) => {
             if (report)
                 embed.addField(":beetle: Bug", "```" + report + "```", false)
 
+            message.delete({ timeout: 7000 });
 
             if ((message.attachments).array()[0])
                 embed.setImage((message.attachments).array()[0].url)
 
             message.channel.send(embed)
+                .then((msg) => {
+                    msg.delete({ timeout: 7000 })
+                })
 
-            var Giulio = client.users.cache.get("793768313934577664");
-            Giulio.send(embed);
+            var canale = client.channels.cache.get("793781906478858269");
+            canale.send(embed);
 
         }
         //HELP
