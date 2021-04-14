@@ -793,6 +793,7 @@ client.on("message", (message) => {
                 case "idle": status = "Idle"; break;
             }
 
+            var userFlags = message.member.user.flags.toArray()
             var elencoBadge = "";
             if (!userFlags.length) {
                 elencoBadge = "Nessun badge"
