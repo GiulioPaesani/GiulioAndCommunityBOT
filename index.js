@@ -813,7 +813,6 @@ client.on("message", (message) => {
                 .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)
                 .addField(":pencil: Account created", "```" + utente.user.createdAt.toDateString() + " (" + moment(utente.user.createdAt.getTime()).fromNow() + ")```", false)
                 .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + " (" + moment(new Date(utente.joinedTimestamp).getTime()).fromNow() + ")```", false)
-                .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + " (" + moment(new Date(utente.joinedTimestamp).getTime()).fromNow() + ")```", false)
                 .addField(":beginner: Badge", "```" + elencoBadge + "```", false)
                 .addField(":shirt: Roles", "```" + elencoRuoli + "```", false)
                 .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
