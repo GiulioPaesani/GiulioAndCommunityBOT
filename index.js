@@ -449,7 +449,7 @@ client.on("message", (message) => {
             message.channel.send(embed)
         }
         //BUG REPORT
-        if (message.content.startsWith("!bug") || message.content.startsWith("!report")) {
+        if (message.content.startsWith("!bug ") || message.content.startsWith("!report ")) {
             if (message.content.startsWith("!bug"))
                 var report = message.content.slice(5).trim()
             if (message.content.startsWith("!report"))
@@ -474,6 +474,7 @@ client.on("message", (message) => {
                 .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
                 .setColor("#16A0F4")
                 .addField(":bust_in_silhouette: User", "```" + message.member.user.tag + "```", false)
+
             if (report)
                 embed.addField(":beetle: Bug", "```" + report + "```", false)
 
