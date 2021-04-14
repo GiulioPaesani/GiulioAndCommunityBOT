@@ -792,6 +792,17 @@ client.on("message", (message) => {
                 case "dnd": status = "Do not disturb"; break;
                 case "idle": status = "Idle"; break;
             }
+
+            var elencoBadge = "";
+            if (!userFlags.length) {
+                elencoBadge = "Nessun badge"
+            }
+            else {
+                userFlags.forEach(badge => {
+                    elencoBadge += "- " + badge + "\r";
+                })
+            }
+
             var userStats = new Discord.MessageEmbed()
                 .setTitle(utente.user.tag)
                 .setDescription("Tutte le statistiche su questo utente")
@@ -801,6 +812,8 @@ client.on("message", (message) => {
                 .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)
                 .addField(":pencil: Account created", "```" + utente.user.createdAt.toDateString() + " (" + moment(utente.user.createdAt.getTime()).fromNow() + ")```", false)
                 .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + " (" + moment(new Date(utente.joinedTimestamp).getTime()).fromNow() + ")```", false)
+                .addField(":red_car: Joined this server", "```" + new Date(utente.joinedTimestamp).toDateString() + " (" + moment(new Date(utente.joinedTimestamp).getTime()).fromNow() + ")```", false)
+                .addField(":beginner: Badge", "```" + elencoBadge + "```", false)
                 .addField(":shirt: Roles", "```" + elencoRuoli + "```", false)
                 .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
             message.channel.send(userStats)
