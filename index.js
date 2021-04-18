@@ -3046,6 +3046,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
     if (oldUserChannel == canaleLive && newUserChannel != canaleLive && oldMember.id == "793768313934577664") {
         var salaDAttesa = client.channels.cache.get(canaleAttesa);
+        var canaleOnLive = client.channels.cache.get(canaleLive);
         canaleOnLive.members.forEach(user => {
             user.voice.setChannel(salaDAttesa)
         })
