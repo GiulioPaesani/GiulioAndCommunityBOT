@@ -3038,7 +3038,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         utente.voice.kick()
     }
 
-
+    //Se Giulio esce da #on-live sposta tutti in #sala-dattesa
     if (oldUserChannel == canaleLive && newUserChannel != canaleLive && oldMember.id == "793768313934577664") {
         var salaDAttesa = client.channels.cache.get(canaleAttesa);
         var canaleOnLive = client.channels.cache.get(canaleLive);
@@ -3047,6 +3047,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         })
     }
 
+    //Se entri in #sala-dattesa
     if (newUserChannel == canaleAttesa && oldUserChannel != canaleAttesa && oldUserChannel != canaleLive) {
         var server = client.guilds.cache.get(idServer);
         var Giulio = server.members.cache.find(x => x.id == "793768313934577664");
@@ -3069,6 +3070,13 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
             return
         }
         else {
+            var utente = server.members.cache.find(x => x.id == newMember.id);
+            var utenteMod = false;
+            for (var i = 0; i < ruoliMod.length; i++) {
+                if (utente.roles.cache.has(ruoliMod[i])) utenteMod = true;
+            }
+            if (utenteMod) return
+
             var server = client.guilds.cache.get(idServer);
             var utente = server.members.cache.find(x => x.id == newMember.id);
 
