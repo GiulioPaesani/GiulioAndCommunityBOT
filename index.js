@@ -3289,7 +3289,7 @@ function getRolechance(user, debuff) {
         if (user._roles[i] == "807684294587711545") {
             chanceBoost += 10
         }
-        if (user._roles[i] == "833348112708796447") {
+        if (user._roles[i] == "833379958616227901") {
             chanceBoost += 15
         }
     }
