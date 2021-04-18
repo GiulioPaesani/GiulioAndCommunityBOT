@@ -3143,16 +3143,17 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
         }
 
         try {
-            utente.send(`
-        :four_leaf_clover: **SEI STATO SCELTO** :four_leaf_clover: 
-Complimenti, sei stato scelto tra gli utenti in Sala d'attesa. Prima di entrare in live leggi queste **regole**:
-
-:red_circle: **REGOLE**
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Sei stato scelto")
+                .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+                .setColor("#78B159")
+                .setDescription("Complimenti, sei stato scelto tra gli utenti in Sala d'attesa. Prima di entrare in live leggi queste **regole**")
+                .addField(":red_circle: Regole", `
 - Utilizzare un **linguaggio non volgare** e un linguaggio civile (no discriminazioni)
 - Non bestemmiare
 - Rispettare Giulio, i Mod e tutti gli utenti presenti in live
-
-:purple_circle: **PRINCIPALI REGOLE DI TWITCH**
+                `, false)
+                .addField(":purple_circle: Principali regole di Twitch", `
 - Sono vietati contenuti o attività che mostrino, incoraggino, offrano o inducano **comportamenti illegali**
 - Sono vietate tutte le attività che potrebbero mettere in pericolo la tua **vita **o causarti **danni fisici**
 - Twitch non consente la presenza di contenuti che raffigurino, celebrino, incoraggino o sostengono il **terrorismo**, o individui e atti estremisti violenti
@@ -3161,12 +3162,11 @@ Complimenti, sei stato scelto tra gli utenti in Sala d'attesa. Prima di entrare 
 - Sono proibiti contenuti e attività che possono interrompere, danneggiare, o altrimenti violare l'integrità dei **servizi di Twitch**, oppure l'esperienza o i dispositivi di un altro utente
 - Sono vietati i contenuti e le attività **sessualmente espliciti**
 - Durante i **giochi online** con più utenti, sono proibiti imbrogli, azioni di pirateria informatica, utilizzo di bot, o manomissioni che costituiscano un vantaggio indebito per il proprietario dell'account
-Per maggiori informazioni: <https://www.twitch.tv/p/it-it/legal/community-guidelines/>
+[Per maggiori informazioni](https://www.twitch.tv/p/it-it/legal/community-guidelines/)              
+                `, false)
+                .addField(":green_circle: ACCETTA LE REGOLE", `Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contrario si verrà sanzionati con la non riammissione nelle live future`)
 
-P.S. Consiglio di non tenere l'audio della live attivo quando siete presenti su discord, Giulio terrà la webcam attiva con l'output della live, in modo che voi utenti possiate vedere la diretta senza ritardo
-
-:green_circle: **ACCETTA LE REGOLE**
-Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contrario si verrà sanzionati con la non riammissione nelle live future`)
+            utente.send(embed)
                 .then(messaggio => {
                     messaggio.react('✅');
 
