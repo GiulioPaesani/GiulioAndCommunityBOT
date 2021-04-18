@@ -268,10 +268,6 @@ client.on("message", (message) => {
         if (canaleNotConcessoBot) { //Comando bot in canale non concesso
             var canaliAdmin = ["804688929109966848", "793781905740922900", "793781906478858269"]
 
-            console.log(message.member.hasPermission("ADMINISTRATOR"))
-            console.log(message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni"))
-
-
             if (!canaliAdmin.includes(message.channel.id) && !(utenteMod && (message.content.startsWith("!code") || message.content.startsWith("!infractions") || message.content.startsWith("!infraction") || message.content.startsWith("!infrazioni")))) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Canale non concesso")
@@ -449,7 +445,7 @@ client.on("message", (message) => {
             message.channel.send(embed)
         }
         //BUG REPORT
-        if (message.content.startsWith("!bug ") || message.content.startsWith("!report ")) {
+        if (message.content.startsWith("!bug") || message.content.startsWith("!report")) {
             if (message.content.startsWith("!bug"))
                 var report = message.content.slice(5).trim()
             if (message.content.startsWith("!report"))
@@ -652,7 +648,6 @@ client.on("message", (message) => {
         }
         //LAST VIDEO
         if (message.content == "!lastvideo" || message.content == "!ultimovideo") {
-            //https://www.npmjs.com/package/yt-channel-info
             const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
             const sortBy = 'newest'
             ytch.getChannelVideos(channelId, sortBy).then((response) => {
@@ -1742,7 +1737,6 @@ client.on("message", (message) => {
                 msg.delete({ timeout: 2000 })
             })
         }
-
         if (message.content.startsWith("!suggest") || message.content.startsWith("!suggerisci") || message.content.startsWith("!suggerimento")) {
             if (message.content.startsWith("!suggest"))
                 var contenuto = message.content.slice(9).trim();
@@ -1884,7 +1878,6 @@ client.on("message", (message) => {
                 msg.delete({ timeout: 2000 })
             })
         }
-
         if (message.content.startsWith("!challenge") || message.content.startsWith("!sfida")) {
             if (message.content.startsWith("!challenge"))
                 var contenuto = message.content.slice(11).trim();
@@ -2168,7 +2161,6 @@ client.on("message", (message) => {
                 .addField("Chance", elencoProbabilita, true)
             message.channel.send(embed)
         }
-
         if (message.content == "!tstop" || message.content == "!tend") {
             var salaDAttesa = client.channels.cache.get(canaleAttesa);
             var canaleOnLive = client.channels.cache.get(canaleLive);
@@ -2193,7 +2185,6 @@ client.on("message", (message) => {
                 .setColor("#16A0F4")
             message.channel.send(embed)
         }
-
         if (message.content.startsWith("!tkick")) {
             if (!utenteMod) {
                 var embed = new Discord.MessageEmbed()
@@ -2296,7 +2287,6 @@ client.on("message", (message) => {
 
             }
         }
-
         if (message.content.startsWith("!tban")) {
             if (!utenteMod) {
                 var embed = new Discord.MessageEmbed()
@@ -2365,18 +2355,13 @@ client.on("message", (message) => {
                 utente.voice.kick();
             }
 
-            salaDAttesa.overwritePermissions([
-                {
-                    id: utente.id,
-                    deny: ["CONNECT"]
-                }
-            ]);
+            salaDAttesa.updateOverwrite(utente, { CONNECT: false });
 
             var embed = new Discord.MessageEmbed()
                 .setAuthor("[TWITCH BAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
-                .setDescription(utente.toString() + "è stato bannato da <#" + canaleLive + ">")
+                .setDescription(utente.toString() + " è stato bannato da <#" + canaleLive + ">")
 
             message.channel.send(embed)
 
@@ -2393,9 +2378,8 @@ client.on("message", (message) => {
 
             }
         }
-
         if (message.content.startsWith("!tunban")) {
-            if (!message.member.hasPermission("ADMINISTRATOR")) { //<------------------------- METTERE utentemod
+            if (!utenteMod) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il permesso")
                     .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
@@ -2467,7 +2451,6 @@ client.on("message", (message) => {
 
             }
         }
-
         if (message.content.startsWith("!tchance")) {
             var salaDAttesa = client.channels.cache.get(canaleAttesa);
 
