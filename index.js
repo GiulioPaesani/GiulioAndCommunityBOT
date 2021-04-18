@@ -872,6 +872,8 @@ client.on("message", (message) => {
                 .addField(":receipt: Role ID", "```" + ruolo.id + "```", true)
                 .addField(":busts_in_silhouette: Members", "```" + memberCount + "```", true)
                 .addField(":rainbow: Color", "```" + ruolo.hexColor + "```", true)
+                .addField(":1234: Position", "```" + ruolo.rawPosition + "```", true)
+                .addField(":speech_balloon: Mentionable", ruolo.mentionable ? "```Yes```" : "```No```", true)
                 .addField(":pencil: Role created", "```" + ruolo.createdAt.toDateString() + "```", true)
                 .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
 
