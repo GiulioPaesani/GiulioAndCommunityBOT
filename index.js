@@ -2425,7 +2425,7 @@ client.on("message", (message) => {
             }
             var salaDAttesa = client.channels.cache.get(canaleAttesa);
 
-            salaDAttesa.updateOverwrite(utente, { CONNECT: true });
+            salaDAttesa.updateOverwrite(utente, {});
 
             var embed = new Discord.MessageEmbed()
                 .setAuthor("[TWITCH UNBAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
@@ -2436,7 +2436,7 @@ client.on("message", (message) => {
             message.channel.send(embed)
 
             var embedUtente = new Discord.MessageEmbed()
-                .setTitle("Sei stato bannato da Twitch")
+                .setTitle("Sei stato sbannato da Twitch")
                 .setColor("#6143CB")
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setDescription("Sei stato sbannato da <#" + canaleLive + ">, ora puoi di nuovo partecipare alle live")
