@@ -3046,12 +3046,8 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
     if (oldUserChannel == canaleLive && newUserChannel != canaleLive && oldMember.id == "793768313934577664") {
         var salaDAttesa = client.channels.cache.get(canaleAttesa);
-        var canaleOnLive = client.channels.cache.get(canaleLive);
-        salaDAttesa.members.forEach(user => {
-            user.voice.kick()
-        })
         canaleOnLive.members.forEach(user => {
-            user.voice.kick()
+            user.voice.setChannel(salaDAttesa)
         })
     }
 
@@ -3286,10 +3282,13 @@ function getRolechance(user, debuff) {
     var chanceBoost = 0;
     for (var i = 0; i < user._roles.length; i++) {
         if (user._roles[i] == "800009879371644940") {
-            chanceBoost += 25
+            chanceBoost += 15
         }
         if (user._roles[i] == "807684294587711545") {
-            chanceBoost += 20
+            chanceBoost += 10
+        }
+        if (user._roles[i] == "833348112708796447") {
+            chanceBoost += 15
         }
     }
 
