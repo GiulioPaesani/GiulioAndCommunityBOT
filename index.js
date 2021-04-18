@@ -3153,17 +3153,15 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 - Non bestemmiare
 - Rispettare Giulio, i Mod e tutti gli utenti presenti in live
                 `, false)
-                .addField(":purple_circle: Principali regole di Twitch", `
-- Sono vietati contenuti o attività che mostrino, incoraggino, offrano o inducano **comportamenti illegali**
-- Sono vietate tutte le attività che potrebbero mettere in pericolo la tua **vita **o causarti **danni fisici**
-- Twitch non consente la presenza di contenuti che raffigurino, celebrino, incoraggino o sostengono il **terrorismo**, o individui e atti estremisti violenti
-- Su Twitch non sono consentiti comportamenti volti all'**odio** e **molestie** (discriminazioni, denigrazioni, molestie o violenze basate sulle seguenti caratteristiche protette)
+                .addField(":purple_circle: Principali regole di Twitch", `- Sono vietati contenuti che mostrino, incoraggino **comportamenti illegali**
+- Sono vietate tutte le attività che potrebbero mettere in pericolo la tua **vita **
+- Twitch non consente la presenza di contenuti che raffigurino, incoraggino o sostengono il **terrorismo**
+- Su Twitch non sono consentiti comportamenti volti all'**odio** e **molestie** (discriminazioni, denigrazioni, molestie o violenze basate sulle caratteristiche protette)
 - Sei tenuto a non violare la **riservatezza** delle altre persone
-- Sono proibiti contenuti e attività che possono interrompere, danneggiare, o altrimenti violare l'integrità dei **servizi di Twitch**, oppure l'esperienza o i dispositivi di un altro utente
+- Sono proibiti contenuti e attività che possono interrompere, danneggiare, o altrimenti i **servizi di Twitch**, oppure l'esperienza o i dispositivi di un altro utente
 - Sono vietati i contenuti e le attività **sessualmente espliciti**
-- Durante i **giochi online** con più utenti, sono proibiti imbrogli, azioni di pirateria informatica, utilizzo di bot, o manomissioni che costituiscano un vantaggio indebito per il proprietario dell'account
-[Per maggiori informazioni](https://www.twitch.tv/p/it-it/legal/community-guidelines/)              
-                `, false)
+- Durante i **giochi online** con più utenti, sono proibiti imbrogli, azioni di pirateria, bot, o manomissioni che costituiscano un vantaggio indebito per il proprietario dell'account
+[Per maggiori informazioni](https://www.twitch.tv/p/it-it/legal/community-guidelines/)`, false)
                 .addField(":green_circle: ACCETTA LE REGOLE", `Clicca sulla **reazione **per accettare le regole sopra elencate, in caso contrario si verrà sanzionati con la non riammissione nelle live future`)
 
             utente.send(embed)
