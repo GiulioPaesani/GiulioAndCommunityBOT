@@ -2425,7 +2425,7 @@ client.on("message", (message) => {
             }
             var salaDAttesa = client.channels.cache.get(canaleAttesa);
 
-            salaDAttesa.updateOverwrite(utente, {});
+            salaDAttesa.updateOverwrite(utente, { CONNECT: true });
 
             var embed = new Discord.MessageEmbed()
                 .setAuthor("[TWITCH UNBAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
