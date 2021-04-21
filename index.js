@@ -56,6 +56,7 @@ var ruoliMod = [
 ]
 
 var utentiSceltiPrima = []
+var lockdown = false;
 
 client.on("message", (message) => {
     if (message.author.bot) return
@@ -137,6 +138,7 @@ client.on("message", (message) => {
         var comandiGiulioAndCommunityBot = {
             "!test": [],
             "!changelog": [],
+            "!lockdown": [],
 
             "-!code": ["801019779480944660"],
 
@@ -2701,6 +2703,83 @@ client.on("message", (message) => {
 
         }
 
+        //LOCKDOWN
+        if (message.content == "!lockdown") {
+            if (!utenteMod) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("Non hai il permesso")
+                    .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+                    .setColor("#9E005D")
+                    .setDescription("Non puoi eseguire il comando `!lockdown` perchè non hai il permesso")
+
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 7000 })
+                    msg.delete({ timeout: 7000 })
+                })
+                return
+            }
+
+            let ruolo = message.guild.roles.cache.find(r => r.name === "@everyone");
+            if (!lockdown) {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("CONFERMI?")
+                    .setColor("#ED1C24")
+                    .setDescription("Confermi di attivare il **sistema di lockdown**?\n\nTutti gli utenti con livello inferiore a 5 non vedranno piu nessun canale fino alla disattivazione di questo sistema")
+
+                message.channel.send(embed)
+                    .then((msg) => {
+                        msg.delete({ timeout: 60000 })
+                        msg.react("✅")
+                        message.delete({ timeout: 60000 })
+
+                        // Filters
+                        const react = (reaction, user) => reaction.emoji.name === '✅'
+                        const pagina = msg.createReactionCollector(react)
+
+                        pagina.on('collect', (r, u) => {
+                            if (u.bot)
+                                return
+                            r.users.remove(r.users.cache.filter(u => u.bot == false).first())
+                            var utente = message.guild.members.cache.find(user => user.id == u.id);
+                            var utenteMod = false;
+                            for (var i = 0; i < ruoliMod.length; i++) {
+                                if (utente.roles.cache.has(ruoliMod[i])) utenteMod = true;
+                            }
+
+                            if (utenteMod) {
+                                var embed2 = new Discord.MessageEmbed()
+                                    .setTitle("LOCKDOWN ATTIVATO")
+                                    .setColor("#ED1C24")
+                                    .setDescription("È appena stato attivato il **sistema di lockdown**\n\nTutti gli utenti con livello inferiore a 5 non vedranno piu nessun canale fino alla disattivazione di questo sistema")
+                                msg.edit(embed2)
+                                    .then(() => {
+
+                                        r.users.remove()
+
+                                        lockdown = true;
+                                        ruolo.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "CONNECT", "USE_VAD"])
+                                    })
+                                var canale = client.channels.cache.get("793781898689773589");
+                                canale.send(embed2);
+                            }
+
+
+                        })
+                    })
+            }
+            else {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle("LOCKDOWN DISATTIVATO")
+                    .setColor("#77B155")
+                    .setDescription("È appena stato disattivato il **sistema di lockdown**\n\nTutti gli utenti con livello inferiore a 5 possono continuare a partecipare nel server")
+                message.channel.send(embed)
+                ruolo.setPermissions(["SEND_MESSAGES", "VIEW_CHANNEL", "CREATE_INSTANT_INVITE", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "CONNECT", "SPEAK", "USE_VAD"])
+                lockdown = false;
+                var canale = client.channels.cache.get("793781898689773589");
+                canale.send(embed);
+            }
+
+        }
     })
 })
 
