@@ -1926,7 +1926,7 @@ Cancellare messaggi predenti dal comando
                 return
             }
 
-            if (!utenteMod && !message.member.roles.cache.has("799990705216159791") && !message.member.roles.cache.has("799990735839559690") && !message.member.roles.cache.has("799990773708750878") && !message.member.roles.cache.has("799990806357213194") && !message.member.roles.cache.has("799990865001971722") && !message.member.roles.cache.has("799990865001971722") && !message.member.roles.cache.has("799990896849977344") && !message.member.roles.cache.has("800740423999815710") && !message.member.roles.cache.has("800740473437945927") && !message.member.roles.cache.has("800740873351462932") && !message.member.roles.cache.has("800009879371644940")) {
+            if (!utenteMod && !message.member.roles.cache.has("799990705216159791") && !message.member.roles.cache.has("799990735839559690") && !message.member.roles.cache.has("799990773708750878") && !message.member.roles.cache.has("799990806357213194") && !message.member.roles.cache.has("799990832224272405") && !message.member.roles.cache.has("799990865001971722") && !message.member.roles.cache.has("799990896849977344") && !message.member.roles.cache.has("800740423999815710") && !message.member.roles.cache.has("800740473437945927") && !message.member.roles.cache.has("800740873351462932") && !message.member.roles.cache.has("800009879371644940")) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il livello")
                     .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
