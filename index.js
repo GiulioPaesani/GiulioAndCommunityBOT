@@ -2241,7 +2241,7 @@ client.on("messageReactionAdd", async function (messageReaction, user) {
                         .setDescription("In questa chat potrai richiedere supporto privato allo staff")
 
                     canale.send(embed)
-                    var testo = `<@${user.id}> `;
+                    var testo = `<@${user.id}> ha aperto un ticket\r`;
                     config.ruoliMod.forEach(ruolo => {
                         testo += `<@&${ruolo}> `;
                     })
