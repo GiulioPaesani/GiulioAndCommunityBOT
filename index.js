@@ -22,7 +22,6 @@ var con = mysql.createPool({
 
 var userstatsList, serverstats;
 var suggestions, challenges;
-var utenteMod; //Se l'utente è admin/mod
 var uptime;
 var lockdown = false;
 
@@ -114,7 +113,7 @@ function correct(message, title, description) {
 }
 
 client.on("message", async (message) => {
-
+    var utenteMod = false;
     try {
         if (message.author.bot) return //Bot non accettati
         if (message.channel.type == "dm") return //Messaggi in dm non accettati
@@ -1919,6 +1918,8 @@ Cancellare messaggi predenti dal comando
                 error(message, "Inserire un testo", "`!say [text]`")
                 return
             }
+
+
 
             if (!utenteMod && !message.member.roles.cache.has("799990705216159791") && !message.member.roles.cache.has("799990735839559690") && !message.member.roles.cache.has("799990773708750878") && !message.member.roles.cache.has("799990806357213194") && !message.member.roles.cache.has("799990865001971722") && !message.member.roles.cache.has("799990865001971722") && !message.member.roles.cache.has("799990896849977344") && !message.member.roles.cache.has("800740423999815710") && !message.member.roles.cache.has("800740473437945927") && !message.member.roles.cache.has("800740873351462932") && !message.member.roles.cache.has("800009879371644940")) {
                 var embed = new Discord.MessageEmbed()
