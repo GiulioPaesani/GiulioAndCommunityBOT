@@ -1,4 +1,4 @@
-//Mettere tutto ciò fuori da tutto, quindi anche fuori dal client.on("message") 
+//Mettere tutto ciò fuori da tutto, quindi anche fuori da eventuali client.on("message") 
 setInterval(function () {
     var hour = new Date().getHours();
     var minutes = new Date().getMinutes();

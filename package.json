@@ -1,28 +1,17 @@
 {
-  "name": "giulioandcommunitybot",
+  "name": "giulioandcommunity-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GiulioPaesani/GiulioAndCommunityBOT.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GiulioPaesani/GiulioAndCommunityBOT/issues"
-  },
-  "homepage": "https://github.com/GiulioPaesani/GiulioAndCommunityBOT#readme",
   "dependencies": {
-    "discord.js": "^12.5.1",
-    "expr-eval": "^2.0.2",
-    "file-system": "^1.2.2",
     "moment": "^2.29.1",
-    "ms": "^2.1.3",
     "mysql": "^2.18.1",
-    "yt-channel-info": "^1.3.0"
+    "node-superfetch": "^0.2.3",
+    "yt-channel-info": "^2.1.1"
   }
 }

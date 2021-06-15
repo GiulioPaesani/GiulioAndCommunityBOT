@@ -18,8 +18,8 @@ client.on("message", message => {
             .addField("Server region", server.region, true)
             .addField("Members", "Total: " + server.memberCount + " - Users: " + utentiCount + " - Bots: " + botCount, false)
             .addField("Channels", "Category: " + categoryCount + " - Text: " + textCount + " - Voice: " + voiceCount, false)
-            .addField("Server created", server.createdAt.toDateString() + "```", true)
-            .addField("Boost level", "Level " + server.premiumTier + " (Boost: " + server.premiumSubscriptionCount + ")`", true)
+            .addField("Server created", server.createdAt.toDateString(), true)
+            .addField("Boost level", "Level " + server.premiumTier + " (Boost: " + server.premiumSubscriptionCount + ")", true)
 
         message.channel.send(embed)
     }
