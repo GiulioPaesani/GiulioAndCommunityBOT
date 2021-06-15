@@ -1919,8 +1919,6 @@ Cancellare messaggi predenti dal comando
                 return
             }
 
-            let args = message.content.slice(5).split(` `).join(` `);
-
             if (message.content.includes(`@everyone`) || message.content.includes(`@here`) || message.mentions.roles.first()) {
                 warming(message, "Non pingare i ruoli", "Scrivi un messaggio senza taggare nessun ruolo del server")
                 return
