@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "discord.js": "^12.5.3",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "node-superfetch": "^0.2.3",
