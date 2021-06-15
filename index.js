@@ -1195,6 +1195,8 @@ Cancellare messaggi predenti dal comando
                     .setFooter("I codici sono quelli dopo il # (errore1, ...)")
 
                 message.channel.send(paginaInziale).then(msg => {
+                    message.delete({ timeout: 120000 })
+                    msg.delete({ timeout: 120000 })
                     msg.react('🔨').then(r => {
                         msg.react('🎡')
                         msg.react('🧰')
