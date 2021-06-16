@@ -1649,7 +1649,10 @@ Cancellare messaggi predenti dal comando
                 })
                 return
             }
-            if (!topic.startsWith("Muted") && !topic.startsWith("Tempmuted") && !topic.startsWith("Banned") && !topic.startsWith("Tempbanned") && !topic.startsWith("User ID")) {
+
+            if (topic.startsWith("Muted") || topic.startsWith("Tempmuted") || topic.startsWith("Banned") || topic.startsWith("Tempbanned")) return
+
+            if (!topic.startsWith("User ID")) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Canale non concesso")
                     .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
@@ -1718,6 +1721,9 @@ Cancellare messaggi predenti dal comando
                 })
                 return
             }
+
+            if (topic.startsWith("Muted") || topic.startsWith("Tempmuted") || topic.startsWith("Banned") || topic.startsWith("Tempbanned")) return
+
             if (!topic.startsWith("User ID")) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Canale non concesso")
@@ -1790,6 +1796,9 @@ Cancellare messaggi predenti dal comando
                 })
                 return
             }
+
+            if (topic.startsWith("Muted") || topic.startsWith("Tempmuted") || topic.startsWith("Banned") || topic.startsWith("Tempbanned")) return
+
             if (!topic.startsWith("User ID")) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Canale non concesso")
