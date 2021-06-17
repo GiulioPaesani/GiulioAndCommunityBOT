@@ -2431,12 +2431,17 @@ setInterval(function () {
     var fareQuery = false;
     var query = "UPDATE userstats SET username = CASE ";
     userstatsList.forEach(userstats => {
-        userstats.username = userstats.username.replace(/{/g, "")
-        userstats.username = userstats.username.replace(/}/g, "")
-        userstats.username = userstats.username.replace(/'/g, "")
-        userstats.username = userstats.username.replace(/"/g, "")
-        userstats.username = userstats.username.replace(/`/g, "")
-        userstats.username = userstats.username.replace(/\n/g, "")
+        userstats.username = userstats.username.replace(/'/g, "");
+        userstats.username = userstats.username.replace(/"/g, "");
+        userstats.username = userstats.username.replace(/:/g, "");
+        userstats.username = userstats.username.replace(/{/g, "");
+        userstats.username = userstats.username.replace(/}/g, "");
+        userstats.username = userstats.username.replace(/\[/g, "");
+        userstats.username = userstats.username.replace(/]/g, "");
+        userstats.username = userstats.username.replace(/,/g, "");
+
+        userstats.username = userstats.username.trim();
+
         query += `WHEN id = '${userstats.id}' THEN '${userstats.username}' `
         fareQuery = true;
     });
