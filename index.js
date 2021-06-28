@@ -2486,27 +2486,6 @@ function addUserToDatabase(userstats) {
     })
 }
 
-setInterval(function () {
-    var data = new Date();
-    //console.log(data.getHours() + ":" + data.getMinutes())
-    if (data.getHours() == 14 && data.getMinutes() == 01) {
-        //console.log("mandato")
-        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA' //Settare id del tuo canale YouTube
-        const sortBy = 'newest'
-
-        ytch.getChannelVideos(channelId, sortBy).then((response) => {
-            //console.log(response)
-            var embed = new Discord.MessageEmbed()
-                .setTitle(response.items[0].title)
-                .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
-                .setThumbnail(response.items[0].videoThumbnails[3].url)
-
-            var canale = client.channels.cache.get("793781905740922900");
-            canale.send("Test notifica", embed)
-        })
-    }
-}, 1000 * 60)
-
 function getCode(comando) {
     switch (comando) {
         case "ban": return `
