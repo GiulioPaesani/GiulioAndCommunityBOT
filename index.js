@@ -3696,7 +3696,7 @@ utente.send("messaggio");`;
 
 setInterval(function(){
     var data = new Date()
-    if(data.getHours() == 14 && data.getMinutes() == 0 && data.getSeconds() == 0){
+    if(data.getHours() == 14 && (data.getMinutes() == 0 || data.getMinutes() == 1) && data.getSeconds() == 0){
         const channelId = 'UC6WJ32r35demIRvxV-xDU2g'
         const sortBy = 'newest'
         ytch.getChannelVideos(channelId, sortBy).then((response) => {
@@ -3705,7 +3705,7 @@ setInterval(function(){
             canale.send(`
 -------------:red_circle: 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 :red_circle:-------------
 Ehy ragazzi, è appena uscito un nuovo video su GiulioAndCode
-Andate subito a vedere **response.items[0].title**
+Andate subito a vedere **${response.items[0].title}**
 
 https://www.youtube.com/watch?v=${response.items[0].videoId}
 <@&857544584691318814>`)
