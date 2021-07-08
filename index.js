@@ -3682,7 +3682,7 @@ utente.send("messaggio");`;
 
 setInterval(function(){
     var data = new Date()
-    if(data.getHours() == 14 && (data.getMinutes() == 0 || data.getMinutes() == 1) && data.getSeconds() == 0){
+    if(data.getHours() == 17 && (data.getMinutes() == 36 || data.getMinutes() == 1) && data.getSeconds() == 0){
         const channelId = 'UC6WJ32r35demIRvxV-xDU2g'
         const sortBy = 'newest'
         ytch.getChannelVideos(channelId, sortBy).then((response) => {
