@@ -49,20 +49,6 @@ client.on("ready", () => {
     })
 
     uptime = new Date();
-
-    const channelId = 'UC6WJ32r35demIRvxV-xDU2g'
-        const sortBy = 'newest'
-        ytch.getChannelVideos(channelId, sortBy).then((response) => {
-
-            var canale = client.channels.cache.get("793781905740922900");
-            canale.send(`
--------------:red_circle: 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 :red_circle:-------------
-Ehy ragazzi, è appena uscito un nuovo video su GiulioAndCode
-Andate subito a vedere **response.items[0].title**
-
-https://www.youtube.com/watch?v=${response.items[0].videoId}
-<@&857544584691318814>`)
-        })
 })
 
 function codeError(err) {
