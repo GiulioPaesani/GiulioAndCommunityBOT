@@ -3698,4 +3698,4 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
 <@&857544584691318814>`)
         })
     }
-},1000*60)
+},1000)
