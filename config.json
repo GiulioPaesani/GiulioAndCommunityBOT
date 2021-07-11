@@ -28,6 +28,8 @@
     },
     "comandi": {
         "!test": [],
+        "!forza": [],
+        "!forzaitalia": [],
         "!changelog": [],
         "!lockdown": [],
         "-!code": [
