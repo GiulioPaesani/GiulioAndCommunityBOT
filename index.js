@@ -3698,3 +3698,12 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
         })
     }
 }, 1000)
+
+client.on("message", async message => {
+    if (message.content == "!forza" || message.content == "!forzaitalia" || message.content == "!forzaitalia" || message.content == "!euro2020") {
+
+        await message.channel.send("FORZA ITALIA! :flag_it: :flag_it: :flag_it: ")
+        await message.channel.send("FORZA ITALIA! :flag_it: :flag_it: :flag_it: ")
+        await message.channel.send("FORZA ITALIA! :flag_it: :flag_it: :flag_it: ")
+    }
+})
