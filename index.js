@@ -3680,9 +3680,9 @@ utente.send("messaggio");`;
 }
 
 
-setInterval(function(){
+setInterval(function () {
     var data = new Date()
-    if(data.getHours() == 14 && (data.getMinutes() == 0 || data.getMinutes() == 1) && data.getSeconds() == 0){
+    if (data.getHours() == 11 && (data.getMinutes() == 0 || data.getMinutes() == 1) && data.getSeconds() == 0) {
         const channelId = 'UC6WJ32r35demIRvxV-xDU2g'
         const sortBy = 'newest'
         ytch.getChannelVideos(channelId, sortBy).then((response) => {
@@ -3697,4 +3697,4 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
 <@&857544584691318814>`)
         })
     }
-},1000)
+}, 1000)
