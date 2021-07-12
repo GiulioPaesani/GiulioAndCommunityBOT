@@ -3698,26 +3698,3 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
         })
     }
 }, 1000)
-
-var secondi = 5;
-setInterval(function () {
-    if (secondi > 0)
-        secondi--;
-}, 1000)
-client.on("message", async message => {
-    if (message.content == "!forza" || message.content == "!forzaitalia" || message.content == "!forzaitalia" || message.content == "!euro2020") {
-        if (secondi == 0) {
-            secondi = 5
-            await message.channel.send("FORZA ITALIA! :flag_it: :flag_it: :flag_it: ")
-            await message.channel.send("FORZA ITALIA! :flag_it: :flag_it: :flag_it: ")
-            await message.channel.send("FORZA ITALIA! :flag_it: :flag_it: :flag_it: ")
-        }
-        else {
-            message.channel.send("Questo comando ha un cooldown di **5 secondi**")
-                .then(msg => {
-                    msg.delete({ timeout: 10000 })
-                    message.delete({ timeout: 10000 })
-                })
-        }
-    }
-})
