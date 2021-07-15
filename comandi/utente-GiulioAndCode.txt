@@ -1,2 +1,0 @@
-var utente = client.users.cache.get("idUtente");
-utente.send("messaggio");
