@@ -70,6 +70,10 @@ _Alias: \`!notifiche\` \`!notification\` \`!notifications\`_
             .addField("!invite", `
 Ottenere il link d'invito per il server
             `)
+            .addField("!test", `
+Testare e vedere le informazioni del bot
+_Alias: \`!prova\` \`!ping\`_
+            `)
 
             .setFooter("Page 2/" + totalPage)
 

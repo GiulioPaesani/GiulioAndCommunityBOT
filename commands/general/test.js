@@ -4,7 +4,7 @@ const moment = require("moment")
 
 module.exports = {
     name: "test",
-    aliases: ["prova"],
+    aliases: ["prova", "ping"],
     onlyStaff: false,
     channelsGranted: ["801019779480944660"],
     execute(message, args, client) {
