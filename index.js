@@ -43,13 +43,6 @@ for (const file of codesFolder) {
     client.codes.set(code.name, code);
 }
 
-//TODO
-//! Cambiare canale levelup
-//! Cambiare canale counting
-//! Nascondere token, passworddb, e apikey (anche in !youtubestats) //?--
-//! Togliere riga 65 in index.js
-//!Ricontrollare se ci sono tutti gli utenti sul db
-
 client.on("message", message => {
     const prefix = "!"
     if (message.channel.type == "dm") return //Messaggi in dm non accettati
@@ -63,7 +56,6 @@ client.on("message", message => {
     trovata = getParolaccia(message.content)[0];
     if (trovata && !utenteMod(message.member)) return
 
-    if (!utenteMod(message.member) && message.author.id != "706955655252148244" && message.author.id != "266691526514442240") return //!!!! DA TOGLIERE
 
     //Verifica esistenza comando
     if (!client.commands.has(command.toLowerCase()) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command.toLowerCase()))) {

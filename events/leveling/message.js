@@ -79,7 +79,7 @@ module.exports = {
                         embed.addField("Nuovi privilegi", "Con il <@&800740873351462932> hai sbloccato nuove funzioni\r- **Priorità di parola** nelle chat vocali")
                     }
 
-                    var canale = await client.channels.cache.get("793781905740922900"); //!!cambiare
+                    var canale = await client.channels.cache.get(config.idCanaliServer.levelUp);
                     await canale.send(message.author.toString() + " hai raggiunto un **nuovo livello**", embed)
                 }
 
