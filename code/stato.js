@@ -1,6 +1,6 @@
 module.exports = {
     name: "stato",
-    aliases: ["statobot","status"],
+    aliases: ["statobot", "status", "statusbot"],
     description: "Settare lo **stato** del proprio bot (Es. Sta giocando a !help)",
     info: "",
     video: "",
