@@ -21,7 +21,7 @@ module.exports = {
 
             var ruolo = message.mentions.roles.first()
             var utente = message.mentions.members.first()
-            if ((ruolo && Object.values(config.ruoliStaff).includes(ruolo.id)) || utenteMod(message.member) || (utente && utenteMod(utente))) {
+            if ((ruolo && Object.values(config.ruoliStaff).includes(ruolo.id)) || utenteMod(message.member) || (utente && utenteMod(utente)) || message.member.role.cache.has(config.idRuoloAiutante) || message.member.role.cache.has(config.idRuoloAiutanteInProva)) {
                 client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
                     .then(msg => {
                         var embed = new Discord.MessageEmbed()

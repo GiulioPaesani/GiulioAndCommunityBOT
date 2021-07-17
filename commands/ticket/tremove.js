@@ -27,7 +27,7 @@ module.exports = {
             var index = serverstats.ticket.findIndex(x => x.channel == message.channel.id);
             var ticket = serverstats.ticket[index];
 
-            if (!utenteMod(message.member) && message.author.id != ticket.owner) {
+            if (!utenteMod(message.member) && message.author.id != ticket.owner && !message.member.role.cache.has(config.idRuoloAiutante) && !message.member.role.cache.has(config.idRuoloAiutanteInProva)) {
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il permesso")
                     .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
