@@ -8,7 +8,6 @@ module.exports = {
     onlyStaff: false,
     channelsGranted: ["801019779480944660"],
     async execute(message, args, client) {
-        console.log(process.env.apikey)
         const channel = await fetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=GiulioAndCode&key=${process.env.apikey}&maxResults=1&type=channel`)
 
         const data = await fetch.get(`https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics,brandingSettings&id=${channel.body.items[0].id.channelId}&key=${process.env.apikey}`)
