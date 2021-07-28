@@ -50,7 +50,7 @@ module.exports = {
                                 allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS'],
                             }
                         ],
-                        parent: "835059084532776970"
+                        parent: "869975169672826940"
                     }).then((canale) => {
                         var embed = new Discord.MessageEmbed()
                             .setTitle("Ticket aperto")
