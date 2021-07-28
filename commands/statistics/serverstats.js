@@ -5,7 +5,7 @@ module.exports = {
     name: "serverstats",
     aliases: ["server", "serverinfo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         let server = message.member.guild;
         let botCount = server.members.cache.filter(member => member.user.bot).size;
@@ -27,7 +27,7 @@ module.exports = {
             .addField(":busts_in_silhouette: Members", "```Total: " + server.memberCount + " | Members: " + memberCount + " | Bots: " + botCount + "```", false)
             .addField(":loud_sound: Server categories and channels", "```Category: " + categoryCount + " | Text: " + textCount + " | Voice: " + vocalCount + "```", false)
             .addField(":calendar_spiral: Server created", "```" + moment(server.createdAt).format("ddd DD MMM, HH:mm") + " (" + moment(server.createdAt).fromNow() + ")```", false)
-            
+
         message.channel.send(serverStats)
     },
 };

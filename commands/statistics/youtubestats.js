@@ -6,7 +6,7 @@ module.exports = {
     name: "youtubestats",
     aliases: ["youtubeinfo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     async execute(message, args, client) {
         const channel = await fetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=GiulioAndCode&key=${process.env.apikey}&maxResults=1&type=channel`)
 

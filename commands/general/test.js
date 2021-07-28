@@ -6,7 +6,7 @@ module.exports = {
     name: "test",
     aliases: ["prova", "ping"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         let embed = new Discord.MessageEmbed()
             .setTitle("GiulioAndCommunity BOT")

@@ -5,7 +5,7 @@ module.exports = {
     name: "cserver",
     aliases: ["cserverstats", "cserverinfo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660", "793781899796938802"],
+    channelsGranted: ["869975190052929566", "869975192645034085"],
     execute(message, args, client) {
         database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);

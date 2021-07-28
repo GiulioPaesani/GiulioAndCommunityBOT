@@ -5,7 +5,7 @@ module.exports = {
     name: "youtube",
     aliases: ["yt"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
             let youtube = new Discord.MessageEmbed()

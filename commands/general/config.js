@@ -4,7 +4,7 @@ module.exports = {
     name: "config",
     aliases: ["notifiche", "notification", "notifications"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         let embed = new Discord.MessageEmbed()
             .setTitle("Notification - " + message.member.user.tag)

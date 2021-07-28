@@ -4,7 +4,7 @@ module.exports = {
     name: "suggest",
     aliases: ["suggerisci", "suggerimento"],
     onlyStaff: false,
-    channelsGranted: ["793781902728495104"],
+    channelsGranted: ["869975183446933544"],
     execute(message, args, client) {
         database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]

@@ -6,7 +6,7 @@ module.exports = {
     name: "lastvideo",
     aliases: ["ultimovideo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     async execute(message, args, client) {
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'

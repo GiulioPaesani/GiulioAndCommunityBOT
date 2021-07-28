@@ -5,7 +5,7 @@ module.exports = {
     name: "code",
     aliases: [],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         let command = args.join(" ")
         let data, info, video, description;

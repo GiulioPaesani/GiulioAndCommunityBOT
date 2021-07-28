@@ -4,7 +4,7 @@ module.exports = {
     name: "challenge",
     aliases: ["sfida"],
     onlyStaff: false,
-    channelsGranted: ["815611596042666034"],
+    channelsGranted: ["869975184289988698"],
     execute(message, args, client) {
         database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]

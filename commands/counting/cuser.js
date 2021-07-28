@@ -5,7 +5,7 @@ module.exports = {
     name: "cuser",
     aliases: ["cuserstats", "cuserinfo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660", "793781899796938802"],
+    channelsGranted: ["869975190052929566", "869975192645034085"],
     execute(message, args, client) {
         database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
@@ -27,7 +27,7 @@ module.exports = {
             }
 
             var userstats = userstatsList.find(x => x.id == utente.id);
-            if(!userstats) return
+            if (!userstats) return
             if (!userstats.timeLastScore) {
                 warming(message, "Non ha mai giocato", "Questo utente non ha mai giocato a Counting")
                 return

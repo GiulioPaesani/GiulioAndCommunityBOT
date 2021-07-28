@@ -5,7 +5,7 @@ module.exports = {
     name: "channelstats",
     aliases: ["channel", "channelinfo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         if (!args[0]) {
             var canale = message.channel;

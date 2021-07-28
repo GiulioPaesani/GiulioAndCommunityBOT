@@ -5,7 +5,7 @@ module.exports = {
     name: "userstats",
     aliases: ["user", "userinfo"],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     async execute(message, args, client) {
         database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);

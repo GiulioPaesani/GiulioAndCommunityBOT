@@ -4,7 +4,7 @@ module.exports = {
     name: "say",
     aliases: [],
     onlyStaff: false,
-    channelsGranted: ["801019779480944660"],
+    channelsGranted: ["869975190052929566"],
     execute(message, args, client) {
         database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
