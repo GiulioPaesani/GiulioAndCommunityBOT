@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "messageReactionAdd",
     execute(messageReaction, user) {
+        return
         if (user.bot) return
         if (messageReaction.message.channel.type == "dm") return
         if (messageReaction.message.guild.id != config.idServer) return

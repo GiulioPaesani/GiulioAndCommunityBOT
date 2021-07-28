@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "messageUpdate",
     execute(oldMessage, newMessage) {
+        return
         if (!newMessage.author) return
         if (newMessage.author.bot) return
         if (newMessage.channel.type == "dm") return

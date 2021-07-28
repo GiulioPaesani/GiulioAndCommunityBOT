@@ -27,8 +27,8 @@ module.exports = {
             }
 
             var userstats = userstatsList.find(x => x.id == utente.id);
-            if(!userstats) return
-                
+            if (!userstats) return
+
             let elencoRuoli = "";
             utente._roles.forEach(idRuolo => elencoRuoli += `- ${message.guild.roles.cache.get(idRuolo).name}\r`);
 
@@ -56,12 +56,12 @@ module.exports = {
                 .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)
                 .addField(":pencil: Account created", "```" + moment(utente.user.createdAt).format("ddd DD MMM, HH:mm") + " (" + moment(utente.user.createdAt).fromNow() + ")```", false)
                 .addField(":red_car: Joined this server", "```" + moment(utente.joinedTimestamp).format("ddd DD MMM, HH:mm") + " (" + moment(utente.joinedTimestamp).fromNow() + ")```", false)
-                .addField(":bar_chart: Statistics",`\`\`\`
-Total message: ${userstats.statistics.totalMessage}
-Commands executed: ${userstats.statistics.commands}
-Edited message: ${userstats.statistics.editMessage}
-Deleted message: ${userstats.statistics.deleteMessage}
-Reactions added: ${userstats.statistics.addReaction}\`\`\``, false)
+                //                 .addField(":bar_chart: Statistics",`\`\`\`
+                // Total message: ${userstats.statistics.totalMessage}
+                // Commands executed: ${userstats.statistics.commands}
+                // Edited message: ${userstats.statistics.editMessage}
+                // Deleted message: ${userstats.statistics.deleteMessage}
+                // Reactions added: ${userstats.statistics.addReaction}\`\`\``, false)
                 .addField(":beginner: Badge", "```" + elencoBadge + "```", false)
                 .addField(":shirt: Roles", "```" + elencoRuoli + "```", false)
 
