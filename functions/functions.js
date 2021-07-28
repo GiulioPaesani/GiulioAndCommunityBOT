@@ -305,7 +305,12 @@ global.youtubeNotification = function () {
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
         ytch.getChannelVideos(channelId, sortBy).then((response) => {
+            console.log(serverstats.lastVideo)
+            console.log(response.items[0].videoId)
+            console.log("---")
             if (serverstats.lastVideo != response.items[0].videoId) {
+                console.log("ciao")
+                return
                 var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
                 canale.send(`
 -------------:red_circle: 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 :red_circle:-------------
