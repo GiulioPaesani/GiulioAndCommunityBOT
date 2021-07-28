@@ -146,7 +146,7 @@ client.on("message", message => {
 //Counter youtube
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-        var canale = client.channels.cache.get("801717800137129994")
+        var canale = client.channels.cache.get("869975166543876177")
         canale.setName("🎬│subscribers: " + response.subscriberCount)
     })
 }, 1000 * 60 * 5)
@@ -157,6 +157,6 @@ setInterval(function () {
     var botCount = server.members.cache.filter(member => member.user.bot).size;
     var utentiCount = server.memberCount - botCount;
 
-    var canale = client.channels.cache.get("800802386587287562")
+    var canale = client.channels.cache.get("869975166128631808")
     canale.setName("👾│members: " + utentiCount)
 }, 1000 * 60 * 5)

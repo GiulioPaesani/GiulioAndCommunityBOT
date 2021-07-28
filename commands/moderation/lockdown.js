@@ -16,13 +16,13 @@ module.exports = {
             lockdown = true;
             ruolo.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "CONNECT", "USE_VAD"])
 
-            var canale = client.channels.cache.get("838673639594655794");
+            var canale = client.channels.cache.get("869975206310064179");
             canale.updateOverwrite(ruolo, {
                 VIEW_CHANNEL: true,
             })
 
-            if (message.channel.id == "793781898689773589") return
-            var canale = client.channels.cache.get("793781898689773589");
+            if (message.channel.id == "869975177935593483") return
+            var canale = client.channels.cache.get("869975177935593483");
             canale.send(embed);
         }
         else {
@@ -34,13 +34,13 @@ module.exports = {
             ruolo.setPermissions(["SEND_MESSAGES", "VIEW_CHANNEL", "CREATE_INSTANT_INVITE", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "CONNECT", "SPEAK", "USE_VAD"])
             lockdown = false;
 
-            var canale = client.channels.cache.get("838673639594655794");
+            var canale = client.channels.cache.get("869975206310064179");
             canale.updateOverwrite(ruolo, {
                 VIEW_CHANNEL: false,
             })
 
-            if (message.channel.id == "793781898689773589") return
-            var canale = client.channels.cache.get("793781898689773589");
+            if (message.channel.id == "869975177935593483") return
+            var canale = client.channels.cache.get("869975177935593483");
             canale.send(embed);
         }
     },
