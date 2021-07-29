@@ -22,7 +22,7 @@ module.exports = {
 :call_me: Ciao ${member.toString()}, benvenuto in **GiulioAndCommunity**
 :eyes: Sei il **${utentiCount}° Membro**
 :scroll: Prima di fare altro, leggi le <#793781895829258260>
-:rotating_light: Puoi vedere tutte le informazioni sul server in <#793781897619570738>`)
+:rotating_light: Puoi vedere tutte le informazioni sul server in <#869975174383009812>`)
 
             var embed = new Discord.MessageEmbed()
                 .setAuthor(`[WELCOME] ${member.user.username}#${member.user.discriminator}`, member.user.avatarURL())
