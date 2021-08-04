@@ -14,6 +14,6 @@ module.exports = {
 
         setInterval(makeBackup, 1000);
 
-        setInterval(youtubeNotification, 30 * 1000)
+        //setInterval(youtubeNotification, 30 * 1000)
     },
 };
