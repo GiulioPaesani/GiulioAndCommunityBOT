@@ -191,7 +191,7 @@ ${userstats.moderation.moderator}
                     })
             }
 
+            await db.close()
         })
-        await db.close()
     },
 };

@@ -52,7 +52,7 @@ module.exports = {
                 .addField("Level " + userstats.level, progress + "\rXP: " + humanNumber(parseInt(userstats.xp - calcoloXpNecessario(userstats.level))) + "/" + humanNumber(calcoloXpNecessario(userstats.level + 1) - calcoloXpNecessario(userstats.level)) + " - Rank: #" + position)
 
             message.channel.send(embed)
+            await db.close()
         })
-        await db.close()
     },
 };

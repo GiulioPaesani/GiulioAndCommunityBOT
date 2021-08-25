@@ -66,7 +66,7 @@ module.exports = {
             })
 
             correct(message, "Utente aggiunto", `${utente.toString()} è stato aggiunto a questo ticket`)
+            await db.close()
         })
-        await db.close()
     },
 };

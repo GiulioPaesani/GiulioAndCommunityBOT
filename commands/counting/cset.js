@@ -38,7 +38,7 @@ module.exports = {
                 })
 
             database.collection("serverstats").updateOne({}, { $set: serverstats });
+            await db.close()
         })
-        await db.close()
     },
 };

@@ -55,7 +55,7 @@ module.exports = {
                 embed.addField(":x: Total incorrect", "```" + userstats.incorrect + " (" + (100 * userstats.incorrect / (userstats.correct + userstats.incorrect)).toFixed(2) + "%)```", true)
 
             message.channel.send(embed)
+            await db.close()
         })
-        await db.close()
     },
 };

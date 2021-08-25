@@ -11,11 +11,11 @@ module.exports = {
         if (trovata && !utenteMod(message.member)) return
 
         const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(function (err, result) {
+        await database.collection("serverstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
-            database.collection("userstats").find().toArray(function (err, result) {
+            await database.collection("userstats").find().toArray(function (err, result) {
                 if (err) return codeError(err);
                 var userstatsList = result;
 
@@ -106,8 +106,9 @@ module.exports = {
 
                 database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
                 database.collection("serverstats").updateOne({}, { $set: serverstats });
+
+                await db.close()
             })
         })
-        await db.close()
     },
 };

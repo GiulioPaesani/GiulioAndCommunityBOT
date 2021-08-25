@@ -191,7 +191,7 @@ module.exports = {
             utente.send(embedUtente).catch(() => {
                 return
             })
+            await db.close()
         })
-        await db.close()
     },
 };

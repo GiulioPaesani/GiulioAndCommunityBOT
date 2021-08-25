@@ -51,7 +51,7 @@ module.exports = {
                 .addField("Leaderboard", leaderboard)
 
             message.channel.send(embed)
+            await db.close()
         })
-        await db.close()
     },
 };

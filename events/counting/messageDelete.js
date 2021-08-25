@@ -36,7 +36,7 @@ module.exports = {
                 .then(msg => {
                     msg.react("🟢");
                 })
+            await db.close()
         })
-        await db.close()
     },
 };

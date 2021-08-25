@@ -43,8 +43,9 @@ module.exports = {
                     component: button1,
                     embed: embed
                 }).catch(() => { return })
+
+                await db.close()
             })
-            await db.close()
         }
 
     },

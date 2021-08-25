@@ -41,7 +41,7 @@ module.exports = {
 
             message.delete()
             message.channel.send(testo)
+            await db.close()
         })
-        await db.close()
     },
 };

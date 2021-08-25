@@ -53,7 +53,7 @@ module.exports = {
 
                     message.delete();
                 })
+            await db.close()
         })
-        await db.close()
     },
 };

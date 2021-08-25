@@ -87,7 +87,7 @@ module.exports = {
                 database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
                 setLevelRole(message.member, userstats.level)
             }
+            await db.close()
         })
-        await db.close()
     },
 };

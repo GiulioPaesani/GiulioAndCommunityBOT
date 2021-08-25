@@ -76,7 +76,7 @@ module.exports = {
             canale.send(embed)
 
             database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            await db.close()
         })
-        await db.close()
     },
 };

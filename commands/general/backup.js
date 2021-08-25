@@ -9,10 +9,10 @@ module.exports = {
     channelsGranted: [],
     async execute(message, args, client) {
         const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(function (err, userstatsList) {
+        await database.collection("userstats").find().toArray(async function (err, userstatsList) {
             if (err) return codeError(err);
 
-            database.collection("serverstats").find().toArray(function (err, serverstats) {
+            await database.collection("serverstats").find().toArray(function (err, serverstats) {
                 if (err) return codeError(err);
 
                 var embed = new Discord.MessageEmbed()
@@ -38,8 +38,8 @@ module.exports = {
                 canale.send(attachment1);
                 canale.send(attachment2);
 
+                await db.close()
             })
         })
-        await db.close()
     },
 };

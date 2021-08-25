@@ -8,11 +8,11 @@ module.exports = {
     channelsGranted: ["869975190052929566", "869975192645034085"],
     async execute(message, args, client) {
         const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(function (err, result) {
+        await database.collection("serverstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
-            database.collection("userstats").find().toArray(function (err, result) {
+            await database.collection("userstats").find().toArray(function (err, result) {
                 if (err) return codeError(err);
                 var userstatsList = result;
 
@@ -94,8 +94,9 @@ module.exports = {
                     .addField("Leaderboard (by Correct)", leaderboardCorrect, true)
 
                 message.channel.send(embed)
+
+                await db.close()
             })
         })
-        await db.close()
     },
 };

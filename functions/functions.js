@@ -269,18 +269,18 @@ global.checkModeration = async function () {
                 database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
             }
         }
+        await db.close()
     })
-    await db.close()
 }
 
 global.makeBackup = async function () {
     var data = new Date()
     if (data.getHours() == 12 && data.getMinutes() == 0 && data.getSeconds() == 0) {
         const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(function (err, userstatsList) {
+        await database.collection("userstats").find().toArray(async function (err, userstatsList) {
             if (err) return codeError(err);
 
-            database.collection("serverstats").find().toArray(function (err, serverstats) {
+            await database.collection("serverstats").find().toArray(function (err, serverstats) {
                 if (err) return codeError(err);
 
                 var embed = new Discord.MessageEmbed()
@@ -296,9 +296,10 @@ global.makeBackup = async function () {
                 canale.send(embed);
                 canale.send(attachment1);
                 canale.send(attachment2);
+
+                await db.close()
             })
         })
-        await db.close()
     }
 }
 
@@ -325,8 +326,8 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
                 database.collection("serverstats").updateOne({}, { $set: serverstats });
             }
         })
+        await db.close()
     })
-    await db.close()
 }
 
 global.getDatabase = async function () {

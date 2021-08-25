@@ -80,7 +80,7 @@ module.exports = {
             })
 
             correct(message, "Utente rimosso", `${utente.toString()} è stato rimosso a questo ticket`)
+            await db.close()
         })
-        await db.close()
     },
 };

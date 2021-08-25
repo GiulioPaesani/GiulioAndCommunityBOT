@@ -131,7 +131,7 @@ Buon divertimento!
 
             var canale = client.channels.cache.get(config.idCanaliServer.log);
             canale.send(embed);
+            await db.close()
         })
-        await db.close()
     },
 };

@@ -103,7 +103,7 @@ module.exports = {
 
                 })
             }, 10000)
+            await db.close()
         })
-        await db.close()
     },
 };

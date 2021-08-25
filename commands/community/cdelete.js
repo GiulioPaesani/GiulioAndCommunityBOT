@@ -44,7 +44,7 @@ module.exports = {
             delete challenges[id];
             serverstats.challenges = challenges;
             database.collection("serverstats").updateOne({}, { $set: serverstats });
+            await db.close()
         })
-        await db.close()
     },
 };

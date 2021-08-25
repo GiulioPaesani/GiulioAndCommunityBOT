@@ -49,7 +49,7 @@ module.exports = {
                     })
             }
 
+            await db.close()
         })
-        await db.close()
     },
 };

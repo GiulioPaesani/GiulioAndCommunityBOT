@@ -43,7 +43,7 @@ module.exports = {
             await setLevelRole(utente, setLevel)
 
             await correct(message, "Livello impostato", "Livello " + setLevel + " impostato a " + utente.toString())
+            await db.close()
         })
-        await db.close()
     },
 };
