@@ -8,7 +8,7 @@ module.exports = {
     channelsGranted: ["869975190052929566"],
     async execute(message, args, client) {
         const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(function (err, result) {
+        await database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 

@@ -8,7 +8,7 @@ module.exports = {
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
         const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(function (err, result) {
+        await database.collection("serverstats").find().toArray(async function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions
             let challenges = serverstats.challenges

@@ -7,7 +7,7 @@ module.exports = {
     channelsGranted: [],
     async execute(message, args, client) {
         const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(function (err, result) {
+        await database.collection("serverstats").find().toArray(async function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions;
 

@@ -8,7 +8,7 @@ module.exports = {
         if (member.guild.id != config.idServer) return
 
         const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(function (err, result) {
+        await database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 

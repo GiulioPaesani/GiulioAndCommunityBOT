@@ -7,7 +7,7 @@ module.exports = {
         if (message.channel.id != config.idCanaliServer.counting) return
 
         const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(function (err, result) {
+        await database.collection("serverstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 

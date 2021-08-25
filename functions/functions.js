@@ -158,7 +158,7 @@ global.getParolaccia = function (content) {
 
 global.checkModeration = async function () {
     const { database, db } = await getDatabase()
-    await database.collection("userstats").find().toArray(function (err, result) {
+    await database.collection("userstats").find().toArray(async function (err, result) {
         if (err) return codeError(err);
         var userstatsList = result;
 
@@ -305,7 +305,7 @@ global.makeBackup = async function () {
 
 global.youtubeNotification = async function () {
     const { database, db } = await getDatabase()
-    await database.collection("serverstats").find().toArray(function (err, result) {
+    await database.collection("serverstats").find().toArray(async function (err, result) {
         if (err) return codeError(err);
         var serverstats = result[0];
 
