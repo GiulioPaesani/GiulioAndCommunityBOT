@@ -6,7 +6,8 @@ module.exports = {
         if (message.author.bot) return
         if (message.channel.type == "dm") return
 
-        database.collection("userstats").find().toArray(async function (err, result) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -87,5 +88,6 @@ module.exports = {
                 setLevelRole(message.member, userstats.level)
             }
         })
+        await database.close()
     },
 };

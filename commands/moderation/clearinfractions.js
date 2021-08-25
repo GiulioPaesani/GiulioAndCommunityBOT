@@ -6,8 +6,9 @@ module.exports = {
     aliases: ["clearwarn", "clearinfraction", "clearinfrazioni"],
     onlyStaff: true,
     channelsGranted: [],
-    execute(message, args, client) {
-        database.collection("userstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -57,5 +58,6 @@ module.exports = {
             }
 
         })
+        await database.close()
     },
 };

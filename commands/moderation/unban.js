@@ -7,8 +7,9 @@ module.exports = {
     aliases: [],
     onlyStaff: true,
     channelsGranted: [],
-    execute(message, args, client) {
-        database.collection("userstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -16,7 +17,7 @@ module.exports = {
             if (!utente) {
                 var utente = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(user => user.user.username.toLowerCase() == args[0]) || message.guild.members.cache.find(user => user.user.tag.toLowerCase() == args[0]) || message.guild.members.cache.find(user => user.nickname && user.nickname.toLowerCase() == args[0])
             }
-            if(!utente){
+            if (!utente) {
                 var utente = client.users.cache.find(user => user.id == args[0])
             }
 
@@ -26,8 +27,8 @@ module.exports = {
             }
 
             var userstats = userstatsList.find(x => x.id == utente.id);
-            if(!userstats) return
-            
+            if (!userstats) return
+
             if (userstats.moderation.type == "") {
                 warming(message, "Utente non bannato", "Questo utente non è bannato")
                 return
@@ -66,36 +67,36 @@ module.exports = {
                 return
             }
 
-            message.guild.members.unban(utente.id).catch(() => {return})
+            message.guild.members.unban(utente.id).catch(() => { return })
 
             var ruoloBanned = message.guild.roles.cache.find(role => role.id == config.ruoliModeration.banned);
             var ruoloTempbanned = message.guild.roles.cache.find(role => role.id == config.ruoliModeration.tempbanned);
 
-            if(utente.roles){
+            if (utente.roles) {
                 utente.roles.remove(ruoloBanned)
                 utente.roles.remove(ruoloTempbanned)
                 var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNBAN] " + utente.user.username + "#" + utente.user.discriminator, utente.user.avatarURL({ dynamic: true }))
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setColor("#6143CB")
-                .addField("Moderator", message.author.toString())
-                .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
-                .setFooter("User ID: " + utente.id)
+                    .setAuthor("[UNBAN] " + utente.user.username + "#" + utente.user.discriminator, utente.user.avatarURL({ dynamic: true }))
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setColor("#6143CB")
+                    .addField("Moderator", message.author.toString())
+                    .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
+                    .setFooter("User ID: " + utente.id)
 
                 message.channel.send(embed)
             }
-            else{
+            else {
                 var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setColor("#6143CB")
-                .addField("Moderator", message.author.toString())
-                .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
-                .setFooter("User ID: " + utente.id)
+                    .setAuthor("[UNBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setColor("#6143CB")
+                    .addField("Moderator", message.author.toString())
+                    .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
+                    .setFooter("User ID: " + utente.id)
 
                 message.channel.send(embed)
             }
-            
+
             var embedUtente = new Discord.MessageEmbed()
                 .setTitle("Sei stato sbannato")
                 .setColor("#6143CB")
@@ -121,5 +122,6 @@ module.exports = {
 
             database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
         })
+        await database.close()
     },
 };

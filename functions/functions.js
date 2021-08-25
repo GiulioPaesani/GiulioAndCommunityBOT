@@ -4,12 +4,20 @@ const ms = require("ms");
 const { MessageAttachment } = require('discord.js');
 const moment = require("moment")
 const ytch = require('yt-channel-info');
+var MongoClient = require('mongodb').MongoClient;
 
 global.utenteMod = function (member) {
     for (const [name, idRuolo] of Object.entries(config.ruoliStaff)) {
         if (member.roles.cache.has(idRuolo)) return true
     }
     return false
+}
+
+global.getDatabase() = async function () {
+    const url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
+    const db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    database = await db.db("GiulioAndCommunity")
+    return database
 }
 
 global.codeError = function (err) {

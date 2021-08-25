@@ -7,7 +7,8 @@ module.exports = {
 
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
-        database.collection("serverstats").find().toArray(function (err, result) {
+        database = await getDatabase()
+        await database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions
             let challenges = serverstats.challenges
@@ -133,5 +134,6 @@ module.exports = {
                     })
             }
         })
+        await database.close()
     },
 };

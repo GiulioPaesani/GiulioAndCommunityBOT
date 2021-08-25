@@ -6,8 +6,9 @@ module.exports = {
     aliases: ["infraction", "infrazioni"],
     onlyStaff: false,
     channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
-        database.collection("userstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -191,5 +192,6 @@ ${userstats.moderation.moderator}
             }
 
         })
+        await database.close()
     },
 };

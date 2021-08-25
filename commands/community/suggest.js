@@ -5,8 +5,9 @@ module.exports = {
     aliases: ["suggerisci", "suggerimento"],
     onlyStaff: false,
     channelsGranted: ["869975183446933544"],
-    execute(message, args, client) {
-        database.collection("serverstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions;
 
@@ -53,5 +54,6 @@ module.exports = {
                     message.delete();
                 })
         })
+        await database.close()
     },
 };

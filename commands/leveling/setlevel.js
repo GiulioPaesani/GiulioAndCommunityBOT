@@ -3,8 +3,9 @@ module.exports = {
     aliases: ["setrank"],
     onlyStaff: true,
     channelsGranted: [],
-    execute(message, args, client) {
-        database.collection("userstats").find().toArray(async function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -43,5 +44,6 @@ module.exports = {
 
             await correct(message, "Livello impostato", "Livello " + setLevel + " impostato a " + utente.toString())
         })
+        await database.close()
     },
 };

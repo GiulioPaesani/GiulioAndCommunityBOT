@@ -7,8 +7,9 @@ module.exports = {
     aliases: [],
     onlyStaff: true,
     channelsGranted: [],
-    execute(message, args, client) {
-        database.collection("userstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -37,8 +38,8 @@ module.exports = {
             }
 
             var userstats = userstatsList.find(x => x.id == utente.id);
-            if(!userstats) return
-            
+            if (!userstats) return
+
             var reason = args.slice(2).join(" ");
             if (!reason) {
                 reason = "Nessun motivo";
@@ -191,5 +192,6 @@ module.exports = {
                 return
             })
         })
+        await database.close()
     },
 };

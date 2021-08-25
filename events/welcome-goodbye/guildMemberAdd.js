@@ -3,11 +3,12 @@ const moment = require("moment")
 
 module.exports = {
     name: `guildMemberAdd`,
-    execute(member) {
+    async execute(member) {
         if (member.user.bot) return
         if (member.guild.id != config.idServer) return
 
-        database.collection("userstats").find().toArray(function (err, result) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -131,5 +132,6 @@ Buon divertimento!
             var canale = client.channels.cache.get(config.idCanaliServer.log);
             canale.send(embed);
         })
+        await database.close()
     },
 };

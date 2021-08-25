@@ -11,7 +11,8 @@ module.exports = {
 
         if (!trovata) return
 
-        database.collection("userstats").find().toArray(function (err, result) {
+        database = await getDatabase()
+        await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -58,5 +59,6 @@ module.exports = {
 
             database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
         })
+        await database.close()
     },
 };

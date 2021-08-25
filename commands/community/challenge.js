@@ -5,8 +5,9 @@ module.exports = {
     aliases: ["sfida"],
     onlyStaff: false,
     channelsGranted: ["869975184289988698"],
-    execute(message, args, client) {
-        database.collection("serverstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let challenges = serverstats.challenges;
 
@@ -52,5 +53,6 @@ module.exports = {
                     message.delete();
                 })
         })
+        await database.close()
     },
 };

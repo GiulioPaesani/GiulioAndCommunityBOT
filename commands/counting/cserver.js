@@ -6,8 +6,9 @@ module.exports = {
     aliases: ["cserverstats", "cserverinfo"],
     onlyStaff: false,
     channelsGranted: ["869975190052929566", "869975192645034085"],
-    execute(message, args, client) {
-        database.collection("serverstats").find().toArray(function (err, result) {
+    async execute(message, args, client) {
+        database = await getDatabase()
+        await database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -95,5 +96,6 @@ module.exports = {
                 message.channel.send(embed)
             })
         })
+        await database.close()
     },
 };

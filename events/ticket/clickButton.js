@@ -10,7 +10,8 @@ module.exports = {
         button.reply.defer()
         var bottone = button
 
-        database.collection("serverstats").find().toArray(await function (err, result) {
+        database = await getDatabase()
+        await database.collection("serverstats").find().toArray(await function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -358,5 +359,6 @@ module.exports = {
                 }
             }
         })
+        await database.close()
     },
 };

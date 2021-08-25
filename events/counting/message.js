@@ -3,14 +3,15 @@ const Parser = require('expr-eval').Parser;
 
 module.exports = {
     name: "message",
-    execute(message) {
+    async execute(message) {
         if (message.channel.id != config.idCanaliServer.counting) return
         if (message.author.bot) return
 
         trovata = getParolaccia(message.content)[0];
         if (trovata && !utenteMod(message.member)) return
 
-        database.collection("serverstats").find().toArray(function (err, result) {
+        database = await getDatabase()
+        await database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -26,8 +27,8 @@ module.exports = {
                 catch { return }
 
                 var userstats = userstatsList.find(x => x.id == message.author.id);
-                if(!userstats) return
-                
+                if (!userstats) return
+
                 if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
                     var titleRandom = ["MA SAPETE COME SI GIOCA?", "MA È COSÌ DIFFICILE QUESTO GIOCO?", "NOOOO, PERCHÈ..."]
                     var embed = new Discord.MessageEmbed()
@@ -107,5 +108,6 @@ module.exports = {
                 database.collection("serverstats").updateOne({}, { $set: serverstats });
             })
         })
+        await database.close()
     },
 };
