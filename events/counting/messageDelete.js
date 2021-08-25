@@ -3,11 +3,10 @@ const Parser = require('expr-eval').Parser;
 
 module.exports = {
     name: "messageDelete",
-    async execute(message) {
+    execute(message) {
         if (message.channel.id != config.idCanaliServer.counting) return
 
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -36,7 +35,6 @@ module.exports = {
                 .then(msg => {
                     msg.react("🟢");
                 })
-            await db.close()
         })
     },
 };

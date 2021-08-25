@@ -3,9 +3,8 @@ module.exports = {
     aliases: ["setrank"],
     onlyStaff: true,
     channelsGranted: [],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -43,7 +42,6 @@ module.exports = {
             await setLevelRole(utente, setLevel)
 
             await correct(message, "Livello impostato", "Livello " + setLevel + " impostato a " + utente.toString())
-            await db.close()
         })
     },
 };

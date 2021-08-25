@@ -7,9 +7,8 @@ module.exports = {
     aliases: [],
     onlyStaff: false,
     channelsGranted: [],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -84,11 +83,11 @@ module.exports = {
 
             ticket.daEliminare = true;
             serverstats.ticket[serverstats.ticket.findIndex(x => x.channel == ticket.channel)] = ticket
-            await database.collection("serverstats").updateOne({}, { $set: serverstats });
+            database.collection("serverstats").updateOne({}, { $set: serverstats });
 
             var idCanale = ticket.channel;
-            setTimeout(async function () {
-                await database.collection("serverstats").find().toArray(async function (err, result) {
+            setTimeout(function () {
+                database.collection("serverstats").find().toArray(function (err, result) {
                     if (err) return codeError(err);
                     var serverstats = result[0];
 
@@ -98,9 +97,9 @@ module.exports = {
                     if (ticket.daEliminare) {
                         message.channel.delete()
                         serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
-                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        database.collection("serverstats").updateOne({}, { $set: serverstats });
                     }
-                    await db.close()
+
                 })
             }, 10000)
         })

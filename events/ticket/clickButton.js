@@ -10,8 +10,7 @@ module.exports = {
         button.reply.defer()
         var bottone = button
 
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+        database.collection("serverstats").find().toArray(await function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -75,7 +74,7 @@ module.exports = {
                         canale.send({
                             component: row,
                             embed: embed
-                        }).then(async msg => {
+                        }).then(msg => {
                             ticket.push({
                                 "type": "Normal",
                                 "channel": canale.id,
@@ -85,9 +84,7 @@ module.exports = {
                                 "daEliminare": false
                             })
                             serverstats.ticket = ticket;
-                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                            await db.close()
+                            database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
 
                         canale.send(`<@${bottone.clicker.user.id}> ecco il tuo ticket\r`)
@@ -145,7 +142,7 @@ module.exports = {
                         canale.send({
                             component: row,
                             embed: embed
-                        }).then(async msg => {
+                        }).then(msg => {
                             ticket.push({
                                 "type": "Moderation",
                                 "channel": canale.id,
@@ -155,9 +152,7 @@ module.exports = {
                                 "daEliminare": false
                             })
                             serverstats.ticket = ticket;
-                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                            await db.close()
+                            database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
 
                         canale.send(`<@${bottone.clicker.user.id}> ecco il tuo ticket\r`)
@@ -182,7 +177,7 @@ module.exports = {
                         .then(msg => msg.delete({ timeout: 500 }))
 
                     client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                        .then(async msg => {
+                        .then(msg => {
                             var embed = new Discord.MessageEmbed()
                                 .setTitle("Ticket aperto")
                                 .setColor("#4b9afa")
@@ -203,9 +198,7 @@ module.exports = {
 
                             ticket.modTaggati = true;
                             serverstats.ticket[index] = ticket;
-                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                            await db.close()
+                            database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
                 }
                 if (ticket.type == "Moderation") {
@@ -214,7 +207,7 @@ module.exports = {
                         .then(msg => msg.delete({ timeout: 500 }))
 
                     client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                        .then(async msg => {
+                        .then(msg => {
                             var embed = new Discord.MessageEmbed()
                                 .setTitle("Segnalazione aperta")
                                 .setColor("#6143CB")
@@ -235,9 +228,7 @@ module.exports = {
 
                             ticket.modTaggati = true;
                             serverstats.ticket[index] = ticket;
-                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                            await db.close()
+                            database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
                 }
             }
@@ -296,11 +287,11 @@ module.exports = {
 
                     ticket.daEliminare = true;
                     serverstats.ticket[serverstats.ticket.findIndex(x => x.channel == ticket.channel)] = ticket
-                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     var idCanale = ticket.channel;
-                    setTimeout(async function () {
-                        await database.collection("serverstats").find().toArray(async function (err, result) {
+                    setTimeout(function () {
+                        database.collection("serverstats").find().toArray(function (err, result) {
                             if (err) return codeError(err);
                             var serverstats = result[0];
 
@@ -310,9 +301,9 @@ module.exports = {
                             if (ticket.daEliminare) {
                                 bottone.channel.delete()
                                 serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
-                                await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                                database.collection("serverstats").updateOne({}, { $set: serverstats });
                             }
-                            await db.close()
+
                         })
                     }, 10000)
                 }
@@ -325,7 +316,7 @@ module.exports = {
                 if (ticket.daEliminare) {
                     ticket.daEliminare = false;
                     serverstats.ticket[index] = ticket;
-                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    database.collection("serverstats").updateOne({}, { $set: serverstats });
                     bottone.message.delete()
 
                     client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
@@ -365,8 +356,6 @@ module.exports = {
                             });
                         })
                 }
-
-                await db.close()
             }
         })
     },

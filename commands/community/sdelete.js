@@ -5,9 +5,8 @@ module.exports = {
     aliases: [],
     onlyStaff: true,
     channelsGranted: [],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions;
 
@@ -43,8 +42,7 @@ module.exports = {
 
             delete suggestions[id];
             serverstats.suggestions = suggestions;
-            await database.collection("serverstats").updateOne({}, { $set: serverstats });
-            await db.close()
+            database.collection("serverstats").updateOne({}, { $set: serverstats });
         })
     },
 };

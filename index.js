@@ -30,6 +30,9 @@ require("./functions/functions.js");
 
 global.config = require("./config/config.json");
 
+global.database = "";
+global.url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
+
 global.lockdown = false;
 
 //CODES comando !code

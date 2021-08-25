@@ -4,7 +4,6 @@ const ms = require("ms");
 const { MessageAttachment } = require('discord.js');
 const moment = require("moment")
 const ytch = require('yt-channel-info');
-var MongoClient = require('mongodb').MongoClient;
 
 global.utenteMod = function (member) {
     for (const [name, idRuolo] of Object.entries(config.ruoliStaff)) {
@@ -156,9 +155,8 @@ global.getParolaccia = function (content) {
     return [trovata, nonCensurato, censurato]
 }
 
-global.checkModeration = async function () {
-    const { database, db } = await getDatabase()
-    await database.collection("userstats").find().toArray(async function (err, result) {
+global.checkModeration = function () {
+    database.collection("userstats").find().toArray(function (err, result) {
         if (err) return codeError(err);
         var userstatsList = result;
 
@@ -218,7 +216,7 @@ global.checkModeration = async function () {
 
                 userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempmuted)
 
-                await database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
+                database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
             }
 
             if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
@@ -266,21 +264,19 @@ global.checkModeration = async function () {
 
                 userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempbanned)
 
-                await database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
+                database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
             }
         }
-        await db.close()
     })
 }
 
-global.makeBackup = async function () {
+global.makeBackup = function () {
     var data = new Date()
     if (data.getHours() == 12 && data.getMinutes() == 0 && data.getSeconds() == 0) {
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, userstatsList) {
+        database.collection("userstats").find().toArray(function (err, userstatsList) {
             if (err) return codeError(err);
 
-            await database.collection("serverstats").find().toArray(async function (err, serverstats) {
+            database.collection("serverstats").find().toArray(function (err, serverstats) {
                 if (err) return codeError(err);
 
                 var embed = new Discord.MessageEmbed()
@@ -296,22 +292,19 @@ global.makeBackup = async function () {
                 canale.send(embed);
                 canale.send(attachment1);
                 canale.send(attachment2);
-
-                await db.close()
             })
         })
     }
 }
 
-global.youtubeNotification = async function () {
-    const { database, db } = await getDatabase()
-    await database.collection("serverstats").find().toArray(async function (err, result) {
+global.youtubeNotification = function () {
+    database.collection("serverstats").find().toArray(function (err, result) {
         if (err) return codeError(err);
         var serverstats = result[0];
 
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
-        await ytch.getChannelVideos(channelId, sortBy).then(async (response) => {
+        ytch.getChannelVideos(channelId, sortBy).then((response) => {
             if (serverstats.lastVideo != response.items[0].videoId) {
                 var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
                 canale.send(`
@@ -323,16 +316,8 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
 <@&857544584691318814>
                 `)
                 serverstats.lastVideo = response.items[0].videoId;
-                await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                database.collection("serverstats").updateOne({}, { $set: serverstats });
             }
         })
-        await db.close()
     })
-}
-
-global.getDatabase = async function () {
-    const url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
-    const db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    database = await db.db("GiulioAndCommunity")
-    return { database, db }
 }

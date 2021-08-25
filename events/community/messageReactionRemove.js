@@ -7,8 +7,7 @@ module.exports = {
 
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions
             let challenges = serverstats.challenges
@@ -34,7 +33,7 @@ module.exports = {
 
                 var canale = client.channels.cache.get(config.idCanaliServer.suggestions)
                 canale.messages.fetch(messageReaction.message.id)
-                    .then(async message => {
+                    .then(message => {
 
                         var votiPos = suggestions[messageReaction.message.id].totVotiPos.length
                         var votiNeg = suggestions[messageReaction.message.id].totVotiNeg.length
@@ -66,8 +65,7 @@ module.exports = {
 
                         message.edit(newEmbed)
                         serverstats.suggestions = suggestions;
-                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
-                        await db.close()
+                        database.collection("serverstats").updateOne({}, { $set: serverstats });
                     })
             }
             if (messageReaction.message.channel.id == config.idCanaliServer.challenges) {
@@ -93,7 +91,7 @@ module.exports = {
 
                 var canale = client.channels.cache.get(config.idCanaliServer.challenges)
                 canale.messages.fetch(messageReaction.message.id)
-                    .then(async message => {
+                    .then(message => {
 
                         var votiPos = challenges[messageReaction.message.id].totVotiPos.length
                         var votiNeg = challenges[messageReaction.message.id].totVotiNeg.length
@@ -125,8 +123,7 @@ module.exports = {
 
                         message.edit(newEmbed)
                         serverstats.challenges = challenges;
-                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
-                        await db.close()
+                        database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     })
             }

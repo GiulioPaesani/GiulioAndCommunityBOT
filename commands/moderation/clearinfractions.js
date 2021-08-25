@@ -6,9 +6,8 @@ module.exports = {
     aliases: ["clearwarn", "clearinfraction", "clearinfrazioni"],
     onlyStaff: true,
     channelsGranted: [],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -54,10 +53,9 @@ module.exports = {
 
                 }
 
-                await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+                database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
             }
 
-            await db.close()
         })
     },
 };

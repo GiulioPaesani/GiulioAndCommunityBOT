@@ -3,12 +3,11 @@ const moment = require("moment")
 
 module.exports = {
     name: `guildMemberRemove`,
-    async execute(member) {
+    execute(member) {
         if (member.user.bot) return
         if (member.guild.id != config.idServer) return
 
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+        database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -16,7 +15,7 @@ module.exports = {
             if (!userstats) return
 
             userstats.roles = member._roles;
-            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
 
             var elencoRuoli = "";
             for (var i = 0; i < member._roles.length; i++) {
@@ -35,7 +34,6 @@ module.exports = {
 
             var canale = client.channels.cache.get(config.idCanaliServer.log);
             canale.send(embed);
-            await db.close()
         })
     },
 };

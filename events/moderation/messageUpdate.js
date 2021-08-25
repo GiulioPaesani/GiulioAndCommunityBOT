@@ -11,8 +11,7 @@ module.exports = {
 
         if (!trovata) return
 
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+        database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -57,8 +56,7 @@ module.exports = {
             newMessage.member.send(embedUtente)
                 .catch(() => { })
 
-            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
-            await db.close()
+            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
         })
     },
 };

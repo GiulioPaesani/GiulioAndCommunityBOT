@@ -5,9 +5,8 @@ module.exports = {
     aliases: ["suggerisci", "suggerimento"],
     onlyStaff: false,
     channelsGranted: ["869975183446933544"],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let suggestions = serverstats.suggestions;
 
@@ -30,8 +29,8 @@ module.exports = {
 
             let canale = client.channels.cache.find(channel => channel.id == config.idCanaliServer.suggestions);
 
-            await canale.send(embed)
-                .then(async msg => {
+            canale.send(embed)
+                .then(msg => {
                     msg.react("😍")
                     msg.react("💩")
 
@@ -49,11 +48,10 @@ module.exports = {
                     }
 
                     serverstats.suggestions = suggestions;
-                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     message.delete();
                 })
-            await db.close()
         })
     },
 };

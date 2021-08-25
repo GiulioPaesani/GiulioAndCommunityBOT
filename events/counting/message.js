@@ -3,19 +3,18 @@ const Parser = require('expr-eval').Parser;
 
 module.exports = {
     name: "message",
-    async execute(message) {
+    execute(message) {
         if (message.channel.id != config.idCanaliServer.counting) return
         if (message.author.bot) return
 
         trovata = getParolaccia(message.content)[0];
         if (trovata && !utenteMod(message.member)) return
 
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
-            await database.collection("userstats").find().toArray(async function (err, result) {
+            database.collection("userstats").find().toArray(function (err, result) {
                 if (err) return codeError(err);
                 var userstatsList = result;
 
@@ -27,8 +26,8 @@ module.exports = {
                 catch { return }
 
                 var userstats = userstatsList.find(x => x.id == message.author.id);
-                if (!userstats) return
-
+                if(!userstats) return
+                
                 if (message.author.id == serverstats.ultimoUtente) { //Se giocato lo stesso utente piu volte
                     var titleRandom = ["MA SAPETE COME SI GIOCA?", "MA È COSÌ DIFFICILE QUESTO GIOCO?", "NOOOO, PERCHÈ..."]
                     var embed = new Discord.MessageEmbed()
@@ -104,10 +103,8 @@ module.exports = {
 
                 }
 
-                await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
-                await database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                await db.close()
+                database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+                database.collection("serverstats").updateOne({}, { $set: serverstats });
             })
         })
     },

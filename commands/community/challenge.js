@@ -5,9 +5,8 @@ module.exports = {
     aliases: ["sfida"],
     onlyStaff: false,
     channelsGranted: ["869975184289988698"],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let challenges = serverstats.challenges;
 
@@ -29,8 +28,8 @@ module.exports = {
 
             var canale = client.channels.cache.find(channel => channel.id == config.idCanaliServer.challenges);
 
-            await canale.send(embed)
-                .then(async msg => {
+            canale.send(embed)
+                .then(msg => {
                     msg.react("👍")
                     msg.react("👎")
 
@@ -48,11 +47,10 @@ module.exports = {
                     }
 
                     serverstats.challenges = challenges;
-                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     message.delete();
                 })
-            await db.close()
         })
     },
 };

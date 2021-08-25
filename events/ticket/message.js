@@ -8,8 +8,7 @@ module.exports = {
     async execute(message) {
         if (message.author.bot) return
 
-        const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(async function (err, result) {
+        database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -23,8 +22,8 @@ module.exports = {
             var ruolo = message.mentions.roles.first()
             var utente = message.mentions.members.first()
             if ((ruolo && Object.values(config.ruoliStaff).includes(ruolo.id)) || utenteMod(message.member) || (utente && utenteMod(utente)) || message.member.roles.cache.has(config.idRuoloAiutante) || message.member.roles.cache.has(config.idRuoloAiutanteInProva)) {
-                await client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                    .then(async msg => {
+                client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
+                    .then(msg => {
                         var embed = new Discord.MessageEmbed()
                             .setTitle("Ticket aperto")
                             .setColor("#4b9afa")
@@ -45,10 +44,10 @@ module.exports = {
 
                         ticket.modTaggati = true;
                         serverstats.ticket[index] = ticket;
-                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        database.collection("serverstats").updateOne({}, { $set: serverstats });
                     })
             }
-            await db.close()
+
         })
     },
 };

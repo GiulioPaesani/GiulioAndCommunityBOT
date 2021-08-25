@@ -6,9 +6,8 @@ module.exports = {
     aliases: ["forceban"],
     onlyStaff: true,
     channelsGranted: [],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -37,8 +36,8 @@ module.exports = {
             }
 
             var userstats = userstatsList.find(x => x.id == utente.id);
-            if (!userstats) return
-
+            if(!userstats) return
+            
             var reason = args.slice(1).join(" ");
             if (!reason) {
                 reason = "Nessun motivo";
@@ -135,7 +134,7 @@ module.exports = {
                 "moderator": message.author.username
             }
 
-            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
 
             var embed = new Discord.MessageEmbed()
                 .setAuthor("[FORCE BAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
@@ -159,11 +158,10 @@ module.exports = {
                     return
                 })
 
-            utente.ban({ reason: reason })
-
+            utente.ban({reason: reason})
+   
             var canale = client.channels.cache.get(config.idCanaliServer.log);
             canale.send(embed)
-            await db.close()
         })
     },
 };

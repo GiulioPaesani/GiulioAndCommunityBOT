@@ -6,9 +6,8 @@ module.exports = {
     aliases: ["level"],
     onlyStaff: false,
     channelsGranted: ["869975190052929566"],
-    async execute(message, args, client) {
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+    execute(message, args, client) {
+        database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -52,7 +51,6 @@ module.exports = {
                 .addField("Level " + userstats.level, progress + "\rXP: " + humanNumber(parseInt(userstats.xp - calcoloXpNecessario(userstats.level))) + "/" + humanNumber(calcoloXpNecessario(userstats.level + 1) - calcoloXpNecessario(userstats.level)) + " - Rank: #" + position)
 
             message.channel.send(embed)
-            await db.close()
         })
     },
 };

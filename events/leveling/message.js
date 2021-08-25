@@ -6,8 +6,7 @@ module.exports = {
         if (message.author.bot) return
         if (message.channel.type == "dm") return
 
-        const { database, db } = await getDatabase()
-        await database.collection("userstats").find().toArray(async function (err, result) {
+        database.collection("userstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
 
@@ -84,10 +83,9 @@ module.exports = {
                     await canale.send(message.author.toString() + " hai raggiunto un **nuovo livello**", embed)
                 }
 
-                await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+                database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
                 setLevelRole(message.member, userstats.level)
             }
-            await db.close()
         })
     },
 };
