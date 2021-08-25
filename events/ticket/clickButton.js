@@ -182,7 +182,7 @@ module.exports = {
                         .then(msg => msg.delete({ timeout: 500 }))
 
                     client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                        .then(msg => {
+                        .then(async msg => {
                             var embed = new Discord.MessageEmbed()
                                 .setTitle("Ticket aperto")
                                 .setColor("#4b9afa")
