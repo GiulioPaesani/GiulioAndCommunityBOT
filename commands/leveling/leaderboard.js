@@ -53,6 +53,7 @@ module.exports = {
             message.channel.send(embed)
 
         })
-        await db.close()
+        console.log(db)
+        //await db.close()
     },
 };
