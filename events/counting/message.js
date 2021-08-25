@@ -10,7 +10,7 @@ module.exports = {
         trovata = getParolaccia(message.content)[0];
         if (trovata && !utenteMod(message.member)) return
 
-        database = await getDatabase()
+        const { database, db } = await getDatabase()
         await database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
@@ -108,6 +108,6 @@ module.exports = {
                 database.collection("serverstats").updateOne({}, { $set: serverstats });
             })
         })
-        await database.close()
+        await db.close()
     },
 };

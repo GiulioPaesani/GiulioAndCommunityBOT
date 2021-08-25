@@ -8,7 +8,7 @@ module.exports = {
     onlyStaff: true,
     channelsGranted: [],
     async execute(message, args, client) {
-        database = await getDatabase()
+        const { database, db } = await getDatabase()
         await database.collection("userstats").find().toArray(function (err, userstatsList) {
             if (err) return codeError(err);
 
@@ -40,6 +40,6 @@ module.exports = {
 
             })
         })
-        await database.close()
+        await db.close()
     },
 };

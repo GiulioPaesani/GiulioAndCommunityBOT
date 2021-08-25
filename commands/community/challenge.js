@@ -6,7 +6,7 @@ module.exports = {
     onlyStaff: false,
     channelsGranted: ["869975184289988698"],
     async execute(message, args, client) {
-        database = await getDatabase()
+        const { database, db } = await getDatabase()
         await database.collection("serverstats").find().toArray(function (err, result) {
             let serverstats = result[0]
             let challenges = serverstats.challenges;
@@ -53,6 +53,6 @@ module.exports = {
                     message.delete();
                 })
         })
-        await database.close()
+        await db.close()
     },
 };

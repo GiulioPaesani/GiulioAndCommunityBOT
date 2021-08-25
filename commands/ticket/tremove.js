@@ -6,7 +6,7 @@ module.exports = {
     onlyStaff: false,
     channelsGranted: [],
     async execute(message, args, client) {
-        database = await getDatabase()
+        const { database, db } = await getDatabase()
         await database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
@@ -81,6 +81,6 @@ module.exports = {
 
             correct(message, "Utente rimosso", `${utente.toString()} è stato rimosso a questo ticket`)
         })
-        await database.close()
+        await db.close()
     },
 };

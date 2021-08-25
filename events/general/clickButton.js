@@ -7,7 +7,7 @@ module.exports = {
     name: `clickButton`,
     async execute(button) {
         if (button.id == "candidatiHelper") {
-            database = await getDatabase()
+            const { database, db } = await getDatabase()
             await database.collection("userstats").find().toArray(function (err, result) {
                 if (err) return codeError(err);
                 var userstatsList = result;
@@ -44,7 +44,7 @@ module.exports = {
                     embed: embed
                 }).catch(() => { return })
             })
-            await database.close()
+            await db.close()
         }
 
     },

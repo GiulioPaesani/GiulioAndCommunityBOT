@@ -8,7 +8,7 @@ module.exports = {
     async execute(message) {
         if (message.author.bot) return
 
-        asyncdatabase = await getDatabase()
+        asyncconst { database, db } = await getDatabase()
         await database.collection("serverstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
@@ -50,6 +50,6 @@ module.exports = {
             }
 
         })
-        await database.close()
+        await db.close()
     },
 };

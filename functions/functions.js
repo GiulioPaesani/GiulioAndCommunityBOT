@@ -157,7 +157,7 @@ global.getParolaccia = function (content) {
 }
 
 global.checkModeration = async function () {
-    database = await getDatabase()
+    const { database, db } = await getDatabase()
     await database.collection("userstats").find().toArray(function (err, result) {
         if (err) return codeError(err);
         var userstatsList = result;
@@ -270,13 +270,13 @@ global.checkModeration = async function () {
             }
         }
     })
-    await database.close()
+    await db.close()
 }
 
 global.makeBackup = async function () {
     var data = new Date()
     if (data.getHours() == 12 && data.getMinutes() == 0 && data.getSeconds() == 0) {
-        database = await getDatabase()
+        const { database, db } = await getDatabase()
         await database.collection("userstats").find().toArray(function (err, userstatsList) {
             if (err) return codeError(err);
 
@@ -298,12 +298,12 @@ global.makeBackup = async function () {
                 canale.send(attachment2);
             })
         })
-        await database.close()
+        await db.close()
     }
 }
 
 global.youtubeNotification = async function () {
-    database = await getDatabase()
+    const { database, db } = await getDatabase()
     await database.collection("serverstats").find().toArray(function (err, result) {
         if (err) return codeError(err);
         var serverstats = result[0];
@@ -326,12 +326,12 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
             }
         })
     })
-    await database.close()
+    await db.close()
 }
 
 global.getDatabase = async function () {
     const url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
     const db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     database = await db.db("GiulioAndCommunity")
-    return database
+    return { database, db }
 }

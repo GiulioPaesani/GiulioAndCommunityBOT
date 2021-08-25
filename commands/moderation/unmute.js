@@ -8,7 +8,7 @@ module.exports = {
     onlyStaff: true,
     channelsGranted: [],
     async execute(message, args, client) {
-        database = await getDatabase()
+        const { database, db } = await getDatabase()
         await database.collection("userstats").find().toArray(function (err, result) {
             if (err) return codeError(err);
             var userstatsList = result;
@@ -131,6 +131,6 @@ module.exports = {
 
             database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
         })
-        await database.close()
+        await db.close()
     },
 };
