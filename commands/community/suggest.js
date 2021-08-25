@@ -30,8 +30,8 @@ module.exports = {
 
             let canale = client.channels.cache.find(channel => channel.id == config.idCanaliServer.suggestions);
 
-            canale.send(embed)
-                .then(msg => {
+            await canale.send(embed)
+                .then(async msg => {
                     msg.react("😍")
                     msg.react("💩")
 

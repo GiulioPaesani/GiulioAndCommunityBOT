@@ -311,7 +311,7 @@ global.youtubeNotification = async function () {
 
         const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
         const sortBy = 'newest'
-        ytch.getChannelVideos(channelId, sortBy).then((response) => {
+        await ytch.getChannelVideos(channelId, sortBy).then(async (response) => {
             if (serverstats.lastVideo != response.items[0].videoId) {
                 var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
                 canale.send(`

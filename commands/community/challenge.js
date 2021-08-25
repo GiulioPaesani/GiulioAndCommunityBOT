@@ -29,7 +29,7 @@ module.exports = {
 
             var canale = client.channels.cache.find(channel => channel.id == config.idCanaliServer.challenges);
 
-            canale.send(embed)
+            await canale.send(embed)
                 .then(async msg => {
                     msg.react("👍")
                     msg.react("👎")

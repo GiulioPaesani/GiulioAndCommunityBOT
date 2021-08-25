@@ -34,7 +34,7 @@ module.exports = {
 
                 var canale = client.channels.cache.get(config.idCanaliServer.suggestions)
                 canale.messages.fetch(messageReaction.message.id)
-                    .then(message => {
+                    .then(async message => {
 
                         var votiPos = suggestions[messageReaction.message.id].totVotiPos.length
                         var votiNeg = suggestions[messageReaction.message.id].totVotiNeg.length
@@ -67,6 +67,7 @@ module.exports = {
                         message.edit(newEmbed)
                         serverstats.suggestions = suggestions;
                         await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        await db.close()
                     })
             }
             if (messageReaction.message.channel.id == config.idCanaliServer.challenges) {
@@ -92,7 +93,7 @@ module.exports = {
 
                 var canale = client.channels.cache.get(config.idCanaliServer.challenges)
                 canale.messages.fetch(messageReaction.message.id)
-                    .then(message => {
+                    .then(async message => {
 
                         var votiPos = challenges[messageReaction.message.id].totVotiPos.length
                         var votiNeg = challenges[messageReaction.message.id].totVotiNeg.length
@@ -125,10 +126,10 @@ module.exports = {
                         message.edit(newEmbed)
                         serverstats.challenges = challenges;
                         await database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        await db.close()
 
                     })
             }
-            await db.close()
         })
     },
 };

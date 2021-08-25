@@ -64,6 +64,8 @@ module.exports = {
                 }
                 await database.collection("userstats").insertOne(userstats);
 
+                await db.close()
+
                 member.roles.add("815649916574629941")
                 member.roles.add("815649625591382077")
                 member.roles.add("826784690487951370")
@@ -100,6 +102,8 @@ Buon divertimento!
                     embed.addField("Old roles", oldRoles)
                     userstats.roles = [];
                     await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+
+                    await db.close()
                 }
 
                 if (elencoRuoli != "") {
@@ -131,7 +135,6 @@ Buon divertimento!
 
             var canale = client.channels.cache.get(config.idCanaliServer.log);
             canale.send(embed);
-            await db.close()
         })
     },
 };

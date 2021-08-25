@@ -75,7 +75,7 @@ module.exports = {
                         canale.send({
                             component: row,
                             embed: embed
-                        }).then(msg => {
+                        }).then(async msg => {
                             ticket.push({
                                 "type": "Normal",
                                 "channel": canale.id,
@@ -86,6 +86,8 @@ module.exports = {
                             })
                             serverstats.ticket = ticket;
                             await database.collection("serverstats").updateOne({}, { $set: serverstats });
+
+                            await db.close()
                         })
 
                         canale.send(`<@${bottone.clicker.user.id}> ecco il tuo ticket\r`)
@@ -143,7 +145,7 @@ module.exports = {
                         canale.send({
                             component: row,
                             embed: embed
-                        }).then(msg => {
+                        }).then(async msg => {
                             ticket.push({
                                 "type": "Moderation",
                                 "channel": canale.id,
@@ -154,6 +156,8 @@ module.exports = {
                             })
                             serverstats.ticket = ticket;
                             await database.collection("serverstats").updateOne({}, { $set: serverstats });
+
+                            await db.close()
                         })
 
                         canale.send(`<@${bottone.clicker.user.id}> ecco il tuo ticket\r`)
@@ -200,6 +204,8 @@ module.exports = {
                             ticket.modTaggati = true;
                             serverstats.ticket[index] = ticket;
                             await database.collection("serverstats").updateOne({}, { $set: serverstats });
+
+                            await db.close()
                         })
                 }
                 if (ticket.type == "Moderation") {
@@ -230,6 +236,8 @@ module.exports = {
                             ticket.modTaggati = true;
                             serverstats.ticket[index] = ticket;
                             await database.collection("serverstats").updateOne({}, { $set: serverstats });
+
+                            await db.close()
                         })
                 }
             }
@@ -304,7 +312,7 @@ module.exports = {
                                 serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
                                 await database.collection("serverstats").updateOne({}, { $set: serverstats });
                             }
-
+                            await db.close()
                         })
                     }, 10000)
                 }
@@ -357,8 +365,9 @@ module.exports = {
                             });
                         })
                 }
+
+                await db.close()
             }
-            await db.close()
         })
     },
 };

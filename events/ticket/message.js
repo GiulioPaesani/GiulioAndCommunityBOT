@@ -23,8 +23,8 @@ module.exports = {
             var ruolo = message.mentions.roles.first()
             var utente = message.mentions.members.first()
             if ((ruolo && Object.values(config.ruoliStaff).includes(ruolo.id)) || utenteMod(message.member) || (utente && utenteMod(utente)) || message.member.roles.cache.has(config.idRuoloAiutante) || message.member.roles.cache.has(config.idRuoloAiutanteInProva)) {
-                client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                    .then(msg => {
+                await client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
+                    .then(async msg => {
                         var embed = new Discord.MessageEmbed()
                             .setTitle("Ticket aperto")
                             .setColor("#4b9afa")
