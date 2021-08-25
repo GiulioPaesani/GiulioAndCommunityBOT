@@ -11,7 +11,7 @@ module.exports = {
         var bottone = button
 
         const { database, db } = await getDatabase()
-        await database.collection("serverstats").find().toArray(await function (err, result) {
+        await database.collection("serverstats").find().toArray(async function (err, result) {
             if (err) return codeError(err);
             var serverstats = result[0];
 
@@ -291,8 +291,8 @@ module.exports = {
                     database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     var idCanale = ticket.channel;
-                    setTimeout(function () {
-                        database.collection("serverstats").find().toArray(function (err, result) {
+                    setTimeout(async function () {
+                        await database.collection("serverstats").find().toArray(async function (err, result) {
                             if (err) return codeError(err);
                             var serverstats = result[0];
 
