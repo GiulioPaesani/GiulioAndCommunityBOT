@@ -13,13 +13,6 @@ global.utenteMod = function (member) {
     return false
 }
 
-global.getDatabase() = async function () {
-    const url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
-    const db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    database = await db.db("GiulioAndCommunity")
-    return database
-}
-
 global.codeError = function (err) {
     var embed = new Discord.MessageEmbed()
         .setTitle(`ERROR`)
@@ -328,4 +321,12 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
             }
         })
     })
+}
+
+global.getDatabase = async function () {
+    console.log("ciao")
+    const url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
+    const db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    database = await db.db("GiulioAndCommunity")
+    return database
 }
