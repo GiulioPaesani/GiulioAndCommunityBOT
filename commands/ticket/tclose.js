@@ -84,7 +84,7 @@ module.exports = {
 
             ticket.daEliminare = true;
             serverstats.ticket[serverstats.ticket.findIndex(x => x.channel == ticket.channel)] = ticket
-            database.collection("serverstats").updateOne({}, { $set: serverstats });
+            await database.collection("serverstats").updateOne({}, { $set: serverstats });
 
             var idCanale = ticket.channel;
             setTimeout(async function () {
@@ -98,7 +98,7 @@ module.exports = {
                     if (ticket.daEliminare) {
                         message.channel.delete()
                         serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
-                        database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
                     }
                     await db.close()
                 })

@@ -48,7 +48,7 @@ module.exports = {
                     }
 
                     serverstats.challenges = challenges;
-                    database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     message.delete();
                 })

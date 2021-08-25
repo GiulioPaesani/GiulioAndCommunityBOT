@@ -45,10 +45,9 @@ module.exports = {
 
                         ticket.modTaggati = true;
                         serverstats.ticket[index] = ticket;
-                        database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
                     })
             }
-
             await db.close()
         })
     },

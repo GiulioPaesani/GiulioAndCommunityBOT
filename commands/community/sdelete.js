@@ -43,7 +43,7 @@ module.exports = {
 
             delete suggestions[id];
             serverstats.suggestions = suggestions;
-            database.collection("serverstats").updateOne({}, { $set: serverstats });
+            await database.collection("serverstats").updateOne({}, { $set: serverstats });
             await db.close()
         })
     },

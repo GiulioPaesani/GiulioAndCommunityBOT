@@ -66,7 +66,7 @@ module.exports = {
 
                         message.edit(newEmbed)
                         serverstats.suggestions = suggestions;
-                        database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
                     })
             }
             if (messageReaction.message.channel.id == config.idCanaliServer.challenges) {
@@ -124,7 +124,7 @@ module.exports = {
 
                         message.edit(newEmbed)
                         serverstats.challenges = challenges;
-                        database.collection("serverstats").updateOne({}, { $set: serverstats });
+                        await database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     })
             }

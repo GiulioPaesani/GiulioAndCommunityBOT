@@ -218,7 +218,7 @@ global.checkModeration = async function () {
 
                 userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempmuted)
 
-                database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
+                await database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
             }
 
             if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
@@ -266,7 +266,7 @@ global.checkModeration = async function () {
 
                 userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempbanned)
 
-                database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
+                await database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
             }
         }
         await db.close()
@@ -323,7 +323,7 @@ https://www.youtube.com/watch?v=${response.items[0].videoId}
 <@&857544584691318814>
                 `)
                 serverstats.lastVideo = response.items[0].videoId;
-                database.collection("serverstats").updateOne({}, { $set: serverstats });
+                await database.collection("serverstats").updateOne({}, { $set: serverstats });
             }
         })
         await db.close()

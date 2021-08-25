@@ -62,7 +62,7 @@ module.exports = {
                         "moderator": ""
                     }
                 }
-                database.collection("userstats").insertOne(userstats);
+                await database.collection("userstats").insertOne(userstats);
 
                 member.roles.add("815649916574629941")
                 member.roles.add("815649625591382077")
@@ -99,7 +99,7 @@ Buon divertimento!
                     }
                     embed.addField("Old roles", oldRoles)
                     userstats.roles = [];
-                    database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+                    await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
                 }
 
                 if (elencoRuoli != "") {

@@ -85,7 +85,7 @@ module.exports = {
                                 "daEliminare": false
                             })
                             serverstats.ticket = ticket;
-                            database.collection("serverstats").updateOne({}, { $set: serverstats });
+                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
 
                         canale.send(`<@${bottone.clicker.user.id}> ecco il tuo ticket\r`)
@@ -153,7 +153,7 @@ module.exports = {
                                 "daEliminare": false
                             })
                             serverstats.ticket = ticket;
-                            database.collection("serverstats").updateOne({}, { $set: serverstats });
+                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
 
                         canale.send(`<@${bottone.clicker.user.id}> ecco il tuo ticket\r`)
@@ -199,7 +199,7 @@ module.exports = {
 
                             ticket.modTaggati = true;
                             serverstats.ticket[index] = ticket;
-                            database.collection("serverstats").updateOne({}, { $set: serverstats });
+                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
                 }
                 if (ticket.type == "Moderation") {
@@ -229,7 +229,7 @@ module.exports = {
 
                             ticket.modTaggati = true;
                             serverstats.ticket[index] = ticket;
-                            database.collection("serverstats").updateOne({}, { $set: serverstats });
+                            await database.collection("serverstats").updateOne({}, { $set: serverstats });
                         })
                 }
             }
@@ -288,7 +288,7 @@ module.exports = {
 
                     ticket.daEliminare = true;
                     serverstats.ticket[serverstats.ticket.findIndex(x => x.channel == ticket.channel)] = ticket
-                    database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
 
                     var idCanale = ticket.channel;
                     setTimeout(async function () {
@@ -302,7 +302,7 @@ module.exports = {
                             if (ticket.daEliminare) {
                                 bottone.channel.delete()
                                 serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
-                                database.collection("serverstats").updateOne({}, { $set: serverstats });
+                                await database.collection("serverstats").updateOne({}, { $set: serverstats });
                             }
 
                         })
@@ -317,7 +317,7 @@ module.exports = {
                 if (ticket.daEliminare) {
                     ticket.daEliminare = false;
                     serverstats.ticket[index] = ticket;
-                    database.collection("serverstats").updateOne({}, { $set: serverstats });
+                    await database.collection("serverstats").updateOne({}, { $set: serverstats });
                     bottone.message.delete()
 
                     client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)

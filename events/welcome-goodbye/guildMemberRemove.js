@@ -16,7 +16,7 @@ module.exports = {
             if (!userstats) return
 
             userstats.roles = member._roles;
-            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
 
             var elencoRuoli = "";
             for (var i = 0; i < member._roles.length; i++) {

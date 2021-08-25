@@ -75,7 +75,7 @@ module.exports = {
             var canale = client.channels.cache.get(config.idCanaliServer.log);
             canale.send(embed)
 
-            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
             await db.close()
         })
     },

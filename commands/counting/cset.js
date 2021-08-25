@@ -37,7 +37,7 @@ module.exports = {
                     msg.react("🟢")
                 })
 
-            database.collection("serverstats").updateOne({}, { $set: serverstats });
+            await database.collection("serverstats").updateOne({}, { $set: serverstats });
             await db.close()
         })
     },

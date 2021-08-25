@@ -57,7 +57,7 @@ module.exports = {
             newMessage.member.send(embedUtente)
                 .catch(() => { })
 
-            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
             await db.close()
         })
     },

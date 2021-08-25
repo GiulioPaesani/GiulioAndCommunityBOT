@@ -54,7 +54,7 @@ module.exports = {
 
                 }
 
-                database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+                await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
             }
 
             await db.close()

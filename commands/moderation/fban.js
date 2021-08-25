@@ -135,7 +135,7 @@ module.exports = {
                 "moderator": message.author.username
             }
 
-            database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+            await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
 
             var embed = new Discord.MessageEmbed()
                 .setAuthor("[FORCE BAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))

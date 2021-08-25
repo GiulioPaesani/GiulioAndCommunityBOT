@@ -84,7 +84,7 @@ module.exports = {
                     await canale.send(message.author.toString() + " hai raggiunto un **nuovo livello**", embed)
                 }
 
-                database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
+                await database.collection("userstats").updateOne({ id: userstats.id }, { $set: userstats });
                 setLevelRole(message.member, userstats.level)
             }
             await db.close()
