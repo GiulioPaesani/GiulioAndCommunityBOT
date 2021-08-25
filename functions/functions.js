@@ -280,7 +280,7 @@ global.makeBackup = async function () {
         await database.collection("userstats").find().toArray(async function (err, userstatsList) {
             if (err) return codeError(err);
 
-            await database.collection("serverstats").find().toArray(function (err, serverstats) {
+            await database.collection("serverstats").find().toArray(async function (err, serverstats) {
                 if (err) return codeError(err);
 
                 var embed = new Discord.MessageEmbed()
