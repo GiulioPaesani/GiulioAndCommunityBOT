@@ -5,7 +5,7 @@ module.exports = {
     aliases: [],
     onlyStaff: true,
     channelsGranted: [],
-    execute(message, args, client) {
+    async execute(message, args, client) {
         let ruolo = message.guild.roles.cache.find(r => r.name === "@everyone");
         if (!lockdown) {
             let embed = new Discord.MessageEmbed()

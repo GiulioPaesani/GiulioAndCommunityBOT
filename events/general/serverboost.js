@@ -22,7 +22,8 @@ module.exports = {
 +15 sticker
 Qualità audio 128 Kpms
 Icona server animata
-Sfondo inviti`
+Sfondo inviti
+Streaming fino a 720p`
         }
         else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2") {
             nuovoLivello = `:beginner: **LIVELLO 2 sbloccato**

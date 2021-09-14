@@ -5,8 +5,8 @@ module.exports = {
     name: "code",
     aliases: [],
     onlyStaff: false,
-    channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
         let command = args.join(" ")
         let data, info, video, description;
 
@@ -18,7 +18,7 @@ module.exports = {
             if (utente) {
                 command = command.slice(0, -22).trim()
                 if (utente.user.bot) {
-                    warming(message, "Non a un Bot", "Non puoi mandare codice a un Bot")
+                    warning(message, "Non a un Bot", "Non puoi mandare codice a un Bot")
                     return
                 }
             }

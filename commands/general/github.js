@@ -4,8 +4,8 @@ module.exports = {
     name: "github",
     aliases: [],
     onlyStaff: false,
-    channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
         let embed = new Discord.MessageEmbed()
             .setTitle("GITHUB")
             .setDescription(`Questi sono tutti i link Github di GiulioAndCode

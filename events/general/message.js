@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: "message",
-    execute(message) {
+    async execute(message) {
         if (message.channel.type == "dm" && message.content.startsWith("!")) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("DM non abilitati")
@@ -15,6 +15,7 @@ module.exports = {
             })
             return
         }
+
         if (message.channel.type == "dm") return
         if (message.author.bot) return
         if (message.guild.id != config.idServer) return //Server sconosciuti non accettati
@@ -23,6 +24,11 @@ module.exports = {
         if (trovata && !utenteMod(message.member)) return
 
         message.content = message.content.toLowerCase().trim();
+
+        if ([config.idCanaliServer.welcome, config.idCanaliServer.announcements, config.idCanaliServer.rules, config.idCanaliServer.info, config.idCanaliServer.youtubeNotification, config.idCanaliServer.becomeHelper, config.idCanaliServer.staffHelp, config.idCanaliServer.levelUp, config.idCanaliServer.log, config.idCanaliServer.privateRooms, config.idCanaliServer.mutedTicket, config.idCanaliServer.tempmutedTicket, config.idCanaliServer.bannedTicket, config.idCanaliServer.tempbannedTicket, config.idCanaliServer.lockdown].includes(message.channel.id)) {
+            if (message.author.id != config.idGiulio)
+                message.delete()
+        }
 
         //REACTION MESSAGE
         if (message.content == "wow")

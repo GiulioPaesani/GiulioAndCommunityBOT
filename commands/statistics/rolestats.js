@@ -6,8 +6,8 @@ module.exports = {
     name: "rolestats",
     aliases: ["role", "roleinfo"],
     onlyStaff: false,
-    channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
         var ruolo = message.mentions.roles.first()
         if (!ruolo) {
             var ruolo = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(ruolo => ruolo.name.toLowerCase() == args.join(" "))

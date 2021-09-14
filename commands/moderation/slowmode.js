@@ -6,7 +6,7 @@ module.exports = {
     aliases: [],
     onlyStaff: true,
     channelsGranted: [],
-    execute(message, args, client) {
+    async execute(message, args, client) {
         var time = message.content.split(/\s+/)[1];
         if (!time) {
             error(message, "Inserire un tempo", "`!slowmode [time]/off`")
@@ -22,7 +22,7 @@ module.exports = {
             }
 
             if (time > 21600000) {
-                warming(message, "Troppa slowmode", "Non puoi impostare una slowmode superiore a 6 ore")
+                warning(message, "Troppa slowmode", "Non puoi impostare una slowmode superiore a 6 ore")
                 return
             }
 

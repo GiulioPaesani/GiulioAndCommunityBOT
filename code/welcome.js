@@ -12,9 +12,7 @@ client.on("guildMemberAdd", member => {
     canale.send(\`
 -------------- WELCOME --------------
 Ciao \${member.toString()}, benvenuto in \${member.guild.name}
-Sei il **\${member.guild.memberCount}° Membro** 
-Prima di fare altro, leggi le <#793781895829258260>
-Puoi vedere tutte le informazioni sul server in <#793781897619570738>\`)
+Sei il **\${member.guild.memberCount}° Membro**\`)
 });
 //ADDIO
 client.on("guildMemberRemove", member => {

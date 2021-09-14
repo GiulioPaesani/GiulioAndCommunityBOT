@@ -1,10 +1,16 @@
+require('events').EventEmitter.prototype._maxListeners = 100;
+
 const Discord = require("discord.js");
 global.client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION"] });
 
 const fs = require("fs");
 const ytch = require('yt-channel-info');
+const disbut = require('discord-buttons')(client);
 
 client.login(process.env.token);
+
+global.config = require("./config/config.json");
+var config = require("./config/config.json");
 
 //COMMANDS
 client.commands = new Discord.Collection();
@@ -28,12 +34,15 @@ for (const folder of eventsFolders) {
 //FUNCTIONS
 require("./functions/functions.js");
 
-global.config = require("./config/config.json");
+global.log = require("./config/log.json");
 
 global.database = "";
 global.url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
 
 global.lockdown = false;
+
+global.serverstats = ""
+global.userstatsList = ""
 
 //CODES comando !code
 global.client.codes = new Discord.Collection();
@@ -47,15 +56,15 @@ client.on("message", message => {
     const prefix = "!"
     if (message.channel.type == "dm") return //Messaggi in dm non accettati
     if (message.author.bot) return
-    if (message.guild.id != config.idServer) return //Server sconosciuti non accettati
     if (!message.content.startsWith(prefix)) return;
+    if (message.guild.id != config.idServer && message.guild.id != log.server) return
+    if (!userstatsList) return
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift()
 
     trovata = getParolaccia(message.content)[0];
     if (trovata && !utenteMod(message.member)) return
-
 
     //Verifica esistenza comando
     if (!client.commands.has(command.toLowerCase()) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command.toLowerCase()))) {
@@ -109,8 +118,8 @@ client.on("message", message => {
                 .addField("Puoi usare questo comando in:", canaliConcessiLista)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 15000 })
-                msg.delete({ timeout: 15000 })
+                message.delete({ timeout: 15000 }).catch(() => { return })
+                msg.delete({ timeout: 15000 }).catch(() => { return })
             })
             return
 
@@ -119,25 +128,25 @@ client.on("message", message => {
     }
 
     //Poter utilizzare solo !clear in #tutorial
-    if (message.channel == config.idCanaliServer.tutorial && command != "clear") return
+    if (message.channel == config.idCanaliServer.tutorial && comando.name != "clear") return
 
-    //ESEGUIRE IL COMANDO
-    try {
-        comando.execute(message, args, client);
-    }
-    catch (err) {
-        codeError(err)
-    }
+    comando.execute(message, args, client);
 })
 
 
 //Counter youtube
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-        var canale = client.channels.cache.get("869975166543876177")
-        canale.setName("🎬│subscribers: " + response.subscriberCount)
+        var canale = client.channels.cache.get(config.idCanaliServer.codeSubscriberCounter)
+        canale.setName("📱│GiulioAndCode: " + response.subscriberCount)
     })
-}, 1000 * 60 * 5)
+}, 1000 * 60 * 10)
+setInterval(function () {
+    ytch.getChannelInfo("UCvIafNR8ZvZyE5jVGVqgVfA").then((response) => {
+        var canale = client.channels.cache.get(config.idCanaliServer.giulioSubscriberCounter)
+        canale.setName("✌│Giulio: " + response.subscriberCount)
+    })
+}, 1000 * 60 * 1)
 
 //Member counter
 setInterval(function () {
@@ -145,6 +154,13 @@ setInterval(function () {
     var botCount = server.members.cache.filter(member => member.user.bot).size;
     var utentiCount = server.memberCount - botCount;
 
-    var canale = client.channels.cache.get("869975166128631808")
+    var canale = client.channels.cache.get(config.idCanaliServer.memberCounter)
     canale.setName("👾│members: " + utentiCount)
 }, 1000 * 60 * 5)
+
+process.on("uncaughtException", err => {
+    codeError(err);
+})
+process.on("unhandledRejection", err => {
+    codeError(err);
+})

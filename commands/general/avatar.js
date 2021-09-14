@@ -4,8 +4,8 @@ module.exports = {
     name: "avatar",
     aliases: [],
     onlyStaff: false,
-    channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
         if (!args[0]) {
             var utente = message.member;
         }

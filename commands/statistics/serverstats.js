@@ -5,8 +5,8 @@ module.exports = {
     name: "serverstats",
     aliases: ["server", "serverinfo"],
     onlyStaff: false,
-    channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
         let server = message.member.guild;
         let botCount = server.members.cache.filter(member => member.user.bot).size;
         let memberCount = server.memberCount - botCount;

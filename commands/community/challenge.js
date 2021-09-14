@@ -1,56 +1,57 @@
 const Discord = require("discord.js");
 
+const { MessageButton } = require('discord-buttons');
+const { MessageActionRow } = require('discord-buttons')
+
 module.exports = {
     name: "challenge",
     aliases: ["sfida"],
     onlyStaff: false,
-    channelsGranted: ["869975184289988698"],
-    execute(message, args, client) {
-        database.collection("serverstats").find().toArray(function (err, result) {
-            let serverstats = result[0]
-            let challenges = serverstats.challenges;
+    channelsGranted: [config.idCanaliServer.challenges],
+    async execute(message, args, client) {
+        let contenuto = args.join(" ")
 
-            let contenuto = args.join(" ");
-            if (!contenuto) {
-                error(message, "Inserire una challenge", "`!challenge [sfida]`")
-                return
-            }
+        if (!contenuto) {
+            error(message, "Inserire una challenge", "`!challenge [sfida]`")
+            return
+        }
 
-            if (contenuto.length > 500) {
-                error(message, "Troppo lungo", "Inserire una sfida più corta di 500 caratteri")
-                return
-            }
+        if (contenuto.length > 500) {
+            error(message, "Troppo lungo", "Inserire una sfida più corta di 500 caratteri")
+            return
+        }
 
-            let embed = new Discord.MessageEmbed()
-                .setTitle("🎯 Challenge by " + message.member.user.username)
-                .setDescription(contenuto)
-                .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+        var embed = new Discord.MessageEmbed()
+            .setTitle("🎯 New challenge 🎯")
+            .setColor("#fcba03")
+            .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+            .setDescription("Attendi che lo staff approvi la tua sfida```" + contenuto + "```")
 
-            var canale = client.channels.cache.find(channel => channel.id == config.idCanaliServer.challenges);
+        message.channel.send(embed)
 
-            canale.send(embed)
-                .then(msg => {
-                    msg.react("👍")
-                    msg.react("👎")
+        var embed = new Discord.MessageEmbed()
+            .setTitle("🎯 New challenge 🎯")
+            .setColor("#fcba03")
+            .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+            .addField(":bust_in_silhouette: User", "```" + `${message.author.username} (ID: ${message.author.id})` + "```")
+            .addField(":beginner: Status", "```Pending```")
+            .addField(":bookmark_tabs: Text", "```" + contenuto + "```")
 
-                    embed
-                        .setFooter("Challenge ID: " + msg.id)
+        var button1 = new MessageButton()
+            .setStyle('red')
+            .setLabel('Rifiuta')
+            .setID(`rifiutaChallenge`)
+        var button2 = new MessageButton()
+            .setStyle('green')
+            .setLabel('Approva')
+            .setID(`approvaChallenge`)
 
-                    msg.edit(embed)
+        var row = new MessageActionRow()
+            .addComponent(button1)
+            .addComponent(button2)
 
-                    challenges[msg.id] = {
-                        sfida: contenuto,
-                        user: message.member.user.id,
-                        messageId: msg.id,
-                        totVotiPos: [],
-                        totVotiNeg: []
-                    }
+        let canale = client.channels.cache.find(channel => channel.id == log.challenges);
 
-                    serverstats.challenges = challenges;
-                    database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                    message.delete();
-                })
-        })
+        canale.send(embed, row)
     },
 };

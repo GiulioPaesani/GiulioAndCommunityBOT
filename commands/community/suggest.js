@@ -1,57 +1,57 @@
 const Discord = require("discord.js");
 
+const { MessageButton } = require('discord-buttons');
+const { MessageActionRow } = require('discord-buttons')
+
 module.exports = {
     name: "suggest",
     aliases: ["suggerisci", "suggerimento"],
     onlyStaff: false,
-    channelsGranted: ["869975183446933544"],
-    execute(message, args, client) {
-        database.collection("serverstats").find().toArray(function (err, result) {
-            let serverstats = result[0]
-            let suggestions = serverstats.suggestions;
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
+        let contenuto = args.join(" ")
 
-            let contenuto = args.join(" ")
+        if (!contenuto) {
+            error(message, "Inserire un suggerimento", "`!suggest [suggerimento]`")
+            return
+        }
 
-            if (!contenuto) {
-                error(message, "Inserire un suggerimento", "`!suggest [suggerimento]`")
-                return
-            }
+        if (contenuto.length > 500) {
+            error(message, "Troppo lungo", "Inserire un suggerimento più corto di 500 caratteri")
+            return
+        }
 
-            if (contenuto.length > 500) {
-                error(message, "Troppo lungo", "Inserire un suggerimento più corto di 500 caratteri")
-                return
-            }
+        var embed = new Discord.MessageEmbed()
+            .setTitle("💡 New suggestion 💡")
+            .setColor("#fcba03")
+            .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+            .setDescription("Attendi che lo staff approvi il tuo suggerimento```" + contenuto + "```")
 
-            let embed = new Discord.MessageEmbed()
-                .setTitle("💡Suggestions by " + message.member.user.username)
-                .setDescription(contenuto)
-                .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+        message.channel.send(embed)
 
-            let canale = client.channels.cache.find(channel => channel.id == config.idCanaliServer.suggestions);
+        var embed = new Discord.MessageEmbed()
+            .setTitle("💡 New suggestion 💡")
+            .setColor("#fcba03")
+            .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+            .addField(":bust_in_silhouette: User", "```" + `${message.author.username} (ID: ${message.author.id})` + "```")
+            .addField(":beginner: Status", "```Pending```")
+            .addField(":bookmark_tabs: Text", "```" + contenuto + "```")
 
-            canale.send(embed)
-                .then(msg => {
-                    msg.react("😍")
-                    msg.react("💩")
+        var button1 = new MessageButton()
+            .setStyle('red')
+            .setLabel('Rifiuta')
+            .setID(`rifiutaSuggestion`)
+        var button2 = new MessageButton()
+            .setStyle('green')
+            .setLabel('Approva')
+            .setID(`approvaSuggestion`)
 
-                    embed
-                        .setFooter("Suggestion ID: " + msg.id)
+        var row = new MessageActionRow()
+            .addComponent(button1)
+            .addComponent(button2)
 
-                    msg.edit(embed)
+        let canale = client.channels.cache.find(channel => channel.id == log.suggestions);
 
-                    suggestions[msg.id] = {
-                        suggerimento: contenuto,
-                        user: message.member.user.id,
-                        messageId: msg.id,
-                        totVotiPos: [],
-                        totVotiNeg: []
-                    }
-
-                    serverstats.suggestions = suggestions;
-                    database.collection("serverstats").updateOne({}, { $set: serverstats });
-
-                    message.delete();
-                })
-        })
+        canale.send(embed, row)
     },
 };

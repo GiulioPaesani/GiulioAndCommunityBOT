@@ -6,7 +6,7 @@ module.exports = {
     aliases: ["bug", "report"],
     onlyStaff: false,
     channelsGranted: [],
-    execute(message, args, client) {
+    async execute(message, args, client) {
         let report = args.join(" ");
 
         if (!report && !(message.attachments).array()[0]) {
@@ -14,25 +14,32 @@ module.exports = {
             return
         }
 
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Bug reportato")
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":beetle: Bug reportato :beetle:")
             .setColor("#1f1f1f")
-            .addField(":bust_in_silhouette: User", "```" + message.member.user.tag + "```", true)
-            .addField(":page_facing_up: Channel", "```" + message.channel.name + "```", true)
-            .addField(":alarm_clock: Time", "```" + moment(new Date().getTime()).format("ddd DD MMM, HH:mm") + "```", false)
+            .setFooter("Lo staff lo analizzerà a breve")
 
         if (report)
-            embed.addField(":beetle: Bug", "```" + report + "```", false)
-
+            embed.setDescription("```" + report + "```")
 
         if ((message.attachments).array()[0])
             embed.setImage((message.attachments).array()[0].url)
 
         message.channel.send(embed)
 
-        if (message.channel.id == config.idCanaliServer.admin) return
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":beetle: Bug report :beetle:")
+            .setColor("#6DA54C")
+            .addField(":bust_in_silhouette: User", "```" + `${message.author.username} (ID: ${message.author.id})` + "```", false)
+            .addField(":page_facing_up: Channel", "```" + message.channel.name + "```[Message](https://discord.com/channels/" + message.guild.id + "/" + message.channel.id + "/" + message.id + ")", true)
+            .addField(":alarm_clock: Time", "```" + moment(new Date().getTime()).format("ddd DD MMM, HH:mm") + "```", true)
 
-        let canale = client.channels.cache.get(config.idCanaliServer.admin);
-        canale.send(embed);
+        if (report)
+            embed.addField(":skull_crossbones: Bug", "```" + report + "```", false)
+
+        if ((message.attachments).array()[0])
+            embed.setImage((message.attachments).array()[0].url)
+
+        client.channels.cache.get(log.bugReport).send(embed);
     },
 };

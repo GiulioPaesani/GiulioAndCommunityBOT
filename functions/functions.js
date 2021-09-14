@@ -3,11 +3,13 @@ require(`../index.js`);
 const ms = require("ms");
 const { MessageAttachment } = require('discord.js');
 const moment = require("moment")
+const fetch = require("node-superfetch")
 const ytch = require('yt-channel-info');
+const { getInfo } = require('ytdl-getinfo')
 
 global.utenteMod = function (member) {
     for (const [name, idRuolo] of Object.entries(config.ruoliStaff)) {
-        if (member.roles.cache.has(idRuolo)) return true
+        if (client.guilds.cache.get(config.idServer).members.cache.find(x => x.id == member.id).roles.cache.has(idRuolo)) return true
     }
     return false
 }
@@ -17,10 +19,11 @@ global.codeError = function (err) {
         .setTitle(`ERROR`)
         .setThumbnail(`https://images-ext-1.discordapp.net/external/8DoN43XFJZCFvTRZXpq443nx7s0FaLVesjgSNnlBTec/https/i.postimg.cc/zB4j8xVZ/Error.png?width=630&height=630`)
         .setColor(`#ED1C24`)
-        .setDescription(err)
+        .addField(":alarm_clock: Time", "```" + `${moment(new Date().getTime()).format("ddd DD MMM, HH:mm:ss")}` + "```")
+        .addField(":stopwatch: Uptime", "```" + `${ms(client.uptime, { long: true })} - ${moment(new Date().getTime() - client.uptime).format("ddd DD MMM, HH:mm:ss")}` + "```")
+        .addField(":name_badge: Error", "```" + err + "```")
 
-    var utente = client.users.cache.get(config.idGiulio);
-    utente.send(embed);
+    client.channels.cache.get(log.codeErrors).send(embed)
     console.log(err)
 }
 global.permesso = function (message, comando) {
@@ -47,7 +50,7 @@ global.error = function (message, title, description) {
         msg.delete({ timeout: 20000 }).catch()
     })
 }
-global.warming = function (message, title, description) {
+global.warning = function (message, title, description) {
     var embed = new Discord.MessageEmbed()
         .setTitle(title)
         .setThumbnail(`https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png`)
@@ -73,7 +76,7 @@ global.correct = function (message, title, description) {
 }
 
 global.calcoloXpNecessario = function (level) {
-    var xpNecessarioFinoA10 = [0, 70, 250, 370, 550, 840, 1200, 1950, 2500, 3000, 3900]
+    var xpNecessarioFinoA10 = [0, 50, 110, 160, 200, 280, 450, 750, 1400, 2100]
 
     if (level < 10) {
         xpNecessario = xpNecessarioFinoA10[level]
@@ -156,168 +159,192 @@ global.getParolaccia = function (content) {
 }
 
 global.checkModeration = function () {
-    database.collection("userstats").find().toArray(function (err, result) {
-        if (err) return codeError(err);
-        var userstatsList = result;
+    for (var index in userstatsList) {
+        if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
+            var canale = client.channels.cache.get(config.idCanaliServer.log);
+            var server = client.guilds.cache.get(config.idServer);
 
-        for (var index in userstatsList) {
-            if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
-                var canale = client.channels.cache.get(config.idCanaliServer.log);
-                var server = client.guilds.cache.get(config.idServer);
+            var ruoloTempmuted = server.roles.cache.find(role => role.id == config.ruoliModeration.tempmuted);
 
-                var ruoloTempmuted = server.roles.cache.find(role => role.id == config.ruoliModeration.tempmuted);
-
-                var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
-                if (utente) {
-                    utente.roles.remove(ruoloTempmuted).then(() => {
-                        if (utente.voice) {
-                            if (utente.voice.channel) {
-                                var canale = utente.voice.channelID
-                                if (canale == "801120572053520414")
-                                    utente.voice.setChannel("793781892800839720")
-                                else
-                                    utente.voice.setChannel("801120572053520414")
-                                utente.voice.setChannel(canale)
-                            }
+            var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
+            if (utente) {
+                utente.roles.remove(ruoloTempmuted).then(() => {
+                    if (utente.voice) {
+                        if (utente.voice.channel) {
+                            var canale = utente.voice.channelID
+                            if (canale == "801120572053520414")
+                                utente.voice.setChannel("793781892800839720")
+                            else
+                                utente.voice.setChannel("801120572053520414")
+                            utente.voice.setChannel(canale)
                         }
-                    })
-                }
-
-                var utente = client.users.cache.get(userstatsList[index].id);
-
-                var embed = new Discord.MessageEmbed()
-                    .setAuthor("[UNTEMPMUTE] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
-                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                    .setColor("#6143CB")
-                    .addField("Reason", userstatsList[index].moderation.reason)
-                    .addField("Moderator", "<@802184359120863272>")
-                    .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-                    .setFooter("User ID: " + userstatsList[index].id)
-
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Sei stato smutato")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                    .addField("Reason", userstatsList[index].moderation.reason)
-                    .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-                    .addField("Moderator", "<@802184359120863272>")
-
-                utente.send(embedUtente).catch(() => { })
-
-                canale.send(embed);
-
-                userstatsList[index].moderation = {
-                    "type": "",
-                    "since": "",
-                    "until": "",
-                    "reason": "",
-                    "moderator": ""
-                }
-
-                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempmuted)
-
-                database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
+                    }
+                })
             }
 
-            if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
-                var canale = client.channels.cache.get(config.idCanaliServer.log);
-                var server = client.guilds.cache.get(config.idServer);
+            var utente = client.users.cache.get(userstatsList[index].id);
 
-                var ruoloTempbanned = server.roles.cache.find(role => role.id == config.ruoliModeration.tempbanned)
+            var embed = new Discord.MessageEmbed()
+                .setAuthor("[UNTEMPMUTE] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
+                .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                .setColor("#6143CB")
+                .addField("Reason", userstatsList[index].moderation.reason)
+                .addField("Moderator", "<@802184359120863272>")
+                .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                .setFooter("User ID: " + userstatsList[index].id)
 
-                var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
-                if (utente) {
-                    utente.roles.remove(ruoloTempbanned)
-                }
+            var embedUtente = new Discord.MessageEmbed()
+                .setTitle("Sei stato smutato")
+                .setColor("#6143CB")
+                .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                .addField("Reason", userstatsList[index].moderation.reason)
+                .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                .addField("Moderator", "<@802184359120863272>")
 
-                var utente = client.users.cache.get(userstatsList[index].id);
+            utente.send(embedUtente).catch(() => { })
 
-                var embed = new Discord.MessageEmbed()
-                    .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
-                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                    .setColor("#6143CB")
-                    .addField("Reason", userstatsList[index].moderation.reason)
-                    .addField("Moderator", "<@802184359120863272>")
-                    .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-                    .setFooter("User ID: " + userstatsList[index].id)
+            canale.send(embed);
 
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Sei stato sbannato")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                    .addField("Reason", userstatsList[index].moderation.reason)
-                    .addField("Moderator", "<@802184359120863272>")
-                    .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-
-
-                utente.send(embedUtente).catch(() => { })
-
-                canale.send(embed);
-
-                userstatsList[index].moderation = {
-                    "type": "",
-                    "since": "",
-                    "until": "",
-                    "reason": "",
-                    "moderator": ""
-                }
-
-                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempbanned)
-
-                database.collection("userstats").updateOne({ id: userstatsList[index].id }, { $set: userstatsList[index] });
+            userstatsList[index].moderation = {
+                "type": "",
+                "since": "",
+                "until": "",
+                "reason": "",
+                "moderator": ""
             }
+
+            userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempmuted)
         }
-    })
+
+        if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
+            var canale = client.channels.cache.get(config.idCanaliServer.log);
+            var server = client.guilds.cache.get(config.idServer);
+
+            var ruoloTempbanned = server.roles.cache.find(role => role.id == config.ruoliModeration.tempbanned)
+
+            var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
+            if (utente) {
+                utente.roles.remove(ruoloTempbanned)
+            }
+
+            var utente = client.users.cache.get(userstatsList[index].id);
+
+            var embed = new Discord.MessageEmbed()
+                .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
+                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                .setColor("#6143CB")
+                .addField("Reason", userstatsList[index].moderation.reason)
+                .addField("Moderator", "<@802184359120863272>")
+                .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                .setFooter("User ID: " + userstatsList[index].id)
+
+            var embedUtente = new Discord.MessageEmbed()
+                .setTitle("Sei stato sbannato")
+                .setColor("#6143CB")
+                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                .addField("Reason", userstatsList[index].moderation.reason)
+                .addField("Moderator", "<@802184359120863272>")
+                .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+
+
+            utente.send(embedUtente).catch(() => { })
+
+            canale.send(embed);
+
+            userstatsList[index].moderation = {
+                "type": "",
+                "since": "",
+                "until": "",
+                "reason": "",
+                "moderator": ""
+            }
+
+            userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempbanned)
+        }
+    }
 }
 
 global.makeBackup = function () {
     var data = new Date()
     if (data.getHours() == 12 && data.getMinutes() == 0 && data.getSeconds() == 0) {
-        database.collection("userstats").find().toArray(function (err, userstatsList) {
-            if (err) return codeError(err);
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":inbox_tray: Auto backup :inbox_tray:")
+            .setDescription("Backup di tutto il contenuto dei **database** di <@802184359120863272>")
+            .setColor("#757575")
+            .addField("Time", "```" + moment().format("dddd DD MMMM, HH:mm:ss") + "```")
 
-            database.collection("serverstats").find().toArray(function (err, serverstats) {
-                if (err) return codeError(err);
+        var attachment1 = new MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t")), "userstats.json");
+        var attachment2 = new MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t")), "serverstats.json");
 
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":inbox_tray: Auto backup :inbox_tray:")
-                    .setDescription("Backup di tutto il contenuto dei **database** di <@802184359120863272>")
-                    .setColor("#757575")
-                    .addField("Time", "```" + moment().format("dddd DD MMMM, HH:mm:ss") + "```")
-
-                var attachment1 = new MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t")), "userstats.json");
-                var attachment2 = new MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t")), "serverstats.json");
-
-                var canale = client.channels.cache.get(config.idCanaliServer.log);
-                canale.send(embed);
-                canale.send(attachment1);
-                canale.send(attachment2);
-            })
-        })
+        var canale = client.channels.cache.get(config.idCanaliServer.log);
+        canale.send(embed);
+        canale.send(attachment1);
+        canale.send(attachment2);
     }
 }
 
-global.youtubeNotification = function () {
-    database.collection("serverstats").find().toArray(function (err, result) {
-        if (err) return codeError(err);
-        var serverstats = result[0];
+global.youtubeNotification = async function () {
+    var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
 
-        const channelId = 'UCK6QwAdGWOWN9AT1_UQFGtA'
-        const sortBy = 'newest'
-        ytch.getChannelVideos(channelId, sortBy).then((response) => {
-            if (serverstats.lastVideo != response.items[0].videoId) {
-                var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
+    ytch.getChannelVideos("UCK6QwAdGWOWN9AT1_UQFGtA", "newest").then((response) => {
+        if (serverstats.lastVideoCode != response.items[0].videoId) {
+            serverstats.lastVideoCode = response.items[0].videoId;
+            getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
+                var descriptionVideo = JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+
                 canale.send(`
--------------:red_circle: 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 :red_circle:-------------
-Ehy ragazzi, è appena uscito un nuovo video su GiulioAndCode
-Andate subito a vedere **${response.items[0].title}**
+-------------💻 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 💻-------------
+Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
+Andate subito a vedere \"**${response.items[0].title}**\"
 
-https://www.youtube.com/watch?v=${response.items[0].videoId}
-<@&857544584691318814>
+${descriptionVideo}
+
+https://youtu.be/${response.items[0].videoId}
+<@&${config.ruoliNotification.youtubeVideosCode}>
                 `)
-                serverstats.lastVideo = response.items[0].videoId;
-                database.collection("serverstats").updateOne({}, { $set: serverstats });
+            })
+
+        }
+    })
+
+    ytch.getChannelVideos("UCvIafNR8ZvZyE5jVGVqgVfA", "newest").then((response) => {
+        if (!response.items[0]) return
+
+        if (serverstats.lastVideoGiulio != response.items[0].videoId) {
+            serverstats.lastVideoGiulio = response.items[0].videoId;
+
+            getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
+                var descriptionVideo = JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+
+                canale.send(`
+-------------✌ 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 ✌-------------
+Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
+Andate subito a vedere \"**${response.items[0].title}**\"
+
+${descriptionVideo}
+
+https://youtu.be/${response.items[0].videoId}
+<@&${config.ruoliNotification.youtubeVideosGiulio}>
+                `)
+            })
+
+        }
+    })
+}
+
+global.updateServerstats = function () {
+    database.collection("serverstats").updateOne({}, { $set: serverstats });
+}
+global.updateUserstats = function () {
+    database.collection("userstats").find().toArray(function (err, result) {
+        userstatsList.forEach(element => {
+            var userstats = result.find(x => x.id == element.id)
+            if (!userstats) return
+
+            if (JSON.stringify(userstats) != JSON.stringify(element)) {
+                element._id = userstats._id
+                database.collection("userstats").updateOne({ id: element.id }, { $set: element });
             }
-        })
+        });
     })
 }

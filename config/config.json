@@ -1,28 +1,43 @@
 {
     "ruoliStaff": {
-        "botUfficiale": "821761179218346034",
+        "botUfficiale": "872541415215874088",
         "bot": "793804156430188594",
         "admin": "793796029878370326",
         "moderatore": "799925821904125962"
     },
     "idGiulio": "793768313934577664",
     "idServer": "793776260350083113",
+    "idBot": "802184359120863272",
     "idCanaliServer": {
-        "tutorial": "869975195958513704",
-        "admin": "793781906478858269",
+        "codeSubscriberCounter": "869975166543876177",
+        "giulioSubscriberCounter": "883052616542744637",
+        "memberCounter": "869975166128631808",
+        "welcome": "869975173581930516",
         "announcements": "869975176056541224",
+        "rules": "793781895829258260",
+        "info": "869975174383009812",
+        "youtubeNotification": "869975176895418438",
         "suggestions": "869975183446933544",
         "challenges": "869975184289988698",
-        "log": "869975195086094346",
-        "welcome": "869975173581930516",
+        "categoriaTicket": "869975169672826940",
         "staffHelp": "869975186856894464",
+        "commands": "869975190052929566",
+        "noMicChat": "869975179386839101",
+        "selfAdv": "869975185137238066",
+        "becomeHelper": "869975186089336862",
         "counting": "869975192645034085",
         "levelUp": "869975191780991016",
+        "privateRooms": "878695993628061727",
+        "log": "869975195086094346",
+        "tutorial": "869975195958513704",
+        "testing": "869975198483488890",
+        "admin": "793781906478858269",
         "mutedTicket": "869975202224824380",
         "tempmutedTicket": "869975202967207956",
         "bannedTicket": "869975203898343424",
         "tempbannedTicket": "869975205349572648",
-        "youtubeNotification": "869975176895418438"
+        "categoriaModerationTicket": "869975172671733760",
+        "lockdown": "869975206310064179"
     },
     "ruoliLeveling": {
         "level5": "799990260393443338",
@@ -51,5 +66,12 @@
     },
     "idRuoloAiutante": "859413877133410335",
     "idRuoloAiutanteInProva": "862600976798842880",
-    "idRuoloServerBooster": "800009879371644940"
+    "idRuoloServerBooster": "800009879371644940",
+    "ruoliNotification": {
+        "announcements": "815649916574629941",
+        "news": "815649625591382077",
+        "changelog": "826784690487951370",
+        "youtubeVideosCode": "857544584691318814",
+        "youtubeVideosGiulio": "883062518774370345"
+    }
 }

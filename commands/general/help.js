@@ -4,9 +4,9 @@ module.exports = {
     name: "help",
     aliases: ["aiuto", "comandi"],
     onlyStaff: false,
-    channelsGranted: ["869975190052929566"],
-    execute(message, args, client) {
-        let totalPage = 7;
+    channelsGranted: [config.idCanaliServer.commands],
+    async execute(message, args, client) {
+        let totalPage = 8;
         let page = 1;
 
         let page1 = new Discord.MessageEmbed()
@@ -39,18 +39,9 @@ _Alias: \`!channel\` \`!channelinfo\`_
             .setDescription("Tutti i comandi specifici del server o del canale")
             .setColor("#2C5B7F")
             .addField("!youtube", `
-Ottenere il link del canale YouTube di GiulioAndCode
+Ottenere il link dei canali YouTube di Giulio
 _Alias: \`!yt\`_
     `)
-            .addField("!lastvideo", `
-Ultimo video uscito su GiulioAndCode
-_Alias: \`!ultimovideo\`_
-    `)
-            .addField("!youtubestats", `
-Statistiche e informazioni sul canale YouTube di GiulioAndCode
-_Alias: \`!youtubeinfo\`_
-    `)
-
             .addField("!github", `
 Tutti i link github dei bot e altri progetti di GiulioAndCode
             `)
@@ -109,12 +100,6 @@ _Alias: \`!suggerisci\` \`!suggerimento\`_
 Proporre una sfida
 _Alias: \`!sfida\`_
 `)
-            .addField("!sremove [code]", `
-Eliminare un suggerimento
-`)
-            .addField("!cremove [code]", `
-Eliminare una sfida
-`)
             .setFooter("Page 4/" + totalPage)
 
         let page5 = new Discord.MessageEmbed()
@@ -150,6 +135,48 @@ Rimuovere un utente dal ticket
             .setFooter("Page 6/" + totalPage)
 
         let page7 = new Discord.MessageEmbed()
+            .setTitle(":closed_lock_with_key: PRIVATE ROOMS")
+            .setDescription("Tutti i comandi sulla gestione di stanze private")
+            .setColor("#FEAB33")
+            .addField("!pdelete", `
+Eliminare una stanza
+`)
+            .addField("!punlock", `
+Rendere pubblica una stanza, in modo che tutti gli utenti la possano vedere
+`)
+            .addField("!lock", `
+Rendere privata una stanza, in modo che possano entrare e vedere solo chi inviti tu
+`)
+            .addField("!padd [user]", `
+Aggiungere un utente a una stanza privata
+`)
+            .addField("!premove [user]", `
+Rimuovere un utente da una stanza privata
+`)
+            .addField("!pkick [user]", `
+Kickare un utente da una stanza (potrà però rientrare quando vuole)
+`)
+            .addField("!pban [user]", `
+Bannare un utente da una stanza, gli verrà rimosso l'accesso e non potrà piu rientrare (anche se rendi la stanza pubblica)
+`)
+            .addField("!punban [user]", `
+Sbannare un utente, facendolo poter rientrare nella stanza
+`)
+            .addField("!plimit [count]", `
+Impostare un limite di utenti che potranno entrare in una stanza pubblica
+`)
+            .addField("!prename [name]", `
+Rinominare una stanza (solo se si possiede solo una stanza tesuale o solo vocale)
+`)
+            .addField("!ptrename [name]", `
+Rinominare una stanza tesuale
+`)
+            .addField("!pvrename [name]", `
+Rinominare una stanza vocale
+`)
+            .setFooter("Page 7/" + totalPage)
+
+        let page8 = new Discord.MessageEmbed()
             .setTitle(":crossed_swords: MODERATION")
             .setDescription("Tutti i comandi sulla moderazione nel server")
             .setColor("#8F4A33")
@@ -197,7 +224,7 @@ Settare la slowmode in un canale
             .addField("!clear [count]", `
 Cancellare messaggi predenti dal comando
 `)
-            .setFooter("Page 7/" + totalPage)
+            .setFooter("Page 8/" + totalPage)
 
         message.channel.send(page1).then(msg => {
             msg.react('◀️').then(r => {

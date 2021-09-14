@@ -1,4 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
+const Discord = require("discord.js");
+const moment = require("moment")
 
 module.exports = {
     name: `ready`,
@@ -6,7 +8,15 @@ module.exports = {
         const db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         database = db.db("GiulioAndCommunity")
 
-        console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
+        await database.collection("serverstats").find().toArray(function (err, result) {
+            serverstats = result[0];
+        })
+
+        await database.collection("userstats").find().toArray(function (err, result) {
+            userstatsList = result
+            console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
+        })
+
 
         client.user.setActivity('!help', { type: 'WATCHING' });
 
@@ -14,6 +24,16 @@ module.exports = {
 
         setInterval(makeBackup, 1000);
 
-        //setInterval(youtubeNotification, 30 * 1000)
+        setInterval(updateServerstats, 60 * 1000)
+        setInterval(updateUserstats, 60 * 1000)
+
+        setInterval(youtubeNotification, 30 * 1000)
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle("Bot ONLINE")
+            .setColor("#3ebd45")
+            .addField(":alarm_clock: Time", "```" + moment(new Date().getTime()).format("ddd DD MMM, HH:mm:ss") + "```")
+
+        client.channels.cache.get(log.ready).send(embed)
     },
 };
