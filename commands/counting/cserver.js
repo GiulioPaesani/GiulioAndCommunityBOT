@@ -50,7 +50,7 @@ module.exports = {
             .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + leaderboardBestScoreList[0].username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
             .addField("Leaderboard (by Best Score)", leaderboardBestScore, true)
 
-        var leaderboardCorrectList = result.sort((a, b) => (a.correct < b.correct) ? 1 : ((b.correct < a.correct) ? -1 : 0))
+        var leaderboardCorrectList = userstatsList.sort((a, b) => (a.correct < b.correct) ? 1 : ((b.correct < a.correct) ? -1 : 0))
         var leaderboardCorrect = "";
         var utente;
         var i = 0, inseriti = 0;
