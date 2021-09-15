@@ -13,7 +13,7 @@ module.exports = {
             var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
             if (!userstats) return
 
-            if (userstats.level < 20 && !message.member.roles.cache.has(config.idRuoloServerBooster)) {
+            if (userstats.level < 20 && !button.clicker.member.roles.cache.has(config.idRuoloServerBooster)) {
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il livello")
                     .setColor(`#8F8F8F`)
