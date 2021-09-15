@@ -7,6 +7,8 @@ const ms = require("ms");
 module.exports = {
     name: `clickButton`,
     async execute(button) {
+        button.reply.defer()
+
         if (button.id == "textvoiceRoom") {
             var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
             if (!userstats) return
@@ -50,8 +52,6 @@ module.exports = {
                 parent: button.message.channel.parentID,
                 topic: `Text room by: ${button.clicker.user.username}`
             }).then(text => {
-                text.send("canale testuale creato")
-
                 button.message.guild.channels.create(`🔊│${button.clicker.user.username}-voice`, {
                     type: "voice",
                     permissionOverwrites: [
@@ -90,7 +90,6 @@ module.exports = {
                         "type": "textVoice",
                         "bans": []
                     })
-                    database.collection("serverstats").updateOne({}, { $set: serverstats });
                 })
             })
         }
