@@ -35,7 +35,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle("COUNTING - " + utente.user.tag)
             .setDescription("Tutte le statistiche di **counting** su questo utente")
-            .setThumbnail(utente.user.avatarURL({ dynamic: true }))
+            .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
             .addField(":trophy: Best score", "```" + userstats.bestScore + " (" + moment(new Date(parseInt(userstats.timeBestScore))).fromNow() + ")```", true)
             .addField(":chart_with_upwards_trend: Rank", "```#" + position + "/" + Object.keys(leaderboard).length + "```", true)
             .addField(":medal: Last score", "```" + userstats.lastScore + " (" + moment(new Date(parseInt(userstats.timeLastScore))).fromNow() + ")```", true)

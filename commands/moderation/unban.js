@@ -71,7 +71,7 @@ module.exports = {
             utente.roles.remove(ruoloBanned)
             utente.roles.remove(ruoloTempbanned)
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNBAN] " + utente.user.username + "#" + utente.user.discriminator, utente.user.avatarURL({ dynamic: true }))
+                .setAuthor("[UNBAN] " + utente.user.username + "#" + utente.user.discriminator, utente.user.displayAvatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
                 .addField("Moderator", message.author.toString())
@@ -82,7 +82,7 @@ module.exports = {
         }
         else {
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
+                .setAuthor("[UNBAN] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
                 .addField("Moderator", message.author.toString())

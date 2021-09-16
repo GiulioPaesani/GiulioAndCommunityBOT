@@ -24,7 +24,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription(`L'avatar di questo utente
-Other formats: **[.gif](${utente.user.avatarURL({ dynamic: true, size: 1024, format: `gif` })})** | **[.jpeg](${utente.user.avatarURL({ dynamic: false, size: 1024, format: `jpeg` })})** | **[.webp](${utente.user.avatarURL({ dynamic: false, size: 1024, format: `webp` })})** | **[.png](${utente.user.avatarURL({ dynamic: false, size: 1024, format: `png` })})**`)
+Other formats: **[.gif](${utente.user.displayAvatarURL({ dynamic: true, size: 1024, format: `gif` })})** | **[.jpeg](${utente.user.displayAvatarURL({ dynamic: false, size: 1024, format: `jpeg` })})** | **[.webp](${utente.user.displayAvatarURL({ dynamic: false, size: 1024, format: `webp` })})** | **[.png](${utente.user.displayAvatarURL({ dynamic: false, size: 1024, format: `png` })})**`)
 
             .setImage(utente.user.displayAvatarURL({
                 dynamic: true,

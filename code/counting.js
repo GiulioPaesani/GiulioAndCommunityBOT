@@ -101,7 +101,7 @@ client.on("message", message => {
                                 var embed = new Discord.MessageEmbed()
                                         .setTitle("COUNTING USER STATS")
                                         .setDescription("Tutte le statistiche di questo utente su counting")
-                                        .setThumbnail(utente.user.avatarURL())
+                                        .setThumbnail(utente.user.displayAvatarURL())
                                         .addField("Last score", user.lastScore, true)
                                         .addField("Best score", user.bestScore, true)
                                         .addField("Position", position, true)

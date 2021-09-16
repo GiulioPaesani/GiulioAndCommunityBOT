@@ -24,7 +24,7 @@ module.exports = {
         }
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL({ dynamic: true }))
+            .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
             .setColor("#6143CB")
             .addField("Message", censurato)
@@ -34,7 +34,7 @@ module.exports = {
         message.channel.send(embed)
 
         var embedLog = new Discord.MessageEmbed()
-            .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.avatarURL({ dynamic: true }))
+            .setAuthor("[BAD WORD] " + message.member.user.tag, message.member.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/j2dnGK97/Giulio-Ban-copia-4.png")
             .setColor("#6143CB")
             .addField("Message", nonCensurato)

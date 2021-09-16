@@ -21,7 +21,7 @@ module.exports = {
 :rotating_light: Puoi vedere tutte le informazioni sul server in <#${config.idCanaliServer.info}>`)
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor(`[WELCOME] ${member.user.username}#${member.user.discriminator}`, member.user.avatarURL())
+            .setAuthor(`[WELCOME] ${member.user.username}#${member.user.discriminator}`, member.user.displayAvatarURL())
             .setThumbnail("https://i.postimg.cc/J73zF2Wj/Welcome.png")
             .setColor("#7AC943")
             .addField("Account created", moment(member.user.createdAt).fromNow())

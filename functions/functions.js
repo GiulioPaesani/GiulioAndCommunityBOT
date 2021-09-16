@@ -185,7 +185,7 @@ global.checkModeration = function () {
             var utente = client.users.cache.get(userstatsList[index].id);
 
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNTEMPMUTE] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
+                .setAuthor("[UNTEMPMUTE] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
                 .setColor("#6143CB")
                 .addField("Reason", userstatsList[index].moderation.reason)
@@ -230,7 +230,7 @@ global.checkModeration = function () {
             var utente = client.users.cache.get(userstatsList[index].id);
 
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.avatarURL({ dynamic: true }))
+                .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
                 .addField("Reason", userstatsList[index].moderation.reason)

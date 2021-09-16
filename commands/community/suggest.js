@@ -24,7 +24,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle("💡 New suggestion 💡")
             .setColor("#fcba03")
-            .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+            .setThumbnail(message.member.user.displayAvatarURL({ dynamic: true }))
             .setDescription("Attendi che lo staff approvi il tuo suggerimento```" + contenuto + "```")
 
         message.channel.send(embed)
@@ -32,7 +32,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle("💡 New suggestion 💡")
             .setColor("#fcba03")
-            .setThumbnail(message.member.user.avatarURL({ dynamic: true }))
+            .setThumbnail(message.member.user.displayAvatarURL({ dynamic: true }))
             .addField(":bust_in_silhouette: User", "```" + `${message.author.username} (ID: ${message.author.id})` + "```")
             .addField(":beginner: Status", "```Pending```")
             .addField(":bookmark_tabs: Text", "```" + contenuto + "```")

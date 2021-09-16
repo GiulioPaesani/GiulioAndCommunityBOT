@@ -32,7 +32,7 @@ client.on("message", message => {
         var embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription("Tutte le info di questo utente")
-            .setThumbnail(utente.user.avatarURL())
+            .setThumbnail(utente.user.displayAvatarURL())
             .addField("User id", utente.user.id, true)
             .addField("Status", utente.user.presence.status, true)
             .addField("Is a bot?", utente.user.bot ? "Yes" : "No", true)

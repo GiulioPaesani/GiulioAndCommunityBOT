@@ -43,7 +43,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription("Tutte le statistiche su questo utente")
-            .setThumbnail(utente.user.avatarURL({ dynamic: true }))
+            .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
             .addField(":receipt: User ID", "```" + utente.user.id + "```", true)
             .addField(":ok_hand: Status", "```" + status + "```", true)
             .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)

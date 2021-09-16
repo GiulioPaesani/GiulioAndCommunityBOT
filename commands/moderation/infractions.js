@@ -29,7 +29,7 @@ module.exports = {
 
         var embed = new Discord.MessageEmbed()
             .setTitle("INFRACTIONS - " + utente.user.tag)
-            .setThumbnail(utente.user.avatarURL({ dynamic: true }))
+            .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
 
         if (userstats.moderation.type == "Muted") {
             embed

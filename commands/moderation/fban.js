@@ -133,7 +133,7 @@ module.exports = {
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor("[FORCE BAN] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
+            .setAuthor("[FORCE BAN] " + utente.user.tag, utente.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
             .setColor("#6143CB")
             .addField("Reason", reason)

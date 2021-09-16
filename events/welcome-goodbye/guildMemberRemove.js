@@ -19,7 +19,7 @@ module.exports = {
         }
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor(`[GOODBYE] ${member.user.username}#${member.user.discriminator}`, member.user.avatarURL())
+            .setAuthor(`[GOODBYE] ${member.user.username}#${member.user.discriminator}`, member.user.displayAvatarURL())
             .addField("Time on server", moment(new Date().getTime()).from(moment(member.joinedTimestamp), true))
             .setThumbnail("https://i.postimg.cc/qqGBCzG1/Goodbye.png")
             .setColor("#FC1D24")

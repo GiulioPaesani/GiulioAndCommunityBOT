@@ -93,7 +93,7 @@ module.exports = {
 
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor("[UNMUTE] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
+            .setAuthor("[UNMUTE] " + utente.user.tag, utente.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
             .setColor("#6143CB")
             .addField("Moderator", message.author.toString())

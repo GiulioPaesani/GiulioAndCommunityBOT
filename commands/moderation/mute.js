@@ -158,7 +158,7 @@ module.exports = {
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor("[MUTE] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
+            .setAuthor("[MUTE] " + utente.user.tag, utente.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
             .setColor("#6143CB")
             .addField("Reason", reason)

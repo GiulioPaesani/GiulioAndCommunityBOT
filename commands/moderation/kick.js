@@ -124,7 +124,7 @@ module.exports = {
         }
 
         var embed = new Discord.MessageEmbed()
-            .setAuthor("[KICK] " + utente.user.tag, utente.user.avatarURL({ dynamic: true }))
+            .setAuthor("[KICK] " + utente.user.tag, utente.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/R0KttgKN/Giulio-Ban-copia-3.png")
             .setColor("#6143CB")
             .addField("Reason", reason)
