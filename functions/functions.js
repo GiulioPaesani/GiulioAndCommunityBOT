@@ -34,8 +34,8 @@ global.permesso = function (message, comando) {
         .setDescription(`Non puoi eseguire il comando \`${comando}\` perchè non hai il permesso`)
 
     message.channel.send(embed).then(msg => {
-        message.delete({ timeout: 20000 }).catch()
-        msg.delete({ timeout: 20000 }).catch()
+        message.delete({ timeout: 20000 }).catch(() => { return })
+        msg.delete({ timeout: 20000 }).catch(() => { return })
     })
 }
 global.error = function (message, title, description) {
@@ -46,8 +46,8 @@ global.error = function (message, title, description) {
         .setDescription(description)
 
     message.channel.send(embed).then(msg => {
-        message.delete({ timeout: 20000 }).catch()
-        msg.delete({ timeout: 20000 }).catch()
+        message.delete({ timeout: 20000 }).catch(() => { return })
+        msg.delete({ timeout: 20000 }).catch(() => { return })
     })
 }
 global.warning = function (message, title, description) {
@@ -58,8 +58,8 @@ global.warning = function (message, title, description) {
         .setDescription(description)
 
     message.channel.send(embed).then(msg => {
-        message.delete({ timeout: 20000 }).catch()
-        msg.delete({ timeout: 20000 }).catch()
+        message.delete({ timeout: 20000 }).catch(() => { return })
+        msg.delete({ timeout: 20000 }).catch(() => { return })
     })
 }
 global.correct = function (message, title, description) {
@@ -70,8 +70,8 @@ global.correct = function (message, title, description) {
         .setDescription(description)
 
     message.channel.send(embed).then(msg => {
-        message.delete({ timeout: 20000 }).catch()
-        msg.delete({ timeout: 20000 }).catch()
+        message.delete({ timeout: 20000 }).catch(() => { return })
+        msg.delete({ timeout: 20000 }).catch(() => { return })
     })
 }
 

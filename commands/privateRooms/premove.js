@@ -37,6 +37,7 @@ module.exports = {
             var canale = client.channels.cache.get(room.text)
         if (room.voice)
             var canale = client.channels.cache.get(room.voice)
+        if (!canale) return
 
         var everyone = message.guild.roles.cache.find(r => r.name === "@everyone");
 
