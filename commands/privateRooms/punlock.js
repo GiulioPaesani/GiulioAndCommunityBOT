@@ -33,6 +33,9 @@ module.exports = {
             return
         }
 
+        warning(message, "Stanze pubblice disattivate", "Mi spiace ma è stato deciso di non poter più rendere **pubblica** la propria stanza. Maggiori info e novità nel prossimo **changelog**")
+        return
+
         if (room.text)
             var canale = client.channels.cache.get(room.text)
         if (room.voice)
