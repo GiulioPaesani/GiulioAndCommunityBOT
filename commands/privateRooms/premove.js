@@ -67,6 +67,11 @@ module.exports = {
             return
         }
 
+        if (message.member.id == utente.id) {
+            warning(message, "Non ti puoi rimuovere", room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi rimuoverti dalla stanza da solo" : "Non puoi rimuoverti dalle stanze da solo")
+            return
+        }
+
         if (room.text) {
             var canale = client.channels.cache.get(room.text)
             canale.updateOverwrite(utente, {
