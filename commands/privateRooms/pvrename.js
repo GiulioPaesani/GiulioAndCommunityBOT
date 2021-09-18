@@ -50,7 +50,7 @@ module.exports = {
         if (room.voice) {
             var canale = client.channels.cache.get(room.voice)
             canale.setName(name)
-                .then(() => correct(message, "Canale rinominato", `Il tuo canale vocale è stato rinominto in \`${canale.name}\``))
+                .then(() => correct(message, "Canale rinominato", `Il tuo canale vocale è stato rinominato in \`${canale.name}\``))
                 .catch(() => error(message, "Nome non valido", "`!pvrename [name]`"))
         }
     },

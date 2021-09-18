@@ -50,7 +50,7 @@ module.exports = {
         if (room.text) {
             var canale = client.channels.cache.get(room.text)
             canale.setName(name)
-                .then(() => correct(message, "Canale rinominato", `Il tuo canale testuale è stato rinominto in \`${canale.name}\``))
+                .then(() => correct(message, "Canale rinominato", `Il tuo canale testuale è stato rinominato in \`${canale.name}\``))
                 .catch(() => error(message, "Nome non valido", "`!ptrename [name]`"))
         }
     },
