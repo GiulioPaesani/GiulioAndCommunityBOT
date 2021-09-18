@@ -42,12 +42,12 @@ module.exports = {
             message.react("🔴");
         }
         else if (numero - 1 != serverstats.numero) { //Numero sbagliato
-            serverstats.numero = 0;
-            serverstats.ultimoUtente = "NessunUtente";
-
             var embed = new Discord.MessageEmbed()
                 .setColor("#EB3140")
                 .setDescription("Numero errato, dovevi inserire `" + (serverstats.numero + 1) + "`")
+
+            serverstats.numero = 0;
+            serverstats.ultimoUtente = "NessunUtente";
 
             if (serverstats.numero == 0) {
                 var titleRandom = ["RIUSCIAMO A COMINCIARE ALMENO?", "DAI... ALMENO ARRIVIAMO A 10", "NON SO SE LO SAI MA IL PRIMO NUMERO È 1", `SAD FOR YOU`, `MA SIETE SCEMI?`, "QUANTO HAI IN MATEMATICA?", "QUALCUNO QUI NON SA CONTARE"]
