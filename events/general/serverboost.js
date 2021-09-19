@@ -72,8 +72,7 @@ Vanity URL
             .setTitle(":tada: Server boost :tada:")
             .setColor("#FF73FA")
             .setDescription(`Grazie tantissime a <@${message.author.id}> per aver boostato il server!`)
-            .addField(`Ha potenziato il server con ${numeroBoost} boost`,
-                `\`Lvl. ${livelloVecchio} Boost ${message.guild.premiumSubscriptionCount - numeroBoost}\` > \`Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscriptionCount}\`
+            .addField(`Ha potenziato il server con ${numeroBoost} boost`, `\`Lvl. ${livelloVecchio} Boost ${message.guild.premiumSubscriptionCount - numeroBoost}\` > \`Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscriptionCount}\`
 
 ${nuovoLivello ? nuovoLivello : testoMancano}
 `)
