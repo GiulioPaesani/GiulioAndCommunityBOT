@@ -145,8 +145,9 @@ setInterval(function () {
     ytch.getChannelInfo("UCvIafNR8ZvZyE5jVGVqgVfA").then((response) => {
         var canale = client.channels.cache.get(config.idCanaliServer.giulioSubscriberCounter)
         canale.setName("✌│Giulio: " + response.subscriberCount)
+        console.log("ciao")
     })
-}, 1000 * 60 * 5)
+}, 1000 * 60 * 1)
 
 //Member counter
 setInterval(function () {
