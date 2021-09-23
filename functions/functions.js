@@ -286,13 +286,14 @@ global.makeBackup = function () {
 global.youtubeNotification = async function () {
     var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
 
-    ytch.getChannelVideos("UCK6QwAdGWOWN9AT1_UQFGtA", "newest").then((response) => {
-        if (serverstats.lastVideoCode != response.items[0].videoId) {
-            serverstats.lastVideoCode = response.items[0].videoId;
-            getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
-                var descriptionVideo = JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+    await ytch.getChannelVideos("UCK6QwAdGWOWN9AT1_UQFGtA", "newest").then(async (response) => {
+        if (serverstats.lastVideoCode != response.items[0].videoId) { //! Qua provare a mettere una condizione: if(response.items[0].pubblishedText != "1 minute ago") tipo
+            serverstats.lastVideoCode = await response.items[0].videoId;
 
-                canale.send(`
+            await getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
+                var descriptionVideo = await JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+
+                await canale.send(`
 -------------💻 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 💻-------------
 Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
 Andate subito a vedere \"**${response.items[0].title}**\"
@@ -303,20 +304,17 @@ https://youtu.be/${response.items[0].videoId}
 <@&${config.ruoliNotification.youtubeVideosCode}>
                 `)
             })
-
         }
     })
 
-    ytch.getChannelVideos("UCvIafNR8ZvZyE5jVGVqgVfA", "newest").then((response) => {
-        if (!response.items[0]) return
-
+    await ytch.getChannelVideos("UCvIafNR8ZvZyE5jVGVqgVfA", "newest").then(async (response) => {
         if (serverstats.lastVideoGiulio != response.items[0].videoId) {
-            serverstats.lastVideoGiulio = response.items[0].videoId;
+            serverstats.lastVideoGiulio = await response.items[0].videoId;
 
-            getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
-                var descriptionVideo = JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+            await getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
+                var descriptionVideo = await JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
 
-                canale.send(`
+                await canale.send(`
 -------------✌ 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 ✌-------------
 Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
 Andate subito a vedere \"**${response.items[0].title}**\"

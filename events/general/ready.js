@@ -27,7 +27,7 @@ module.exports = {
         setInterval(updateServerstats, 60 * 1000)
         setInterval(updateUserstats, 60 * 1000)
 
-        setInterval(youtubeNotification, 30 * 1000)
+        setInterval(youtubeNotification, 60 * 1000)
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE")
