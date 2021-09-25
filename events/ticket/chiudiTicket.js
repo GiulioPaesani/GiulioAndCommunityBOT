@@ -54,7 +54,7 @@ module.exports = {
                 .setStyle("red")
                 .setID("annullaChiusura")
 
-            button.channel.send({
+            button.message.channel.send({
                 component: button,
                 embed: embed
             });
