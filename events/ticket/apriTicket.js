@@ -12,14 +12,20 @@ module.exports = {
 
         if (button.channel.id == config.idCanaliServer.staffHelp) {
             if (ticket.find(x => x.type == "Normal" && x.owner == button.clicker.user.id)) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Ticket già aperto")
-                    .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
-                    .setColor("#8F8F8F")
-                    .setDescription(`Puoi aprire un solo ticket di supporto alla volta\rHai gia un ticket aperto in <#${ticket.find(x => x.type == "Normal" && x.owner == button.clicker.user.id).channel}>`)
 
-                button.clicker.user.send(embed).catch();
-                return
+                if (client.channels.cache.get(ticket.channel)) {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle("Ticket già aperto")
+                        .setThumbnail("https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png")
+                        .setColor("#8F8F8F")
+                        .setDescription(`Puoi aprire un solo ticket di supporto alla volta\rHai gia un ticket aperto in <#${ticket.find(x => x.type == "Normal" && x.owner == button.clicker.user.id).channel}>`)
+
+                    button.clicker.user.send(embed).catch();
+                    return
+                }
+                else {
+                    serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
+                }
             }
 
             var server = client.guilds.cache.get(config.idServer);
