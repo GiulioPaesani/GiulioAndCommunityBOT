@@ -7,7 +7,7 @@ module.exports = {
     channelsGranted: [],
     async execute(message, args, client) {
 
-        await client.YTP.deleteChannel(message.guild.id, "https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA")
+        // await client.YTP.deleteChannel(message.guild.id, "https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA")
 
         var canale = await client.channels.cache.get("869975176895418438")
 
