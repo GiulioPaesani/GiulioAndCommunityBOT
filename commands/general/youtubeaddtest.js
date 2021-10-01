@@ -6,7 +6,6 @@ module.exports = {
     onlyStaff: true,
     channelsGranted: [],
     async execute(message, args, client) {
-        console.log(args)
         let ChannelLink = args[0];
         let DiscordChannel =
             message.mentions.channels
@@ -30,10 +29,15 @@ module.exports = {
             });
         //set a Channel
         client.YTP.setChannel(
-            ChannelLink,
+            "https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA",
             DiscordChannel,
             DiscordUser,
-            Notification,
+            `-------------:computer: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :computer:-------------
+Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
+Andate subito a vedere "**{videotitle}**"
+
+{videourl}
+<@&883062518774370345>`,
             (preventDuplicates = true)
         )
             .then((ch) => {
