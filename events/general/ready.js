@@ -38,6 +38,20 @@ module.exports = {
 
         client.YTP = new YoutubePoster(client, options);
 
+        await client.YTP.setChannel("https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA", client.channels.cache.get("869975176895418438"), message.member, `-------------:computer: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :computer:-------------
+Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
+Andate subito a vedere "**{videotitle}**"
+
+{videourl}
+<@&857544584691318814>`, preventDuplicates = true)
+
+        await client.YTP.setChannel("https://www.youtube.com/channel/UCvIafNR8ZvZyE5jVGVqgVfA", client.channels.cache.get("869975176895418438"), message.member, `-------------:v: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :v:-------------
+Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
+Andate subito a vedere "**{videotitle}**"
+
+{videourl}
+<@&883062518774370345>`, preventDuplicates = true)
+
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE")
             .setColor("#3ebd45")
