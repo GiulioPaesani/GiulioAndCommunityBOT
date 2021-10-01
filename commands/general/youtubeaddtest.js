@@ -6,6 +6,7 @@ module.exports = {
     onlyStaff: true,
     channelsGranted: [],
     async execute(message, args, client) {
+        console.log(args)
         let ChannelLink = args[0];
         let DiscordChannel =
             message.mentions.channels
