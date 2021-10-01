@@ -283,62 +283,6 @@ global.makeBackup = function () {
     }
 }
 
-global.youtubeNotification = async function () {
-    const data = await fetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCK6QwAdGWOWN9AT1_UQFGtA&maxResults=1&order=date&type=video&key=AIzaSyAo6v2Nmq4Cb_MyxPGGuMM6JK8zsPCt3Q8`)
-
-    var idVideo = data.body.items[0].id.videoId
-    if (serverstats.lastVideoCode != idVideo) { //! Qua provare a mettere una condizione: if(response.items[0].pubblishedText != "1 minute ago") tipo
-        serverstats.lastVideoCode = await idVideo;
-        const data2 = await fetch.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${idVideo}&key=AIzaSyAo6v2Nmq4Cb_MyxPGGuMM6JK8zsPCt3Q8`)
-
-        client.channels.cache.get("869975198483488890").send(data2.body.items[0].snippet.title)
-    }
-    //     var canale = client.channels.cache.get(config.idCanaliServer.youtubeNotification);
-
-    //     await ytch.getChannelVideos("UCK6QwAdGWOWN9AT1_UQFGtA", "newest").then(async (response) => {
-    //         if (serverstats.lastVideoCode != response.items[0].videoId) { //! Qua provare a mettere una condizione: if(response.items[0].pubblishedText != "1 minute ago") tipo
-    //             serverstats.lastVideoCode = await response.items[0].videoId;
-
-    //             await getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
-    //                 var descriptionVideo = await JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
-
-    //                 await canale.send(`
-    // -------------💻 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 💻-------------
-    // Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
-    // Andate subito a vedere \"**${response.items[0].title}**\"
-
-    // ${descriptionVideo}
-
-    // https://youtu.be/${response.items[0].videoId}
-    // <@&${config.ruoliNotification.youtubeVideosCode}>
-    //                 `)
-    //             })
-    //         }
-    //     })
-
-    //     await ytch.getChannelVideos("UCvIafNR8ZvZyE5jVGVqgVfA", "newest").then(async (response) => {
-    //         if (serverstats.lastVideoGiulio != response.items[0].videoId) {
-    //             serverstats.lastVideoGiulio = await response.items[0].videoId;
-
-    //             await getInfo(`https://www.youtube.com/watch?v=${response.items[0].videoId}`).then(async info => {
-    //                 var descriptionVideo = await JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
-
-    //                 await canale.send(`
-    // -------------✌ 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎 ✌-------------
-    // Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
-    // Andate subito a vedere \"**${response.items[0].title}**\"
-
-    // ${descriptionVideo}
-
-    // https://youtu.be/${response.items[0].videoId}
-    // <@&${config.ruoliNotification.youtubeVideosGiulio}>
-    //                 `)
-    //             })
-
-    //         }
-    //     })
-}
-
 global.updateServerstats = function () {
     database.collection("serverstats").updateOne({}, { $set: serverstats });
 }

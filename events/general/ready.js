@@ -2,6 +2,8 @@ var MongoClient = require('mongodb').MongoClient;
 const Discord = require("discord.js");
 const moment = require("moment")
 
+const YoutubePoster = require("discord-youtube");
+
 module.exports = {
     name: `ready`,
     async execute() {
@@ -27,7 +29,14 @@ module.exports = {
         setInterval(updateServerstats, 60 * 1000)
         setInterval(updateUserstats, 60 * 1000)
 
-        //setInterval(youtubeNotification, 60 * 1000)
+        const options = {
+            loop_delays_in_min: 1,
+            defaults: {
+                Notification: ``
+            },
+        };
+
+        client.YTP = new YoutubePoster(client, options);
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE")
