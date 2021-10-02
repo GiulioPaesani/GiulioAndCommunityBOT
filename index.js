@@ -169,6 +169,7 @@ client.on("message", message => {
     //if in a dm or msg from a bot, return 
     if (!message.guild || message.author.bot) return;
 
+    const prefix = "!"
     const args = message.content.slice(prefix.length).trim().split(" ");
     const cmd = args.shift().toLowerCase();
 
