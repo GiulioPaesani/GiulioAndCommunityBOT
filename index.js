@@ -177,7 +177,7 @@ client.on("message", message => {
         if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send({
             embed: new Discord.MessageEmbed().setColor("RED").setDescription(":x: You are not allowed to execute this Command!")
         })
-        let ChannelLink = args[0];
+        let ChannelLink = "https://www.youtube.com/channel/UCkbF1Vs7k5qgtuO74cV3Feg";
         let DiscordChannel = message.mentions.channels.filter(c => c.guild.id == message.guild.id).first() || message.guild.channels.cache.get(args[1]);
         let DiscordUser = message.mentions.members.filter(m => m.guild.id == message.guild.id).first()?.user || message.guild.members.cache.get(args[2])?.user;
         let Notification = args.slice(3).join(" ") || client.YTP.options.defaults.Notification;
