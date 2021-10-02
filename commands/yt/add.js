@@ -8,7 +8,7 @@ module.exports = {
     onlyStaff: true,
     channelsGranted: [config.idCanaliServer.commands],
     async execute(message, args, client) {
-
+        var prefix = "!"
         var args = message.content.slice(prefix.length).trim().split(" ");
         let ChannelLink = args[0];
         let DiscordChannel = message.mentions.channels.filter(c => c.guild.id == message.guild.id).first() || message.guild.channels.cache.get(args[1]);
