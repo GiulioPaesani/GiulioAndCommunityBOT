@@ -8,6 +8,23 @@ module.exports = {
     onlyStaff: true,
     channelsGranted: [config.idCanaliServer.commands],
     async execute(message, args, client) {
+        let toreplace_format =
+            `**\`{videourl}\` ==> URL / LINK**` + "\n" +
+            `**\`{video}\` ==> URL / LINK**` + "\n" +
+            `**\`{url}\` ==> URL / LINK**` + "\n" +
+            `**\`{videotitle}\` ==> TITLE / NAME**` + "\n" +
+            `**\`{name}\` ==> TITLE / NAME**` + "\n" +
+            `**\`{title}\` ==> TITLE / NAME**` + "\n" +
+            `**\`{videoauthorname}\` ==> Channelauthor NAME**` + "\n" +
+            `**\`{authorname}\` ==> Channelauthor NAME**` + "\n" +
+            `**\`{author}\` ==> Channelauthor NAME**` + "\n" +
+            `**\`{creator}\` ==> Channelauthor NAME**` + "\n" +
+            `**\`{creatorname}\` ==> Channelauthor NAME**` + "\n" +
+            `**\`{discorduser}\` ==> ID of the LINKED USER**` + "\n" +
+            `**\`{user}\` ==> ID of the LINKED USER**` + "\n" +
+            `**\`{member}\` ==> ID of the LINKED USER**` + "\n\n" +
+            `**__DEFAULT MESSAGE:__** \`\`\`${client.YTP.options.defaults.Notification}\`\`\``;
+
         var prefix = "!"
         var args = message.content.slice(prefix.length).trim().split(" ");
         let ChannelLink = args[0];
