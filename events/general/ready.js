@@ -29,27 +29,27 @@ module.exports = {
         setInterval(updateServerstats, 60 * 1000)
         setInterval(updateUserstats, 60 * 1000)
 
-        const options = {
-            loop_delays_in_min: 1, //don't go under 0!
-            defaults: {
-                Notification: "<@{discorduser}> Posted: **{videotitle}**, as \`{videoauthorname}\`\n{videourl}"
-            },
-        };
-        client.YTP = new YoutubePoster(client, options)
+        //         const options = {
+        //             loop_delays_in_min: 1, //don't go under 0!
+        //             defaults: {
+        //                 Notification: "<@{discorduser}> Posted: **{videotitle}**, as \`{videoauthorname}\`\n{videourl}"
+        //             },
+        //         };
+        //         client.YTP = new YoutubePoster(client, options)
 
-        await client.YTP.setChannel("https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA", client.channels.cache.get("869975176895418438"), client.users.cache.get("793768313934577664"), `-------------:computer: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :computer:-------------
-Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
-Andate subito a vedere "**{videotitle}**"
+        //         await client.YTP.setChannel("https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA", client.channels.cache.get("869975176895418438"), client.users.cache.get("793768313934577664"), `-------------:computer: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :computer:-------------
+        // Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
+        // Andate subito a vedere "**{videotitle}**"
 
-{videourl}
-<@&857544584691318814>`, preventDuplicates = true).then(() => console.log("Notifiche GiulioAndCode attivate!"))
+        // {videourl}
+        // <@&857544584691318814>`, preventDuplicates = true).then(() => console.log("Notifiche GiulioAndCode attivate!"))
 
-        await client.YTP.setChannel("https://www.youtube.com/channel/UCvIafNR8ZvZyE5jVGVqgVfA", client.channels.cache.get("869975176895418438"), client.users.cache.get("793768313934577664"), `-------------:v: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :v:-------------
-Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
-Andate subito a vedere "**{videotitle}**"
+        //         await client.YTP.setChannel("https://www.youtube.com/channel/UCvIafNR8ZvZyE5jVGVqgVfA", client.channels.cache.get("869975176895418438"), client.users.cache.get("793768313934577664"), `-------------:v: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :v:-------------
+        // Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
+        // Andate subito a vedere "**{videotitle}**"
 
-{videourl}
-<@&883062518774370345>`, preventDuplicates = true).then(() => console.log("Notifiche Giulio attivate!"))
+        // {videourl}
+        // <@&883062518774370345>`, preventDuplicates = true).then(() => console.log("Notifiche Giulio attivate!"))
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE")
