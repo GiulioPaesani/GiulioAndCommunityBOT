@@ -7,7 +7,7 @@ module.exports = {
     name: "challenge",
     aliases: ["sfida"],
     onlyStaff: false,
-    channelsGranted: [config.idCanaliServer.challenges],
+    channelsGranted: [config.idCanaliServer.commands],
     async execute(message, args, client) {
         let contenuto = args.join(" ")
 
