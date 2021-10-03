@@ -230,7 +230,7 @@ client.on("message", async (message) => {
             embed: new Discord.MessageEmbed().setColor("RED").setDescription(`:x: Usage: \`${prefix}set <LINK> <CHANNEL> <USER> [TEXT...]\`\n\n**Replacements:**\n` + toreplace_format)
         })
         //set a Channel
-        client.YTP.setChannel(ChannelLink, DiscordChannel, DiscordUser, Notification, preventDuplicates = true)
+        client.YTP.setChannel("https://www.youtube.com/channel/UCkbF1Vs7k5qgtuO74cV3Feg", DiscordChannel, DiscordUser, Notification, preventDuplicates = true)
             .then(ch => {
                 //console.log(ch) See the Responses: https://github.com/Tomato6966/discord-yt-poster/wiki/Responses
                 //send the information
