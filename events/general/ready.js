@@ -30,13 +30,12 @@ module.exports = {
         setInterval(updateUserstats, 60 * 1000)
 
         const options = {
-            loop_delays_in_min: 1,
+            loop_delays_in_min: 1, //don't go under 0!
             defaults: {
-                Notification: ``
+                Notification: "<@{discorduser}> Posted: **{videotitle}**, as \`{videoauthorname}\`\n{videourl}"
             },
         };
-
-        client.YTP = new YoutubePoster(client, options);
+        client.YTP = new YoutubePoster(client, options)
 
         // await client.YTP.setChannel("https://www.youtube.com/channel/UCK6QwAdGWOWN9AT1_UQFGtA", client.channels.cache.get("869975176895418438"), client.users.cache.get("793768313934577664"), `-------------:computer: **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** :computer:-------------
         // Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
