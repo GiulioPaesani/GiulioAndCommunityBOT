@@ -299,3 +299,64 @@ global.updateUserstats = function () {
         });
     })
 }
+
+
+global.youtubeNotification = function () {
+    ytch.getChannelVideos("UCK6QwAdGWOWN9AT1_UQFGtA", "newest").then(async (response) => {
+        var idVideo = response.items[0].videoId
+        client.channels.cache.get("869975176895418438").messages.fetch()
+            .then(async messages => {
+                var isGiaMandato = false
+                await messages.forEach(msg => {
+                    if (msg.content.split("\n")[msg.content.split("\n").length - 2] && msg.content.split("\n")[msg.content.split("\n").length - 2].endsWith(idVideo))
+                        isGiaMandato = true
+                });
+
+                if (!isGiaMandato) {
+                    await getInfo(`https://www.youtube.com/watch?v=${idVideo}`).then(async info => {
+                        var descriptionVideo = await JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+
+                        await client.channels.cache.get("869975176895418438").send(`
+-------------💻 **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** 💻-------------
+Ehy ragazzi, è appena uscito un nuovo video su **GiulioAndCode**
+Andate subito a vedere \"**${info.items[0].fulltitle}**\"
+
+${descriptionVideo}
+
+https://youtu.be/${idVideo}
+<@&${config.ruoliNotification.youtubeVideosCode}>
+                `)
+                    })
+                }
+            })
+    })
+
+    ytch.getChannelVideos("UCvIafNR8ZvZyE5jVGVqgVfA", "newest").then(async (response) => {
+        var idVideo = response.items[0].videoId
+        client.channels.cache.get("869975176895418438").messages.fetch()
+            .then(async messages => {
+                var isGiaMandato = false
+                await messages.forEach(msg => {
+                    if (msg.content.split("\n")[msg.content.split("\n").length - 2] && msg.content.split("\n")[msg.content.split("\n").length - 2].endsWith(idVideo))
+                        isGiaMandato = true
+                });
+
+                if (!isGiaMandato) {
+                    await getInfo(`https://www.youtube.com/watch?v=${idVideo}`).then(async info => {
+                        var descriptionVideo = await JSON.stringify(info.items[0].description).split("\\n\\n")[0].slice(1)
+
+                        await client.channels.cache.get("869975176895418438").send(`
+-------------✌ **𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎** ✌-------------
+Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
+Andate subito a vedere \"**${info.items[0].fulltitle}**\"
+
+${descriptionVideo}
+
+https://youtu.be/${idVideo}
+<@&${config.ruoliNotification.youtubeVideosGiulio}>
+                `)
+                    })
+                }
+            })
+    })
+}
