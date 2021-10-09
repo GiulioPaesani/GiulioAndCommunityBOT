@@ -138,13 +138,13 @@ client.on("message", message => {
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
         var canale = client.channels.cache.get(config.idCanaliServer.codeSubscriberCounter)
-        canale.setName("📱│GiulioAndCode: " + response.subscriberCount)
+        canale.setName("📱│GiulioAndCode: " + Math.floor(response.subscriberCount))
     })
 }, 1000 * 60 * 20)
 setInterval(function () {
     ytch.getChannelInfo("UCvIafNR8ZvZyE5jVGVqgVfA").then((response) => {
         var canale = client.channels.cache.get(config.idCanaliServer.giulioSubscriberCounter)
-        canale.setName("✌│Giulio: " + response.subscriberCount)
+        canale.setName("✌│Giulio: " + Math.floor(response.subscriberCount))
     })
 }, 1000 * 60 * 5)
 
