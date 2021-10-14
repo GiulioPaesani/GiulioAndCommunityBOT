@@ -8,8 +8,13 @@ module.exports = {
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
         if (messageReaction.message.channel.id == config.idCanaliServer.suggestions) {
-            var userUp = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "😍").users.fetch()).map(user => user.id);
-            var userDown = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "💩").users.fetch()).map(user => user.id);
+            var userUp = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "😍").users.fetch()).map(user => user.id)
+                .catch(() => { return })
+            var userDown = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "💩").users.fetch()).map(user => user.id)
+                .catch(() => { return })
+
+            if (!userUp) return
+            if (!userDown) return
 
             if (messageReaction._emoji.name == "😍") {
                 if (userDown.includes(user.id)) {
@@ -59,8 +64,13 @@ Downvotes: **${userDown.length}** - ${downvotes}%
         }
 
         if (messageReaction.message.channel.id == config.idCanaliServer.challenges) {
-            var userUp = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "👍").users.fetch()).map(user => user.id);
-            var userDown = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "👎").users.fetch()).map(user => user.id);
+            var userUp = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "👍").users.fetch()).map(user => user.id)
+                .catch(() => { return })
+            var userDown = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "👎").users.fetch()).map(user => user.id)
+                .catch(() => { return })
+
+            if (!userUp) return
+            if (!userDown) return
 
             if (messageReaction._emoji.name == "👍") {
                 if (userDown.includes(user.id)) {
