@@ -5,7 +5,6 @@ module.exports = {
 
         if (message.channel.id != log.thingsToDo) return
 
-        console.log("ciao")
         if (message.reference) return
 
         var embed = new Discord.MessageEmbed()
@@ -57,6 +56,7 @@ module.exports = {
             .addOption(option6)
 
         message.channel.send(embed, select)
+        message.delete()
 
     },
 };
