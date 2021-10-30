@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: "config",
     aliases: ["notifiche", "notification", "notifications"],
@@ -19,12 +17,14 @@ module.exports = {
         message.channel.send(embed)
             .then((msg) => {
                 msg.delete({ timeout: 120000 })
+                    .catch(() => { })
                 msg.react("📋")
                 msg.react("📰")
                 msg.react("📝")
                 msg.react("📱")
                 msg.react("✌")
                 message.delete({ timeout: 120000 })
+                    .catch(() => { })
 
                 // Filters
                 const reactAnnouncements = (reaction, user) => reaction.emoji.name === '📋'

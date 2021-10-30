@@ -1,9 +1,6 @@
-const Discord = require("discord.js");
-const humanNumber = require("human-number");
-
 module.exports = {
     name: "rank",
-    aliases: ["level"],
+    aliases: ["level", "xp"],
     onlyStaff: false,
     channelsGranted: [config.idCanaliServer.commands],
     async execute(message, args, client) {

@@ -1,13 +1,15 @@
 {
+    "idGiulio": "793768313934577664",
+    "idServer": "793776260350083113",
+    "idBot": "802184359120863272",
     "ruoliStaff": {
         "botUfficiale": "872541415215874088",
         "bot": "793804156430188594",
         "admin": "793796029878370326",
         "moderatore": "799925821904125962"
     },
-    "idGiulio": "793768313934577664",
-    "idServer": "793776260350083113",
-    "idBot": "802184359120863272",
+    "idRuoloAiutante": "859413877133410335",
+    "idRuoloAiutanteInProva": "862600976798842880",
     "idCanaliServer": {
         "codeSubscriberCounter": "869975166543876177",
         "giulioSubscriberCounter": "883052616542744637",
@@ -22,6 +24,9 @@
         "categoriaTicket": "869975169672826940",
         "staffHelp": "869975186856894464",
         "commands": "869975190052929566",
+        "general": "869975177935593483",
+        "general1": "869975179806277724",
+        "general2": "869975181219733534",
         "noMicChat": "869975179386839101",
         "selfAdv": "869975185137238066",
         "becomeHelper": "869975186089336862",
@@ -37,7 +42,8 @@
         "bannedTicket": "869975203898343424",
         "tempbannedTicket": "869975205349572648",
         "categoriaModerationTicket": "869975172671733760",
-        "lockdown": "869975206310064179"
+        "lockdown": "869975206310064179",
+        "joinTheServer": "901818597381406790"
     },
     "ruoliLeveling": {
         "level5": "799990260393443338",
@@ -64,9 +70,8 @@
         "banned": "834364447823888384",
         "tempbanned": "834364495227781181"
     },
-    "idRuoloAiutante": "859413877133410335",
-    "idRuoloAiutanteInProva": "862600976798842880",
     "idRuoloServerBooster": "800009879371644940",
+    "idRuoloNonVerificato": "901779149545427004",
     "ruoliNotification": {
         "announcements": "815649916574629941",
         "news": "815649625591382077",

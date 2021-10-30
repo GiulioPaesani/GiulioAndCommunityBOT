@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: `messageUpdate`,
     async execute(oldMessage, newMessage) {
@@ -11,7 +9,8 @@ module.exports = {
 
         if (!trovata) return
 
-        newMessage.delete();
+        newMessage.delete()
+            .catch(() => { })
 
         var userstats = userstatsList.find(x => x.id == newMessage.author.id);
         if (!userstats) return

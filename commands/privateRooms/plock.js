@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const { Permissions } = require("discord.js")
-
 module.exports = {
     name: "plock",
     aliases: [],
@@ -22,13 +19,22 @@ module.exports = {
         else {
             var embed = new Discord.MessageEmbed()
                 .setTitle("Canale non concesso")
-                .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
                 .setColor("#F15A24")
                 .setDescription(`Non puoi utilizzare il comando \`!plock\` in questo canale`)
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+            }
+
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 15000 }).catch(() => { return })
-                msg.delete({ timeout: 15000 }).catch(() => { return })
+                message.delete({ timeout: 15000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 15000 })
+                    .catch(() => { })
             })
             return
         }
@@ -41,7 +47,7 @@ module.exports = {
 
         var everyone = message.guild.roles.cache.find(r => r.name === "@everyone");
 
-        const permissions = new Permissions(canale.permissionOverwrites.get(everyone.id).deny.bitfield);
+        const permissions = new Discord.Permissions(canale.permissionOverwrites.get(everyone.id).deny.bitfield);
 
         if (permissions.toArray().includes("VIEW_CHANNEL")) {
             warning(message, `${room.type == "onlyText" || room.type == "onlyVoice" ? "Stanza già privata" : "Stanze già private"}`, room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale è già accessibile solo da chi inviti" : "I tuoi canali privati sono già accessibili solo da chi inviti")

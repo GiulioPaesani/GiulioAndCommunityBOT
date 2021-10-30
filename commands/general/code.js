@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const { MessageAttachment } = require('discord.js');
-
 module.exports = {
     name: "code",
     aliases: [],
@@ -123,7 +120,9 @@ module.exports = {
 
             message.channel.send(paginaInziale).then(msg => {
                 message.delete({ timeout: 120000 })
+                    .catch(() => { })
                 msg.delete({ timeout: 120000 })
+                    .catch(() => { })
                 msg.react('🔨').then(r => {
                     msg.react('🎡')
                     msg.react('🧰')
@@ -221,13 +220,13 @@ module.exports = {
 
             if (args[args.length - 1].toLowerCase() == "here") {
                 message.channel.send(embed)
-                var attachment = new MessageAttachment(Buffer.from(codice.code, 'utf-8'), command + "-GiulioAndCode.txt");
+                var attachment = new Discord.MessageAttachment(Buffer.from(codice.code, 'utf-8'), command + "-GiulioAndCode.txt");
                 message.channel.send({ files: [attachment] })
             }
             else {
                 utente.send(embed)
                     .then(() => {
-                        var attachment = new MessageAttachment(Buffer.from(codice.code, 'utf-8'), command + "-GiulioAndCode.txt")
+                        var attachment = new Discord.MessageAttachment(Buffer.from(codice.code, 'utf-8'), command + "-GiulioAndCode.txt")
                         utente.send({ files: [attachment] })
                         correct(message, "Ecco il codice", "Il command **" + command.toUpperCase() + "** è stato mandato in privato a " + utente.toString())
                     })
@@ -240,8 +239,10 @@ module.exports = {
                             .setImage("https://i.postimg.cc/PJ1GVqmc/attiva-Messaggi-Privati.gif")
 
                         message.channel.send(embed).then(msg => {
-                            message.delete({ timeout: 10000 }).catch()
-                            msg.delete({ timeout: 10000 }).catch()
+                            message.delete({ timeout: 10000 })
+                                .catch(() => { })
+                            msg.delete({ timeout: 10000 })
+                                .catch(() => { })
                         })
                         return
                     })
@@ -265,8 +266,10 @@ module.exports = {
                             .setImage("https://i.postimg.cc/PJ1GVqmc/attiva-Messaggi-Privati.gif")
 
                         message.channel.send(embed).then(msg => {
-                            message.delete({ timeout: 10000 }).catch()
-                            msg.delete({ timeout: 10000 }).catch()
+                            message.delete({ timeout: 10000 })
+                                .catch(() => { })
+                            msg.delete({ timeout: 10000 })
+                                .catch(() => { })
                         })
                         return
                     })

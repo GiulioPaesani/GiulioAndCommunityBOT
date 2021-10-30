@@ -1,18 +1,16 @@
-const Discord = require("discord.js");
-const moment = require("moment");
-
 module.exports = {
     name: "cserver",
     aliases: ["cserverstats", "cserverinfo", "clb", "cleaderboard"],
     onlyStaff: false,
     channelsGranted: [config.idCanaliServer.commands, config.idCanaliServer.counting],
     async execute(message, args, client) {
+
         var embed = new Discord.MessageEmbed()
             .setTitle("COUNTING - GiulioAndCommunity")
             .setThumbnail(message.member.guild.iconURL({ dynamic: true }))
             .setDescription("La classifica del server su **counting**")
             .addField(":1234: Current Number", "```" + serverstats.numero + "```", true)
-            .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? "```" + client.users.cache.find(u => u.id == serverstats.ultimoUtente).username + "```" : "```None```", true)
+            .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? (client.users.cache.find(u => u.id == serverstats.ultimoUtente) ? `\`\`\`${client.users.cache.find(u => u.id == serverstats.ultimoUtente)}\`\`\`` : "\`\`\`User undefined\`\`\`") : "```None```", true)
 
         var leaderboardBestScoreList = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
 

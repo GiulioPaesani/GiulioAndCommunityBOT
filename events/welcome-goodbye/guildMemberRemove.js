@@ -1,11 +1,10 @@
-const Discord = require("discord.js");
-const moment = require("moment")
-
 module.exports = {
     name: `guildMemberRemove`,
     async execute(member) {
         if (member.user.bot) return
         if (member.guild.id != config.idServer) return
+
+        if (member.roles.cache.has(config.idRuoloNonVerificato)) return
 
         var userstats = userstatsList.find(x => x.id == member.id)
         if (!userstats) return

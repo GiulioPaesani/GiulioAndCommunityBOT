@@ -1,10 +1,3 @@
-const Discord = require("discord.js");
-
-const { MessageButton } = require('discord-buttons');
-const { MessageActionRow } = require('discord-buttons');
-const ms = require("ms");
-const message = require("../general/message");
-
 module.exports = {
     name: `clickButton`,
     async execute(button) {

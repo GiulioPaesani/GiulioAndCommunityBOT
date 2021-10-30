@@ -1,17 +1,23 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: "message",
     async execute(message) {
         if (message.channel.type == "dm" && message.content.startsWith("!")) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("DM non abilitati")
-                .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
                 .setColor("#F15A24")
                 .setDescription("I comandi nei messaggi privati non sono abilitati")
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+            }
+
             message.channel.send(embed).then(msg => {
                 msg.delete({ timeout: 15000 })
+                    .catch(() => { })
             })
             return
         }
@@ -28,6 +34,7 @@ module.exports = {
         if ([config.idCanaliServer.welcome, config.idCanaliServer.announcements, config.idCanaliServer.rules, config.idCanaliServer.info, config.idCanaliServer.youtubeNotification, config.idCanaliServer.becomeHelper, config.idCanaliServer.staffHelp, config.idCanaliServer.levelUp, config.idCanaliServer.log, config.idCanaliServer.privateRooms, config.idCanaliServer.mutedTicket, config.idCanaliServer.tempmutedTicket, config.idCanaliServer.bannedTicket, config.idCanaliServer.tempbannedTicket, config.idCanaliServer.lockdown].includes(message.channel.id)) {
             if (message.author.id != config.idGiulio)
                 message.delete()
+                    .catch(() => { })
         }
 
         //REACTION MESSAGE

@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const moment = require("moment")
-
 module.exports = {
     name: `message`,
     async execute(message) {
@@ -9,6 +6,7 @@ module.exports = {
         if (message.channel.id != log.dm) return
 
         message.delete()
+            .catch(() => { })
 
         if (!message.reference) return
 

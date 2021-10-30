@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const Parser = require('expr-eval').Parser;
-
 module.exports = {
     name: "message",
     async execute(message) {

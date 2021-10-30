@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: `messageReactionAdd`,
     async execute(messageReaction, user) {

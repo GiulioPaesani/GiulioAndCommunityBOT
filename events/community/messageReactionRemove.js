@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: `messageReactionRemove`,
     async execute(messageReaction, user) {
@@ -9,8 +7,6 @@ module.exports = {
 
         if (messageReaction.message.channel.id == config.idCanaliServer.suggestions) {
             try {
-
-            } catch {
                 var userUp = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "😍").users.fetch()).map(user => user.id)
                 var userDown = (await messageReaction.message.reactions.cache.find(x => x._emoji.name == "💩").users.fetch()).map(user => user.id)
 
@@ -48,6 +44,9 @@ Downvotes: **${userDown.length}** - ${downvotes}%
 `)
 
                 messageReaction.message.edit(embed)
+            }
+            catch {
+
             }
         }
 

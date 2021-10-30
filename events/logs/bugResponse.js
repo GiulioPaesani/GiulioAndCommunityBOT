@@ -1,7 +1,3 @@
-const Discord = require("discord.js");
-const { relativeTimeRounding } = require("moment");
-const moment = require("moment")
-
 module.exports = {
     name: `message`,
     async execute(message) {
@@ -10,6 +6,7 @@ module.exports = {
         if (message.channel.id != log.bugReport) return
 
         message.delete()
+            .catch(() => { })
 
         if (!message.reference) return
 

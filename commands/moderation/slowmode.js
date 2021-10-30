@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const ms = require("ms")
-
 module.exports = {
     name: "slowmode",
     aliases: [],
@@ -13,7 +10,7 @@ module.exports = {
             return
         }
 
-        if (time != "off" && time != "no") {
+        if (time != "off" && time != "no" && time != 0) {
             time = ms(time)
 
             if (!time) {
@@ -36,15 +33,22 @@ module.exports = {
             tempo = tempo.replace("hours", "ore")
         }
 
-        if (time == "off" || time == "no")
+        if (time == "off" || time == "no" || time == 0)
             time = 0
 
         message.channel.setRateLimitPerUser(parseInt(time) / 1000)
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Slowmode impostata")
-            .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
             .setColor("#16A0F4")
+
+        var data = new Date()
+        if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+            embed.setThumbnail("https://i.postimg.cc/NFXTGVdf/Correct-Halloween.png")
+        }
+        else {
+            embed.setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+        }
 
         if (time == 0) {
             embed.setDescription("Slowmode disattivata")

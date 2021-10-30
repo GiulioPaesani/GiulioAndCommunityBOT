@@ -1,7 +1,3 @@
-const Discord = require("discord.js");
-const moment = require("moment");
-const ms = require("ms");
-
 module.exports = {
     name: "unmute",
     aliases: [],
@@ -36,8 +32,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -53,8 +51,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -69,8 +69,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -83,10 +85,10 @@ module.exports = {
             .then(() => {
                 if (utente.voice.channel) {
                     var canale = utente.voice.channelID
-                    if (canale == "801120572053520414")
-                        utente.voice.setChannel("793781892800839720")
+                    if (canale == config.idCanaliServer.general1)
+                        utente.voice.setChannel(config.idCanaliServer.general2)
                     else
-                        utente.voice.setChannel("801120572053520414")
+                        utente.voice.setChannel(config.idCanaliServer.general1)
                     utente.voice.setChannel(canale)
                 }
             })

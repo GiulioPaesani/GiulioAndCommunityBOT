@@ -1,8 +1,3 @@
-const Discord = require("discord.js");
-
-const { MessageButton } = require('discord-buttons');
-const { MessageActionRow } = require('discord-buttons')
-
 module.exports = {
     name: `clickButton`,
     async execute(button) {
@@ -27,12 +22,12 @@ module.exports = {
                         .setColor("#4b9afa")
                         .setDescription("In questa chat potrai richiedere **supporto privato** allo staff")
 
-                    let button1 = new MessageButton()
+                    let button1 = new disbut.MessageButton()
                         .setLabel("Chiudi ticket")
                         .setStyle("red")
                         .setID("chiudiTicket")
 
-                    let row = new MessageActionRow()
+                    let row = new disbut.MessageActionRow()
                         .addComponent(button1)
 
                     msg.edit({
@@ -56,12 +51,12 @@ module.exports = {
                         .setColor("#6143CB")
                         .setDescription(`In questa chat potrai segnalare o richiedere supporto allo staff per la tua moderazione`)
 
-                    let button1 = new MessageButton()
+                    let button1 = new disbut.MessageButton()
                         .setLabel("Chiudi ticket")
                         .setStyle("red")
                         .setID("chiudiTicket")
 
-                    let row = new MessageActionRow()
+                    let row = new disbut.MessageActionRow()
                         .addComponent(button1)
 
                     msg.edit({

@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: "say",
     aliases: [],
@@ -29,12 +27,15 @@ module.exports = {
 
             message.channel.send(embed).then(msg => {
                 message.delete({ timeout: 7000 })
+                    .catch(() => { })
                 msg.delete({ timeout: 7000 })
+                    .catch(() => { })
             })
             return
         }
 
         message.delete()
+            .catch(() => { })
         message.channel.send(testo)
     },
 };

@@ -1,7 +1,3 @@
-const Discord = require("discord.js");
-const moment = require("moment");
-const ms = require("ms");
-
 module.exports = {
     name: "unban",
     aliases: [],
@@ -39,8 +35,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -56,8 +54,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }

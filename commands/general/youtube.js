@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const ytch = require('yt-channel-info');
-
 module.exports = {
     name: "youtube",
     aliases: ["yt"],

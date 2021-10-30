@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: "tremove",
     aliases: [],
@@ -9,13 +7,22 @@ module.exports = {
         if (!serverstats.ticket.find(x => x.channel == message.channel.id)) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Canale non concesso")
-                .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
                 .setColor("#F15A24")
                 .setDescription("Non puoi utilizzare il comando `!tremove` in questo canale")
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+            }
+
             message.channel.send(embed).then(msg => {
                 message.delete({ timeout: 10000 })
+                    .catch(() => { })
                 msg.delete({ timeout: 10000 })
+                    .catch(() => { })
             })
             return
         }
@@ -26,13 +33,22 @@ module.exports = {
         if (!utenteMod(message.member) && message.author.id != ticket.owner && !message.member.roles.cache.has(config.idRuoloAiutante) && !message.member.roles.cache.has(config.idRuoloAiutanteInProva)) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Non hai il permesso")
-                .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
                 .setColor("#9E005D")
                 .setDescription("Non puoi eseguire il comando `!tremove` in questo canale")
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+            }
+
             message.channel.send(embed).then(msg => {
                 message.delete({ timeout: 10000 })
+                    .catch(() => { })
                 msg.delete({ timeout: 10000 })
+                    .catch(() => { })
             })
             return
         }
@@ -59,13 +75,22 @@ module.exports = {
         if (utenteMod(utente)) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Non hai il permesso")
-                .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
                 .setColor("#9E005D")
                 .setDescription("Non puoi rimove questo utente dal ticket")
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+            }
+
             message.channel.send(embed).then(msg => {
                 message.delete({ timeout: 7000 })
+                    .catch(() => { })
                 msg.delete({ timeout: 7000 })
+                    .catch(() => { })
             })
             return
         }

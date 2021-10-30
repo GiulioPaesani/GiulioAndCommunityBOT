@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const ms = require("ms")
-
 module.exports = {
     name: "clear",
     aliases: [],
@@ -29,13 +26,21 @@ module.exports = {
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Messaggi eliminati")
-            .setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
             .setColor("#16A0F4")
             .setDescription("Sono stati eliminati " + (count - 1) + " messaggi")
 
+        var data = new Date()
+        if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+            embed.setThumbnail("https://i.postimg.cc/NFXTGVdf/Correct-Halloween.png")
+        }
+        else {
+            embed.setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+        }
+
         message.channel.send(embed)
             .then(msg => {
-                msg.delete({ timeout: 15000 })
+                msg.delete({ timeout: 10000 })
+                    .catch(() => { })
             })
     },
 };

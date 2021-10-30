@@ -1,7 +1,3 @@
-const Discord = require("discord.js");
-const moment = require("moment")
-const humanNumber = require("human-number");
-
 module.exports = {
     name: "leaderboard",
     aliases: ["lb"],

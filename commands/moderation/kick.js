@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const moment = require("moment");
-
 module.exports = {
     name: "kick",
     aliases: [],
@@ -20,13 +17,22 @@ module.exports = {
         if (utenteMod(utente)) {
             var embed = new Discord.MessageEmbed()
                 .setTitle("Non hai il permesso")
-                .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
                 .setColor("#9E005D")
                 .setDescription("Non puoi mutare questo utente")
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+            }
+
             message.channel.send(embed).then(msg => {
                 message.delete({ timeout: 7000 })
+                    .catch(() => { })
                 msg.delete({ timeout: 7000 })
+                    .catch(() => { })
             })
             return
         }
@@ -51,8 +57,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -68,8 +76,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -84,8 +94,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -101,8 +113,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }
@@ -117,8 +131,10 @@ module.exports = {
                 .addField(":bust_in_silhouette: Moderator", `${userstats.moderation.moderator.toString()}`)
 
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 20000 }).catch()
-                msg.delete({ timeout: 20000 }).catch()
+                message.delete({ timeout: 20000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { })
             })
             return
         }

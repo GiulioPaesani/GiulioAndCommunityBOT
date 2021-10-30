@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: "help",
     aliases: ["aiuto", "comandi"],
@@ -108,7 +106,7 @@ _Alias: \`!sfida\`_
             .setColor("#E2A871")
             .addField("!rank (user)", `
 Informazioni sul livello di un utente
-_Alias: \`!level\`_
+_Alias: \`!level\` \`!xp\`_
 `)
             .addField("!leaderboard", `
 Statistica completa di tutti gli utenti
@@ -140,9 +138,7 @@ Rimuovere un utente dal ticket
             .setColor("#FEAB33")
             .addField("!pdelete", `
 Eliminare una stanza
-`)
-            .addField("!punlock", `
-Rendere pubblica una stanza, in modo che tutti gli utenti la possano vedere
+_Alias: \`!pclose\`_
 `)
             .addField("!lock", `
 Rendere privata una stanza, in modo che possano entrare e vedere solo chi inviti tu
@@ -155,15 +151,6 @@ Rimuovere un utente da una stanza privata
 `)
             .addField("!pkick [user]", `
 Kickare un utente da una stanza (potrà però rientrare quando vuole)
-`)
-            .addField("!pban [user]", `
-Bannare un utente da una stanza, gli verrà rimosso l'accesso e non potrà piu rientrare (anche se rendi la stanza pubblica)
-`)
-            .addField("!punban [user]", `
-Sbannare un utente, facendolo poter rientrare nella stanza
-`)
-            .addField("!plimit [count]", `
-Impostare un limite di utenti che potranno entrare in una stanza pubblica
 `)
             .addField("!prename [name]", `
 Rinominare una stanza (solo se si possiede solo una stanza tesuale o solo vocale)

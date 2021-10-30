@@ -1,8 +1,3 @@
-const Discord = require("discord.js");
-
-const { MessageButton } = require('discord-buttons');
-const { MessageActionRow } = require('discord-buttons')
-
 module.exports = {
     name: `clickButton`,
     async execute(button) {
@@ -29,7 +24,7 @@ module.exports = {
                 .addField(":page_facing_up: Come candidarsi", "Ti basta cliccare sul bottone qua sotto per aprire il **form** da compilare\rDovrai rispondere diverse domande sia **personali** che **teoriche** in modo che lo staff possa riuscire a trovare le persone giuste\rQuindi **clicca qua sotto** per iniziare subito")
                 .setThumbnail("https://i.postimg.cc/SNjhyFnx/Copertina.jpg")
 
-            let button1 = new MessageButton()
+            let button1 = new disbut.MessageButton()
                 .setLabel("Candidati")
                 .setStyle("url")
                 .setURL("https://forms.gle/J2e7UuquMr9HpKzz8")

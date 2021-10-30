@@ -1,8 +1,3 @@
-const Discord = require("discord.js");
-
-const { MessageButton } = require('discord-buttons');
-const { MessageActionRow } = require('discord-buttons')
-
 module.exports = {
     name: "suggest",
     aliases: ["suggerisci", "suggerimento"],
@@ -37,16 +32,16 @@ module.exports = {
             .addField(":beginner: Status", "```Pending```")
             .addField(":bookmark_tabs: Text", "```" + contenuto + "```")
 
-        var button1 = new MessageButton()
+        var button1 = new disbut.MessageButton()
             .setStyle('red')
             .setLabel('Rifiuta')
             .setID(`rifiutaSuggestion`)
-        var button2 = new MessageButton()
+        var button2 = new disbut.MessageButton()
             .setStyle('green')
             .setLabel('Approva')
             .setID(`approvaSuggestion`)
 
-        var row = new MessageActionRow()
+        var row = new disbut.MessageActionRow()
             .addComponent(button1)
             .addComponent(button2)
 

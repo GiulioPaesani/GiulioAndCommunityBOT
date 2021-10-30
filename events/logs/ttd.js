@@ -1,24 +1,16 @@
-
-const moment = require("moment")
-
-const { MessageMenu } = require('discord-buttons')
 module.exports = {
-    name: "thingstodo",
-    aliases: ["ttd"],
-    onlyStaff: true,
-    channelsGranted: [],
-    async execute(message, args, client) {
-        if (message.guild.id != log.server) return
+    name: `message`,
+    async execute(message) {
+        if (message.author.bot) return
 
-        var ttd = args.join(" ");
-        if (!ttd) {
-            error(message, "Inserire una cosa da fare", "`!ttd [text]`")
-            return
-        }
+        if (message.channel.id != log.thingsToDo) return
+
+        console.log("ciao")
+        if (message.reference) return
 
         var embed = new Discord.MessageEmbed()
             .addField("Status", "```⚪Uncompleted```")
-            .addField("Thing to do...", "```" + ttd + "```", true)
+            .addField("Thing to do...", "```" + message.content + "```", true)
             .setColor("#E6E7E8")
 
         let option1 = new disbut.MessageMenuOption()
@@ -65,5 +57,6 @@ module.exports = {
             .addOption(option6)
 
         message.channel.send(embed, select)
+
     },
 };

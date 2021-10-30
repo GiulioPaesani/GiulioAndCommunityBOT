@@ -1,8 +1,3 @@
-const Discord = require("discord.js");
-
-const { MessageMenuOption } = require('discord-buttons');
-const { MessageMenu } = require('discord-buttons')
-
 module.exports = {
     name: `clickMenu`,
     async execute(menu) {
@@ -11,38 +6,38 @@ module.exports = {
 
         var embed = menu.message.embeds[0]
 
-        let option1 = new MessageMenuOption()
+        let option1 = new disbut.MessageMenuOption()
             .setLabel('Uncompleted')
             .setEmoji('⚪')
             .setValue('ttdWhite')
             .setDescription('Thing to do non ancora completata')
-        let option2 = new MessageMenuOption()
+        let option2 = new disbut.MessageMenuOption()
             .setLabel('Urgent')
             .setEmoji('🔴')
             .setValue('ttdRed')
             .setDescription('Thing to do urgente da realizzare')
-        let option3 = new MessageMenuOption()
+        let option3 = new disbut.MessageMenuOption()
             .setLabel('Completed')
             .setEmoji('🟢')
             .setValue('ttdGreen')
             .setDescription('Thing to do completata')
-        let option4 = new MessageMenuOption()
+        let option4 = new disbut.MessageMenuOption()
             .setLabel('Tested')
             .setEmoji('🔵')
             .setValue('ttdBlue')
             .setDescription('Thing to do testata e funzionante')
-        let option5 = new MessageMenuOption()
+        let option5 = new disbut.MessageMenuOption()
             .setLabel('Finished')
             .setEmoji('⚫')
             .setValue('ttdBlack')
             .setDescription('Thing to do terminata')
-        let option6 = new MessageMenuOption()
+        let option6 = new disbut.MessageMenuOption()
             .setLabel('Delete')
             .setEmoji('❌')
             .setValue('ttdDelete')
             .setDescription('Elimina Thing to do')
 
-        let select = new MessageMenu()
+        let select = new disbut.MessageMenu()
             .setID('ttdMenu')
             .setPlaceholder('Select status...')
             .setMaxValues(1)
@@ -77,9 +72,9 @@ module.exports = {
             } break
             case "ttdDelete": {
                 menu.message.delete()
+                    .catch(() => { })
                 return
             } break
-
         }
         menu.message.edit(embed, select)
     },

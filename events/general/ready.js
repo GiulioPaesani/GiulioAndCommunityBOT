@@ -1,9 +1,3 @@
-var MongoClient = require('mongodb').MongoClient;
-const Discord = require("discord.js");
-const moment = require("moment")
-
-const YoutubePoster = require("discord-youtube");
-
 module.exports = {
     name: `ready`,
     async execute() {
@@ -17,8 +11,8 @@ module.exports = {
         await database.collection("userstats").find().toArray(function (err, result) {
             userstatsList = result
             console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
-        })
 
+        })
 
         client.user.setActivity('!help', { type: 'WATCHING' });
 
@@ -30,6 +24,8 @@ module.exports = {
         setInterval(updateUserstats, 60 * 1000)
 
         setInterval(youtubeNotification, 60 * 1000)
+
+        setInterval(checkUnverifedUser, 1000)
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE")

@@ -1,7 +1,3 @@
-const Discord = require("discord.js");
-const moment = require("moment");
-const { Permissions } = require('discord.js');
-
 module.exports = {
     name: "rolestats",
     aliases: ["role", "roleinfo"],

@@ -1,16 +1,28 @@
 require('events').EventEmitter.prototype._maxListeners = 100;
 
-const Discord = require("discord.js");
+global.Discord = require("discord.js");
 global.client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION"] });
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const fs = require("fs");
-const ytch = require('yt-channel-info');
-const disbut = require('discord-buttons')(client);
+global.ytch = require('yt-channel-info');
+global.disbut = require('discord-buttons');
+disbut(client);
+global.moment = require("moment");
+global.ms = require("ms");
+global.humanNumber = require("human-number");
+global.Parser = require('expr-eval').Parser;
+global.MongoClient = require('mongodb').MongoClient;
 
 client.login(process.env.token);
 
 global.config = require("./config/config.json");
 var config = require("./config/config.json");
+
+//TODO
+//? Cambiare config.idCanaliServer.general
 
 //COMMANDS
 client.commands = new Discord.Collection();
@@ -32,17 +44,21 @@ for (const folder of eventsFolders) {
     }
 }
 //FUNCTIONS
-require("./functions/functions.js");
+const functionFiles = fs.readdirSync('./functions').filter(file => file.endsWith('.js'));
+for (const file of functionFiles) {
+    require(`./functions/${file}`);
+}
 
 global.log = require("./config/log.json");
 
 global.database = "";
 global.url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
 
-global.lockdown = false;
-
 global.serverstats = ""
 global.userstatsList = ""
+
+global.usersIndividualSpam = new Map()
+global.usersGroupSpam = new Map();
 
 //CODES comando !code
 global.client.codes = new Discord.Collection();
@@ -52,13 +68,14 @@ for (const file of codesFolder) {
     client.codes.set(code.name, code);
 }
 
-client.on("message", message => {
+client.on("message", async message => {
     const prefix = "!"
     if (message.channel.type == "dm") return //Messaggi in dm non accettati
     if (message.author.bot) return
     if (!message.content.startsWith(prefix)) return;
     if (message.guild.id != config.idServer && message.guild.id != log.server) return
     if (!userstatsList) return
+
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift()
@@ -70,15 +87,24 @@ client.on("message", message => {
     if (!client.commands.has(command.toLowerCase()) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command.toLowerCase()))) {
         let embed = new Discord.MessageEmbed()
             .setTitle("Comando non esistente")
-            .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
             .setColor("#FF931E")
             .setDescription(`Il comando \`${prefix}${command}\` non esiste`)
 
-        if (!utenteMod(message.member))//Se l"utente non è staff
+        var data = new Date()
+        if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+            embed.setThumbnail("https://i.postimg.cc/x1MgSvfQ/Not-Found-Halloween.png")
+        }
+        else {
+            embed.setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
+        }
+
+        if (!utenteMod(message.member)) //Se l"utente non è staff
             message.channel.send(embed)
                 .then(msg => {
                     message.delete({ timeout: 15000 })
+                        .catch(() => { })
                     msg.delete({ timeout: 15000 })
+                        .catch(() => { })
                 })
         return
     }
@@ -89,13 +115,22 @@ client.on("message", message => {
     if (comando.onlyStaff && !utenteMod(message.member)) {
         let embed = new Discord.MessageEmbed()
             .setTitle("Non hai il permesso")
-            .setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
             .setColor("#9E005D")
             .setDescription(`Non puoi eseguire il comando \`${prefix}${command}\` perchè non hai il permesso`)
 
+        var data = new Date()
+        if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+            embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
+        }
+        else {
+            embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
+        }
+
         message.channel.send(embed).then(msg => {
             message.delete({ timeout: 15000 })
+                .catch(() => { })
             msg.delete({ timeout: 15000 })
+                .catch(() => { })
         })
         return
     }
@@ -112,14 +147,23 @@ client.on("message", message => {
 
             let embed = new Discord.MessageEmbed()
                 .setTitle("Canale non concesso")
-                .setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
                 .setColor("#F15A24")
                 .setDescription(`Non puoi utilizzare il comando \`${prefix}${command}\` in questo canale`)
                 .addField("Puoi usare questo comando in:", canaliConcessiLista)
 
+            var data = new Date()
+            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
+                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
+            }
+            else {
+                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+            }
+
             message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 15000 }).catch(() => { return })
-                msg.delete({ timeout: 15000 }).catch(() => { return })
+                message.delete({ timeout: 15000 })
+                    .catch(() => { })
+                msg.delete({ timeout: 15000 })
+                    .catch(() => { })
             })
             return
 
@@ -130,21 +174,23 @@ client.on("message", message => {
     //Poter utilizzare solo !clear in #tutorial
     if (message.channel == config.idCanaliServer.tutorial && comando.name != "clear") return
 
-    comando.execute(message, args, client);
+    await comando.execute(message, args, client);
 })
 
 
-//Counter youtube
+//Subscriber counter
 setInterval(function () {
     ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
         var canale = client.channels.cache.get(config.idCanaliServer.codeSubscriberCounter)
-        canale.setName("📱│GiulioAndCode: " + Math.floor(response.subscriberCount))
+        if (canale.name != `📱│GiulioAndCode: ${Math.floor(response.subscriberCount)}`)
+            canale.setName(`📱│GiulioAndCode: ${Math.floor(response.subscriberCount)}`)
     })
 }, 1000 * 60 * 20)
 setInterval(function () {
     ytch.getChannelInfo("UCvIafNR8ZvZyE5jVGVqgVfA").then((response) => {
         var canale = client.channels.cache.get(config.idCanaliServer.giulioSubscriberCounter)
-        canale.setName("✌│Giulio: " + Math.floor(response.subscriberCount))
+        if (canale.name != `✌│Giulio: ${Math.floor(response.subscriberCount)}`)
+            canale.setName(`✌│Giulio: ${Math.floor(response.subscriberCount)}`)
     })
 }, 1000 * 60 * 5)
 
@@ -152,10 +198,14 @@ setInterval(function () {
 setInterval(function () {
     var server = client.guilds.cache.get(config.idServer);
     var botCount = server.members.cache.filter(member => member.user.bot).size;
-    var utentiCount = server.memberCount - botCount;
+    var unverifiedCount = server.members.cache.filter(member => member.roles.cache.has(config.idRuoloNonVerificato)).size;
+
+    var utentiCount = server.memberCount - botCount - unverifiedCount;
+
 
     var canale = client.channels.cache.get(config.idCanaliServer.memberCounter)
-    canale.setName("👾│members: " + utentiCount)
+    if (canale.name != `👾│members: ${utentiCount}`)
+        canale.setName(`👾│members: ${utentiCount}`)
 }, 1000 * 60 * 5)
 
 process.on("uncaughtException", err => {
