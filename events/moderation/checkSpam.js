@@ -11,9 +11,11 @@ module.exports = {
 
         //Individual Spam
         if (usersIndividualSpam.has(message.author.id)) {
+            if (message.channel.id == config.idCanaliServer.counting) return
+
             const user = usersIndividualSpam.get(message.author.id);
 
-            if (message.createdTimestamp - user.lastMessage <= 4000) {
+            if (message.createdTimestamp - user.lastMessage <= 5000) {
                 user.msgCount++
                 if (user.msgCount >= 7) {
                     var ruoloTempmuted = message.guild.roles.cache.find(role => role.id == config.ruoliModeration.tempmuted);
