@@ -12,6 +12,7 @@ module.exports = {
             userstatsList = result
             console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
 
+
         })
 
         client.user.setActivity('!help', { type: 'WATCHING' });

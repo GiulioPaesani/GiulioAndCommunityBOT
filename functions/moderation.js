@@ -1,6 +1,6 @@
 global.getParolaccia = function (content) {
-    content = content.replaceAll("*", "\*")
-    content = content.replaceAll("\\", "")
+    //!content = content.replaceAll("*", "\*")
+    //!content = content.replaceAll("\\", "")
 
     var trovata = false;
     let censurato = content;
