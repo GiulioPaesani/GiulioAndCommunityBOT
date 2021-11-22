@@ -37,9 +37,9 @@ module.exports = {
                     "totalMessage": 0,
                     "commands": 0,
                     "addReaction": 0,
-                    "deleteMessage": 0,
-                    "editMessage": 0
                 },
+                joinedAt: new Date().getTime(),
+                leavedAt: null,
                 lastScore: 0,
                 bestScore: 0,
                 timeLastScore: null,
@@ -49,6 +49,8 @@ module.exports = {
                 level: 0,
                 xp: 0,
                 cooldownXp: 0,
+                money: 0,
+                inventory: {},
                 warn: [],
                 moderation: {
                     "type": "",
