@@ -4,6 +4,46 @@ module.exports = {
     onlyStaff: false,
     channelsGranted: [],
     async execute(message, args, client) {
+        //? var day = new Date().getDate()
+        //? var month = new Date().getMonth()
+        var day = 30
+        var month = 11
+
+        if (month == 11 || (month == 0 && day <= 6)) {
+
+        }
+        else {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Comando non esistente")
+                .setColor("#FF931E")
+                .setDescription(`Il comando \`!plock\` non esiste`)
+                .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
+
+            if (!utenteMod(message.member)) //Se l"utente non è staff
+                message.channel.send(embed)
+                    .then(msg => {
+                        message.delete({ timeout: 15000 })
+                            .catch(() => { })
+                        msg.delete({ timeout: 15000 })
+                            .catch(() => { })
+                    })
+            return
+        }
+
+        if (month == 11 && day < 11) {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Comando non esistente")
+                .setColor("#FF931E")
+                .setDescription(`Il comando \`!plock\` non esiste`)
+                .setThumbnail("https://i.postimg.cc/MZj5dJFW/Not-found.png")
+
+            if (!utenteMod(message.author))
+                message.channel.send(embed).then((msg) => {
+                    message.delete({ timeout: 20000 }).catch(() => { });
+                    msg.delete({ timeout: 20000 }).catch(() => { });
+                });
+        }
+
         var privaterooms = serverstats.privateRooms
 
         if (!privaterooms.find(x => x.owner == message.author.id)) {
