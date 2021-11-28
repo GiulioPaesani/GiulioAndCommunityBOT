@@ -3,9 +3,6 @@ require('events').EventEmitter.prototype._maxListeners = 100;
 global.Discord = require("discord.js");
 global.client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION"] });
 
-const dotenv = require('dotenv');
-dotenv.config();
-
 const fs = require("fs");
 global.ytch = require('yt-channel-info');
 global.disbut = require('discord-buttons');
@@ -16,7 +13,7 @@ global.humanNumber = require("human-number");
 global.Parser = require('expr-eval').Parser;
 global.MongoClient = require('mongodb').MongoClient;
 
-client.login(process.env.token);
+client.login("ODAyMTg0MzU5MTIwODYzMjcy.YAriZw.Bi0AAwqpdvJ8TDjiPm9rFCG_79w");
 
 global.config = require("./config/config.json");
 var config = require("./config/config.json");
@@ -49,7 +46,7 @@ for (const file of functionFiles) {
 global.log = require("./config/log.json");
 
 global.database = "";
-global.url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
+global.url = `mongodb+srv://giulioandcode:giulio794396@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
 
 global.serverstats = ""
 global.userstatsList = ""
