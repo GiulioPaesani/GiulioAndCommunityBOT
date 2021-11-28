@@ -17,7 +17,7 @@ global.sendAvvento = async function () {
 
 	if (month == 11 && day <= 25) {
 		if (hours == 0 && minutes == 0 && seconds == 1) {
-			await channel.messages.fetch().then(messages => {
+			await channel.messages.fetch().then(async messages => {
 				var array = Array.from(messages.values())
 				for (var i = 0; i < array.length; i++) {
 					await array[i].delete().catch(() => { return })
