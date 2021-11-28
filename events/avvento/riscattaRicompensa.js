@@ -54,6 +54,7 @@ Ecco a te i tuoi **100 punti xp**, controlla con \`!rank\` se hai superato un nu
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
@@ -142,6 +143,7 @@ Ecco a te i tuoi **200 punti xp**, controlla con \`!rank\` se hai superato un nu
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
@@ -283,6 +285,7 @@ Ecco a te i tuoi **300 punti xp**, controlla con \`!rank\` se hai superato un nu
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
@@ -363,6 +366,7 @@ Ecco a te i tuoi **500 punti xp**, controlla con \`!rank\` se hai superato un nu
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
@@ -474,6 +478,7 @@ Ecco a te i tuoi **700 punti xp**, controlla con \`!rank\` se hai superato un nu
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
@@ -558,6 +563,7 @@ Ecco a te i tuoi **1000 punti xp**, controlla con \`!rank\` se hai superato un n
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
@@ -769,10 +775,11 @@ Ecco a te i tuoi **5000 punti xp** per questo super regalo di natale, controlla 
                 var level = userstats.level
 
                 while (userstats.xp >= calcoloXpNecessario(level + 1)) {
-                    level++;
+                    level++
                 }
 
                 if (level != userstats.level) {
+                    userstats.level = level
                     const levelColor = require("../../config/levelColor.json")
 
                     var embed2 = new Discord.MessageEmbed()
