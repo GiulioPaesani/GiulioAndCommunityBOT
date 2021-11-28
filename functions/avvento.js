@@ -1,4 +1,4 @@
-global.sendAvvento = function () {
+global.sendAvvento = async function () {
 	var day = new Date().getDate()
 	var month = new Date().getMonth()
 
