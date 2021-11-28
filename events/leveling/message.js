@@ -18,8 +18,24 @@ module.exports = {
                 boost = 20;
             }
 
+            var avventoBoost = 1;
+
+            //? var day = new Date().getDate()
+            //? var month = new Date().getMonth()
+            var day = 30
+            var month = 11
+
+            if (month == 11 || (month == 0 && day <= 6)) {
+                if (serverstats.avvento[message.author.id])
+                    if (serverstats.avvento[message.author.id].boost3 && new Date().getTime() - serverstats.avvento[message.author.id].boost3 <= 43200000)
+                        avventoBoost = 3
+                    else if (serverstats.avvento[message.author.id].boost2 && new Date().getTime() - serverstats.avvento[message.author.id].boost2 <= 43200000)
+                        avventoBoost = 2
+            }
+
             userstats.cooldownXp = new Date().getTime();
             var xp = Math.floor(Math.random() * (40 - 15 + 1)) + 15;
+            xp = xp * avventoBoost
             userstats.xp = parseInt(userstats.xp) + xp + (boost * xp / 100);
 
             if (userstats.xp >= calcoloXpNecessario(userstats.level + 1)) {

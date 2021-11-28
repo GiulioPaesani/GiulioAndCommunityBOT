@@ -10,6 +10,17 @@ module.exports = {
         if (args[args.length - 1] == "here" && (utenteMod(message.member) || (message.member.roles.cache.has(config.idRuoloAiutante) || message.member.roles.cache.has(config.idRuoloAiutanteInProva))) && args.length != 1)
             command = command.slice(0, -5)
 
+        //? var day = new Date().getDate()
+        //? var month = new Date().getMonth()
+        var day = 30
+        var month = 11
+
+        if (month == 11 || (month == 0 && day <= 6)) {
+            if (serverstats.avvento[message.author.id])
+                if (serverstats.avvento[message.author.id][2] && args[args.length - 1] == "here")
+                    command = command.slice(0, -5)
+        }
+
         if (utenteMod(message.member) || (message.member.roles.cache.has(config.idRuoloAiutante) || message.member.roles.cache.has(config.idRuoloAiutanteInProva))) {
             var utente = message.mentions.members.first()
             if (utente) {

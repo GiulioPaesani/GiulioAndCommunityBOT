@@ -113,13 +113,13 @@ Ecco a te i tuoi **100 punti xp**, controlla con \`!rank\` se hai superato un nu
                     await canale.send(button.clicker.user.toString() + ` hai raggiunto un **nuovo livello**`, embed2)
                 }
             } break
-            case 2: { //!
+            case 2: {
                 embed
                     .addField("<:opengift2:914090991110225931> Ricompensa ottenuta", `
 Ora potrai utilizzare la funzione **here** nel comando \`!code\` in modo da mandare il codice direttamente in chat. Puoi farlo con \`!code [codice] here\`
                 `)
             } break
-            case 3: { //!
+            case 3: {
                 embed
                     .addField("<:opengift2:914090991110225931> Ricompensa ottenuta", `
 Boost **x2** attivato, ora per le prossime **12h** per ogni messaggio riceverai dai 30 ai 80 punti
@@ -723,7 +723,7 @@ _PS Riavvia Discord nel caso non le vedessi nell'elenco delle emoji disponibili_
                 button.clicker.member.roles.add("909817687260139520")
 
             } break
-            case 21: { //!
+            case 21: {
                 embed
                     .addField("<:opengift2:914090991110225931> Ricompensa ottenuta", `
 Boost **x3** attivato, ora per le prossime **12h** per ogni messaggio riceverai dai 45 ai 120 punti

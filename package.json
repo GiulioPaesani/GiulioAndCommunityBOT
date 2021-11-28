@@ -1,6 +1,6 @@
 {
   "name": "giulioandcommunitybot",
-  "version": "1.0.0",
+  "version": "v0122",
   "description": "Il bot ufficiale del server GiulioAndCommunity",
   "main": "index.js",
   "scripts": {

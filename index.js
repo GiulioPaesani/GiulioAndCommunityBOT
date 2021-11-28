@@ -21,9 +21,6 @@ client.login(process.env.token);
 global.config = require("./config/config.json");
 var config = require("./config/config.json");
 
-//TODO
-//? Cambiare config.idCanaliServer.general
-
 //COMMANDS
 client.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync("./commands");
@@ -159,16 +156,25 @@ client.on("message", async message => {
                 embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
             }
 
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 15000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 15000 })
-                    .catch(() => { })
-            })
-            return
 
+            //? var day = new Date().getDate()
+            //? var month = new Date().getMonth()
+            var day = 30
+            var month = 11
+
+            if (month == 11 || (month == 0 && day <= 6) && serverstats.avvento[message.author.id] && serverstats.avvento[message.author.id][17] && comando.name != "say") {
+
+            }
+            else {
+                message.channel.send(embed).then(msg => {
+                    message.delete({ timeout: 15000 })
+                        .catch(() => { })
+                    msg.delete({ timeout: 15000 })
+                        .catch(() => { })
+                })
+                return
+            }
         }
-
     }
 
     //Poter utilizzare solo !clear in #tutorial
