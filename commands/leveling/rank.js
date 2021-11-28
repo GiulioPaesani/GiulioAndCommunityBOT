@@ -37,9 +37,6 @@ module.exports = {
 
         const levelColor = require("../../config/levelColor.json")
 
-        console.log(userstats.xp)
-        console.log(userstats.level)
-        console.log(userstats.xp - calcoloXpNecessario(userstats.level))
         let embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setColor(levelColor[userstats.level])

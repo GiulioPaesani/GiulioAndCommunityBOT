@@ -541,7 +541,7 @@ _PS Riavvia Discord nel caso non le vedessi nell'elenco delle emoji disponibili_
                 `)
                     .setImage("https://i.postimg.cc/zBVcDXW9/Emoji-Natale1.png")
 
-                button.clicker.member.roles.add("909817256769380412")
+                client.guilds.cache.get(config.idServer).members.cache.find(x => x.id == button.clicker.user.id).roles.add("909817256769380412")
             } break
             case 15: {
                 embed
@@ -723,8 +723,7 @@ _PS Riavvia Discord nel caso non le vedessi nell'elenco delle emoji disponibili_
                 `)
                     .setImage("https://i.postimg.cc/GtDgY7XK/Emoji-Natale2.png")
 
-                button.clicker.member.roles.add("909817687260139520")
-
+                client.guilds.cache.get(config.idServer).members.cache.find(x => x.id == button.clicker.user.id).roles.add("909817687260139520")
             } break
             case 21: {
                 embed
@@ -742,7 +741,8 @@ _PS Riavvia Discord nel caso non le vedessi nell'elenco delle emoji disponibili_
                 `)
                     .setImage("https://i.postimg.cc/0QFHzR0r/Emoji-Capodanno.png")
 
-                button.clicker.member.roles.add("910625247131209778")
+                client.guilds.cache.get(config.idServer).members.cache.find(x => x.id == button.clicker.user.id).roles.add("910625247131209778")
+
             } break
             case 23: {
                 embed
