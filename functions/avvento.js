@@ -4,11 +4,9 @@ global.sendAvvento = async function () {
 
 	var hours = new Date().getHours()
 	var minutes = new Date().getMinutes()
-	var seconds = new Date().getSeconds()
 
 	hours = 0;
-	minutes = 0;
-	seconds = 1;
+	minutes = 1;
 
 	day = 12
 	month = 11
@@ -16,7 +14,7 @@ global.sendAvvento = async function () {
 	var channel = await client.channels.cache.get("907340145383047168")
 
 	if (month == 11 && day <= 25) {
-		if (hours == 0 && minutes == 0 && seconds == 1) {
+		if (hours == 0 && minutes == 1) {
 			await channel.messages.fetch().then(async messages => {
 				var array = Array.from(messages.values())
 				for (var i = 0; i < array.length; i++) {
