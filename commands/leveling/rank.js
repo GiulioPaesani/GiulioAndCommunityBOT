@@ -42,7 +42,7 @@ module.exports = {
             .setColor(levelColor[userstats.level])
             .setDescription("Informazioni sul livellamento di questo utente")
             .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
-            .addField("Level " + userstats.level, progress + "\rXP: " + parseInt(userstats.xp - calcoloXpNecessario(userstats.level)) + "/" + calcoloXpNecessario(userstats.level + 1) - calcoloXpNecessario(userstats.level) + " - Rank: #" + position)
+            .addField("Level " + userstats.level, progress + "\rXP: " + humanNumber(parseInt(userstats.xp - calcoloXpNecessario(userstats.level))) + "/" + humanNumber(calcoloXpNecessario(userstats.level + 1) - calcoloXpNecessario(userstats.level)) + " - Rank: #" + position)
 
         message.channel.send(embed)
     },
