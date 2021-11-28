@@ -1,5 +1,5 @@
 module.exports = {
-    name: "plock",
+    name: "punlock",
     aliases: [],
     onlyStaff: false,
     channelsGranted: [],
@@ -49,15 +49,15 @@ module.exports = {
 
         const permissions = new Discord.Permissions(canale.permissionOverwrites.get(everyone.id).deny.bitfield);
 
-        if (permissions.toArray().includes("VIEW_CHANNEL")) {
-            warning(message, `${room.type == "onlyText" || room.type == "onlyVoice" ? "Stanza già privata" : "Stanze già private"}`, room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale è già accessibile solo da chi inviti" : "I tuoi canali privati sono già accessibili solo da chi inviti")
+        if (!permissions.toArray().includes("VIEW_CHANNEL")) {
+            warning(message, `${room.type == "onlyText" || room.type == "onlyVoice" ? "Stanza già pubblica" : "Stanze già pubbliche"}`, room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale è già accessibile a tutti" : "I tuoi canali privati sono già accessibili a tutti")
             return
         }
 
         if (room.text) {
             var canale = client.channels.cache.get(room.text)
             canale.updateOverwrite(everyone, {
-                VIEW_CHANNEL: false,
+                VIEW_CHANNEL: true,
             })
         }
         if (room.voice) {
@@ -65,11 +65,11 @@ module.exports = {
             canale.setUserLimit(null)
                 .then(() => {
                     canale.updateOverwrite(everyone, {
-                        VIEW_CHANNEL: false,
+                        VIEW_CHANNEL: true,
                     })
                 })
         }
 
-        correct(message, `${room.type == "onlyText" || room.type == "onlyVoice" ? "La stanza è ora privata" : "Le stanze sono ora private"}`, room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale privato ora è accessibile solo da chi inviti" : "I tuoi canali privati ora sono accessibili solo da chi inviti")
+        correct(message, `${room.type == "onlyText" || room.type == "onlyVoice" ? "La stanza è ora pubblica" : "Le stanze sono ora pubbliche"}`, room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale privato ora è accessibile a tutti" : "I tuoi canali privati ora sono accessibili a tutti")
     },
 };

@@ -446,6 +446,7 @@ Diventa un piccolo Babbo Natale per un giorno. Utilizza il comando \`!regalaxp [
                 embed
                     .addField("<:opengift2:914090991110225931> Ricompensa ottenuta", `
 Ottimo, ora una tua stanza potrà essere **accessibile** a tutti. Dopo aver creato il tuo **canale privato** utilizza il comando \`!punlock\` per renderla pubblica
+Potrai quando vuoi renderla privata con \`!plock\`
 _PS Il 06/01 la stanza verrà resa privata_
                 `)
             } break
