@@ -54,6 +54,8 @@ global.userstatsList = ""
 global.usersIndividualSpam = new Map()
 global.usersGroupSpam = new Map();
 
+global.avventoJSON = require("./avvento.json")
+
 //CODES comando !code
 global.client.codes = new Discord.Collection();
 const codesFolder = fs.readdirSync("./code");
