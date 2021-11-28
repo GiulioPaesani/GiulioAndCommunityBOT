@@ -75,7 +75,7 @@ module.exports = {
             .setDescription(`Benvenuto nell'avvento, qua puoi riscattare tutte le ricompense in attesa del **Natale**
 
 Xp, Regali e molto altro, clicca sul menu qua sotto per ottenere tutti i **premi** che ti aspettano con un super regalo per il giorno di Natale`)
-            .addField(`${numDaRiscattare != 0 ? "<:closegift:910604692013342720>" : "<:unlockedgift:914089653592809482>"} ${numDaRiscattare != 0 ? numDaRiscattare : ""} ${numDaRiscattare == 1 ? "ricompensa" : numDaRiscattare == 0 ? "Nessuna ricompensa" : "ricompense"} da riscattare`, daRiscattare)
+            .addField(`${numDaRiscattare != 0 ? "<:closegift:910604692013342720>" : "<:opengift:914090204715966484>"} ${numDaRiscattare != 0 ? numDaRiscattare : ""} ${numDaRiscattare == 1 ? "ricompensa" : numDaRiscattare == 0 ? "Nessuna ricompensa" : "ricompense"} da riscattare`, daRiscattare)
             .setImage(month != 11 || day > 24 ? avventoJSON.banner[25] : avventoJSON.banner[day])
             .setFooter("Ricompense disponibili fino al 06/01")
 
