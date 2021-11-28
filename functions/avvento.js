@@ -71,12 +71,7 @@ global.sendAvventoReminder = async function () {
 	var hours = new Date().getHours()
 	var minutes = new Date().getMinutes()
 
-	day = 12
-	month = 11
-	hours = 8
-	minutes = 0
-
-	var channel = await client.channels.cache.get("869975198483488890")
+	var channel = await client.channels.cache.get("869975177935593483")
 
 	if (month == 11 && day <= 25) {
 		if (hours == 8 && minutes == 0) {
