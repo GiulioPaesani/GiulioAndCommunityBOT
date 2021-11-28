@@ -29,6 +29,7 @@ module.exports = {
         setInterval(checkUnverifedUser, 1000)
 
         setInterval(sendAvvento, 1000 * 60)
+        setInterval(sendAvventoReminder, 1000 * 60)
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE")
