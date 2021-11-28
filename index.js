@@ -160,9 +160,12 @@ client.on("message", async message => {
             //? var month = new Date().getMonth()
             var day = 30
             var month = 11
+            console.log("ciao")
+            console.log(serverstats.avvento[message.author.id][17])
+            console.log(comando.name)
 
             if (month == 11 || (month == 0 && day <= 6) && serverstats.avvento[message.author.id] && serverstats.avvento[message.author.id][17] && comando.name != "say") {
-
+                console.log("ehy")
             }
             else {
                 message.channel.send(embed).then(msg => {
