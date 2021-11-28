@@ -63,3 +63,52 @@ Riscatta tutte le tue ricompense dell'Avvento con il pulsante **"Riscatta ricomp
 		}
 	}
 }
+
+global.sendAvventoReminder = async function () {
+	var day = new Date().getDate()
+	var month = new Date().getMonth()
+
+	var hours = new Date().getHours()
+	var minutes = new Date().getMinutes()
+
+	day = 12
+	month = 11
+	hours = 8
+	minutes = 0
+
+	var channel = await client.channels.cache.get("869975198483488890")
+
+	if (month == 11 && day <= 25) {
+		if (hours == 8 && minutes == 0) {
+			await channel.messages.fetch().then(async messages => {
+				var array = Array.from(messages.values())
+				for (var i = 0; i < array.length; i++) {
+					await array[i].delete().catch(() => { return })
+				}
+			})
+
+			if (day < 25) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle(`<:closegift:910604692013342720> Nuova ricompensa - ${day} Dicembre <:closegift:910604692013342720>`)
+					.setColor("#ED1C24")
+					.setDescription(`\`-${25 - day} giorni a Natale\`
+Manca poco ai regali, ai panettoni, alle cene dai parenti... Aspetta il grande giorno con una nuova ricompensa nell'**Avvento della community**
+Vai in <#907340145383047168> e riscatta la **ricompensa di** oggi`)
+					.setImage(avventoJSON.banner[day])
+
+				channel.send(embed)
+			}
+			else {
+				var embed = new Discord.MessageEmbed()
+					.setTitle(`<:closegift:910604692013342720> Nuova super ricompensa - ${day} Dicembre <:closegift:910604692013342720>`)
+					.setColor("#ED1C24")
+					.setDescription(`\`Natale è arrivato\`
+È arrivato finalmente il grande giorno: regali, panettoni, cene con i parenti
+Vai in <#907340145383047168> e riscatta il **super regalo** di oggi`)
+					.setImage(avventoJSON.banner[day])
+
+				channel.send(embed)
+			}
+		}
+	}
+}
