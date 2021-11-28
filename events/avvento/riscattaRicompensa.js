@@ -442,7 +442,7 @@ Ecco una barzella **super divertente**, credo...
 Diventa un piccolo Babbo Natale per un giorno. Utilizza il comando \`!regalaxp [user]\` e fai un piccolo **regalo** a qualcuno
                 `)
             } break
-            case 11: { //!
+            case 11: {
                 embed
                     .addField("<:opengift2:914090991110225931> Ricompensa ottenuta", `
 Ottimo, ora una tua stanza potrà essere **accessibile** a tutti. Dopo aver creato il tuo **canale privato** utilizza il comando \`!punlock\` per renderla pubblica

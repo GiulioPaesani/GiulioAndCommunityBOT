@@ -78,6 +78,8 @@ module.exports = {
                 text += `<:unlockedgift:914089653592809482> Non disponibile\r`
             }
 
+            if (i == 3)
+                text += avvento[3] ? `From: ${new Date(avvento.boost2).getDate()}/${new Date(avvento.boost2).getMonth() + 1} ${new Date(avvento.boost2).getMinutes()}:${new Date(avvento.boost2).getHours()} To: ${new Date(avvento.boost2 + 43200000).getDate()}/${new Date(avvento.boost2 + 43200000).getMonth() + 1} ${new Date(avvento.boost2 + 43200000).getMinutes()}:${new Date(avvento.boost2 + 43200000).getHours()}\r` : ""
             if (i == 10)
                 text += avvento.regaloFatto ? `_Ricompensa usata_\r` : `_Ricompensa non usata_\r`
         }
@@ -102,7 +104,7 @@ module.exports = {
 
         var text3 = ""
 
-        for (var i = 20; i <= 25; i++) {
+        for (var i = 21; i <= 25; i++) {
             text3 += `**${i}** Dicembre - `
 
             if (month != 11 || day >= i) {
@@ -117,6 +119,8 @@ module.exports = {
                 text3 += `<:unlockedgift:914089653592809482> Non disponibile\r`
             }
 
+            if (i == 21)
+                text += avvento[3] ? `From: ${new Date(avvento.boost3).getDate()}/${new Date(avvento.boost3).getMonth() + 1} ${new Date(avvento.boost3).getMinutes()}:${new Date(avvento.boost3).getHours()} To: ${new Date(avvento.boost3 + 43200000).getDate()}/${new Date(avvento.boost3 + 43200000).getMonth() + 1} ${new Date(avvento.boost3 + 43200000).getMinutes()}:${new Date(avvento.boost3 + 43200000).getHours()}\r` : ""
             if (i == 23)
                 text3 += avvento.ladroFatto ? `_Ricompensa usata_\r` : `_Ricompensa non usata_\r`
         }
