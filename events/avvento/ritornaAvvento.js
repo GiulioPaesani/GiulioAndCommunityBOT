@@ -1,8 +1,8 @@
 module.exports = {
     name: `clickButton`,
     async execute(button) {
-        if (settings.inMaintenanceMode)
-            if (button.clicker.user.id != settings.idGiulio) return
+        if (config.inMaintenanceMode)
+            if (button.clicker.user.id != config.idGiulio) return
 
         if (button.id != "ritornaAvvento") return
 

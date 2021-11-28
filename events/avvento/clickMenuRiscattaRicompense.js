@@ -3,8 +3,8 @@ const { DiscordAPIError } = require("discord.js");
 module.exports = {
     name: `clickMenu`,
     async execute(menu) {
-        if (settings.inMaintenanceMode)
-            if (menu.clicker.user.id != settings.idGiulio) return
+        if (config.inMaintenanceMode)
+            if (menu.clicker.user.id != config.idGiulio) return
 
         if (menu.id != "riscattaRicompense") return
 
