@@ -79,7 +79,7 @@ module.exports = {
             }
 
             if (i == 3)
-                text += avvento[3] ? `From: ${new Date(avvento.boost2).getDate()}/${new Date(avvento.boost2).getMonth() + 1} ${new Date(avvento.boost2).getMinutes()}:${new Date(avvento.boost2).getHours()} To: ${new Date(avvento.boost2 + 43200000).getDate()}/${new Date(avvento.boost2 + 43200000).getMonth() + 1} ${new Date(avvento.boost2 + 43200000).getMinutes()}:${new Date(avvento.boost2 + 43200000).getHours()}\r` : ""
+                text += avvento[3] ? `From: ${new Date(avvento.boost2).getDate()}/${new Date(avvento.boost2).getMonth() + 1} ${new Date(avvento.boost2).getHours() < 10 ? ("0" + new Date(avvento.boost2).getHours()) : new Date(avvento.boost2).getHours()}:${new Date(avvento.boost2).getMinutes() < 10 ? ("0" + new Date(avvento.boost2).getMinutes()) : new Date(avvento.boost2).getMinutes()} To: ${new Date(avvento.boost2 + 43200000).getDate()}/${new Date(avvento.boost2 + 43200000).getMonth() + 1} ${new Date(avvento.boost2 + 43200000).getHours() < 10 ? ("0" + new Date(avvento.boost2 + 43200000).getHours()) : new Date(avvento.boost2 + 43200000).getHours()}:${new Date(avvento.boost2 + 43200000).getMinutes() < 10 ? ("0" + new Date(avvento.boost2 + 43200000).getMinutes()) : new Date(avvento.boost2 + 43200000).getMinutes()}\r` : ""
             if (i == 10)
                 text += avvento.regaloFatto ? `_Ricompensa usata_\r` : `_Ricompensa non usata_\r`
         }
@@ -120,7 +120,7 @@ module.exports = {
             }
 
             if (i == 21)
-                text += avvento[3] ? `From: ${new Date(avvento.boost3).getDate()}/${new Date(avvento.boost3).getMonth() + 1} ${new Date(avvento.boost3).getMinutes()}:${new Date(avvento.boost3).getHours()} To: ${new Date(avvento.boost3 + 43200000).getDate()}/${new Date(avvento.boost3 + 43200000).getMonth() + 1} ${new Date(avvento.boost3 + 43200000).getMinutes()}:${new Date(avvento.boost3 + 43200000).getHours()}\r` : ""
+                text += avvento[3] ? `From: ${new Date(avvento.boost3).getDate()}/${new Date(avvento.boost3).getMonth() + 1} ${new Date(avvento.boost3).getHours() < 10 ? ("0" + new Date(avvento.boost3).getHours()) : new Date(avvento.boost3).getHours()}:${new Date(avvento.boost3).getMinutes() < 10 ? ("0" + new Date(avvento.boost3).getMinutes()) : new Date(avvento.boost3).getMinutes()} To: ${new Date(avvento.boost3 + 43200000).getDate()}/${new Date(avvento.boost3 + 43200000).getMonth() + 1} ${new Date(avvento.boost3 + 43200000).getHours() < 10 ? ("0" + new Date(avvento.boost3 + 43200000).getHours()) : new Date(avvento.boost3 + 43200000).getHours()}:${new Date(avvento.boost3 + 43200000).getMinutes() < 10 ? ("0" + new Date(avvento.boost3 + 43200000).getMinutes()) : new Date(avvento.boost3 + 43200000).getMinutes()}\r` : ""
             if (i == 23)
                 text3 += avvento.ladroFatto ? `_Ricompensa usata_\r` : `_Ricompensa non usata_\r`
         }
