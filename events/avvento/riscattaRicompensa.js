@@ -9,12 +9,8 @@ module.exports = {
         var avvento = serverstats.avvento[button.clicker.user.id]
         if (!avvento) return
 
-        //! Il 06/01 ripristinare tutto
-
-        //? var day = new Date().getDate()
-        //? var month = new Date().getMonth()
-        var day = 30
-        var month = 11
+        var day = new Date().getDate()
+        var month = new Date().getMonth()
 
         if (month == 11 || (month == 0 && day <= 6)) {
 
@@ -35,8 +31,6 @@ module.exports = {
             .setColor("#009245")
             .setThumbnail(avventoJSON.iconGiorno[numGiorno])
             .setDescription(`Ricompensa del **giorno ${numGiorno}** riscattata`)
-
-        //per le emoji dire di riavviare
 
         switch (parseInt(numGiorno)) {
             case 1: {

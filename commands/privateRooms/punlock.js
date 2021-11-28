@@ -4,10 +4,8 @@ module.exports = {
     onlyStaff: false,
     channelsGranted: [],
     async execute(message, args, client) {
-        //? var day = new Date().getDate()
-        //? var month = new Date().getMonth()
-        var day = 30
-        var month = 11
+        var day = new Date().getDate()
+        var month = new Date().getMonth()
 
         if (month == 11 || (month == 0 && day <= 6)) {
 
