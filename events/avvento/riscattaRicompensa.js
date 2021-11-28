@@ -208,6 +208,7 @@ Ora hai un livello in più. Scopri in <#${config.idCanaliServer.levelUp}> se hai
                     `)
 
                 userstats.level++
+                userstats.xp = calcoloXpNecessario(userstats.level)
 
                 const levelColor = require("../../config/levelColor.json")
 
@@ -654,6 +655,7 @@ Ora hai due livelli in più. Scopri in <#${config.idCanaliServer.levelUp}> se ha
                     `)
 
                 userstats.level += 2
+                userstats.xp = calcoloXpNecessario(userstats.level)
 
                 const levelColor = require("../../config/levelColor.json")
 
