@@ -5,12 +5,6 @@ global.sendAvvento = async function () {
 	var hours = new Date().getHours()
 	var minutes = new Date().getMinutes()
 
-	hours = 0;
-	minutes = 1;
-
-	day = 12
-	month = 11
-
 	var channel = await client.channels.cache.get("907340145383047168")
 
 	if (month == 11 && day <= 25) {
