@@ -8,7 +8,7 @@ global.sendAvvento = async function () {
 	var channel = await client.channels.cache.get("907340145383047168")
 
 	if (month == 11 && day <= 25) {
-		if (hours == 0 && minutes == 1) {
+		if (hours == 0 && minutes == 0) {
 			await channel.messages.fetch().then(async messages => {
 				var array = Array.from(messages.values())
 				for (var i = 0; i < array.length; i++) {
