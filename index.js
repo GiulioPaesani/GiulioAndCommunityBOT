@@ -3,8 +3,8 @@ require('events').EventEmitter.prototype._maxListeners = 100;
 global.Discord = require("discord.js");
 global.client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "REACTION"] });
 
-//const dotenv = require('dotenv');
-//dotenv.config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const fs = require("fs");
 global.ytch = require('yt-channel-info');
