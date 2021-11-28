@@ -80,13 +80,6 @@ global.sendAvventoReminder = async function () {
 
 	if (month == 11 && day <= 25) {
 		if (hours == 8 && minutes == 0) {
-			await channel.messages.fetch().then(async messages => {
-				var array = Array.from(messages.values())
-				for (var i = 0; i < array.length; i++) {
-					await array[i].delete().catch(() => { return })
-				}
-			})
-
 			if (day < 25) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle(`<:closegift:910604692013342720> Nuova ricompensa - ${day} Dicembre <:closegift:910604692013342720>`)
