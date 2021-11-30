@@ -48,6 +48,7 @@ Ti sono stati rimossi **500 punti esperienza**, mi spiace...`)
         if (!userstats) return
 
         userstats.xp -= 500
+        if (userstats.xp < 0) userstats = 0
 
         var level = 0
 
