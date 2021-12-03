@@ -40,6 +40,7 @@ module.exports = {
                     message.delete({ timeout: 20000 }).catch(() => { });
                     msg.delete({ timeout: 20000 }).catch(() => { });
                 });
+            return
         }
 
         var privaterooms = serverstats.privateRooms
