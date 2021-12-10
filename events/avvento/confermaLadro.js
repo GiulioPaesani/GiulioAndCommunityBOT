@@ -47,7 +47,7 @@ Ti sono stati rimossi **500 punti esperienza**, mi spiace...`)
         var userstats = userstatsList.find(x => x.id == utente.id);
         if (!userstats) return
 
-        userstats.xp -= 500
+        userstats.xp = userstats.xp - 500
         if (userstats.xp < 0) userstats.xp = 0
 
         var level = 0

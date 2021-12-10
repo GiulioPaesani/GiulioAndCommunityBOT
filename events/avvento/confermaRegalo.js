@@ -47,7 +47,7 @@ Hai ricevuto **500 punti esperienza**`)
         var userstats = userstatsList.find(x => x.id == utente.id);
         if (!userstats) return
 
-        userstats.xp += 500
+        userstats.xp = userstats.xp + 500
 
         var level = 0
 
