@@ -18,7 +18,7 @@ module.exports = {
             return
         }
 
-        if (month == 11 && day < 25) {
+        if (month == 11 && day < 23) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Comando non esistente")
                 .setColor("#FF931E")
@@ -30,6 +30,7 @@ module.exports = {
                     message.delete({ timeout: 20000 }).catch(() => { });
                     msg.delete({ timeout: 20000 }).catch(() => { });
                 });
+            return
         }
 
         var avvento = serverstats.avvento[message.author.id]
@@ -93,6 +94,22 @@ module.exports = {
             });
             return
         }
+
+
+        if (utente.bot) {
+            var embed = new Discord.MessageEmbed()
+                .setTitle("Non a un bot")
+                .setColor(`#8F8F8F`)
+                .setDescription("Non puoi togliere questi punti esperienza a un bot")
+                .setThumbnail('https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png');
+
+            message.channel.send(embed).then((msg) => {
+                message.delete({ timeout: 20000 }).catch(() => { });
+                msg.delete({ timeout: 20000 }).catch(() => { });
+            });
+            return
+        }
+
 
         if (utente.id == message.author.id) {
             var embed = new Discord.MessageEmbed()
