@@ -28,7 +28,7 @@ module.exports = {
             return
         }
 
-        if (month == 11 && day < 10) {
+        if (month == 11 && day < 11) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Comando non esistente")
                 .setColor("#FF931E")
