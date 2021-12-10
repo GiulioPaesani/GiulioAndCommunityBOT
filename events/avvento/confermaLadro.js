@@ -115,7 +115,7 @@ Ti sono stati rimossi **500 punti esperienza**, mi spiace...`)
             }
 
             var canale = await client.channels.cache.get(config.idCanaliServer.levelUp);
-            await canale.send(utente.toString() + ` hai raggiunto un **nuovo livello**`, embed2)
+            await canale.send(`<@${utente.id}> hai raggiunto un **nuovo livello**`, embed2)
         }
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
