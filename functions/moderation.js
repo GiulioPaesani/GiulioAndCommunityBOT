@@ -26,10 +26,10 @@ global.getParolaccia = function (content) {
 global.checkModeration = function () {
     for (var index in userstatsList) {
         if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
-            var canale = client.channels.cache.get(config.idCanaliServer.log);
-            var server = client.guilds.cache.get(config.idServer);
+            var canale = client.channels.cache.get(settings.idCanaliServer.log);
+            var server = client.guilds.cache.get(settings.idServer);
 
-            var ruoloTempmuted = server.roles.cache.find(role => role.id == config.ruoliModeration.tempmuted);
+            var ruoloTempmuted = server.roles.cache.find(role => role.id == settings.ruoliModeration.tempmuted);
 
             var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
             if (utente) {
@@ -37,10 +37,10 @@ global.checkModeration = function () {
                     if (utente.voice) {
                         if (utente.voice.channel) {
                             var canale = utente.voice.channelID
-                            if (canale == config.idCanaliServer.general1)
-                                utente.voice.setChannel(config.idCanaliServer.general2)
+                            if (canale == settings.idCanaliServer.general1)
+                                utente.voice.setChannel(settings.idCanaliServer.general2)
                             else
-                                utente.voice.setChannel(config.idCanaliServer.general1)
+                                utente.voice.setChannel(settings.idCanaliServer.general1)
                             utente.voice.setChannel(canale)
                         }
                     }
@@ -49,43 +49,45 @@ global.checkModeration = function () {
 
             var utente = client.users.cache.get(userstatsList[index].id);
 
-            var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNTEMPMUTE] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
-                .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                .setColor("#6143CB")
-                .addField("Reason", userstatsList[index].moderation.reason)
-                .addField("Moderator", "<@802184359120863272>")
-                .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-                .setFooter("User ID: " + userstatsList[index].id)
+            if (utente) {
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[UNTEMPMUTE] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", userstatsList[index].moderation.reason)
+                    .addField("Moderator", "<@802184359120863272>")
+                    .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                    .setFooter("User ID: " + userstatsList[index].id)
 
-            var embedUtente = new Discord.MessageEmbed()
-                .setTitle("Sei stato smutato")
-                .setColor("#6143CB")
-                .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
-                .addField("Reason", userstatsList[index].moderation.reason)
-                .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-                .addField("Moderator", "<@802184359120863272>")
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato smutato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/bJPt919L/Giulio-Ban-copia-2.png")
+                    .addField("Reason", userstatsList[index].moderation.reason)
+                    .addField("Time muted", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                    .addField("Moderator", "<@802184359120863272>")
 
-            utente.send(embedUtente).catch(() => { })
+                utente.send(embedUtente).catch(() => { })
 
-            canale.send(embed);
+                canale.send(embed);
 
-            userstatsList[index].moderation = {
-                "type": "",
-                "since": "",
-                "until": "",
-                "reason": "",
-                "moderator": ""
+                userstatsList[index].moderation = {
+                    "type": "",
+                    "since": "",
+                    "until": "",
+                    "reason": "",
+                    "moderator": ""
+                }
+
+                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != settings.ruoliModeration.tempmuted)
             }
-
-            userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempmuted)
         }
 
         if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
-            var canale = client.channels.cache.get(config.idCanaliServer.log);
-            var server = client.guilds.cache.get(config.idServer);
+            var canale = client.channels.cache.get(settings.idCanaliServer.log);
+            var server = client.guilds.cache.get(settings.idServer);
 
-            var ruoloTempbanned = server.roles.cache.find(role => role.id == config.ruoliModeration.tempbanned)
+            var ruoloTempbanned = server.roles.cache.find(role => role.id == settings.ruoliModeration.tempbanned)
 
             var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
             if (utente) {
@@ -94,37 +96,39 @@ global.checkModeration = function () {
 
             var utente = client.users.cache.get(userstatsList[index].id);
 
-            var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNTEMPBAN] " + utente.user.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .setColor("#6143CB")
-                .addField("Reason", userstatsList[index].moderation.reason)
-                .addField("Moderator", "<@802184359120863272>")
-                .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
-                .setFooter("User ID: " + userstatsList[index].id)
+            if (utente) {
+                var embed = new Discord.MessageEmbed()
+                    .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .setColor("#6143CB")
+                    .addField("Reason", userstatsList[index].moderation.reason)
+                    .addField("Moderator", "<@802184359120863272>")
+                    .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                    .setFooter("User ID: " + userstatsList[index].id)
 
-            var embedUtente = new Discord.MessageEmbed()
-                .setTitle("Sei stato sbannato")
-                .setColor("#6143CB")
-                .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
-                .addField("Reason", userstatsList[index].moderation.reason)
-                .addField("Moderator", "<@802184359120863272>")
-                .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
+                var embedUtente = new Discord.MessageEmbed()
+                    .setTitle("Sei stato sbannato")
+                    .setColor("#6143CB")
+                    .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
+                    .addField("Reason", userstatsList[index].moderation.reason)
+                    .addField("Moderator", "<@802184359120863272>")
+                    .addField("Time banned", ms(new Date().getTime() - userstatsList[index].moderation.since, { long: true }))
 
 
-            utente.send(embedUtente).catch(() => { })
+                utente.send(embedUtente).catch(() => { })
 
-            canale.send(embed);
+                canale.send(embed);
 
-            userstatsList[index].moderation = {
-                "type": "",
-                "since": "",
-                "until": "",
-                "reason": "",
-                "moderator": ""
+                userstatsList[index].moderation = {
+                    "type": "",
+                    "since": "",
+                    "until": "",
+                    "reason": "",
+                    "moderator": ""
+                }
+
+                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != settings.ruoliModeration.tempbanned)
             }
-
-            userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempbanned)
         }
     }
 }
