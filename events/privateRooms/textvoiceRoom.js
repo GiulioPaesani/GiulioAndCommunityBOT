@@ -84,7 +84,25 @@ module.exports = {
                         "type": "textVoice",
                         "bans": []
                     })
+                }).catch(() => {
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle('Limite superato')
+                        .setThumbnail('https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png')
+                        .setColor('#8F8F8F')
+                        .setDescription(`Putroppo sono stati creato più di **50 stanze private** e discord non permette di crearne di più all'interno della categoria, quindi non potrai creare la tua stanza, **mi spiace**`);
+
+                    button.clicker.user.send(embed).catch();
+                    return;
                 })
+            }).catch(() => {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle('Limite superato')
+                    .setThumbnail('https://i.postimg.cc/JnJw1q5M/Giulio-Sad.png')
+                    .setColor('#8F8F8F')
+                    .setDescription(`Putroppo sono stati creato più di **50 stanze private** e discord non permette di crearne di più all'interno della categoria, quindi non potrai creare la tua stanza, **mi spiace**`);
+
+                button.clicker.user.send(embed).catch();
+                return;
             })
         }
     },
