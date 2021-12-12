@@ -78,6 +78,11 @@ module.exports = {
             return
         }
 
+        if (utenteMode(utente)) {
+            warning(message, "Non puoi rimuovere lo staff", room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi rimuovere utenti ammistratori dalla tua stanza" : "Non puoi rimuovere utenti ammistratori dalle tue stanze")
+            return
+        }
+
         if (room.text) {
             var canale = client.channels.cache.get(room.text)
             canale.updateOverwrite(utente, {
