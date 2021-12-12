@@ -141,7 +141,7 @@ module.exports = {
         var ruoloBanned = message.guild.roles.cache.find(role => role.id == config.ruoliModeration.banned);
 
         message.guild.channels.cache.forEach((canale) => {
-            if (canale.id != config.idCanaliServer.bannedTicket) {
+            if (canale.id != config.idCanaliServer.bannedTicket && canale.id != config.idCanaliServer.rules) {
                 canale.updateOverwrite(ruoloBanned, {
                     VIEW_CHANNEL: false,
                     SPEAK: false
