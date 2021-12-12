@@ -95,7 +95,7 @@ global.checkModeration = function () {
             var utente = client.users.cache.get(userstatsList[index].id);
 
             var embed = new Discord.MessageEmbed()
-                .setAuthor("[UNTEMPBAN] " + utente.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
+                .setAuthor("[UNTEMPBAN] " + utente.user.username + "#" + utente.discriminator, utente.displayAvatarURL({ dynamic: true }))
                 .setThumbnail("https://i.postimg.cc/TwcW7hkx/Giulio-Ban-copia.png")
                 .setColor("#6143CB")
                 .addField("Reason", userstatsList[index].moderation.reason)
