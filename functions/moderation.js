@@ -26,10 +26,10 @@ global.getParolaccia = function (content) {
 global.checkModeration = function () {
     for (var index in userstatsList) {
         if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
-            var canale = client.channels.cache.get(settings.idCanaliServer.log);
-            var server = client.guilds.cache.get(settings.idServer);
+            var canale = client.channels.cache.get(config.idCanaliServer.log);
+            var server = client.guilds.cache.get(config.idServer);
 
-            var ruoloTempmuted = server.roles.cache.find(role => role.id == settings.ruoliModeration.tempmuted);
+            var ruoloTempmuted = server.roles.cache.find(role => role.id == config.ruoliModeration.tempmuted);
 
             var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
             if (utente) {
@@ -37,10 +37,10 @@ global.checkModeration = function () {
                     if (utente.voice) {
                         if (utente.voice.channel) {
                             var canale = utente.voice.channelID
-                            if (canale == settings.idCanaliServer.general1)
-                                utente.voice.setChannel(settings.idCanaliServer.general2)
+                            if (canale == config.idCanaliServer.general1)
+                                utente.voice.setChannel(config.idCanaliServer.general2)
                             else
-                                utente.voice.setChannel(settings.idCanaliServer.general1)
+                                utente.voice.setChannel(config.idCanaliServer.general1)
                             utente.voice.setChannel(canale)
                         }
                     }
@@ -79,15 +79,15 @@ global.checkModeration = function () {
                     "moderator": ""
                 }
 
-                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != settings.ruoliModeration.tempmuted)
+                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempmuted)
             }
         }
 
         if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
-            var canale = client.channels.cache.get(settings.idCanaliServer.log);
-            var server = client.guilds.cache.get(settings.idServer);
+            var canale = client.channels.cache.get(config.idCanaliServer.log);
+            var server = client.guilds.cache.get(config.idServer);
 
-            var ruoloTempbanned = server.roles.cache.find(role => role.id == settings.ruoliModeration.tempbanned)
+            var ruoloTempbanned = server.roles.cache.find(role => role.id == config.ruoliModeration.tempbanned)
 
             var utente = server.members.cache.find(x => x.id == userstatsList[index].id);
             if (utente) {
@@ -127,7 +127,7 @@ global.checkModeration = function () {
                     "moderator": ""
                 }
 
-                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != settings.ruoliModeration.tempbanned)
+                userstatsList[index].roles = userstatsList[index].roles.filter(x => x != config.ruoliModeration.tempbanned)
             }
         }
     }
