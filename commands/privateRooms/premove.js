@@ -78,7 +78,7 @@ module.exports = {
             return
         }
 
-        if (utenteMode(utente)) {
+        if (utenteMod(utente)) {
             warning(message, "Non puoi rimuovere lo staff", room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi rimuovere utenti ammistratori dalla tua stanza" : "Non puoi rimuovere utenti ammistratori dalle tue stanze")
             return
         }
