@@ -34,7 +34,7 @@ module.exports = {
                 })
             }
             if (room.voice) {
-                if (utente.voice && utente.voice.channelID == room.voice) utente.voice.kick()
+                if (message.member.voice && message.member.voice.channelID == room.voice) message.member.voice.kick()
                 var canale = client.channels.cache.get(room.voice)
                 canale.updateOverwrite(message.member, {
                     VIEW_CHANNEL: false
