@@ -24,13 +24,13 @@ module.exports = {
             return
         }
 
-        correct(message, "Ti sei rimosso", `${message.author.toString()} tra 5 seconsi verrai rimosso da questa stanza`)
+        correct(message, "Ti sei rimosso", `${message.author.toString()} tra 5 secondi verrai rimosso da questa stanza`)
 
         setTimeout(() => {
             message.channel.updateOverwrite(message.member, {
                 VIEW_CHANNEL: false
             })
-        }, 2000)
+        }, 5000)
 
     },
 };
