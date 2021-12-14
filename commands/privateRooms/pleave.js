@@ -27,9 +27,19 @@ module.exports = {
         correct(message, "Ti sei rimosso", `${message.author.toString()} tra 5 secondi verrai rimosso da questa stanza`)
 
         setTimeout(() => {
-            message.channel.updateOverwrite(message.member, {
-                VIEW_CHANNEL: false
-            })
+            if (room.text) {
+                var canale = client.channels.cache.get(room.text)
+                canale.updateOverwrite(message.member, {
+                    VIEW_CHANNEL: false
+                })
+            }
+            if (room.voice) {
+                if (utente.voice && utente.voice.channelID == room.voice) utente.voice.kick()
+                var canale = client.channels.cache.get(room.voice)
+                canale.updateOverwrite(message.member, {
+                    VIEW_CHANNEL: false
+                })
+            }
         }, 5000)
 
     },
