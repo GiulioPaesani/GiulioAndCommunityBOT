@@ -24,7 +24,7 @@ module.exports = {
             return
         }
 
-        correct(message, "Ti sei rimosso", `${message.author.toString()} si è rimosso da questa stanza`)
+        correct(message, "Ti sei rimosso", `${message.author.toString()} tra 5 seconsi verrai rimosso da questa stanza`)
 
         setTimeout(() => {
             message.channel.updateOverwrite(message.member, {
