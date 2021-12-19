@@ -14,6 +14,8 @@ global.utenteMod = function (member) {
 };
 
 global.codeError = function (err) {
+	console.log(err);
+
 	var embed = new Discord.MessageEmbed()
 		.setTitle(`ERROR`)
 		.setThumbnail(
@@ -27,7 +29,6 @@ global.codeError = function (err) {
 		.addField(':name_badge: Error', err.stack ? `\`\`\`${err.stack.slice(0, 900)}\`\`\`` : `\`\`\`${err.slice(0, 900)}\`\`\``);
 
 	client.channels.cache.get(log.codeErrors).send(embed);
-	console.log(err);
 };
 global.permesso = function (message, comando) {
 	var embed = new Discord.MessageEmbed()
