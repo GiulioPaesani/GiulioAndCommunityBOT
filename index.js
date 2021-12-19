@@ -11,9 +11,7 @@ global.moment = require("moment");
 global.ms = require("ms");
 global.humanNumber = require("human-number");
 global.Parser = require('expr-eval').Parser;
-global.MongoClient = require('mongodb').MongoClient;
-
-require('dotenv').config();
+global.MongoClient = require('mongodb').MongoClient; 
 
 client.login(process.env.token);
 
