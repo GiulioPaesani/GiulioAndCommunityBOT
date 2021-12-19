@@ -11,8 +11,6 @@ module.exports = {
         await database.collection("userstats").find().toArray(function (err, result) {
             userstatsList = result
             console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
-
-
         })
 
         client.user.setActivity('!help', { type: 'WATCHING' });
