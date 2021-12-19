@@ -46,7 +46,7 @@ for (const file of functionFiles) {
 global.log = require("./config/log.json");
 
 global.database = "";
-global.url = `mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
+global.url = `mongodb+srv://giulioandcode:${process.env.passworddb}@clustergiulioandcommuni.xqwnr.mongodb.net/test`;
 
 global.serverstats = ""
 global.userstatsList = ""
