@@ -220,8 +220,7 @@ process.on("unhandledRejection", err => {
 
 client.on("message", message => {
     if (message.channel?.id == "922542187667918948" && !message.content.startsWith("!critica") && !message.content.startsWith("!critique")) {
-
-        if (!message.author.bot) return
+        if (message.author.bot) return
 
         let testo = args.join(" ");
         if (!testo) {
