@@ -6,16 +6,12 @@ module.exports = {
     async execute(message, args, client) {
         let testo = args.join(" ");
         if (!testo) {
-            var embed = new Discord.MessageEmbed().setTitle("Inserire un testo").setColor(`#ED1C24`).setDescription("`!critica [testo]`").setThumbnail('https://i.postimg.cc/zB4j8xVZ/Error.png');
-            message.author.send(embed)
-                .catch(() => { return })
+            error(message, "Inserire un testo", "`!critica [testo]`")
             return
         }
 
         if (testo.lenght > 900) {
-            var embed = new Discord.MessageEmbed().setTitle("Testo troppo lungo").setColor(`#ED1C24`).setDescription("Scrivi una critica più breve di 900 caratteri").setThumbnail('https://i.postimg.cc/zB4j8xVZ/Error.png');
-            message.author.send(embed)
-                .catch(() => { return })
+            error(message, "Testo troppo lungo", "Scrivi una critica più breve di 900 caratteri")
             return
         }
 
@@ -24,8 +20,11 @@ module.exports = {
             .setDescription("Grazie mille per aver lasciato una tua **critica costruttiva**")
             .addField("Critica", testo, false)
 
-        message.author.send(embed)
-            .catch(() => { return })
+        message.channel.send(embed)
+            .then(msg => {
+                msg.delete({ timeout: 20000 })
+                message.delete({ timeout: 20000 })
+            })
 
         var embed = new Discord.MessageEmbed()
             .setTitle("👍 Nuova critica 💩")

@@ -57,7 +57,6 @@ global.error = function (message, title, description) {
 	} else {
 		embed.setThumbnail('https://i.postimg.cc/zB4j8xVZ/Error.png');
 	}
-
 	message.channel.send(embed).then((msg) => {
 		message.delete({ timeout: 20000 }).catch(() => { });
 		msg.delete({ timeout: 20000 }).catch(() => { });
