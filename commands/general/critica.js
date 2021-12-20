@@ -21,10 +21,6 @@ module.exports = {
             .addField("Critica", testo, false)
 
         message.author.send(embed)
-            .then((msg) => {
-                msg.delete({ timeout: 20000 })
-                    .catch(() => { });
-            })
             .catch(() => { return })
 
         var embed = new Discord.MessageEmbed()

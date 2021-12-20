@@ -220,9 +220,7 @@ process.on("unhandledRejection", err => {
 
 client.on("message", message => {
     if (message.channel?.id == "922542187667918948") {
-        if (message.content.startsWith("!critica") || message.content.startsWith("!critique"))
-            message.delete({ timeout: 20000 })
-        else
+        if (!message.author.bot)
             message.delete()
     }
 })
