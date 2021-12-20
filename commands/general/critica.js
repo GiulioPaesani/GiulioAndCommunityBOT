@@ -6,12 +6,16 @@ module.exports = {
     async execute(message, args, client) {
         let testo = args.join(" ");
         if (!testo) {
-            error(message, "Inserire un testo", "`!critica [testo]`")
+            var embed = new Discord.MessageEmbed().setTitle("Inserire un testo").setColor(`#ED1C24`).setDescription("`!critica [testo]`").setThumbnail('https://i.postimg.cc/zB4j8xVZ/Error.png');
+            message.author.send(embed)
+                .catch(() => { return })
             return
         }
 
         if (testo.lenght > 900) {
-            error(message, "Testo troppo lungo", "Scrivi una critica più breve di 900 caratteri")
+            var embed = new Discord.MessageEmbed().setTitle("Testo troppo lungo").setColor(`#ED1C24`).setDescription("Scrivi una critica più breve di 900 caratteri").setThumbnail('https://i.postimg.cc/zB4j8xVZ/Error.png');
+            message.author.send(embed)
+                .catch(() => { return })
             return
         }
 
