@@ -20,7 +20,12 @@ module.exports = {
             .setDescription("Grazie mille per aver lasciato una tua **critica costruttiva**")
             .addField("Critica", testo, false)
 
-        message.channel.send(embed)
+        message.author.send(embed)
+            .then((msg) => {
+                msg.delete({ timeout: 20000 })
+                    .catch(() => { });
+            })
+            .catch(() => { return })
 
         var embed = new Discord.MessageEmbed()
             .setTitle("👍 Nuova critica 💩")

@@ -11,7 +11,7 @@ global.moment = require("moment");
 global.ms = require("ms");
 global.humanNumber = require("human-number");
 global.Parser = require('expr-eval').Parser;
-global.MongoClient = require('mongodb').MongoClient; 
+global.MongoClient = require('mongodb').MongoClient;
 
 client.login(process.env.token);
 
@@ -215,4 +215,14 @@ process.on("uncaughtException", err => {
 })
 process.on("unhandledRejection", err => {
     codeError(err);
+})
+
+
+client.on("message", message => {
+    if (message.channel?.id == "922542187667918948") {
+        if (message.content.startsWith("!critica") || message.content.startsWith("!critique"))
+            message.delete({ timeout: 20000 })
+        else
+            message.delete()
+    }
 })
