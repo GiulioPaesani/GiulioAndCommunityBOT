@@ -13,7 +13,7 @@ global.humanNumber = require("human-number");
 global.Parser = require('expr-eval').Parser;
 global.MongoClient = require('mongodb').MongoClient;
 
-// const env = require("dotenv")
+const env = require("dotenv")
 
 client.login(process.env.token);
 
