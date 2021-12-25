@@ -31,23 +31,23 @@ module.exports = {
 
             if (day < 25) {
                 await channel.send(`Si sta avvicinando finalmente il **Natale**, è arrivato il momento dei regali, dei pranzi con i parenti e dei bacini dalla zia
-    Per attendere con piacere questo grande giorno, potete partecipare all'**Avvento della community**🎄`)
+Per attendere con piacere questo grande giorno, potete partecipare all'**Avvento della community**🎄`)
 
                 await channel.send({ files: [avventoJSON.banner.banner] })
 
                 await channel.send(`\u200b
-    🎁 **Ogni giorno** fino al 25 Dicembre vi aspetta una **fantastica ricompensa** da riscattare, per poi ricevere un mitico **super regalo** il giorno di Natale!`)
+🎁 **Ogni giorno** fino al 25 Dicembre vi aspetta una **fantastica ricompensa** da riscattare, per poi ricevere un mitico **super regalo** il giorno di Natale!`)
 
-                var button = new disbut.MessageButton()
+                var button = new MessageButton()
                     .setLabel("Riscatta ricompense")
                     .setStyle("red")
                     .setID("riscattaRicompense")
 
-                var row = new disbut.MessageActionRow()
+                var row = new MessageActionRow()
                     .addComponents(button)
 
                 await channel.send(`\u200b
-    Riscatta tutte le tue ricompense dell'Avvento con il pulsante **"Riscatta ricompense"** qua sotto`)
+Riscatta tutte le tue ricompense dell'Avvento con il pulsante **"Riscatta ricompense"** qua sotto`)
 
                 await channel.send({ files: [avventoJSON.banner[day]], components: row })
             }
