@@ -178,6 +178,32 @@ client.on("message", async message => {
     if (message.channel == config.idCanaliServer.tutorial && comando.name != "clear") return
 
     await comando.execute(message, args, client);
+
+    //Wrapped
+    var date = new Date();
+    if (date.getFullYear() != "2022") return
+
+    if (!userstats.wrapped) {
+        userstats.wrapped = {
+            "startTime": date.getTime(),
+            "messages": {},
+            "channels": {},
+            "reactions": {},
+            "words": {},
+            "emojis": {},
+            "commands": {},
+            "vocalChannelsSeconds": 0,
+            "startLevel": userstats.level,
+            "startMoney": userstats.money ? userstats.money : 0,
+        }
+    }
+
+    if (!userstats.wrapped.commands[comando.name])
+        userstats.wrapped.commands[comando.name] = 0
+
+    userstats.wrapped.commands[comando.name] = userstats.wrapped.commands[comando.name] + 1
+
+    userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
 })
 
 //Subscriber counter
