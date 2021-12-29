@@ -10,7 +10,7 @@ module.exports = {
                 
 <:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT - [Clicca qui](https://github.com/GiulioPaesani/GiulioAndCommunityBOT)
 <:GiulioAndTutorial:823196000922894387> GiulioAndTutorial - [Clicca qui](https://github.com/GiulioPaesani/GiulioAndTutorial)
-<:GiulioAndCode:835880225266466876> GiulioAndCode Site - [Clicca qui](https://github.com/GiulioPaesani/GiulioAndCodeSite)`)
+<:GiulioAndCode:835880225266466876> GiulioAndCode Site - [Clicca qui](https://github.com/GiulioPaesani/GiulioPortfolio)`)
             .setThumbnail("https://i.postimg.cc/mrXPWCHK/Senza-titolo-1.jpg")
 
         message.channel.send(embed)
