@@ -102,3 +102,163 @@ Vai in <#907340145383047168> e riscatta il **super regalo** di oggi`)
 		}
 	}
 }
+
+setInterval(() => {
+	var idCanale = "869979989427253329" //!Cambiare
+	var numdata = 30 //!Cambiare mettere 31
+	var numdata2 = 31 //!Cambiare mettere 1
+
+	var date = new Date()
+	if (date.getSeconds() == 0) {
+		if (date.getDate() == numdata) {
+			if (date.getHours() == 0 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-24 ore al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/K4XVgc8z/Tavola-disegno-1.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 12 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-12 ore al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/RC3ZfP05/Tavola-disegno-1-copia.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 14 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-10 ore al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/Prwnf95J/Tavola-disegno-1-copia-2.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 19 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-5 ore al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/SQ5phkqH/Tavola-disegno-1-copia-3.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 21 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-3 ore al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/QMSRnr04/Tavola-disegno-1-copia-4.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 22 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-2 ore al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/Mp0kVBR8/Tavola-disegno-1-copia-5.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 23 && date.getMinutes() == 0) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-1 ora al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/SxbFndnr/Tavola-disegno-1-copia-6.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 23 && date.getMinutes() == 30) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-30 minuti al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/pT63RJNK/Tavola-disegno-1-copia-7.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 23 && date.getMinutes() == 45) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-15 minuti al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/Pxx0gF7t/Tavola-disegno-1-copia-8.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 23 && date.getMinutes() == 55) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-5 minuti al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/YSt53SfL/Tavola-disegno-1-copia-9.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (date.getHours() == 23 && date.getMinutes() == 59) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-1 minuto al 2022")
+					.setColor("#F7931E")
+					.setImage("https://i.postimg.cc/hvQ6jQg6/Tavola-disegno-1-copia-10.png")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+		}
+		else if (date.getDate() == numdata2 && date.getHours() == 0 && date.getMinutes() == 0) {
+			var embed = new Discord.MessageEmbed()
+				.setTitle("BUON 2022 a tutti!")
+				.setColor("#F7931E")
+				.setImage("https://i.postimg.cc/ryvF9Sdd/Tavola-disegno-1-copia-11.png")
+			client.channels.cache.get(idCanale).send(embed)
+		}
+	}
+	else {
+		if (data.getDate() == numdata && data.getHours() == 23 && data.getMinutes() == 59) {
+			if (data.getSeconds() == 50) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-10")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 51) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-9")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 52) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-8")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 53) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-7")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 54) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-6")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 55) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-5")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 56) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-4")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 57) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-3")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 58) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-2")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+			if (data.getSeconds() == 59) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle("-1")
+					.setColor("#F7931E")
+				client.channels.cache.get(idCanale).send(embed)
+			}
+		}
+	}
+}, 1000)
