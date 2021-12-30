@@ -108,9 +108,9 @@ setInterval(() => {
 	var numdata = 30 //!Cambiare mettere 31
 	var numdata2 = 31 //!Cambiare mettere 1
 
-	var date = new Date()
-	if (date.getSeconds() == 0) {
-		if (date.getDate() == numdata) {
+	var data = new Date()
+	if (data.getSeconds() == 0) {
+		if (data.getDate() == numdata) {
 			if (date.getHours() == 0 && date.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-24 ore al 2022")
@@ -189,7 +189,7 @@ setInterval(() => {
 				client.channels.cache.get(idCanale).send(embed)
 			}
 		}
-		else if (date.getDate() == numdata2 && date.getHours() == 0 && date.getMinutes() == 0) {
+		else if (data.getDate() == numdata2 && data.getHours() == 0 && data.getMinutes() == 0) {
 			var embed = new Discord.MessageEmbed()
 				.setTitle("BUON 2022 a tutti!")
 				.setColor("#F7931E")
