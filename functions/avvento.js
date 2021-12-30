@@ -111,77 +111,77 @@ setInterval(() => {
 	var data = new Date()
 	if (data.getSeconds() == 0) {
 		if (data.getDate() == numdata) {
-			if (date.getHours() == 0 && date.getMinutes() == 0) {
+			if (data.getHours() == 0 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-24 ore al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/K4XVgc8z/Tavola-disegno-1.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 12 && date.getMinutes() == 0) {
+			if (data.getHours() == 12 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-12 ore al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/RC3ZfP05/Tavola-disegno-1-copia.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 14 && date.getMinutes() == 0) {
+			if (data.getHours() == 14 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-10 ore al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/Prwnf95J/Tavola-disegno-1-copia-2.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 19 && date.getMinutes() == 0) {
+			if (data.getHours() == 19 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-5 ore al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/SQ5phkqH/Tavola-disegno-1-copia-3.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 21 && date.getMinutes() == 0) {
+			if (data.getHours() == 21 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-3 ore al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/QMSRnr04/Tavola-disegno-1-copia-4.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 22 && date.getMinutes() == 0) {
+			if (data.getHours() == 22 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-2 ore al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/Mp0kVBR8/Tavola-disegno-1-copia-5.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 23 && date.getMinutes() == 0) {
+			if (data.getHours() == 23 && data.getMinutes() == 0) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-1 ora al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/SxbFndnr/Tavola-disegno-1-copia-6.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 23 && date.getMinutes() == 30) {
+			if (data.getHours() == 23 && data.getMinutes() == 30) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-30 minuti al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/pT63RJNK/Tavola-disegno-1-copia-7.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 23 && date.getMinutes() == 45) {
+			if (data.getHours() == 23 && data.getMinutes() == 45) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-15 minuti al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/Pxx0gF7t/Tavola-disegno-1-copia-8.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 23 && date.getMinutes() == 55) {
+			if (data.getHours() == 23 && data.getMinutes() == 55) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-5 minuti al 2022")
 					.setColor("#F7931E")
 					.setImage("https://i.postimg.cc/YSt53SfL/Tavola-disegno-1-copia-9.png")
 				client.channels.cache.get(idCanale).send(embed)
 			}
-			if (date.getHours() == 23 && date.getMinutes() == 59) {
+			if (data.getHours() == 23 && data.getMinutes() == 59) {
 				var embed = new Discord.MessageEmbed()
 					.setTitle("-1 minuto al 2022")
 					.setColor("#F7931E")
