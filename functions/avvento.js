@@ -104,9 +104,9 @@ Vai in <#907340145383047168> e riscatta il **super regalo** di oggi`)
 }
 
 setInterval(() => {
-	var idCanale = "869979989427253329" //!Cambiare
-	var numdata = 30 //!Cambiare mettere 31
-	var numdata2 = 31 //!Cambiare mettere 1
+	var idCanale = "869975177935593483"
+	var numdata = 31
+	var numdata2 = 1
 
 	var data = new Date()
 	if (data.getSeconds() == 0) {
