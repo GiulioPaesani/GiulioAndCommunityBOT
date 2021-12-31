@@ -180,6 +180,7 @@ client.on("message", async message => {
     await comando.execute(message, args, client);
 
     //Wrapped
+    var userstats = userstatsList.findIndex(x => x.id == message.author.id)
     var date = new Date();
     if (date.getFullYear() != "2022") return
 
