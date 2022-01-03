@@ -1,6 +1,7 @@
 module.exports = {
     name: "message",
     async execute(message) {
+        console.log("ciao1")
         var date = new Date();
         if (date.getFullYear() != 2022) return
 
@@ -8,6 +9,7 @@ module.exports = {
         if (message.channel.type == "dm") return
         if (message.guild.id != config.idServer) return
         if (!userstatsList) return
+        console.log("ciao2")
 
         var userstats = userstatsList.find(x => x.id == message.author.id);
         if (!userstats) return
@@ -62,6 +64,9 @@ module.exports = {
             }
         })
 
+        console.log("ciao3")
+
+
         if (message.content.match(/(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g)) {
             message.content.match(/(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g).forEach(x => message.content = message.content.replace(x, ""))
         }
@@ -80,6 +85,7 @@ module.exports = {
             userstats.wrapped.messages[dayCode] = 0
 
         userstats.wrapped.messages[dayCode] = userstats.wrapped.messages[dayCode] + 1
+        console.log("ciao4")
 
         if (!userstats.wrapped.channels[message.channel.id])
             userstats.wrapped.channels[message.channel.id] = 0
