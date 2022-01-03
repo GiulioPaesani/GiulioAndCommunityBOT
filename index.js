@@ -182,7 +182,7 @@ client.on("message", async message => {
     //Wrapped
     var userstats = userstatsList.find(x => x.id == message.author.id)
     var date = new Date();
-    if (date.getFullYear() != "2022") return
+    if (date.getFullYear() != 2022) return
 
     if (!userstats.wrapped) {
         userstats.wrapped = {

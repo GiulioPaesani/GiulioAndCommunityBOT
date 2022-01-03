@@ -339,7 +339,7 @@ https://youtu.be/${idVideo}
 
 global.statsVocal = function () {
 	var date = new Date();
-	console.log(date.getFullYear())
+
 	if (date.getFullYear() != 2022) return
 
 	var server = client.guilds.cache.get(config.idServer)
@@ -369,6 +369,4 @@ global.statsVocal = function () {
 			userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
 		});
 	})
-
-	console.log(userstatsList.find(x => x.id == "793768313934577664"))
 }

@@ -2,7 +2,7 @@ module.exports = {
     name: `messageReactionAdd`,
     async execute(messageReaction, user) {
         var date = new Date();
-        if (date.getFullYear() != "2022") return
+        if (date.getFullYear() != 2022) return
 
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
