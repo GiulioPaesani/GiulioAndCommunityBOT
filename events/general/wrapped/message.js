@@ -92,7 +92,8 @@ module.exports = {
 
 setInterval(() => {
     var date = new Date();
-    if (date.getFullYear() != "2022") return
+    console.log(date.getFullYear())
+    if (date.getFullYear() != 2022) return
 
     var server = client.guilds.cache.get(config.idServer)
     server.channels.cache.filter(x => x.type == "voice").forEach(channel => {
