@@ -335,3 +335,40 @@ https://youtu.be/${idVideo}
 		});
 	});
 };
+
+
+global.statsVocal = function () {
+	var date = new Date();
+	console.log(date.getFullYear())
+	if (date.getFullYear() != 2022) return
+
+	var server = client.guilds.cache.get(config.idServer)
+	server.channels.cache.filter(x => x.type == "voice").forEach(channel => {
+		channel.members.forEach(member => {
+
+			var userstats = userstatsList.find(x => x.id == member.id);
+			if (!userstats) return
+
+			if (!userstats.wrapped) {
+				userstats.wrapped = {
+					"startTime": date.getTime(),
+					"messages": {},
+					"channels": {},
+					"reactions": {},
+					"words": {},
+					"emojis": {},
+					"commands": {},
+					"vocalChannelsSeconds": 0,
+					"startLevel": userstats.level,
+					"startMoney": userstats.money ? userstats.money : 0,
+				}
+			}
+
+			userstats.wrapped.vocalChannelsSeconds = userstats.wrapped.vocalChannelsSeconds + 1
+
+			userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
+		});
+	})
+
+	console.log(userstatsList.find(x => x.id == "793768313934577664"))
+}
