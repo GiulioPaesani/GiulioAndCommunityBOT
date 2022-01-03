@@ -86,7 +86,6 @@ module.exports = {
 
         userstats.wrapped.channels[message.channel.id] = userstats.wrapped.channels[message.channel.id] + 1
 
-        console.log(userstats)
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
     },
 };
@@ -122,4 +121,6 @@ setInterval(() => {
             userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
         });
     })
+
+    console.log(userstatsList.find(x => x.id == "793768313934577664"))
 }, 1000)
