@@ -16,9 +16,7 @@ global.MongoClient = require('mongodb').MongoClient;
 try{
     require('dotenv').config()
 }
-catch(e){
-    console.log("cuao")
-}
+catch{}
 
 client.login(process.env.token);
 
