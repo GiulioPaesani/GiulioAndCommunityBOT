@@ -13,7 +13,12 @@ global.humanNumber = require("human-number");
 global.Parser = require('expr-eval').Parser;
 global.MongoClient = require('mongodb').MongoClient;
 
-require('dotenv').config()
+try{
+    require('dotenv').config()
+}
+catch(e){
+    console.log("cuao")
+}
 
 client.login(process.env.token);
 
