@@ -13,10 +13,10 @@ global.humanNumber = require("human-number");
 global.Parser = require('expr-eval').Parser;
 global.MongoClient = require('mongodb').MongoClient;
 
-try{
+try {
     require('dotenv').config()
 }
-catch{}
+catch { }
 
 client.login(process.env.token);
 
@@ -77,6 +77,7 @@ client.on("message", async message => {
     if (message.guild.id != config.idServer && message.guild.id != log.server) return
     if (!userstatsList) return
 
+    if (message.author.id == "706955655252148244") return
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift()
