@@ -6,6 +6,9 @@ module.exports = {
         if (message.guild.id != config.idServer) return
         if (!userstatsList) return
 
+
+        if (message.author.id == "706955655252148244") return
+
         var userstats = userstatsList.find(x => x.id == message.author.id);
         if (!userstats) return
 
