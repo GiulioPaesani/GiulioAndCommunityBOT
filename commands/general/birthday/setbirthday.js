@@ -6,7 +6,7 @@ module.exports = {
     name: "setbirthday",
     aliases: ["setcompleanno"],
     onlyStaff: false,
-    availableOnDM: true,
+    availableOnDM: false,
     description: "Settare la data del proprio compleanno",
     syntax: "!setbirthday [month] [day]",
     category: "general",

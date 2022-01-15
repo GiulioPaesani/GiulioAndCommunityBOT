@@ -68,6 +68,12 @@ Non siamo ne onniscenti ne tuoi schiavi, quindi non pretendere di riuscire ad av
             menu.channel.updateOverwrite(ticket.owner, {
                 SEND_MESSAGES: true
             })
+            menu.channel.updateOverwrite(settings.idRuoloAiutante, {
+                SEND_MESSAGES: true
+            })
+            menu.channel.updateOverwrite(settings.idRuoloAiutanteInProva, {
+                SEND_MESSAGES: true
+            })
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")

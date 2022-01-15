@@ -60,7 +60,12 @@ Farsi correggere o mandare codice da altri non è mai un buon strumento per impa
 		button.channel.updateOverwrite(ticket.owner, {
 			SEND_MESSAGES: true
 		})
-
+		button.channel.updateOverwrite(settings.idRuoloAiutante, {
+			SEND_MESSAGES: true
+		})
+		button.channel.updateOverwrite(settings.idRuoloAiutanteInProva, {
+			SEND_MESSAGES: true
+		})
 		button.reply.defer()
 
 		var embed = new Discord.MessageEmbed()
