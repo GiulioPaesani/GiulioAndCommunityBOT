@@ -11,7 +11,7 @@ module.exports = {
             .setTitle(":pencil: Message updated :pencil:")
             .setDescription(`[Message link](https://discord.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id})`)
             .setColor("#fcba03")
-            .setThumbnail(newMessage.author.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(newMessage.author?.displayAvatarURL({ dynamic: true }))
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":bust_in_silhouette: Member", `${newMessage.author.toString()} - ID: ${newMessage.author.id}`, false)
             .addField(":ledger: Channel", `#${newMessage.channel.name}`)

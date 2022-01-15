@@ -64,7 +64,7 @@ module.exports = {
                 if (attachments != "")
                     attachments = attachments.slice(0, -2)
 
-                chatLog += `${msg.author.bot ? "[BOT] " : utenteMod(msg.author) ? "[MOD] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
+                chatLog += `${msg.author?.bot ? "[BOT] " : utenteMod(msg.author) ? "[MOD] " : ""}@${msg.author?.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
             }
         }
 

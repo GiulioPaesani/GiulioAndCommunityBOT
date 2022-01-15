@@ -21,7 +21,7 @@ module.exports = {
 
         var roles = ""
         userstats.roles.forEach(role => {
-            roles += `${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == member.guild.roles.cache.find(y => y.id == role)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == member.guild.roles.cache.find(y => y.id == role).name).toString() : member.guild.roles.cache.find(y => y.id == role).toString()}\r`
+            roles += `${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == member.guild.roles.cache.find(y => y.id == role)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == member.guild.roles.cache.find(y => y.id == role)?.name).toString() : member.guild.roles.cache.find(y => y.id == role).toString()}\r`
         })
         if (roles == "")
             roles = "_Nessun ruolo_"

@@ -102,7 +102,7 @@ module.exports = {
 														.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.split("`")[1]}`)
 
 													var chatLog = ""
-													await button.channel.messages.fetch({ limit: 1000 })
+													await button.channel.messages.fetch()
 														.then(async messages => {
 															for (var msg of messages.array().reverse()) {
 																var attachments = ""
