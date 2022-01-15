@@ -81,7 +81,7 @@ module.exports = {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":loud_sound: Member state update :loud_sound:")
                     .setColor("#8227cc")
-                    .setThumbnail(client.users.cache.get(newState.id).user.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail(client.users.cache.get(newState.id).displayAvatarURL({ dynamic: true }))
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
