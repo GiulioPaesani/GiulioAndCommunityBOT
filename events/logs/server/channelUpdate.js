@@ -28,8 +28,8 @@ module.exports = {
                         .guild.roles.cache.find(y => y.id == permission)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission).name).toString() : newChannel.guild.roles.cache.find(y => y.id == permission).toString()}\r`
                     permissionsText += Object.fromEntries(oldChannel.permissionOverwrites)[permission].type == "member" ? `_User removed_\r` : `_Role removed_\r`
 
-                    var permissionsAllow = Object.fromEntries(oldChannel.permissionOverwrites)[permission].allow.serialize()
-                    var permissionsDeny = Object.fromEntries(oldChannel.permissionOverwrites)[permission].deny.serialize()
+                    var permissionsAllow = Object.fromEntries(oldChannel.permissionOverwrites)[permission]?.allow.serialize() || {}
+                    var permissionsDeny = Object.fromEntries(oldChannel.permissionOverwrites)[permission]?.deny.serialize() || {}
 
                     var permissions = { ...permissionsAllow }
                     for (var permission2 in permissions) {
@@ -69,8 +69,8 @@ module.exports = {
 
             var permissionsText = logs.extra.username ? `User: ${logs.extra.toString()}\r` : `Role: ${logs.extra.toString()}\r`
 
-            var oldPermissionsAllow = Object.fromEntries(oldChannel.permissionOverwrites)[logs.extra.id].allow.serialize()
-            var oldPermissionsDeny = Object.fromEntries(oldChannel.permissionOverwrites)[logs.extra.id].deny.serialize()
+            var oldPermissionsAllow = Object.fromEntries(oldChannel.permissionOverwrites)[logs.extra.id]?.allow.serialize() || {}
+            var oldPermissionsDeny = Object.fromEntries(oldChannel.permissionOverwrites)[logs.extra.id]?.deny.serialize() || {}
 
             var oldPermissions = { ...oldPermissionsAllow }
             for (var permission in oldPermissions) {
@@ -82,8 +82,8 @@ module.exports = {
                     oldPermissions[permission] = -1
             }
 
-            var newPermissionsAllow = Object.fromEntries(newChannel.permissionOverwrites)[logs.extra.id].allow.serialize()
-            var newPermissionsDeny = Object.fromEntries(newChannel.permissionOverwrites)[logs.extra.id].deny.serialize()
+            var newPermissionsAllow = Object.fromEntries(newChannel.permissionOverwrites)[logs.extra.id]?.allow.serialize() || {}
+            var newPermissionsDeny = Object.fromEntries(newChannel.permissionOverwrites)[logs.extra.id]?.deny.serialize() || {}
 
             var newPermissions = { ...newPermissionsAllow }
             for (var permission in newPermissions) {

@@ -32,8 +32,8 @@ module.exports = {
         for (var permission in Object.fromEntries(channel.permissionOverwrites)) {
             permissionsText += Object.fromEntries(channel.permissionOverwrites)[permission].type == "member" ? `User: <@${permission}>\r` : `Role: ${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == channel.guild.roles.cache.find(y => y.id == permission)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == channel.guild.roles.cache.find(y => y.id == permission).name).toString() : channel.guild.roles.cache.find(y => y.id == permission).name}\r`
 
-            var permissionsAllow = Object.fromEntries(channel.permissionOverwrites)[permission].allow.serialize()
-            var permissionsDeny = Object.fromEntries(channel.permissionOverwrites)[permission].deny.serialize()
+            var permissionsAllow = Object.fromEntries(channel.permissionOverwrites)[permission]?.allow.serialize() || {}
+            var permissionsDeny = Object.fromEntries(channel.permissionOverwrites)[permission]?.deny.serialize() || {}
 
             var permissions = { ...permissionsAllow }
             for (var permission2 in permissions) {
