@@ -3,7 +3,7 @@ const { createCanvas, loadImage, registerFont } = require('canvas')
 module.exports = {
     name: "regalaitem",
     aliases: ["giftitem"],
-    onlyStaff: true,
+    onlyStaff: false,
     availableOnDM: false,
     description: "Regalare item del proprio inventario a un utente",
     syntax: "!regalaitem [user] [item]",

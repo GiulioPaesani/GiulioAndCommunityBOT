@@ -1,7 +1,7 @@
 module.exports = {
     name: "regalaxp",
     aliases: ["giftxp"],
-    onlyStaff: true,
+    onlyStaff: false,
     availableOnDM: false,
     description: "Regalare punti esperienza a un utente",
     syntax: "!regalaxp [user] [xp]",
