@@ -3,7 +3,7 @@ module.exports = {
     async execute(message) {
         if (isMaintenance()) return
 
-        if (message.guild.id != settings.idServer) return
+        if (message.guild?.id != settings.idServer) return
 
         if (!message) return
         if (!message.author) return

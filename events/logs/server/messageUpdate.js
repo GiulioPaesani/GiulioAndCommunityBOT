@@ -3,7 +3,7 @@ module.exports = {
     async execute(oldMessage, newMessage) {
         if (isMaintenance()) return
 
-        if (newMessage.guild.id != settings.idServer) return
+        if (newMessage.guild?.id != settings.idServer) return
 
         await Discord.Util.delayFor(900);
 

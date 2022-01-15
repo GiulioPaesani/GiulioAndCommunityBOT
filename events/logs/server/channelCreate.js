@@ -3,7 +3,7 @@ module.exports = {
     async execute(channel) {
         if (isMaintenance()) return
 
-        if (channel.guild.id != settings.idServer) return
+        if (channel.guild?.id != settings.idServer) return
 
         if (!channel.guild) return
 
