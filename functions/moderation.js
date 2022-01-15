@@ -29,7 +29,7 @@ global.checkModeration = async function () {
     for (var index in userstatsList) {
         if (userstatsList[index].moderation?.type != "") {
 
-            if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
+            if (userstatsList[index].moderation.type == "Tempmuted" && userstatsList[index].moderation.until <= new Date().getTime()) {
 
                 var utente = await getUser(userstatsList[index].id);
                 if (utente) {
@@ -91,7 +91,7 @@ global.checkModeration = async function () {
                 }
             }
 
-            if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
+            if (userstatsList[index].moderation.type == "Tempbanned" && userstatsList[index].moderation.until <= new Date().getTime()) {
                 var utente = await getUser(userstatsList[index].id);
                 if (utente) {
                     var userstats = userstatsList.find(x => x.id == utente.id);
