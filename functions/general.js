@@ -808,8 +808,8 @@ global.checkBirthday = async function () {
 						.setThumbnail("attachment://canvas.png")
 						.setDescription("Tanti auguri di **buon compleanno**, goditi subito questi fantastici **regali**")
 						.addField(":gift: I tuoi regali", `
-- ${userstats.level * 40} XP
-- ${userstats.level * 10} Coins
+- +${userstats.level * 40} XP
+- +${userstats.level * 10} Coins
 - 4 oggetti random dallo **shop** ${randomItems.map(x => x.icon).join(" ")}
 - **Boost x2** livellamento per tutto il giorno`)
 

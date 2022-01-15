@@ -58,7 +58,7 @@ module.exports = {
         else if (numero - 1 != serverstats.numero) { //Numero sbagliato
             var embed = new Discord.MessageEmbed()
                 .setColor("#EB3140")
-                .setDescription(`__Numero errato!__\r${message.author.toString()} il numero corretto era \`${serverstats.numero + 1}\``)
+                .setDescription(`__Numero errato!__\r${message.author.toString()} hai scritto \`${numero}\` ma il numero corretto era \`${serverstats.numero + 1}\``)
 
             serverstats.numero = 0;
             serverstats.ultimoUtente = "NessunUtente";
