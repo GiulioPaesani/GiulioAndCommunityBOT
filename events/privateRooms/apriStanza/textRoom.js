@@ -3,7 +3,7 @@ module.exports = {
     async execute(button) {
         if (button.id != "textRoom") return
 
-        button.reply.defer()
+        button.reply.defer().catch(() => { })
 
         if (isMaintenance(button.clicker.user.id)) return
 
@@ -13,7 +13,7 @@ module.exports = {
         if (userstats.level < 5 && !button.clicker.member.roles.cache.has(settings.idRuoloServerBooster)) {
             botMessage(button.clicker.user, "Warning", "Non ha il livello", "Per aprire una **stanza privata testuale** devi avere almeno il **Level 5** o **boostare** il server")
 
-            button.reply.defer()
+            button.reply.defer().catch(() => { })
             return
         }
 
@@ -22,7 +22,7 @@ module.exports = {
         if (privaterooms.find(x => x.owner == button.clicker.user.id)) {
             botMessage(button.clicker.user, "Warning", "Hai già una stanza", "Hai già una stanza privata aperta")
 
-            button.reply.defer()
+            button.reply.defer().catch(() => { })
             return
         }
 
@@ -57,7 +57,7 @@ module.exports = {
             parent: button.message.channel.parentID,
             topic: `Text room by: ${button.clicker.user.username}`
         }).then(text => {
-            button.reply.defer()
+            button.reply.defer().catch(() => { })
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":closed_lock_with_key: Private room :closed_lock_with_key:")
@@ -100,7 +100,7 @@ Ci sono alcune **regole** da seguire nelle tue stanze
                 client.channels.cache.get(log.community.privateRooms).send(embed)
         }).catch(() => {
             botMessage(button.clicker.user, "Warning", "Troppe stanze", "Sono state create più di **50 stanze** in questa categoria. Discord non permette al bot di crearne di più, mi spiace...")
-            button.reply.defer()
+            button.reply.defer().catch(() => { })
                 .catch(() => { })
             return
         })

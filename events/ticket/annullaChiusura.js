@@ -3,7 +3,7 @@ module.exports = {
 	async execute(button) {
 		if (button.id != 'annullaChiusura') return;
 
-		button.reply.defer()
+		button.reply.defer().catch(() => { })
 
 		if (isMaintenance(button.clicker.user.id)) return
 
@@ -46,7 +46,7 @@ module.exports = {
 							msg.edit(msg.embeds[0], button1)
 					}
 
-					button.reply.defer()
+					button.reply.defer().catch(() => { })
 				})
 		}
 	}

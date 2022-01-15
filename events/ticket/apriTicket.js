@@ -10,7 +10,7 @@ module.exports = {
 		if (button.channel.id == settings.idCanaliServer.staffHelp) {
 			if (ticket.find((x) => x.type == 'Normal' && x.owner == button.clicker.user.id)) {
 				botMessage(button.clicker.user, "Warning", "Ticket già aperto", "Puoi aprire un solo ticket alla volta")
-				button.reply.defer()
+				button.reply.defer().catch(() => { })
 					.catch(() => { })
 				return
 			}
@@ -20,7 +20,7 @@ module.exports = {
 
 			if (userstats.moderation.type == "Muted" || userstats.moderation.type == "Tempmuted") {
 				botMessage(button.clicker.user, "Warning", "Non puoi se sei mutato", `Non puoi aprire un ticket di Supporto se sei mutato. Se vuoi parlare con lo staff puoi aprire un ticket in <#${userstats.moderation.type == "Muted" ? settings.idCanaliServer.mutedTicket : settings.idCanaliServer.tempmutedTicket}>`)
-				button.reply.defer()
+				button.reply.defer().catch(() => { })
 					.catch(() => { })
 				return
 			}
@@ -66,7 +66,7 @@ module.exports = {
 					parent: settings.idCanaliServer.categoriaTicket
 				})
 				.then((canale) => {
-					button.reply.defer()
+					button.reply.defer().catch(() => { })
 						.catch(() => { })
 
 					var embed = new Discord.MessageEmbed()
@@ -146,7 +146,7 @@ module.exports = {
 		if (button.channel.id == settings.idCanaliServer.mutedTicket || button.channel.id == settings.idCanaliServer.tempmutedTicket || button.channel.id == settings.idCanaliServer.bannedTicket || button.channel.id == settings.idCanaliServer.tempbannedTicket) {
 			if (ticket.find((x) => x.type == 'Moderation' && x.owner == button.clicker.user.id)) {
 				botMessage(button.clicker.user, "Warning", "Ticket già aperto", "Puoi aprire un solo ticket alla volta")
-				button.reply.defer()
+				button.reply.defer().catch(() => { })
 					.catch(() => { })
 				return;
 			}
@@ -156,7 +156,7 @@ module.exports = {
 
 			if (userstats.moderation.ticketOpened) {
 				botMessage(button.clicker.user, "Warning", "Ticket già precedentemente aperto", "Puoi aprire un solo ticket di segnalazione")
-				button.reply.defer()
+				button.reply.defer().catch(() => { })
 					.catch(() => { })
 				return;
 			}
@@ -183,7 +183,7 @@ module.exports = {
 					parent: settings.idCanaliServer.categoriaModerationTicket
 				})
 				.then((canale) => {
-					button.reply.defer()
+					button.reply.defer().catch(() => { })
 						.catch(() => { })
 
 					var embed = new Discord.MessageEmbed()

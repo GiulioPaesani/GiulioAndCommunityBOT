@@ -3,7 +3,7 @@ module.exports = {
 	async execute(button) {
 		if (button.id != 'ticketApri') return;
 
-		button.reply.defer()
+		button.reply.defer().catch(() => { })
 
 		if (isMaintenance(button.clicker.user.id)) return
 
@@ -68,7 +68,7 @@ Farsi correggere o mandare codice da altri non è mai un buon strumento per impa
 		button.channel.updateOverwrite(settings.idRuoloAiutanteInProva, {
 			SEND_MESSAGES: true
 		})
-		button.reply.defer()
+		button.reply.defer().catch(() => { })
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")

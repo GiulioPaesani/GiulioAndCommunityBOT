@@ -3,11 +3,11 @@ module.exports = {
 	async execute(button) {
 		if (!button.id.startsWith('ticketCategoryIndietro')) return;
 
-		button.reply.defer()
+		button.reply.defer().catch(() => { })
 
 		if (isMaintenance(button.clicker.user.id)) return
 
-		if (button.id.split(",")[1] != button.clicker.user.id) return button.reply.defer()
+		if (button.id.split(",")[1] != button.clicker.user.id) return button.reply.defer().catch(() => { })
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle(":speech_balloon: Segli CATEGORIA :speech_balloon:")

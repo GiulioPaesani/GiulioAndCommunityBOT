@@ -26,7 +26,7 @@ client.on("message", message => {
 
 client.on("clickButton", button => {
     if (button.id == "apriTicket") {
-        button.reply.defer()
+        button.reply.defer().catch(() => {})
         if (button.guild.channels.cache.find(canale => canale.topic == \`User ID: \${button.clicker.user.id}\`)) {
             button.clicker.user.send("Hai gia un ticket aperto").catch(() => { })
             return

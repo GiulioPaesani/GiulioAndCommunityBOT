@@ -3,7 +3,7 @@ module.exports = {
     async execute(button) {
         if (button.id != "candidatiHelper") return
 
-        button.reply.defer()
+        button.reply.defer().catch(() => { })
 
         if (isMaintenance(button.clicker.user.id)) return
 

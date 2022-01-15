@@ -3,7 +3,7 @@ module.exports = {
     async execute(button) {
         if (isMaintenance(button.clicker.user.id)) return
 
-        button.reply.defer()
+        button.reply.defer().catch(() => { })
 
         if (!button.id.startsWith("notification")) return
 
