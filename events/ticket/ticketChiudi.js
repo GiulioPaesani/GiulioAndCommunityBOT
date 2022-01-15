@@ -9,6 +9,7 @@ module.exports = {
 
 		var index = serverstats.ticket.findIndex((x) => x.channel == button.channel.id);
 		var ticket = serverstats.ticket[index];
+		if (!ticket) return
 
 		if (!utenteMod(button.clicker.member) && button.clicker.user.id != ticket.owner && !button.clicker.member.roles.cache.has(settings.idRuoloAiutante) && !button.clicker.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
 			return;
