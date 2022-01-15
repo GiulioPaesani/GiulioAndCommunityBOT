@@ -22,7 +22,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle(":shopping_cart: Buy items :shopping_cart: ")
             .setColor("#22c90c")
-            .setDescription(`[Message link](https://discord.com/channels/${button.message.guild.id}/${button.message.channel.id}/${button.message.id})`)
+            .setDescription(button.message.guild ? `[Message link](https://discord.com/channels/${button.message.guild.id}/${button.message.channel.id}/${button.message.id})` : "")
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":bust_in_silhouette: Member", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`)
             .addField("Item", `${item.icon} ${item.name} (Unit cost: ${item.price}$)`)
