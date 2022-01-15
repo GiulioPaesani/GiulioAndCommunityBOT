@@ -119,7 +119,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
     }
 
     if (userstats.level != level) {
-        var textPrivilegi = `- ${level * 10} Coins\r`
+        var textPrivilegi = `- +${level * 10} Coins\r`
 
         if (settings.ruoliLeveling["level" + level]) {
             textPrivilegi += `- Ruolo @Level ${level}\r`
