@@ -5,7 +5,7 @@ module.exports = {
 
         invites.get(invite.guild.id).set(invite.code, invite.uses);
 
-        if (isMaintenance(logs.executor.id)) return
+        if (isMaintenance()) return
 
         const fetchedLogs = await invite.guild.fetchAuditLogs({
             limit: 1,
