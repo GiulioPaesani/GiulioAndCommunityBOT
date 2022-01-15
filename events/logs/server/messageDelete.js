@@ -12,7 +12,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle(":wastebasket: Message deleted :wastebasket:")
             .setColor("#e31705")
-            .setThumbnail(newMessage.member.user.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
             .addField(":ledger: Channel", `#${message.channel}`)
