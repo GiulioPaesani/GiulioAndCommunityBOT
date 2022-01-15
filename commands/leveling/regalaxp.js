@@ -49,7 +49,7 @@ module.exports = {
         }
 
         userstats = await addXp(userstats, xp, 0);
-        userstats2 = await addXp(userstats2, xp * -1, 0);
+        userstats2 = await addXp(userstats2, xp * -1, 0, true);
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
         userstatsList[userstatsList.findIndex(x => x.id == userstats2.id)] = userstats2

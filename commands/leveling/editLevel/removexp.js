@@ -60,7 +60,7 @@ Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', sep
         if (userstats.xp < xp)
             xp = userstats.xp
 
-        userstats = await addXp(userstats, xp * -1, 0);
+        userstats = await addXp(userstats, xp * -1, 0, true);
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
 
