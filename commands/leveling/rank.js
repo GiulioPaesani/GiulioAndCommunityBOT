@@ -1,6 +1,6 @@
 module.exports = {
     name: "rank",
-    aliases: ["level", "xp", "money", "coins"],
+    aliases: ["level", "xp", "money", "coins", "balance"],
     onlyStaff: false,
     availableOnDM: true,
     description: "Visualizzare stastiche ranking di un utente",
