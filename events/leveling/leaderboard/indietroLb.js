@@ -34,7 +34,7 @@ module.exports = {
                 }
 
                 var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id)
-                leaderboardLeveling += `${utente.nickname ? utente.nickname : utente.user.username} - **Lev. ${leaderboardListLeveling[i].level ? leaderboardListLeveling[i].level : 0}** (XP: ${humanize(parseInt(leaderboardListLeveling[i].xp ? leaderboardListLeveling[i].xp : 0), { delimiter: '.', separator: ',' })})\r`
+                leaderboardLeveling += `${utente.nickname ? utente.nickname : utente.user.username} - **Lev. ${leaderboardListLeveling[i].level ? leaderboardListLeveling[i].level : 0}** (XP: ${humanize(leaderboardListLeveling[i].xp)})\r`
             }
         }
 
@@ -58,7 +58,7 @@ module.exports = {
                 }
 
                 var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
-                leaderboardEconomy += `${utente.nickname ? utente.nickname : utente.user.username} - **${humanize((leaderboardListEconomy[i].money ? leaderboardListEconomy[i].money : 0), { delimiter: '.', separator: ',' })}$**\r`
+                leaderboardEconomy += `${utente.nickname ? utente.nickname : utente.user.username} - **${humanize(leaderboardListEconomy[i].money)}$**\r`
             }
         }
 

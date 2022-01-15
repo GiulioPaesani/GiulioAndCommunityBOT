@@ -54,7 +54,7 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`)
             .addField("Xp setted", `${xp}`)
             .addField("User level", `
-Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', separator: ',' })})
+Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp)})
 `)
 
         userstats = await addXp(userstats, userstats.xp * -1 + xp, 0, true);
@@ -63,7 +63,7 @@ Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', sep
 
         botCommandMessage(message, "Correct", "Xp settati", `**${xp} punti esperienza** settati a ${utente.toString()}`)
 
-        embed.fields[4].value += `New: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', separator: ',' })})`
+        embed.fields[4].value += `New: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp)})`
 
         if (!isMaintenance())
             client.channels.cache.get(log.ranking.editLevel).send(embed)

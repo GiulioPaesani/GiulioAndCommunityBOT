@@ -54,7 +54,7 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`)
             .addField("Level setted", `${levels}`)
             .addField("User level", `
-Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', separator: ',' })})
+Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp)})
 `)
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)].level = levels
@@ -64,7 +64,7 @@ Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', sep
 
         botCommandMessage(message, "Correct", "Livello settato", `Livello **${levels}** impostato a ${utente.toString()}`)
 
-        embed.fields[4].value += `New: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp, { delimiter: '.', separator: ',' })})`
+        embed.fields[4].value += `New: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp)})`
 
         if (!isMaintenance())
             client.channels.cache.get(log.ranking.editLevel).send(embed)

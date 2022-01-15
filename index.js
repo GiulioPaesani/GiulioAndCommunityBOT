@@ -9,7 +9,6 @@ global.disbut = require('discord-buttons');
 disbut(client);
 global.moment = require("moment");
 global.ms = require("ms");
-global.humanize = require('humanize-number');
 global.Parser = require('expr-eval').Parser;
 global.MongoClient = require('mongodb').MongoClient;
 

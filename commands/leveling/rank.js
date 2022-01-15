@@ -104,8 +104,8 @@ module.exports = {
             .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
             .addField(`:beginner: Level ${userstats.level}`, `
 ${xpProgress}
-XP ${humanize(parseInt(userstats.xp - getXpNecessari(userstats.level)), { delimiter: '.', separator: ',' })}/${humanize(getXpNecessari(userstats.level + 1) - getXpNecessari(userstats.level), { delimiter: '.', separator: ',' })} - Rank #${positionXp}`)
-            .addField(`:coin: ${humanize(userstats.money, { delimiter: '.', separator: ',' })}$`, `${Object.keys(userstats.inventory).length == 0 ? "0" : Object.values(userstats.inventory).reduce((a, b) => a + b)} ${Object.keys(userstats.inventory).length == 0 ? "Items" : Object.values(userstats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
+XP ${humanize(userstats.xp - getXpNecessari(userstats.level))}/${humanize(getXpNecessari(userstats.level + 1) - getXpNecessari(userstats.level))} - Rank #${positionXp}`)
+            .addField(`:coin: ${humanize(userstats.money)}$`, `${Object.keys(userstats.inventory).length == 0 ? "0" : Object.values(userstats.inventory).reduce((a, b) => a + b)} ${Object.keys(userstats.inventory).length == 0 ? "Items" : Object.values(userstats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
 
         message.channel.send(embed)
     },
