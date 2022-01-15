@@ -5,6 +5,8 @@ module.exports = {
 
         if (isMaintenance(button.clicker.user.id)) return
 
+        button.reply.defer()
+
         button.message.delete()
     },
 };

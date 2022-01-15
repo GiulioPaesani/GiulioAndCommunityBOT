@@ -10,7 +10,7 @@ module.exports = {
             var embed = new Discord.MessageEmbed()
                 .setTitle(":inbox_tray: Member joined :inbox_tray:")
                 .setColor("#22c90c")
-                .setThumbnail(client.users.cache.get(newState.id).user.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(client.users.cache.get(newState.id).displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
                 .addField("Channel", `#${client.channels.cache.get(newState.channelID).name}`)
@@ -30,7 +30,7 @@ module.exports = {
             var embed = new Discord.MessageEmbed()
                 .setTitle(":outbox_tray: Member disconnetted :outbox_tray:")
                 .setColor("#e31705")
-                .setThumbnail(client.users.cache.get(newState.id).user.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(client.users.cache.get(newState.id).displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
 
             if (logs && logs.executor.id != oldState.id)
@@ -56,7 +56,7 @@ module.exports = {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":twisted_rightwards_arrows: Member moved :twisted_rightwards_arrows:")
                     .setColor("#8227cc")
-                    .setThumbnail(client.users.cache.get(newState.id).user.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail(client.users.cache.get(newState.id).displayAvatarURL({ dynamic: true }))
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
 
                 if (logs && logs.executor.id != oldState.id)
@@ -85,7 +85,7 @@ module.exports = {
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                    .addField("Channel", `#${client.channels.cache.get(oldState.channelID).name}`)
+                    .addField("Channel", `#${client.channels.cache.get(newState.channelID).name}`)
 
                 if (oldState.serverDeaf != newState.serverDeaf) {
                     if (oldState.serverDeaf) {
