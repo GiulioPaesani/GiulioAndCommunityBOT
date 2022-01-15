@@ -3,6 +3,8 @@ module.exports = {
     async execute(button) {
         if (button.id != "rifiutaSuggestion") return
 
+        button.reply.defer()
+
         if (isMaintenance(button.clicker.user.id)) return
 
         var idUtente = button.message.embeds[0].fields[0].value.slice(button.message.embeds[0].fields[0].value.length - 19, -1)

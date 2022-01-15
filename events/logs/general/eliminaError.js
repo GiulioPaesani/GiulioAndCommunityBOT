@@ -3,9 +3,9 @@ module.exports = {
     async execute(button) {
         if (button.id != "eliminaError") return
 
-        if (isMaintenance(button.clicker.user.id)) return
-
         button.reply.defer()
+
+        if (isMaintenance(button.clicker.user.id)) return
 
         button.message.delete()
     },

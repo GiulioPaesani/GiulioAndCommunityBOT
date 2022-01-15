@@ -3,9 +3,10 @@ module.exports = {
     async execute(button) {
         if (button.id != "eliminaTuttiError") return
 
+        button.reply.defer()
+
         if (isMaintenance(button.clicker.user.id)) return
 
-        button.reply.defer()
         button.message.channel.messages.fetch()
             .then(messages => {
                 messages.forEach(msg => {

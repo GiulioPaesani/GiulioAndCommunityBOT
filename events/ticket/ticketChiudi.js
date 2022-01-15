@@ -3,9 +3,9 @@ module.exports = {
 	async execute(button) {
 		if (button.id != 'ticketChiudi') return;
 
-		if (isMaintenance(button.clicker.user.id)) return
-
 		button.reply.defer()
+
+		if (isMaintenance(button.clicker.user.id)) return
 
 		var index = serverstats.ticket.findIndex((x) => x.channel == button.channel.id);
 		var ticket = serverstats.ticket[index];

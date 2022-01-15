@@ -1,9 +1,11 @@
 module.exports = {
     name: `clickButton`,
     async execute(button) {
-        if (isMaintenance(button.clicker.user.id)) return
-
         if (button.id != "annullaEliminazione") return
+
+        button.reply.defer()
+
+        if (isMaintenance(button.clicker.user.id)) return
 
         var room
         if (button.message.channel.type == "dm")

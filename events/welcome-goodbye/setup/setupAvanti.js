@@ -1,9 +1,11 @@
 module.exports = {
     name: `clickButton`,
     async execute(button) {
-        if (isMaintenance(button.clicker.user.id)) return
-
         if (!button.id.startsWith("setupAvanti")) return
+
+        button.reply.defer()
+
+        if (isMaintenance(button.clicker.user.id)) return
 
         switch (button.id.split(",")[1]) {
             case "1": {
