@@ -66,7 +66,7 @@ module.exports = {
             .setTitle("Un piccolo regalo per te")
             .setThumbnail("https://i.postimg.cc/B6XsJXDC/giftxp.png")
             .setColor("#FF3E75")
-            .setDescription(`${utente.toString()} ti ha regalato \`${xp} xp\`\rGoditi questi nuovi punti esperienza`)
+            .setDescription(`${message.author.toString()} ti ha regalato \`${xp} xp\`\rGoditi questi nuovi punti esperienza`)
 
         utente.send(embed)
             .catch(() => { return })

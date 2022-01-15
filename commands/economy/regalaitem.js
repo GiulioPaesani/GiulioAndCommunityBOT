@@ -76,7 +76,7 @@ module.exports = {
             .setTitle("Un piccolo regalo per te")
             .setThumbnail("attachment://canvas.png")
             .setColor("#FF3E75")
-            .setDescription(`${utente.toString()} ti ha regalato l'oggetto ${item.icon}**${item.name}**\rGoditi questo bellissimo item`)
+            .setDescription(`${message.author.toString()} ti ha regalato l'oggetto ${item.icon}**${item.name}**\rGoditi questo bellissimo item`)
 
         utente.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
             .catch(() => { return })

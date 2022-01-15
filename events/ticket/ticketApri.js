@@ -3,6 +3,8 @@ module.exports = {
 	async execute(button) {
 		if (button.id != 'ticketApri') return;
 
+		button.reply.defer()
+
 		if (isMaintenance(button.clicker.user.id)) return
 
 		var embed = new Discord.MessageEmbed()

@@ -3,7 +3,9 @@ module.exports = {
 	async execute(button) {
 		if (!button.id.startsWith('ticketCategoryIndietro')) return;
 
-        if (isMaintenance(button.clicker.user.id)) return
+		button.reply.defer()
+
+		if (isMaintenance(button.clicker.user.id)) return
 
 		if (button.id.split(",")[1] != button.clicker.user.id) return button.reply.defer()
 

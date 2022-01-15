@@ -3,6 +3,8 @@ module.exports = {
     async execute(button) {
         if (isMaintenance(button.clicker.user.id)) return
 
+        button.reply.defer()
+
         if (!button.id.startsWith("codeCompleto")) return
 
         if (button.id.split(",")[1] != button.clicker.user.id) return

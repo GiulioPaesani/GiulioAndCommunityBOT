@@ -2,7 +2,9 @@ module.exports = {
     name: `clickButton`,
     async execute(button) {
         if (isMaintenance(button.clicker.user.id)) return
-        
+
+        button.reply.defer()
+
         if (!button.id.startsWith("notification")) return
 
         if (button.id.split(",")[1] != button.clicker.user.id) return
