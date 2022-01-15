@@ -50,7 +50,7 @@ module.exports = {
             var embed = new Discord.MessageEmbed()
                 .setTitle(":pencil: Birthday added :pencil:")
                 .setColor("#22c90c")
-                .setDescription(`[Message link](https://discord.com/channels/${button.message.guild.id}/${button.message.channel.id}/${button.message.id})`)
+                .setDescription(`[Message link](https://discord.com/channels/${button.guild.id}/${button.message.channel.id}/${button.message.id})`)
                 .addField(":alarm_clock: Time", `${moment(button.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`)
                 .addField("Date", `${day} ${moment().set("month", month - 1).format("MMMM")}`)

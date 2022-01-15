@@ -27,115 +27,118 @@ global.checkModeration = async function () {
     var server = await getGuild()
 
     for (var index in userstatsList) {
-        if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
+        if (userstatsList[index].moderation?.type != "") {
 
-            var utente = await getUser(userstatsList[index].id);
-            if (utente) {
-                var userstats = userstatsList.find(x => x.id == utente.id);
+            if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempmuted") {
 
-                if (server.members.cache.find(x => x.id == utente.id)) {
-                    utente.roles.remove(settings.ruoliModeration.tempmuted).then(() => {
-                        if (utente.voice) {
-                            if (utente.voice?.channel) {
-                                var canale = utente.voice.channelID
-                                if (canale == settings.idCanaliServer.general1)
-                                    utente.voice.setChannel(settings.idCanaliServer.general2)
-                                else
-                                    utente.voice.setChannel(settings.idCanaliServer.general1)
-                                utente.voice.setChannel(canale)
+                var utente = await getUser(userstatsList[index].id);
+                if (utente) {
+                    var userstats = userstatsList.find(x => x.id == utente.id);
+
+                    if (server.members.cache.find(x => x.id == utente.id)) {
+                        utente.roles.remove(settings.ruoliModeration.tempmuted).then(() => {
+                            if (utente.voice) {
+                                if (utente.voice?.channel) {
+                                    var canale = utente.voice.channelID
+                                    if (canale == settings.idCanaliServer.general1)
+                                        utente.voice.setChannel(settings.idCanaliServer.general2)
+                                    else
+                                        utente.voice.setChannel(settings.idCanaliServer.general1)
+                                    utente.voice.setChannel(canale)
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
+                    else {
+                        userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempmuted)
+                    }
+
+                    var embedUtente = new Discord.MessageEmbed()
+                        .setTitle("Sei stato smutato")
+                        .setColor("#6143CB")
+                        .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
+                        .addField("Reason", userstats.moderation.reason)
+                        .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
+                        .addField("Moderator", client.user.toString())
+
+                    utente.send(embedUtente)
+                        .catch(() => { return })
+
+                    if (utente.user) utente = utente.user
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle(":loud_sound: Unmute :loud_sound:")
+                        .setColor("#8227cc")
+                        .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
+                        .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                        .addField(":brain: Executor", `${client.user.toString()}`, false)
+                        .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
+                        .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
+                        .addField("Reason", userstats.moderation.reason, false)
+
+                    client.channels.cache.get(log.moderation.unmute).send(embed)
+
+                    userstats.moderation = {
+                        "type": "",
+                        "since": "",
+                        "until": "",
+                        "reason": "",
+                        "moderator": "",
+                        "ticketOpened": false
+                    }
+
+                    userstatsList[index] = userstats
                 }
-                else {
-                    userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempmuted)
-                }
-
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Sei stato smutato")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
-                    .addField("Reason", userstats.moderation.reason)
-                    .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
-                    .addField("Moderator", client.user.toString())
-
-                utente.send(embedUtente)
-                    .catch(() => { return })
-
-                if (utente.user) utente = utente.user
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":loud_sound: Unmute :loud_sound:")
-                    .setColor("#8227cc")
-                    .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":brain: Executor", `${client.user.toString()}`, false)
-                    .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason, false)
-
-                client.channels.cache.get(log.moderation.unmute).send(embed)
-
-                userstats.moderation = {
-                    "type": "",
-                    "since": "",
-                    "until": "",
-                    "reason": "",
-                    "moderator": "",
-                    "ticketOpened": false
-                }
-
-                userstatsList[index] = userstats
             }
-        }
 
-        if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
-            var utente = await getUser(userstatsList[index].id);
-            if (utente) {
-                var userstats = userstatsList.find(x => x.id == utente.id);
+            if (userstatsList[index].moderation.until <= new Date().getTime() && userstatsList[index].moderation.type == "Tempbanned") {
+                var utente = await getUser(userstatsList[index].id);
+                if (utente) {
+                    var userstats = userstatsList.find(x => x.id == utente.id);
 
-                if (server.members.cache.find(x => x.id == utente.id)) {
-                    utente.roles.remove(settings.ruoliModeration.tempbanned)
+                    if (server.members.cache.find(x => x.id == utente.id)) {
+                        utente.roles.remove(settings.ruoliModeration.tempbanned)
+                    }
+                    else {
+                        userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempbanned)
+                    }
+
+                    var embedUtente = new Discord.MessageEmbed()
+                        .setTitle("Sei stato sbannato")
+                        .setColor("#6143CB")
+                        .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")
+                        .addField("Reason", userstats.moderation.reason)
+                        .addField("Time banned", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
+                        .addField("Moderator", client.user.toString())
+
+                    utente.send(embedUtente)
+                        .catch(() => { return })
+
+                    if (utente.user) utente = utente.user
+
+                    var embed = new Discord.MessageEmbed()
+                        .setTitle(":name_badge: Unban :name_badge:")
+                        .setColor("#8227cc")
+                        .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
+                        .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                        .addField(":brain: Executor", `${client.user.toString()}`, false)
+                        .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
+                        .addField("Time", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
+                        .addField("Reason", userstats.moderation.reason, false)
+
+                    client.channels.cache.get(log.moderation.unban).send(embed)
+
+                    userstats.moderation = {
+                        "type": "",
+                        "since": "",
+                        "until": "",
+                        "reason": "",
+                        "moderator": "",
+                        "ticketOpened": false
+                    }
+
+                    userstatsList[index] = userstats
                 }
-                else {
-                    userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempbanned)
-                }
-
-                var embedUtente = new Discord.MessageEmbed()
-                    .setTitle("Sei stato sbannato")
-                    .setColor("#6143CB")
-                    .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")
-                    .addField("Reason", userstats.moderation.reason)
-                    .addField("Time banned", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
-                    .addField("Moderator", client.user.toString())
-
-                utente.send(embedUtente)
-                    .catch(() => { return })
-
-                if (utente.user) utente = utente.user
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":name_badge: Unban :name_badge:")
-                    .setColor("#8227cc")
-                    .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":brain: Executor", `${client.user.toString()}`, false)
-                    .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Time", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason, false)
-
-                client.channels.cache.get(log.moderation.unban).send(embed)
-
-                userstats.moderation = {
-                    "type": "",
-                    "since": "",
-                    "until": "",
-                    "reason": "",
-                    "moderator": "",
-                    "ticketOpened": false
-                }
-
-                userstatsList[index] = userstats
             }
         }
     }

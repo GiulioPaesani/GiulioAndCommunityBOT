@@ -265,60 +265,6 @@ process.on("unhandledRejection", err => {
 client.on("message", message => {
     if (message.author.id != "793768313934577664") return
 
-    if (message.content == "!setdb") {
-        var server = client.guilds.cache.get(settings.idServer)
-        userstatsList.forEach(userstats => {
-            if (!server.members.cache.find(x => x.id == userstats.id)) userstats.leavedAt = new Date().getTime()
-            if (serverstats.avvento[userstats.id] && serverstats.avvento[userstats.id]["7"]) {
-                userstats.money = 500
-            }
-            else userstats.money = 0
-            userstats.inventory = {}
-            userstats.birthday = null
-
-            userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
-        })
-    }
-
-    if (message.content == "!messavvento") {
-        userstatsList.forEach(userstats => {
-            if (serverstats.avvento[userstats.id] && serverstats.avvento[userstats.id]["7"] && server.members.cache.find(x => x.id == userstats.id)) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Regalo MISTERIOSO")
-                    .setDescription(`Ciao <@${userstats.id}>, durante il periodo dell'**avvento** nel giorno del 7 Dicembre hai riscattato un **regalo misterioso**, è arrivato il momento di scoprire il contenuto!
-                    
-:coin: Attraverso questo regalo hai ricevuto **500 MONETE** nel nuovo sistema di **economia** del server, quindi spendile subito all'interno dello \`!shop\`, ma mi raccomante, tienile anche un po' da parte, buon divertimento!`)
-                    .setImage("https://i.postimg.cc/RZNSLs5M/7.png")
-                    .setColor("#ED1C24")
-
-                client.users.cache.get(userstats.id).send(embed)
-                    .catch(() => { return })
-            }
-        })
-    }
-
-    if (message.content == "!messcompl") {
-        userstatsList.forEach(userstats => {
-            if (!userstats.birthday && server.members.cache.find(x => x.id == userstats.id)) {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle("Inserisci il tuo COMPLEANNO")
-                    .setDescription(`Ehy <@${userstats.id}>, è stato aggiunto all'interno del server un super **sistema di compleanni**. 
-Imposta subito il tuo giorno di nascita con \`!setbirthday [month] [day]\` per ricevere gli **auguri** e tanti **regali** personalizzati`)
-                    .addField(":gift: I regali che riceverai", `
-Ogni anno al giorno del tuo compleanno riceverai:
-- Punti **esperienza** per salire di livello
-- **Coins** da utilizzare nell'economia
-- 4 oggetti random dallo **shop** che poi potrai vendere e commerciare
-- **Boost x2** livellamento per tutto il giorno`)
-                    .setColor("#FF1180")
-                    .setThumbnail("https://i.postimg.cc/g2cpJ0Jb/birthday-Today.png")
-
-                client.users.cache.get(userstats.id).send(embed)
-                    .catch(() => { return })
-            }
-        })
-    }
-
     if (message.content == "!putemoji") {
         var emoji = { //!non mettere emoji nuove
             "5": ["Giulio", "GiulioBacio", "GiulioOK"],
@@ -331,9 +277,14 @@ Ogni anno al giorno del tuo compleanno riceverai:
         }
 
         for (var index in emoji) {
-            var ruolo = message.guild.roles.cache.find(x => x.name == "Level " + index)
+            var ruoli = ["793796029878370326", "799925821904125962", "800009879371644940", "793804156430188594"]
+            var finoLevel = parseInt(index)
+            for (var i = 5; i <= finoLevel; i++) {
+                var ruolo = message.guild.roles.cache.find(x => x.name == "Level " + i)
+                if (ruolo) ruoli.push(ruolo.id)
+            }
             emoji[index].forEach(e => {
-                message.guild.emojis.create(`./emoji/${e}.png`, e, { roles: ["793796029878370326", "799925821904125962", "800009879371644940", "793804156430188594", ruolo.id] })
+                message.guild.emojis.create(`./emoji/${e}.png`, e, { roles: ruoli })
             })
         }
     }
@@ -347,9 +298,14 @@ Ogni anno al giorno del tuo compleanno riceverai:
         }
 
         for (var index in emoji) {
-            var ruolo = message.guild.roles.cache.find(x => x.name == "Level " + index)
+            var ruoli = ["793796029878370326", "799925821904125962", "800009879371644940", "793804156430188594"]
+            var finoLevel = parseInt(index)
+            for (var i = 5; i <= finoLevel; i++) {
+                var ruolo = message.guild.roles.cache.find(x => x.name == "Level " + i)
+                if (ruolo) ruoli.push(ruolo.id)
+            }
             emoji[index].forEach(e => {
-                message.guild.emojis.create(`./emoji/${e}.png`, e, { roles: ["793796029878370326", "799925821904125962", "800009879371644940", "793804156430188594", ruolo.id] })
+                message.guild.emojis.create(`./emoji/${e}.png`, e, { roles: ruoli })
             })
         }
     }
