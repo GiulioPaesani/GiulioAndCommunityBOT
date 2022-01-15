@@ -1,12 +1,14 @@
 module.exports = {
     name: `messageReactionAdd`,
     async execute(messageReaction, user) {
+        if (isMaintenance(user.id)) return
+
         if (user.bot) return
 
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
-        if ([config.idCanaliServer.welcome, config.idCanaliServer.announcements, config.idCanaliServer.rules, config.idCanaliServer.info, config.idCanaliServer.youtubeNotification, config.idCanaliServer.becomeHelper, config.idCanaliServer.staffHelp, config.idCanaliServer.levelUp, config.idCanaliServer.log, config.idCanaliServer.privateRooms, config.idCanaliServer.mutedTicket, config.idCanaliServer.tempmutedTicket, config.idCanaliServer.bannedTicket, config.idCanaliServer.tempbannedTicket, config.idCanaliServer.lockdown].includes(messageReaction.message.channel.id)) {
-            if (user.id != config.idGiulio)
+        if ([settings.idCanaliServer.welcome, settings.idCanaliServer.announcements, settings.idCanaliServer.rules, settings.idCanaliServer.info, settings.idCanaliServer.youtubeNotification, settings.idCanaliServer.becomeHelper, settings.idCanaliServer.staffHelp, settings.idCanaliServer.levelUp, settings.idCanaliServer.log, settings.idCanaliServer.privateRooms, settings.idCanaliServer.mutedTicket, settings.idCanaliServer.tempmutedTicket, settings.idCanaliServer.bannedTicket, settings.idCanaliServer.tempbannedTicket, settings.idCanaliServer.lockdown].includes(messageReaction.message.channel.id)) {
+            if (user.id != settings.idGiulio)
                 messageReaction.users.remove(user);
         }
     },

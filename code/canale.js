@@ -1,10 +1,15 @@
 module.exports = {
-    name: "canale",
+    name: "Canale",
     aliases: ["channel"],
-    description: "Ottenere un **canale testuale/vocale**",
+    description: "Ottenere un **canale testuale/vocale/altro**",
+    category: "manage",
+    id: "1639466121",
     info: "",
     video: "",
-    code: `
+    v12: `
+var canale = client.channels.cache.get("idCanale");
+canale.send("Messaggio");`,
+    v13: `
 var canale = client.channels.cache.get("idCanale");
 canale.send("Messaggio");`
 };

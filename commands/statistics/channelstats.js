@@ -1,9 +1,13 @@
 module.exports = {
     name: "channelstats",
-    aliases: ["channel", "channelinfo"],
+    aliases: ["channel", "channelinfo", "c"],
     onlyStaff: false,
-    channelsGranted: [config.idCanaliServer.commands],
-    async execute(message, args, client) {
+    availableOnDM: false,
+    description: "Visualizzare info di un canale",
+    syntax: "!channelstats (channel)",
+    category: "statistics",
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(message, args, client, property) {
         if (!args[0]) {
             var canale = message.channel;
         }
@@ -15,8 +19,7 @@ module.exports = {
         }
 
         if (!canale) {
-            error(message, "Canale non trovato", "`!channelinfo (canale)`")
-            return
+            return botCommandMessage(message, "Error", "Canale non trovato o non valido", "Hai inserito un canale non valido", property)
         }
 
         switch (canale.type) {
@@ -47,7 +50,7 @@ module.exports = {
                 .addField(":receipt: Category ID", "```" + canale.id + "```", true)
                 .addField(":thought_balloon: Type", "```" + canale.type + "```", true)
                 .addField(":1234: Position", "```" + canale.rawPosition + "```", true)
-                .addField(":pencil: Category created", "```" + moment(canale.createdAt).format("ddd DD MMM, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
+                .addField(":pencil: Category created", "```" + moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
             message.channel.send(embed)
             return
         }
@@ -68,7 +71,7 @@ module.exports = {
                     .addField(":notepad_spiral: Topic", !canale.topic ? "```No topic```" : "```" + canale.topic + "```", true)
                     .addField(":underage: NSFW", canale.nsfw ? "```Yes```" : "```No```", true)
                     .addField(":pushpin: Last message", !hasPermissionInChannel ? "```You don't have permission to view this channel```" : ("```" + lastMessage.author.username + "#" + lastMessage.author.discriminator + " (" + moment(new Date(lastMessage.createdTimestamp).getTime()).fromNow() + ") - " + lastMessage.content + "```"), true)
-                    .addField(":pencil: Channel created", "```" + moment(canale.createdAt).format("ddd DD MMM, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
+                    .addField(":pencil: Channel created", "```" + moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
                 message.channel.send(embed)
             })
             .catch(() => {
@@ -82,7 +85,7 @@ module.exports = {
                     .addField(":notepad_spiral: Topic", !canale.topic ? "```No topic```" : "```" + canale.topic + "```", true)
                     .addField(":underage: NSFW", canale.nsfw ? "```Yes```" : "```No```", true)
                     .addField(":pushpin: Last message", !hasPermissionInChannel ? "```You don't have permission to view this channel```" : "```Not found```", true)
-                    .addField(":pencil: Channel created", "```" + moment(canale.createdAt).format("ddd DD MMM, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
+                    .addField(":pencil: Channel created", "```" + moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
                 message.channel.send(embed)
             })
     },

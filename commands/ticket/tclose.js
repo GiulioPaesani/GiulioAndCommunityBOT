@@ -2,115 +2,147 @@ module.exports = {
     name: "tclose",
     aliases: [],
     onlyStaff: false,
+    availableOnDM: false,
+    description: "Eliminare un ticket",
+    syntax: "!tclose",
+    category: "community",
     channelsGranted: [],
-    async execute(message, args, client) {
+    async execute(message, args, client, property) {
         if (!serverstats.ticket.find(x => x.channel == message.channel.id)) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Canale non concesso")
-                .setColor("#F15A24")
-                .setDescription("Non puoi utilizzare il comando `!tclose` in questo canale")
-
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
-            }
-            else {
-                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
-            }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 10000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 10000 })
-                    .catch(() => { })
-            })
-            return
+            return botCommandMessage(message, "CanaleNonConcesso", "", "", property)
         }
 
         var index = serverstats.ticket.findIndex(x => x.channel == message.channel.id);
         var ticket = serverstats.ticket[index];
 
-        if (!utenteMod(message.member) && message.author.id != ticket.owner && !message.member.roles.cache.has(config.idRuoloAiutante) && !message.member.roles.cache.has(config.idRuoloAiutanteInProva)) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Non hai il permesso")
-                .setColor("#9E005D")
-                .setDescription("Non puoi eseguire il comando `!tclose` in questo canale")
-
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
-            }
-            else {
-                embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-            }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 10000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 10000 })
-                    .catch(() => { })
-            })
-            return
+        if (!utenteMod(message.author) && message.author.id != ticket.owner && !message.member.roles.cache.has(settings.idRuoloAiutante) && !message.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
+            return botCommandMessage(message, "NonPermesso", "", "Non puoi eseguire il comando `!tclose` in questo ticket")
         }
-
 
         client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
             .then(msg => {
-                if (ticket.type == "Normal") {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Ticket aperto")
-                        .setColor("#4b9afa")
-                        .setDescription("In questa chat potrai richiedere **supporto privato** allo staff")
-                }
-                if (ticket.type == "Moderation") {
-                    var embed = new Discord.MessageEmbed()
-                        .setTitle("Segnalazione aperta")
-                        .setColor("#6143CB")
-                        .setDescription("In questa chat potrai segnalare o richiedere supporto allo staff per la tua moderazione")
-                }
+                var button1 = new disbut.MessageButton()
+                    .setLabel("In chiusura...")
+                    .setStyle("red")
+                    .setID("ticketChiudi")
+                    .setDisabled()
 
-                msg.edit({
-                    component: null,
-                    embed: embed
-                });
+                if (!ticket.inserimentoCategory)
+                    msg.edit(msg.embeds[0], button1)
             })
 
         var embed = new Discord.MessageEmbed()
-            .setTitle("Ticket in eliminazione")
-            .setColor("#16A0F4")
-            .setDescription("Questo ticket si cancellerà tra 10 secondi")
+            .setTitle("Ticket in chiusura...")
+            .setColor("#ED1C24")
+            .setDescription("Questo ticket si chiuderà tra `30 secondi`")
 
-        var data = new Date()
-        if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-            embed.setThumbnail("https://i.postimg.cc/NFXTGVdf/Correct-Halloween.png")
-        }
-        else {
-            embed.setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
-        }
-
-        var button = new disbut.MessageButton()
+        var button1 = new disbut.MessageButton()
             .setLabel("Annulla")
             .setStyle("red")
             .setID("annullaChiusura")
 
-        message.channel.send({
-            component: button,
-            embed: embed
-        });
+        var idChannelTicket = ticket.channel
+        message.channel.send(embed, button1)
+            .then(msg => {
+                ticket.daEliminare = true;
+                serverstats.ticket[serverstats.ticket.findIndex((x) => x.channel == idChannelTicket)] = ticket;
 
-        ticket.daEliminare = true;
-        serverstats.ticket[serverstats.ticket.findIndex(x => x.channel == ticket.channel)] = ticket
+                setTimeout(function () {
+                    var ticket = serverstats.ticket.find((x) => x.channel == idChannelTicket);
+                    if (!ticket) return;
 
-        setTimeout(function () {
-            var index = serverstats.ticket.findIndex(x => x.channel == message.channel.id);
-            var ticket = serverstats.ticket[index];
-            if (!ticket) return
+                    if (ticket.daEliminare) {
+                        embed.setDescription("Questo ticket si chiuderà tra `20 secondi`")
+                        msg.edit(embed)
+                            .catch(() => { })
 
-            if (ticket.daEliminare) {
-                serverstats.ticket = serverstats.ticket.filter(x => x.channel != message.channel.id)
-                message.channel.delete()
-                    .catch(() => { })
-            }
-        }, 10000)
+                        setTimeout(function () {
+                            var ticket = serverstats.ticket.find((x) => x.channel == idChannelTicket);
+                            if (!ticket) return;
+
+                            if (ticket.daEliminare) {
+                                embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
+                                msg.edit(embed)
+                                    .catch(() => { })
+
+                                setTimeout(async function () {
+                                    var ticket = serverstats.ticket.find((x) => x.channel == idChannelTicket);
+                                    if (!ticket) return;
+
+                                    if (ticket.daEliminare) {
+                                        client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
+                                            .then(async msg => {
+                                                var embed = new Discord.MessageEmbed()
+                                                    .setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")
+                                                    .setColor("#22c90c")
+                                                    .addField(":alarm_clock: Time", `${moment(message.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                                                    .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
+
+                                                if (msg.embeds[0].title == ":speech_balloon: Segli CATEGORIA :speech_balloon:")
+                                                    embed.addField("Category", `_Null_`)
+                                                else if (!msg.embeds[0].description.endsWith("`"))
+                                                    embed.addField("Category", msg.embeds[0].title.split(" ").slice(1, -1).join(" "))
+                                                else
+                                                    embed.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.slice(1, -1)}`)
+
+                                                if (ticket.inserimentoCategory)
+                                                    if (!isMaintenance())
+                                                        client.channels.cache.get(log.community.ticket).send(embed)
+
+                                                var embed = new Discord.MessageEmbed()
+                                                    .setTitle(":paperclips: Ticket closed :paperclips:")
+                                                    .setColor("#e31705")
+                                                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                                                    .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
+                                                    .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
+
+                                                if (msg.embeds[0].title == ":speech_balloon: Segli CATEGORIA :speech_balloon:")
+                                                    embed.addField("Category", `_Null_`)
+                                                else if (!msg.embeds[0].description.startsWith("`"))
+                                                    embed.addField("Category", msg.embeds[0].title.split(" ").slice(1, -1).join(" "))
+                                                else
+                                                    embed.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.split("`")[1]}`)
+
+                                                var chatLog = ""
+                                                await message.channel.messages.fetch()
+                                                    .then(async messages => {
+                                                        for (var msg of messages.array().reverse()) {
+                                                            var attachments = ""
+                                                            msg.attachments.array().forEach(attachment => {
+                                                                attachments += `${attachment.name} (${attachment.url}), `
+                                                            })
+                                                            if (attachments != "")
+                                                                attachments = attachments.slice(0, -2)
+
+                                                            chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == ticket.owner ? "[OWNER] " : utenteMod(msg.author) ? "[MOD] " : (msg.member.roles.cache.has(settings.idRuoloAiutante) || msg.member.roles.cache.has(settings.idRuoloAiutanteInProva)) ? "[HELPER] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
+                                                        }
+                                                    })
+
+                                                if (chatLog != "") {
+                                                    var attachment1 = await new Discord.MessageAttachment(
+                                                        Buffer.from(chatLog, "utf-8"), `ticket${ticket.channel}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
+                                                    );
+                                                    if (!isMaintenance())
+                                                        client.channels.cache.get(log.community.ticket).send({ embed, files: [attachment1] })
+                                                }
+                                                else
+                                                    if (!isMaintenance())
+                                                        client.channels.cache.get(log.community.ticket).send(embed)
+
+                                                embed.setDescription("Questo ticket si sta per chiudere")
+                                                msg.edit(embed)
+                                                    .catch(() => { })
+
+                                                message.channel.delete()
+                                                    .catch(() => { });
+                                                serverstats.ticket = serverstats.ticket.filter((x) => x.channel != idChannelTicket);
+                                            })
+                                    }
+                                }, 10000);
+                            }
+                        }, 10000);
+                    }
+                }, 10000);
+            })
     },
 };

@@ -1,25 +1,47 @@
 module.exports = {
-    name: "welcome",
+    name: "Welcome",
     aliases: ["goodbye", "benvenuto", "addio"],
     description: "Messaggio di **benvenuto** e **addio** quando un utente entra/esce dal server",
-    info: "Prima di usare il comando, è necessario andare nelle impostazioni del bot sul [sito developer](https://discord.com/developers/applications) e andare nella sezione \"Bot\". Attivare le due opzioni in \"Privileged Gateway Intents\" (sia PRESENCE INTENT che SERVER MEMBERS INTENT)",
+    category: "utility",
+    id: "1639466282",
+    info: "",
     video: "",
-    code: `
+    v12: `
 //BENVENUTO
 client.on("guildMemberAdd", member => {
     if (member.user.bot) return
-    var canale = client.channels.cache.get("idCanale") //Settare il canale di benvenuto
-    canale.send(\`
--------------- WELCOME --------------
-Ciao \${member.toString()}, benvenuto in \${member.guild.name}
-Sei il **\${member.guild.memberCount}° Membro**\`)
-});
+    var embed = new Discord.MessageEmbed()
+        .setTitle("WELCOME")
+        .setDescription(\`Ciao \${member.toString()}, benvenuto in \${member.guild.name}. Sei il **\${member.guild.memberCount}° Membro**\`)
+
+    message.channel.send(embed); 
+})
 //ADDIO
 client.on("guildMemberRemove", member => {
     if (member.user.bot) return
-    var canale = client.channels.cache.get("idCanale") //Settare il canale di addio
-    canale.send(\`
--------------- GOODBYE --------------
-Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
-}); `
+    var embed = new Discord.MessageEmbed()
+        .setTitle("GOODBEY")
+        .setDescription(\`Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
+
+    message.channel.send(embed); 
+})`,
+    v13: `
+//BENVENUTO
+client.on("guildMemberAdd", member => {
+    if (member.user.bot) return
+    var embed = new Discord.MessageEmbed()
+        .setTitle("WELCOME")
+        .setDescription(\`Ciao \${member.toString()}, benvenuto in \${member.guild.name}. Sei il **\${member.guild.memberCount}° Membro**\`)
+
+    message.channel.send({embeds: [embed]}); 
+})
+//ADDIO
+client.on("guildMemberRemove", member => {
+    if (member.user.bot) return
+    var embed = new Discord.MessageEmbed()
+        .setTitle("GOODBEY")
+        .setDescription(\`Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
+
+    message.channel.send({embeds: [embed]}); 
+})`
 };

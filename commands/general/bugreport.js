@@ -2,41 +2,45 @@ module.exports = {
     name: "bugreport",
     aliases: ["bug", "report"],
     onlyStaff: false,
+    availableOnDM: false,
+    description: "Segnalare un problema sul server, bot o canale",
+    syntax: "!bugreport [report]",
+    category: "general",
     channelsGranted: [],
-    async execute(message, args, client) {
+    async execute(message, args, client, property) {
         let report = args.join(" ");
 
         if (!report && !(message.attachments).array()[0]) {
-            error(message, "Inserire un report", "`!bug [report]`")
-            return
+            return botCommandMessage(message, "Error", "Inserire un report", "Scrivi il testo del tuo report", property)
         }
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":beetle: Bug reportato :beetle:")
-            .setColor("#1f1f1f")
-            .setFooter("Lo staff lo analizzerà a breve")
+            .setColor("#77B256")
+            .setDescription(`**Grazie** per aver segnalato questo problema. È già stato **consegnato** allo staff che lo **risolverà** a breve`)
+            .addField(":page_facing_up: Text", report ? report : "None")
 
-        if (report)
-            embed.setDescription("```" + report + "```")
+        var attachments = "";
+        message.attachments.array().forEach(attachment => {
+            attachments += `[File link](${attachment.url}), `
+        })
+        if (attachments)
+            attachments = attachments.slice(0, -2);
 
-        if ((message.attachments).array()[0])
-            embed.setImage((message.attachments).array()[0].url)
+        embed
+            .addField(":paperclip: Attachments", attachments ? attachments : "None")
 
         message.channel.send(embed)
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":beetle: Bug report :beetle:")
             .setColor("#6DA54C")
-            .addField(":bust_in_silhouette: User", "```" + `${message.author.username} (ID: ${message.author.id})` + "```", false)
-            .addField(":page_facing_up: Channel", "```" + message.channel.name + "```[Message](https://discord.com/channels/" + message.guild.id + "/" + message.channel.id + "/" + message.id + ")", true)
-            .addField(":alarm_clock: Time", "```" + moment(new Date().getTime()).format("ddd DD MMM, HH:mm") + "```", true)
+            .addField(":alarm_clock: Time", moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss"), true)
+            .addField(":bust_in_silhouette: User", `${message.author.toString()} (ID: ${message.author.id})`, false)
+            .addField("Text", report ? report : "None")
+            .addField("Attachments", attachments ? attachments : "None")
 
-        if (report)
-            embed.addField(":skull_crossbones: Bug", "```" + report + "```", false)
-
-        if ((message.attachments).array()[0])
-            embed.setImage((message.attachments).array()[0].url)
-
-        client.channels.cache.get(log.bugReport).send(embed);
+        if (!isMaintenance())
+            client.channels.cache.get(log.general.bugReport).send(embed);
     },
 };

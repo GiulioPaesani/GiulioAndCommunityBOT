@@ -1,12 +1,21 @@
 module.exports = {
-    name: "welcomeruolo",
-    aliases: ["ruoloachientra"],
+    name: "Welcome ruolo",
+    aliases: ["welcomeruolo", "ruoloachientra"],
     description: "Dare un **ruolo** a chi entra nel server",
-    info: "Prima di usare il comando, è necessario andare nelle impostazioni del bot sul [sito developer](https://discord.com/developers/applications) e andare nella sezione \"Bot\". Attivare le due opzioni in \"Privileged Gateway Intents\" (sia PRESENCE INTENT che SERVER MEMBERS INTENT)",
+    category: "utility",
+    id: "1639466286",
+    info: "",
     video: "",
-    code: `
+    v12: `
 client.on("guildMemberAdd", member => {
     if (member.user.bot) return
+
+    member.roles.add("idRuolo");
+});`,
+    v13: `
+client.on("guildMemberAdd", member => {
+    if (member.user.bot) return
+
     member.roles.add("idRuolo");
 });`
 };

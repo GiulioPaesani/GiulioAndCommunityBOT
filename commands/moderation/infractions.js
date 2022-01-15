@@ -2,31 +2,40 @@ module.exports = {
     name: "infractions",
     aliases: ["infraction", "infrazioni"],
     onlyStaff: false,
-    channelsGranted: [config.idCanaliServer.commands],
-    async execute(message, args, client) {
+    availableOnDM: true,
+    description: "Visualizzare tutte le infrazioni e le info di moderazione di un utente",
+    syntax: "!infractions (user)",
+    category: "moderation",
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(message, args, client, property) {
         if (!args[0]) {
-            var utente = message.member;
+            var utente = message.author;
         }
         else {
-            var utente = message.mentions.members.first()
+            var utente = message.mentions.users?.first()
             if (!utente) {
-                var utente = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(user => user.user.username.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.user.tag.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.nickname && user.nickname.toLowerCase() == args.join(" "))
+                var utente = await getUser(args.join(" "))
             }
         }
 
         if (!utente) {
-            error(message, "Utente non trovato", "`!warn [user] (reason)`")
-            return
+            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
+        if (utente.bot) {
+            return botCommandMessage(message, "Warning", "Non un bot", "Non puoi visualizzare le infrazioni di un bot")
+        }
+
+        if (utente.user) utente = utente.user
+
         var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return
+        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
 
         var warn = userstats.warn;
 
         var embed = new Discord.MessageEmbed()
-            .setTitle("INFRACTIONS - " + utente.user.tag)
-            .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
+            .setTitle("Infractions - " + (utente.nickname ? utente.nickname : utente.username))
+            .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
 
         if (userstats.moderation.type == "Muted") {
             embed
@@ -47,7 +56,7 @@ ${userstats.moderation.reason}
 **Since**
 ${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
 **Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.until).toNow(true)})
+${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
 **Moderator**
 ${userstats.moderation.moderator}           
 `)
@@ -71,7 +80,7 @@ ${userstats.moderation.reason}
 **Since**
 ${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
 **Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.until).toNow(true)})
+${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
 **Moderator**
 ${userstats.moderation.moderator}           
 `)
@@ -92,6 +101,7 @@ ${userstats.moderation.moderator}
             embed
                 .addField(":interrobang: Total", "```Nessuna infrazione```", false)
             message.channel.send(embed)
+                .catch(() => { return })
         }
         else {
             var ultimi7d = 0
@@ -126,61 +136,38 @@ ${userstats.moderation.moderator}
             if (totalPage != 1) {
                 embed
                     .addField(`:no_entry_sign: All infractions ${page + 1}/${totalPage}`, "```" + elencoInfrazioni + "```", false)
-                    .setFooter("Scorri tra le infrazioni con le reazioni qua sotto")
+                    .setFooter(`Page ${page + 1}/${totalPage}`)
             }
             else {
                 embed
                     .addField(":no_entry_sign: All infractions", "```" + elencoInfrazioni + "```", false)
             }
 
-            message.channel.send(embed)
-                .then(msg => {
-                    if (totalPage != 1) {
+            var button1 = new disbut.MessageButton()
+                .setID(`indietroInfractions,${message.author.id},${page},${utente.id}`)
+                .setStyle("blurple")
+                .setEmoji("◀️")
 
-                        msg.react("◀️")
-                        msg.react("▶️")
+            if (page == 0)
+                button1.setDisabled()
 
-                        // Filters
-                        const reactIndietro = (reaction, user) => reaction.emoji.name === '◀️' && user.id === message.author.id
-                        const reactAvanti = (reaction, user) => reaction.emoji.name === '▶️' && user.id === message.author.id
+            var button2 = new disbut.MessageButton()
+                .setID(`avantiInfractions,${message.author.id},${page},${utente.id}`)
+                .setStyle("blurple")
+                .setEmoji("▶️")
 
-                        const paginaIndietro = msg.createReactionCollector(reactIndietro)
-                        const paginaAvanti = msg.createReactionCollector(reactAvanti)
+            if (page == totalPage)
+                button2.setDisabled()
 
-                        paginaIndietro.on('collect', (r, u) => {
-                            page--
-                            page < 0 ? page = (totalPage - 1) : ""
+            var row = new disbut.MessageActionRow()
 
-                            var elencoInfrazioni = ""
-                            for (var i = page * 10; i < (page * 10 + ((page * 10 + 10) > warn.length ? warn.length % 10 : 10)); i++) {
-                                elencoInfrazioni += `#${i + 1} - ${warn[i].reason} (${moment(warn[i].time).fromNow()})\r`
-                            }
+            if (totalPage != 1)
+                row
+                    .addComponent(button1)
+                    .addComponent(button2)
 
-                            embed.fields[3].name = `:no_entry_sign: All infractions ${page + 1}/${totalPage}`
-                            embed.fields[3].value = "```" + elencoInfrazioni + "```"
-
-                            msg.edit(embed)
-
-                            r.users.remove(r.users.cache.filter(u => u === message.author).first())
-                        })
-                        paginaAvanti.on('collect', (r, u) => {
-                            page++
-                            page > totalPage - 1 ? page = 0 : ""
-
-                            var elencoInfrazioni = ""
-                            for (var i = page * 10; i < (page * 10 + ((page * 10 + 10) > warn.length ? warn.length % 10 : 10)); i++) {
-                                elencoInfrazioni += `#${i + 1} - ${warn[i].reason} (${moment(warn[i].time).fromNow()})\r`
-                            }
-
-                            embed.fields[3].name = `:no_entry_sign: All infractions ${page + 1}/${totalPage}`
-                            embed.fields[3].value = "```" + elencoInfrazioni + "```"
-
-                            msg.edit(embed)
-
-                            r.users.remove(r.users.cache.filter(u => u === message.author).first())
-                        })
-                    }
-                })
+            message.channel.send(embed, row)
+                .catch(() => { return })
         }
     },
 };

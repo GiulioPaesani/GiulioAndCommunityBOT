@@ -2,59 +2,68 @@ module.exports = {
     name: "pdelete",
     aliases: ["pclose"],
     onlyStaff: false,
+    availableOnDM: false,
+    description: "Eliminare una stanza privata",
+    syntax: "!pdelete",
+    category: "privateRooms",
     channelsGranted: [],
-    async execute(message, args, client) {
+    async execute(message, args, client, property) {
         var privaterooms = serverstats.privateRooms
 
-        if (!privaterooms.find(x => x.owner == message.author.id)) {
-            warning(message, "Non hai una stanza", "Per usare questo comando devi essere owner di una stanza privata")
-            return
-        }
-
-        var room = privaterooms.find(x => x.owner == message.author.id)
-
-        if (message.channel.id == config.idCanaliServer.commands || (room.text && message.channel.id == room.text)) {
-
-        }
-        else {
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Canale non concesso")
-                .setColor("#F15A24")
-                .setDescription(`Non puoi utilizzare il comando \`!pdelete\` in questo canale`)
-
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
+        var room
+        if (privaterooms.find(x => x.text == message.channel.id)) {
+            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
+                room = privaterooms.find(x => x.text == message.channel.id)
             }
             else {
-                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
             }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 15000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 15000 })
-                    .catch(() => { })
-            })
-            return
-        }
-
-        var embed = new Discord.MessageEmbed()
-            .setTitle(`${room.type == "onlyText" || room.type == "onlyVoice" ? "Stanza" : "Stanze"} eliminata`)
-            .setColor(`#16A0F4`)
-            .setDescription(room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale privato si eliminerà a breve" : "I tuoi canali privati si elimineranno a breve")
-
-        var data = new Date()
-        if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-            embed.setThumbnail("https://i.postimg.cc/NFXTGVdf/Correct-Halloween.png")
         }
         else {
-            embed.setThumbnail("https://i.postimg.cc/SRpBjMg8/Giulio.png")
+            if (!privaterooms.find(x => x.owner == message.author.id)) {
+                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            }
+            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
-        message.channel.send(embed)
+        botCommandMessage(message, "Correct", "Stanza in eliminazione", room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale privato si eliminerà a breve" : "I tuoi canali privati si elimineranno a breve")
 
-        setTimeout(() => {
+        setTimeout(async () => {
+            var embed = new Discord.MessageEmbed()
+                .setTitle(":paperclips: Room closed :paperclips:")
+                .setColor("#e31705")
+                .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
+                .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(room.owner).toString()} - ID: ${room.owner}`)
+
+            var chatLog = ""
+            if (room.text) {
+                await client.channels.cache.get(room.text).messages.fetch()
+                    .then(async messages => {
+                        for (var msg of messages.array().reverse()) {
+                            var attachments = ""
+                            msg.attachments.array().forEach(attachment => {
+                                attachments += `${attachment.name} (${attachment.url}), `
+                            })
+                            if (attachments != "")
+                                attachments = attachments.slice(0, -2)
+
+                            chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == room.owner ? "[OWNER] " : utenteMod(msg.author) ? "[MOD] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
+                        }
+                    })
+            }
+
+            if (chatLog != "") {
+                var attachment1 = await new Discord.MessageAttachment(
+                    Buffer.from(chatLog, "utf-8"), `room${room.owner}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
+                );
+                if (!isMaintenance())
+                    client.channels.cache.get(log.community.privateRooms).send({ embed, files: [attachment1] })
+            }
+            else
+                if (!isMaintenance())
+                    client.channels.cache.get(log.community.privateRooms).send(embed)
+
             if (room.text && client.channels.cache.get(room.text))
                 client.channels.cache.get(room.text).delete()
                     .catch(() => { })

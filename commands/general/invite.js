@@ -1,14 +1,20 @@
 module.exports = {
     name: "invite",
-    aliases: [],
+    aliases: ["invito"],
     onlyStaff: false,
-    channelsGranted: [config.idCanaliServer.commands],
-    async execute(message, args, client) {
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Invito del server")
-            .setDescription(":man_tipping_hand: Ecco a te l'invito da poter condividere con chiunque tu voglia per entrare nel server\r\rhttps://discord.gg/bTF589dQd6")
+    availableOnDM: true,
+    description: "Link di invito del server",
+    syntax: "!invite",
+    category: "general",
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(message, args, client, property) {
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":woman_raising_hand: Invito del server :man_raising_hand:")
+            .setDescription(`Ecco a te l'invito da poter **condividere** con amici o chiunque tu voglia per **entrare** nel server
+https://discord.gg/ypTCaveew2`)
             .setColor("#677BC4");
 
         message.channel.send(embed)
+            .catch(() => { return })
     },
 };

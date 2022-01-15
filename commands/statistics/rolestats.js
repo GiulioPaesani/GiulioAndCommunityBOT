@@ -1,17 +1,20 @@
 module.exports = {
     name: "rolestats",
-    aliases: ["role", "roleinfo"],
+    aliases: ["role", "roleinfo", "r"],
     onlyStaff: false,
-    channelsGranted: [config.idCanaliServer.commands],
-    async execute(message, args, client) {
+    availableOnDM: false,
+    description: "Visualizzare info di un ruolo",
+    syntax: "!rolestats (role)",
+    category: "statistics",
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(message, args, client, property) {
         var ruolo = message.mentions.roles.first()
         if (!ruolo) {
             var ruolo = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(ruolo => ruolo.name.toLowerCase() == args.join(" "))
         }
 
         if (!ruolo) {
-            error(message, "Ruolo non trovato", "`!roleinfo [role]`")
-            return
+            return botCommandMessage(message, "Error", "Ruolo non trovato o non valido", "Hai inserito un ruolo non valido", property)
         }
 
         let memberCount = message.guild.members.cache.filter(member => member.roles.cache.find(role => role == ruolo)).size;
@@ -42,7 +45,7 @@ module.exports = {
             .addField(":1234: Position", "```" + ruolo.rawPosition + "```", true)
             .addField(":speech_balloon: Mentionable", ruolo.mentionable ? "```Yes```" : "```No```", true)
             .addField(":safety_pin: Separated", ruolo.hoist ? "```Yes```" : "```No```", true)
-            .addField(":pencil: Role created", "```" + moment(ruolo.createdAt).format("ddd DD MMM, HH:mm") + " (" + moment(ruolo.createdAt).fromNow() + ")```", true)
+            .addField(":pencil: Role created", "```" + moment(ruolo.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(ruolo.createdAt).fromNow() + ")```", true)
             .addField(":muscle: Permissions", "```" + elencoPermessi + "```", false)
 
         message.channel.send(embed)

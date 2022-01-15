@@ -1,35 +1,40 @@
 module.exports = {
     name: "avatar",
-    aliases: [],
+    aliases: ["av"],
+    description: "Visuallizzare l'immagine profilo di un utente",
+    syntax: "!avatar (user)",
+    category: "statistics",
     onlyStaff: false,
-    channelsGranted: [config.idCanaliServer.commands],
-    async execute(message, args, client) {
+    availableOnDM: true,
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(message, args, client, property) {
         if (!args[0]) {
-            var utente = message.member;
+            var utente = message.author;
         }
         else {
-            var utente = message.mentions.members.first()
+            var utente = message.mentions.users?.first()
             if (!utente) {
-                var utente = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(user => user.user.username.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.user.tag.toLowerCase() == args[0]) || message.guild.members.cache.find(user => user.nickname && user.nickname.toLowerCase() == args.join(" "))
+                var utente = await getUser(args.join(" "))
             }
         }
 
         if (!utente) {
-            error(message, "Utente non trovato", "`!avatar [user]`");
-            return
+            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
-        let embed = new Discord.MessageEmbed()
-            .setTitle(utente.user.tag)
-            .setDescription(`L'avatar di questo utente
-Other formats: **[.gif](${utente.user.displayAvatarURL({ dynamic: true, size: 1024, format: `gif` })})** | **[.jpeg](${utente.user.displayAvatarURL({ dynamic: false, size: 1024, format: `jpeg` })})** | **[.webp](${utente.user.displayAvatarURL({ dynamic: false, size: 1024, format: `webp` })})** | **[.png](${utente.user.displayAvatarURL({ dynamic: false, size: 1024, format: `png` })})**`)
+        if (utente.user) utente = utente.user
 
-            .setImage(utente.user.displayAvatarURL({
+        var embed = new Discord.MessageEmbed()
+            .setTitle("Avatar - " + (utente.nickname ? utente.nickname : utente.username))
+            .setDescription(`L'avatar di questo utente
+Other formats: **[.gif](${utente.displayAvatarURL({ dynamic: true, size: 1024, format: `gif` })})** | **[.jpeg](${utente.displayAvatarURL({ dynamic: false, size: 1024, format: `jpeg` })})** | **[.webp](${utente.displayAvatarURL({ dynamic: false, size: 1024, format: `webp` })})** | **[.png](${utente.displayAvatarURL({ dynamic: false, size: 1024, format: `png` })})**`)
+            .setImage(utente.displayAvatarURL({
                 dynamic: true,
                 format: "png",
                 size: 1024
             }))
 
         message.channel.send(embed)
+            .catch(() => { return })
     },
 };

@@ -2,41 +2,28 @@ module.exports = {
     name: "padd",
     aliases: [],
     onlyStaff: false,
+    availableOnDM: false,
+    description: "Aggiungere un utente a una stanza privata",
+    syntax: "!padd [user]",
+    category: "privateRooms",
     channelsGranted: [],
-    async execute(message, args, client) {
+    async execute(message, args, client, property) {
         var privaterooms = serverstats.privateRooms
 
-        if (!privaterooms.find(x => x.owner == message.author.id)) {
-            warning(message, "Non hai una stanza", "Per usare questo comando devi essere owner di una stanza privata")
-            return
-        }
-
-        var room = privaterooms.find(x => x.owner == message.author.id)
-
-        if (message.channel.id == config.idCanaliServer.commands || (room.text && message.channel.id == room.text)) {
-
-        }
-        else {
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Canale non concesso")
-                .setColor("#F15A24")
-                .setDescription(`Non puoi utilizzare il comando \`!padd\` in questo canale`)
-
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
+        var room
+        if (privaterooms.find(x => x.text == message.channel.id)) {
+            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
+                room = privaterooms.find(x => x.text == message.channel.id)
             }
             else {
-                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
+                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
             }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 15000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 15000 })
-                    .catch(() => { })
-            })
-            return
+        }
+        else {
+            if (!privaterooms.find(x => x.owner == message.author.id)) {
+                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            }
+            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
         if (room.text)
@@ -45,28 +32,17 @@ module.exports = {
             var canale = client.channels.cache.get(room.voice)
         if (!canale) return
 
-        var everyone = message.guild.roles.cache.find(r => r.name === "@everyone");
-
-        const permissions = new Discord.Permissions(canale.permissionOverwrites.get(everyone.id).allow.bitfield);
-
-        if (permissions.toArray().includes("VIEW_CHANNEL")) {
-            warning(message, `${room.type == "onlyText" || room.type == "onlyVoice" ? "Stanza pubbliche" : "Stanze pubbliche"}`, room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi aggiungere utenti alla stanza se è pubblica" : "Non puoi aggiungere utenti alle stanze se sono pubbliche")
-            return
+        var utente = message.mentions.users?.first()
+        if (!utente) {
+            var utente = await getUser(args.join(" "))
         }
 
-        var utente = message.mentions.members.first()
-        if (!utente) {
-            var utente = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(user => user.user.username.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.user.tag.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.nickname && user.nickname.toLowerCase() == args.join(" "))
-        }
-
-        if (!utente) {
-            error(message, "Utente non trovato", "`!padd [user]`")
-            return
+        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
+            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
         if (room.bans.includes(utente.id)) {
-            warning(message, "Utente bannato", room.type == "onlyText" || room.type == "onlyVoice" ? "Questo utente è bannato dalla tua stanza" : "Questo utente è bannato dalle tue stanze")
-            return
+            return botCommandMessage(message, "Warning", "Utente bannato", room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi aggiungere un utente bannato dalla tua stanza" : "Non puoi aggiungere un utente bannato dalle tue stanze")
         }
 
         const hasPermissionInChannel = canale
@@ -74,8 +50,7 @@ module.exports = {
             .has('VIEW_CHANNEL', true);
 
         if (hasPermissionInChannel) {
-            warning(message, "Questo utente è già presente", room.type == "onlyText" || room.type == "onlyVoice" ? "Questo utente ha già accesso alla tua stanza privata" : "Questo utente ha già accesso alle tue stanze private")
-            return
+            return botCommandMessage(message, "Warning", "Utente già presente", room.type == "onlyText" || room.type == "onlyVoice" ? "Questo utente ha già accesso alla tua stanza privata" : "Questo utente ha già accesso alle tue stanze private")
         }
 
         if (room.text) {
@@ -91,6 +66,6 @@ module.exports = {
             })
         }
 
-        correct(message, "Utente aggiunto", room.type == "onlyText" || room.type == "onlyVoice" ? `${utente.toString()} è stato aggiunto alla tua stanza` : `${utente.toString()} è stato aggiunto alle tue stanze`)
+        botCommandMessage(message, "Correct", "Utente aggiunto", room.type == "onlyText" || room.type == "onlyVoice" ? `${utente.toString()} è stato aggiunto alla stanza` : `${utente.toString()} è stato aggiunto alle stanze`)
     },
 };

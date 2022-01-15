@@ -2,8 +2,12 @@ module.exports = {
     name: "backup",
     aliases: [],
     onlyStaff: true,
+    availableOnDM: true,
+    description: "Eseguire un salvataggio manuale del server e del database",
+    syntax: "!backup",
+    category: "general",
     channelsGranted: [],
-    async execute(message, args, client) {
+    async execute(message, args, client, property) {
         var embed = new Discord.MessageEmbed()
             .setTitle("<a:Gear0:898966384598474752> BACKUP in corso - 0% <a:Gear0:898966384598474752>")
             .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
@@ -11,7 +15,7 @@ module.exports = {
 
         message.channel.send(embed)
             .then(async msg => {
-                var server = client.guilds.cache.get(config.idServer)
+                var server = await getGuild()
 
                 var backup = {
                     info: {
@@ -148,13 +152,13 @@ module.exports = {
                 msg.edit(embed)
 
                 //THINGS TO DO
-                var messages = await client.channels.cache.get(log.thingsToDo).messages.fetch()
+                var messages = await client.channels.cache.get(log.general.thingsToDo).messages.fetch()
                 messages = messages.array()
 
                 for (var thing of messages) {
                     var ttd = {
                         content: thing.embeds[0].fields[1].value,
-                        status: thing.embeds[0].fields[0].value == "```⚪Uncompleted```" ? 0 : thing.embeds[0].fields[0].value == "```🔴Urgent```" ? 1 : thing.embeds[0].fields[0].value == "```🟢Completed```" ? 2 : thing.embeds[0].fields[0].value == "```🔵Tested```" ? 3 : thing.embeds[0].fields[0].value == "```⚫Finished```" ? 4 : ""
+                        status: thing.embeds[0].fields[0].value == "```⚪ Uncompleted```" ? 0 : thing.embeds[0].fields[0].value == "```🔴 Urgent```" ? 1 : thing.embeds[0].fields[0].value == "```🟢 Completed```" ? 2 : thing.embeds[0].fields[0].value == "```🔵 Tested```" ? 3 : thing.embeds[0].fields[0].value == "```⚫ Finished```" ? 4 : ""
                     }
 
                     backup.thingsToDo.push(ttd)
@@ -167,27 +171,28 @@ module.exports = {
 
                 msg.edit(embed)
 
-                var attachment1 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t")), `userstats-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.json`);
-                var attachment2 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t")), `serverstats${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.json`);
-                var attachment3 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t")), `backup${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.json`);
+                var attachment1 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `userstats-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`);
+                var attachment2 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify([serverstats], null, "\t"), "utf-8"), `serverstats${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`);
+                var attachment3 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`);
 
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":inbox_tray: New backup :inbox_tray:")
                     .setColor("#757575")
-                    .addField("Time", "```" + moment().format("dddd DD MMMM, HH:mm:ss") + "```")
+                    .addField("Time", moment().format("dddd DD MMMM, HH:mm:ss"))
 
-                var canale = client.channels.cache.get(log.backup);
+                var canale = client.channels.cache.get(log.general.backup);
                 canale.send({ embed, files: [attachment1, attachment2, attachment3] })
                     .then(msg2 => {
                         var embed = new Discord.MessageEmbed()
                             .setTitle(":inbox_tray: Backup CREATO :inbox_tray:")
                             .setDescription(`Salvataggio di tutto il **server** e del contenuto dei **database** creato con successo
-[Vedi backup](https://discord.com/channels/${log.server}/${log.backup}/${msg2.id})`)
+[Vedi backup](https://discord.com/channels/${log.idServer}/${log.general.backup}/${msg2.id})`)
                             .setColor("#18b83b")
                             .addField("Time", "```" + moment().format("dddd DD MMMM, HH:mm:ss") + "```")
 
                         msg.edit(embed)
                     })
             })
+            .catch(() => { return })
     },
 };

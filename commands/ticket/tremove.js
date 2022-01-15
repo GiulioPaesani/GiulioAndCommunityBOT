@@ -2,65 +2,30 @@ module.exports = {
     name: "tremove",
     aliases: [],
     onlyStaff: false,
+    availableOnDM: false,
+    description: "Rimuovere un utente da un ticket",
+    syntax: "!tremove [user]",
+    category: "community",
     channelsGranted: [],
-    async execute(message, args, client) {
+    async execute(message, args, client, property) {
         if (!serverstats.ticket.find(x => x.channel == message.channel.id)) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Canale non concesso")
-                .setColor("#F15A24")
-                .setDescription("Non puoi utilizzare il comando `!tremove` in questo canale")
-
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/kXkwZ1dw/Not-Here-Halloween.png")
-            }
-            else {
-                embed.setThumbnail("https://i.postimg.cc/857H22km/Canale-non-conceso.png")
-            }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 10000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 10000 })
-                    .catch(() => { })
-            })
-            return
+            return botCommandMessage(message, "CanaleNonConcesso", "", "", property)
         }
 
         var index = serverstats.ticket.findIndex(x => x.channel == message.channel.id);
         var ticket = serverstats.ticket[index];
 
-        if (!utenteMod(message.member) && message.author.id != ticket.owner && !message.member.roles.cache.has(config.idRuoloAiutante) && !message.member.roles.cache.has(config.idRuoloAiutanteInProva)) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Non hai il permesso")
-                .setColor("#9E005D")
-                .setDescription("Non puoi eseguire il comando `!tremove` in questo canale")
-
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
-            }
-            else {
-                embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-            }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 10000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 10000 })
-                    .catch(() => { })
-            })
-            return
+        if (!utenteMod(message.author) && message.author.id != ticket.owner && !message.member.roles.cache.has(settings.idRuoloAiutante) && !message.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
+            return botCommandMessage(message, "NonPermesso", "", "Non puoi eseguire il comando `!tremove` in questo ticket")
         }
 
-        var utente = message.mentions.members.first()
-        if (!utente) {
-            var utente = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(user => user.user.username.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.user.tag.toLowerCase() == args.join(" ")) || message.guild.members.cache.find(user => user.nickname && user.nickname.toLowerCase() == args.join(" "))
+        var utente = message.mentions.users?.first()
+        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
+            var utente = await getUser(args.join(" "))
         }
 
         if (!utente) {
-            error(message, "Utente non trovato", "`!tremove [user]`")
-            return
+            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
         const hasPermissionInChannel = message.channel
@@ -68,37 +33,21 @@ module.exports = {
             .has('VIEW_CHANNEL', true);
 
         if (!hasPermissionInChannel) {
-            warning(message, "Questo utente è già rimosso", "Questo utente non ha già accesso a questo ticket")
-            return
+            return botCommandMessage(message, "Warning", "Utente già rimosso", "Questo utente non ha già accesso a questo ticket")
         }
 
         if (utenteMod(utente)) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Non hai il permesso")
-                .setColor("#9E005D")
-                .setDescription("Non puoi rimove questo utente dal ticket")
+            return botCommandMessage(message, "NonPermesso", "", "Non puoi rimuovere questo utente dal ticket")
+        }
 
-            var data = new Date()
-            if ((data.getMonth() == 9 && data.getDate() == 31) || (data.getMonth() == 10 && data.getDate() == 1)) {
-                embed.setThumbnail("https://i.postimg.cc/W3b7rxMp/Not-Allowed-Halloween.png")
-            }
-            else {
-                embed.setThumbnail("https://i.postimg.cc/D0scZ1XW/No-permesso.png")
-            }
-
-            message.channel.send(embed).then(msg => {
-                message.delete({ timeout: 7000 })
-                    .catch(() => { })
-                msg.delete({ timeout: 7000 })
-                    .catch(() => { })
-            })
-            return
+        if (message.channel.id == utente.id) {
+            return botCommandMessage(message, "Warning", "Non ti puoi rimuovere", "Non ti puoi rimuovere da solo dal questo ticket")
         }
 
         message.channel.updateOverwrite(utente, {
             VIEW_CHANNEL: false
         })
 
-        correct(message, "Utente rimosso", `${utente.toString()} è stato rimosso a questo ticket`)
+        botCommandMessage(message, "Correct", "Utente rimosso", `${utente.toString()} è stato rimosso dal ticket`)
     },
 };

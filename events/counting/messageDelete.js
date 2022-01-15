@@ -1,7 +1,11 @@
 module.exports = {
     name: "messageDelete",
     async execute(message) {
-        if (message.channel.id != config.idCanaliServer.counting) return
+        if (!message.author) return
+
+        if (isMaintenance(message.author.id)) return
+
+        if (message.channel.id != settings.idCanaliServer.counting) return
 
         try {
             var numero = Parser.evaluate(message.content);
@@ -28,5 +32,15 @@ module.exports = {
             .then(msg => {
                 msg.react("🟢");
             })
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":wastebasket: Number deleted :wastebasket:")
+            .setColor("#ababab")
+            .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+            .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
+            .addField("Number", numero, false)
+
+        if (!isMaintenance())
+            client.channels.cache.get(log.counting.editDeleteNumbers).send(embed)
     },
 };

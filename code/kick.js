@@ -1,27 +1,55 @@
 module.exports = {
-    name: "kick",
-    aliases: ["kickare","kikkare","espellere"],
+    name: "Kick",
+    aliases: ["kickare", "kikkare", "espellere"],
     description: "**Espellere** un utente dal server",
+    category: "moderation",
+    id: "1639466160",
     info: "",
     video: "https://youtu.be/x-Ii6BZiVQQ?t=27",
-    code: `
+    v12: `
 client.on("message", message => {
     if (message.content.startsWith("!kick")) {
-        var utenteKick = message.mentions.members.first();
-        if (!message.member.hasPermission('KICK_MEMBERS')) { //Controllare che l'utente abbia il permesso di bannare
-            message.channel.send('Non hai il permesso');
-            return;
+        var utente = message.mentions.members.first();
+        if (!message.member.hasPermission('KICK_MEMBERS')) {
+            return message.channel.send('Non hai il permesso');
         }
-        if (!utenteKick) {
-            message.channel.send('Non hai menzionato nessun utente'); //Controllare che sia stato menzionato un utente
-            return;
+        if (!utente) {
+            return message.channel.send('Non hai menzionato nessun utente');
         }
-        if (!message.mentions.members.first().kickable) { //Controllare che il bot abbia il permesso di bannare
-            message.channel.send('Io non ho il permesso');
-            return
+        if (!utente.kickable) {
+            return message.channel.send('Io non ho il permesso');
         }
-        utenteKick.kick()
-            .then(() => message.channel.send("<@" + utenteKick + ">" + " kiccato"))
+        utente.kick()
+            .then(() => {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(\`\${utente.user.username} kickato\`)
+                    .setDescription(\`Utente kickato da \${message.author.toString()}\`)
+
+                message.channel.send(embed)
+            })
+    }
+})`,
+    v13: `
+client.on("messageCreate", message => {
+    if (message.content.startsWith("!kick")) {
+        var utente = message.mentions.members.first();
+        if (!message.member.permissions.has('KICK_MEMBERS')) {
+            return message.channel.send('Non hai il permesso');
+        }
+        if (!utente) {
+            return message.channel.send('Non hai menzionato nessun utente');
+        }
+        if (!utente.kickable) {
+            return message.channel.send('Io non ho il permesso');
+        }
+        utente.kick()
+            .then(() => {
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(\`\${utente.user.username} kickato\`)
+                    .setDescription(\`Utente kickato da \${message.author.toString()}\`)
+
+                message.channel.send({ embeds: [embed] })
+            })
     }
 })`
 };

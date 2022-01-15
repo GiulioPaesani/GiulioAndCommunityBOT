@@ -1,0 +1,528 @@
+[
+    {
+        "name": "Laptop",
+        "price": 380,
+        "sellPrice": 350,
+        "id": "5732",
+        "alias": [
+            "pc",
+            "computer",
+            "portatile"
+        ],
+        "priviled": null,
+        "category": "technology",
+        "icon": "<:laptop:911211887004385280>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Monitor",
+        "price": 170,
+        "sellPrice": 160,
+        "id": "2947",
+        "alias": [
+            "schermo",
+            "schermi"
+        ],
+        "priviled": null,
+        "category": "technology",
+        "icon": "<:monitor:911211887063105576>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Processore",
+        "price": 265,
+        "sellPrice": 250,
+        "id": "1048",
+        "alias": [
+            "cpu"
+        ],
+        "priviled": 10,
+        "category": "technology",
+        "icon": "<:cpu:911211886626865153>",
+        "iconUnlocked": "<:cpuUnlocked:911211886459117579>"
+    },
+    {
+        "name": "Mouse",
+        "price": 69,
+        "sellPrice": 55,
+        "id": "2812",
+        "alias": [],
+        "priviled": null,
+        "category": "technology",
+        "icon": "<:mouse:911211888786956288>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Tastiera",
+        "price": 110,
+        "sellPrice": 99,
+        "id": "3226",
+        "alias": [
+            "keyboard"
+        ],
+        "priviled": null,
+        "category": "technology",
+        "icon": "<:keyboard:911211886916304897>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Memoria RAM",
+        "price": 135,
+        "sellPrice": 120,
+        "id": "4826",
+        "alias": [
+            "ram",
+            "memoriaram"
+        ],
+        "priviled": 20,
+        "category": "technology",
+        "icon": "<:ram:911211887138594856>",
+        "iconUnlocked": "<:ramUnlocked:911211887134384138>"
+    },
+    {
+        "name": "Hard disk",
+        "price": 70,
+        "sellPrice": 65,
+        "id": "4212",
+        "alias": [
+            "hark disk",
+            "hdd",
+            "ssd",
+            "memoria",
+            "memoria fisica"
+        ],
+        "priviled": 60,
+        "category": "technology",
+        "icon": "<:ssd:911211887285387274>",
+        "iconUnlocked": "<:ssdUnlocked:911211887423791134>"
+    },
+    {
+        "name": "Scheda video",
+        "price": 340,
+        "sellPrice": 325,
+        "id": "4031",
+        "alias": [
+            "gpu",
+            "schedavideo",
+            "schede video",
+            "schedevideo"
+        ],
+        "priviled": 60,
+        "category": "technology",
+        "icon": "<:gpu:911211888656916490>",
+        "iconUnlocked": "<:gpuUnlocked:911211889227345970>"
+    },
+    {
+        "name": "Tablet",
+        "price": 270,
+        "sellPrice": 245,
+        "id": "7193",
+        "alias": [
+            "ipad"
+        ],
+        "priviled": 70,
+        "category": "technology",
+        "icon": "<:tablet:911211887356702750>",
+        "iconUnlocked": "<:tabletUnlocked:911211888308805653>"
+    },
+
+
+
+
+
+    {
+        "name": "Mela",
+        "price": 8,
+        "sellPrice": 5,
+        "id": "4082",
+        "alias": [
+            "apple",
+            "mele"
+        ],
+        "priviled": null,
+        "category": "food",
+        "icon": "<:apple:911212153921499146>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Banana",
+        "price": 10,
+        "sellPrice": 8,
+        "id": "2843",
+        "alias": [],
+        "priviled": null,
+        "category": "food",
+        "icon": "<:banana:911212154017972284>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Fragola",
+        "price": 15,
+        "sellPrice": 10,
+        "id": "1021",
+        "alias": [
+            "strawberry",
+            "fragole"
+        ],
+        "priviled": null,
+        "category": "food",
+        "icon": "<:strawberry:911212155259478077>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Uova",
+        "price": 20,
+        "sellPrice": 18,
+        "id": "1928",
+        "alias": [
+            "egg",
+            "uovo"
+        ],
+        "priviled": 10,
+        "category": "food",
+        "icon": "<:egg:911212154835828807>",
+        "iconUnlocked": "<:eggUnlocked:911212154571591710>"
+    },
+    {
+        "name": "Pizza",
+        "price": 30,
+        "sellPrice": 20,
+        "id": "4823",
+        "alias": [
+            "margherita",
+            "pizza margherita",
+            "pizzamargherita"
+        ],
+        "priviled": 20,
+        "category": "food",
+        "icon": "<:pizza:911212155829911582>",
+        "iconUnlocked": "<:pizzaUnlocked:911212155871842315>"
+    },
+    {
+        "name": "Insalata",
+        "price": 25,
+        "sellPrice": 20,
+        "id": "2931",
+        "alias": [
+            "lattuga",
+            "salad"
+        ],
+        "priviled": 25,
+        "category": "food",
+        "icon": "<:salad:911212155456585781>",
+        "iconUnlocked": "<:saladUnlocked:911212155523694592>"
+    },
+    {
+        "name": "Patatine",
+        "price": 38,
+        "sellPrice": 35,
+        "id": "3819",
+        "alias": [
+            "chips",
+            "patata",
+            "patate"
+        ],
+        "priviled": 35,
+        "category": "food",
+        "icon": "<:chips:911212154156363797>",
+        "iconUnlocked": "<:chipsUnlocked:911212155129434152>"
+    },
+    {
+        "name": "Hamburger",
+        "price": 50,
+        "sellPrice": 40,
+        "id": "8592",
+        "alias": [
+            "burger",
+            "panino"
+        ],
+        "priviled": 40,
+        "category": "food",
+        "icon": "<:hamburger:911212154777112587>",
+        "iconUnlocked": "<:hamburgerUnlocked:911212155326578718>"
+    },
+    {
+        "name": "Hotdog",
+        "price": 55,
+        "sellPrice": 43,
+        "id": "9547",
+        "alias": [
+            "hot dog",
+            "wurstel"
+        ],
+        "priviled": 60,
+        "category": "food",
+        "icon": "<:hotdog:911212155427225620>",
+        "iconUnlocked": "<:hotdogUnlocked:911212155561447434>"
+    },
+
+
+
+
+
+
+    {
+        "name": "Aspirapolvere",
+        "price": 85,
+        "sellPrice": 79,
+        "id": "6832",
+        "alias": [
+            "vacum"
+        ],
+        "priviled": null,
+        "category": "home",
+        "icon": "<:vacum:911212002410647562>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Tavolo",
+        "price": 65,
+        "sellPrice": 62,
+        "id": "8912",
+        "alias": [
+            "table",
+            "tavoli"
+        ],
+        "priviled": null,
+        "category": "home",
+        "icon": "<:table:911212002054131742>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Sedia",
+        "price": 55,
+        "sellPrice": 50,
+        "id": "9123",
+        "alias": [
+            "chair",
+            "sedie"
+        ],
+        "priviled": null,
+        "category": "home",
+        "icon": "<:chair:911212001106210826>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Piantina",
+        "price": 50,
+        "sellPrice": 30,
+        "id": "7021",
+        "alias": [
+            "pianta",
+            "vaso",
+            "vasi"
+        ],
+        "priviled": 10,
+        "category": "home",
+        "icon": "<:plant:911212002301575208>",
+        "iconUnlocked": "<:plantUnlocked:911212002364489769>"
+    },
+    {
+        "name": "Padella",
+        "price": 45,
+        "sellPrice": 40,
+        "id": "1242",
+        "alias": [
+            "pentola",
+            "pedelle",
+            "pentole"
+        ],
+        "priviled": 25,
+        "category": "home",
+        "icon": "<:pan:911212001970257970>",
+        "iconUnlocked": "<:panUnlocked:911212002301607986>"
+    },
+    {
+        "name": "Tappeto",
+        "price": 70,
+        "sellPrice": 68,
+        "id": "6712",
+        "alias": [
+            "carpet",
+            "tappeti"
+        ],
+        "priviled": 40,
+        "category": "home",
+        "icon": "<:rug:911212002381271040>",
+        "iconUnlocked": "<:rugUnlocked:911212002377072640>"
+    },
+
+
+
+
+
+    {
+        "name": "Automobile",
+        "price": 590,
+        "sellPrice": 550,
+        "id": "9341",
+        "alias": [
+            "auto",
+            "car",
+            "automobili"
+        ],
+        "priviled": null,
+        "category": "mezziTrasporto",
+        "icon": "<:car:911212203485569034>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Bicicletta",
+        "price": 340,
+        "sellPrice": 300,
+        "id": "3954",
+        "alias": [
+            "bici",
+            "biciclette",
+            "bike"
+        ],
+        "priviled": null,
+        "category": "mezziTrasporto",
+        "icon": "<:bike:911212203372331038>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Monopattino",
+        "price": 290,
+        "sellPrice": 280,
+        "id": "5813",
+        "alias": [
+            "monopattini"
+        ],
+        "priviled": 10,
+        "category": "mezziTrasporto",
+        "icon": "<:scooter:911212203015831582>",
+        "iconUnlocked": "<:scooterUnlocked:911212203116470315>"
+    },
+    {
+        "name": "Skateboard",
+        "price": 190,
+        "sellPrice": 150,
+        "id": "2901",
+        "alias": [
+            "skate"
+        ],
+        "priviled": 35,
+        "category": "mezziTrasporto",
+        "icon": "<:skateboard:911212203456213012>",
+        "iconUnlocked": "<:skateboardUnlocked:911212203296845835>"
+    },
+    {
+        "name": "Mongolfiera",
+        "price": 890,
+        "sellPrice": 850,
+        "id": "4732",
+        "alias": [
+            "dirigibile",
+            "mongolfiere"
+        ],
+        "priviled": 60,
+        "category": "mezziTrasporto",
+        "icon": "<:balloon:911212202902585364>",
+        "iconUnlocked": "<:balloonUnlocked:911212203015815198>"
+    },
+    {
+        "name": "Triciclo",
+        "price": 210,
+        "sellPrice": 195,
+        "id": "6234",
+        "alias": [
+            "tricicli"
+        ],
+        "priviled": 70,
+        "category": "mezziTrasporto",
+        "icon": "<:tricycle:911212203145826326>",
+        "iconUnlocked": "<:tricycleUnlocked:911212203556888606>"
+    },
+
+
+
+
+
+    {
+        "name": "T-Shirt",
+        "price": 60,
+        "sellPrice": 55,
+        "id": "5820",
+        "alias": [
+            "maglietta",
+            "tshirt",
+            "maglia",
+            "maglie"
+        ],
+        "priviled": null,
+        "category": "abbigliamento",
+        "icon": "<:tshirt:911212354593763339>",
+        "iconUnlocked": ""
+    },
+    {
+        "name": "Felpa",
+        "price": 80,
+        "sellPrice": 73,
+        "id": "3892",
+        "alias": [
+            "felpe",
+            "maglione",
+            "maglioni",
+            "tuta"
+        ],
+        "priviled": 10,
+        "category": "abbigliamento",
+        "icon": "<:sweatshirt:911212355583631410>",
+        "iconUnlocked": "<:sweatshirtUnlocked:911212355638153256>"
+    },
+    {
+        "name": "Jeans",
+        "price": 90,
+        "sellPrice": 85,
+        "id": "5734",
+        "alias": [
+            "pantaloni",
+            "pantalone"
+        ],
+        "priviled": 20,
+        "category": "abbigliamento",
+        "icon": "<:jeans:911212354157576212>",
+        "iconUnlocked": "<:jeansUnlocked:911212354228867132>"
+    },
+    {
+        "name": "Scarpe",
+        "price": 120,
+        "sellPrice": 95,
+        "id": "9481",
+        "alias": [
+            "scarpa"
+        ],
+        "priviled": 40,
+        "category": "abbigliamento",
+        "icon": "<:shoes:911212355482943560>",
+        "iconUnlocked": "<:shoesUnlocked:911212355516518410>"
+    },
+    {
+        "name": "Anello",
+        "price": 290,
+        "sellPrice": 280,
+        "id": "9324",
+        "alias": [
+            "anelli",
+            "ring"
+        ],
+        "priviled": 70,
+        "category": "abbigliamento",
+        "icon": "<:ring:911212355222921286>",
+        "iconUnlocked": "<:ringUnlocked:911212355390693387>"
+    },
+    {
+        "name": "Collana",
+        "price": 390,
+        "sellPrice": 380,
+        "id": "1225",
+        "alias": [
+            "collane"
+        ],
+        "priviled": 70,
+        "category": "abbigliamento",
+        "icon": "<:necklace:911212354853830656>",
+        "iconUnlocked": "<:necklaceUnlocked:911212354707017789>"
+    }
+]
