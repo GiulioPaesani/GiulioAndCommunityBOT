@@ -5,16 +5,7 @@ module.exports = {
 
         if (newMessage.guild?.id != settings.idServer) return
 
-        await Discord.Util.delayFor(900);
-
-        const fetchedLogs = await newMessage.guild.fetchAuditLogs({
-            limit: 1,
-            type: 'MESSAGE_UPDATE',
-        });
-
-        const logs = fetchedLogs.entries.first();
-
-        if (logs.executor.bot) return
+        if (newMessage.author.bot) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":pencil: Message updated :pencil:")
@@ -22,7 +13,7 @@ module.exports = {
             .setColor("#fcba03")
             .setThumbnail(newMessage.author.displayAvatarURL({ dynamic: true }))
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-            .addField(":bust_in_silhouette: Member", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
+            .addField(":bust_in_silhouette: Member", `${newMessage.author.toString()} - ID: ${newMessage.author.id}`, false)
             .addField(":ledger: Channel", `#${newMessage.channel.name}`)
 
         if (oldMessage.mentions.roles) {

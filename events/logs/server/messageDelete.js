@@ -9,6 +9,11 @@ module.exports = {
         if (!message.author) return
         if (message.author.bot) return
 
+        const args = message.content.slice(prefix.length).trim().split(/ +/);
+        const command = args.shift().toLowerCase()
+        var comando = client.commands.get(command) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
+        if (comando) return
+
         var embed = new Discord.MessageEmbed()
             .setTitle(":wastebasket: Message deleted :wastebasket:")
             .setColor("#e31705")
