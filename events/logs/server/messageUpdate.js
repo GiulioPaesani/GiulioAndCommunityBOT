@@ -5,7 +5,7 @@ module.exports = {
 
         if (newMessage.guild?.id != settings.idServer) return
 
-        if (newMessage.author.bot) return
+        if (newMessage.author?.bot) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":pencil: Message updated :pencil:")
