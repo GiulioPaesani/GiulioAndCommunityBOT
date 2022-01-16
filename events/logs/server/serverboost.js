@@ -108,15 +108,17 @@ New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscription
             ],
             "10": [
                 `Mandare **emoji** esterne`,
-                `Creare **stanze private vocali**`,
+                `Creare **stanze private vocali** in <#${settings.idCanaliServer.privateRooms}>`,
                 `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioGG")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioHappy")}`
             ],
             "15": [
                 `Scrivere in chat <#${settings.idCanaliServer.noMicChat}> per utilizzare **KDBot**`,
-                `Creare **stanze private vocali**`,
+                `Creare **stanze private vocali** in <#${settings.idCanaliServer.privateRooms}>`,
+                `Cambiare il proprio **nickname**`,
+                `Utilizzare il comando \`!say\``,
             ],
             "20": [
-                `Creare **stanze private testuali+vocali**`,
+                `Creare **stanze private testuali+vocali** in <#${settings.idCanaliServer.privateRooms}>`,
                 `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioPiangere")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioBuonanotte")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioLove")}`
             ],
             "25": [
