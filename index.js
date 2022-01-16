@@ -260,11 +260,3 @@ process.on("unhandledRejection", err => {
 //.setColor("#22c90c")
 //.setColor("#fcba03")
 //.setColor("#e31705")
-
-client.codes.forEach(code => {
-    client.codes.forEach(code2 => {
-        if (code.id == code2.id && code.name != code2.name) {
-            console.log(`${code.name} = ${code2.name}`)
-        }
-    })
-})

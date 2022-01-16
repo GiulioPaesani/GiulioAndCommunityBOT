@@ -24,23 +24,31 @@ module.exports = {
             .addField("Category", channel.parentID ? channel.parent : "_Null_")
             .addField("Type", channel.type == "text" ? "Text" : channel.type == "voice" ? "Voice" : channel.type)
 
-        if (channel.permissionOverwrites.array().length != 0) {
-            var permissionText
-            if (channel.permissionOverwrites.array().find(x => x.id == channel.guild.roles.everyone.id)) {
-                if (channel.permissionOverwrites.array().length == 1) {
-                    permissionText = "_Private for @everyone_"
-                }
-                else {
-                    permissionText = "_Accessible only for_\r"
-                    channel.permissionOverwrites.array().filter(x => x.id != channel.guild.roles.everyone.id).forEach(permission => {
-                        permissionText += permission.type == "member" ? `<@${permission.id}>\r` : `${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == channel.guild.roles.cache.find(y => y.id == permission.id).name).toString()}\r`
-                    })
-                }
+        var permissionsText = ""
+        for (var permission in Object.fromEntries(channel.permissionOverwrites)) {
+            permissionsText += Object.fromEntries(channel.permissionOverwrites)[permission].type == "member" ? `User: <@${permission}>\r` : `Role: ${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == channel.guild.roles.cache.find(y => y.id == permission)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == channel.guild.roles.cache.find(y => y.id == permission).name).toString() : channel.guild.roles.cache.find(y => y.id == permission).name}\r`
+
+            var permissionsAllow = Object.fromEntries(channel.permissionOverwrites)[permission]?.allow.serialize() || {}
+            var permissionsDeny = Object.fromEntries(channel.permissionOverwrites)[permission]?.deny.serialize() || {}
+
+            var permissions = { ...permissionsAllow }
+            for (var permission2 in permissions) {
+                if (!permissionsAllow[permission2] && !permissionsDeny[permission2])
+                    permissions[permission2] = 0
+                else if (permissionsAllow[permission2] && !permissionsDeny[permission2])
+                    permissions[permission2] = 1
+                else if (!permissionsAllow[permission2] && permissionsDeny[permission2])
+                    permissions[permission2] = -1
             }
 
-            embed
-                .addField("Permissions", permissionText)
+            for (var permission3 in permissions) {
+                if (permissions[permission3] != 0)
+                    permissionsText += `${permission3} - ${permissions[permission3] == -1 ? ":red_circle:" : ":green_circle:"}\r`
+            }
         }
+
+        if (permissionsText != "")
+            embed.addField("Permissions", permissionsText)
 
         client.channels.cache.get(log.server.channels).send(embed)
     },

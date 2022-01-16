@@ -7,6 +7,8 @@ module.exports = {
 
         if (newMessage.author?.bot) return
 
+        if (oldMessage.content != newMessage.content || JSON.stringify(oldMessage.attachments) != JSON.stringify(newMessage.attachments)) return
+
         var embed = new Discord.MessageEmbed()
             .setTitle(":pencil: Message updated :pencil:")
             .setDescription(`[Message link](https://discord.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id})`)
