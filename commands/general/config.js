@@ -12,7 +12,7 @@ module.exports = {
         if (!utente) return
 
         var embed = new Discord.MessageEmbed()
-            .setTitle("Notification - " + (utente.nickname ? utente.nickname : utente.username))
+            .setTitle("Notification - " + (utente.nickname ? utente.nickname : utente.user.username))
             .setDescription("Impostare le notifiche da ricevere all'interno del server")
             .setThumbnail("https://i.postimg.cc/3wKvXm4M/Notifications.png")
             .addField(`📋 Announcements - ${utente.roles.cache.has(settings.ruoliNotification.announcements) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Annunci grossi e importanti relativi al canale e al server")

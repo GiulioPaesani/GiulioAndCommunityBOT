@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["tag"],
     description: "Come **taggare** utenti, ruoli, canali e categorie",
     category: "utility",
-    id: "1639466256",
+    id: "1642321334",
     info: "",
     video: "",
     v12: `

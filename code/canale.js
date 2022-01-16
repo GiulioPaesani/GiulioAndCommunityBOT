@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["channel"],
     description: "Ottenere un **canale testuale/vocale/altro**",
     category: "manage",
-    id: "1639466121",
+    id: "1642321287",
     info: "",
     video: "",
     v12: `

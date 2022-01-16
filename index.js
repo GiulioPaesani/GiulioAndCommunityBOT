@@ -261,58 +261,10 @@ process.on("unhandledRejection", err => {
 //.setColor("#fcba03")
 //.setColor("#e31705")
 
-client.on("message", message => {
-    if (message.author.id != "793768313934577664") return
-
-    if (message.content == "!putemoji") {
-        var emoji = { //!non mettere emoji nuove
-            "5": ["Giulio", "GiulioBacio", "GiulioOK"],
-            "10": ["GiulioAngry", "GiulioGG", "GiulioHappy"],
-            "20": ["GiulioPiangere", "GiulioBuonanotte", "GiulioLove"],
-            "25": ["GiulioBan", "GiulioCool", "GiulioF", "GiulioRip"],
-            "30": ["GiulioLOL", "GiulioHi"],
-            "35": ["GiulioWow", "GiulioSad", "GiulioLive"],
-            "40": ["GiulioPaura", "GiulioDomandoso", "GiulioFesta"]
+client.codes.forEach(code => {
+    client.codes.forEach(code2 => {
+        if (code.id == code2.id && code.name != code2.name) {
+            console.log(`${code.name} = ${code2.name}`)
         }
-
-        for (var index in emoji) {
-            var ruoli = ["793796029878370326", "799925821904125962", "800009879371644940", "793804156430188594"]
-            var finoLevel = parseInt(index)
-            for (var i = 5; i <= finoLevel; i++) {
-                var ruolo = message.guild.roles.cache.find(x => x.name == "Level " + i)
-                if (ruolo) ruoli.push(ruolo.id)
-            }
-            emoji[index].forEach(e => {
-                message.guild.emojis.create(`./emoji/${e}.png`, e, { roles: ruoli })
-            })
-        }
-    }
-
-    if (message.content == "!newemoji") {
-        var emoji = { //!solo emoji nuove
-            "20": ["GiulioSus"],
-            "25": ["GiulioCringe"],
-            "35": ["GiulioCattivo"],
-            "40": ["GiulioPopCorn"]
-        }
-
-        for (var index in emoji) {
-            var ruoli = ["793796029878370326", "799925821904125962", "800009879371644940", "793804156430188594"]
-            var finoLevel = parseInt(index)
-            for (var i = 5; i <= finoLevel; i++) {
-                var ruolo = message.guild.roles.cache.find(x => x.name == "Level " + i)
-                if (ruolo) ruoli.push(ruolo.id)
-            }
-            emoji[index].forEach(e => {
-                message.guild.emojis.create(`./emoji/${e}.png`, e, { roles: ruoli })
-            })
-        }
-    }
-
-    if (message.content == "!activityrooms") {
-        for (var index in serverstats.privateRooms) {
-            serverstats.privateRooms[index].lastActivity = new Date.getTime()
-            serverstats.privateRooms[index].lastActivityCount = 0
-        }
-    }
+    })
 })

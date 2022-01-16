@@ -3,7 +3,7 @@ module.exports = {
     aliases: [],
     description: "Far inviare al bot un messaggio a una determinata **ora** tutti i giorni o ogni tot tempo",
     category: "utility",
-    id: "1639466183",
+    id: "1642321321",
     info: "",
     video: "https://youtu.be/SN8b92REkII?t=977",
     v12: `

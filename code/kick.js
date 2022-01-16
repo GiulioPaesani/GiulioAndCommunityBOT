@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["kickare", "kikkare", "espellere"],
     description: "**Espellere** un utente dal server",
     category: "moderation",
-    id: "1639466160",
+    id: "1642321294",
     info: "",
     video: "https://youtu.be/x-Ii6BZiVQQ?t=27",
     v12: `
