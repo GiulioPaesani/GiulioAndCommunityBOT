@@ -19,7 +19,7 @@ module.exports = {
             .setColor("#fcba03")
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
-            .addField("Role", role.name)
+            .addField("Role", oldRole.name)
 
         logs.changes.forEach(change => {
             if (!change.key.startsWith("permissions")) {

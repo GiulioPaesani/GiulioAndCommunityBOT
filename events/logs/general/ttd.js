@@ -59,6 +59,6 @@ module.exports = {
 
         message.channel.send(embed, select)
         message.delete()
-
+            .catch(() => { })
     },
 };

@@ -41,7 +41,7 @@ Downvotes: **0** - 0%
                     .addField(":bookmark_tabs: Suggestion", button.message.embeds[0].fields[2].value)
 
                 utente.send(embed)
-                    .catch(() => { return })
+                    .catch(() => { })
 
                 button.message.embeds[0].fields[1].value = "Approved by " + button.clicker.user.username
                 button.message.embeds[0].color = "1620027"

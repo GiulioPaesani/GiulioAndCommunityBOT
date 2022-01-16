@@ -8,6 +8,7 @@ module.exports = {
         if (message.author.bot) return
 
         message.delete()
+            .catch(() => { })
 
         var numeroBoost;
         if (message.content == "")
@@ -156,7 +157,7 @@ New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscription
 
         textPrivilegi += `- Tutte le **emoji** del server: ${client.emojis.cache.find(emoji => emoji.name === "GiulioHappy")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioPopCorn")} e molte altre...\r`
 
-        var items = require("../../config/items.json")
+        var items = require("../../../config/items.json")
         var textItems = ""
         items.forEach(item => {
             if (item.priviled && item.priviled <= 30) {

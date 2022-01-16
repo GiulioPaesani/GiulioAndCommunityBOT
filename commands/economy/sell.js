@@ -86,6 +86,6 @@ _Hai ${userstats.money}$ - Con guadagno: ${userstats.money + (item.sellPrice * a
             .addComponent(button4)
 
         message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

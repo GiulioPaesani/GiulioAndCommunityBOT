@@ -18,7 +18,7 @@ module.exports = {
                 .setThumbnail("https://i.postimg.cc/ZKghn7NF/Copertina-triste.jpg")
 
             button.clicker.user.send(embed)
-                .catch(() => { return })
+                .catch(() => { })
             return
         }
 
@@ -37,6 +37,6 @@ module.exports = {
         button.clicker.user.send({
             component: button1,
             embed: embed
-        }).catch(() => { return })
+        }).catch(() => { })
     },
 };

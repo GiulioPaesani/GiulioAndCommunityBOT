@@ -21,6 +21,6 @@ module.exports = {
             .addField("<:github:927643636051628112> GitHub", "[GiulioPaesani](https://github.com/GiulioPaesani)")
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

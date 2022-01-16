@@ -83,6 +83,8 @@ ${userstats.moderation.moderator}
             userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempmuted)
         }
 
+        if (utente.user) utente = utente.user
+
         var embed = new Discord.MessageEmbed()
             .setAuthor("[UNMUTE] " + utente.tag, utente.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
@@ -102,7 +104,7 @@ ${userstats.moderation.moderator}
                     .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
                     .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason, false)
+                    .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 if (!isMaintenance())
                     client.channels.cache.get(log.moderation.unmute).send(embed)
@@ -116,7 +118,7 @@ ${userstats.moderation.moderator}
             .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
 
         utente.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
 
 
 

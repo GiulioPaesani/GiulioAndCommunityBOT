@@ -65,7 +65,7 @@ Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vend
                 .addOption(option5)
 
             message.channel.send(embed, select)
-                .catch(() => { return })
+                .catch(() => { })
         }
         else {
             var oggetto = args.join(" ").toLowerCase()
@@ -126,7 +126,7 @@ Category: ${item.category == "technology" ? "Technology" : item.category == "foo
                     .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
                 message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
-                    .catch(() => { return })
+                    .catch(() => { })
             }
             else {
                 var button1 = new disbut.MessageButton()
@@ -173,7 +173,7 @@ Category: ${item.category == "technology" ? "Technology" : item.category == "foo
                     .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
                 message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
-                    .catch(() => { return })
+                    .catch(() => { })
             }
 
         }

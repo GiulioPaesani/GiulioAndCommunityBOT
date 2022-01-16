@@ -15,6 +15,7 @@ module.exports = {
 			serverstats.ticket[serverstats.ticket.findIndex(x => x.channel == button.channel.id)] = ticket;
 
 			button.message.delete()
+				.catch(() => { })
 
 			client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
 				.then(msg => {

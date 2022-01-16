@@ -95,7 +95,7 @@ module.exports = {
             .addField("Moderator", message.author.toString())
 
         utente.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
     },

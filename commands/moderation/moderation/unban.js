@@ -54,7 +54,7 @@ ${userstats.moderation.moderator}
         }
 
         if (message.guild.members.cache.find(x => x.id == utente.id)) {
-            message.guild.members.unban(utente.id).catch(() => { return })
+            message.guild.members.unban(utente.id).catch(() => { })
 
             utente.roles.remove(settings.ruoliModeration.banned)
             utente.roles.remove(settings.ruoliModeration.tempbanned)
@@ -85,7 +85,7 @@ ${userstats.moderation.moderator}
                     .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
                     .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason, false)
+                    .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 if (!isMaintenance())
                     client.channels.cache.get(log.moderation.unban).send(embed)
@@ -99,7 +99,7 @@ ${userstats.moderation.moderator}
             .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
 
         utente.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
 
         userstats.moderation = {
             "type": "",

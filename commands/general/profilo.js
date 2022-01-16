@@ -19,6 +19,6 @@ Attraverso questo sito ho scaricato tutte le **risorse** e immagini necessarie, 
 Guarda il questo [video completo](https://youtu.be/mT-G-bRIREc) in cui mostro nel **dettaglio** come ho realizzato tutto ciò`)
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

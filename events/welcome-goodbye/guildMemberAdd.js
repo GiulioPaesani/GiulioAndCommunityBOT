@@ -13,7 +13,7 @@ module.exports = {
         if (!userstatsList.find(x => x.id == member.id) || (userstatsList.find(x => x.id == member.id) && !userstatsList.find(x => x.id == member.id).joinedAt)) {
             member.roles.add(settings.idRuoloNonVerificato)
             client.channels.cache.get(settings.idCanaliServer.joinTheServer).send(member.toString())
-                .then(msg => msg.delete())
+                .then(msg => msg.delete().catch(() => { }))
             return
         }
 

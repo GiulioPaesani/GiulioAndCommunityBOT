@@ -83,6 +83,6 @@ _Seleziona la categoria dal menù qua sotto_`)
             .addOption(option7)
 
         message.channel.send(embed, select)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

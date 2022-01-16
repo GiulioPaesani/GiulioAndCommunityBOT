@@ -3,7 +3,7 @@ module.exports = {
     async execute(guild, user) {
         if (isMaintenance()) return
 
-        if (ban.guild.id != settings.idServer) return
+        if (guild.id != settings.idServer) return
 
         const fetchedLogs = await guild.fetchAuditLogs({
             limit: 1,
@@ -12,6 +12,7 @@ module.exports = {
 
         const logs = fetchedLogs.entries.first();
         if (!logs) return
+
         if (logs.executor.bot) return
 
         var embed = new Discord.MessageEmbed()

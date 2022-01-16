@@ -55,12 +55,12 @@ global.checkModeration = async function () {
                     .setTitle("Sei stato smutato")
                     .setColor("#6143CB")
                     .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
-                    .addField("Reason", userstats.moderation.reason)
+                    .addField("Reason", userstats.moderation.reason || "_Null_")
                     .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
                     .addField("Moderator", client.user.toString())
 
                 utente.send(embedUtente)
-                    .catch(() => { return })
+                    .catch(() => { })
 
                 if (utente.user) utente = utente.user
 
@@ -72,7 +72,7 @@ global.checkModeration = async function () {
                     .addField(":brain: Executor", `${client.user.toString()}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
                     .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason, false)
+                    .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 client.channels.cache.get(log.moderation.unmute).send(embed)
 
@@ -105,12 +105,12 @@ global.checkModeration = async function () {
                     .setTitle("Sei stato sbannato")
                     .setColor("#6143CB")
                     .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")
-                    .addField("Reason", userstats.moderation.reason)
+                    .addField("Reason", userstats.moderation.reason || "_Null_")
                     .addField("Time banned", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
                     .addField("Moderator", client.user.toString())
 
                 utente.send(embedUtente)
-                    .catch(() => { return })
+                    .catch(() => { })
 
                 if (utente.user) utente = utente.user
 
@@ -122,7 +122,7 @@ global.checkModeration = async function () {
                     .addField(":brain: Executor", `${client.user.toString()}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
                     .addField("Time", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason, false)
+                    .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 client.channels.cache.get(log.moderation.unban).send(embed)
 

@@ -108,6 +108,6 @@ module.exports = {
             .addComponent(button4)
 
         message.channel.send(embed, row)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

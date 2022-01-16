@@ -13,5 +13,6 @@ module.exports = {
         if (!userstats) return
 
         button.message.delete()
+            .catch(() => { })
     },
 };

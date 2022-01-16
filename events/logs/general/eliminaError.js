@@ -8,5 +8,6 @@ module.exports = {
         if (isMaintenance(button.clicker.user.id)) return
 
         button.message.delete()
+            .catch(() => { })
     },
 };

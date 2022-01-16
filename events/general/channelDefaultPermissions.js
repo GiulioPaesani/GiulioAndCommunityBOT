@@ -7,19 +7,19 @@ module.exports = {
 
         channel.updateOverwrite(settings.idRuoloNonVerificato, {
             VIEW_CHANNEL: false
-        }).catch(() => { return })
+        }).catch(() => { })
 
         channel.updateOverwrite(settings.ruoliModeration.muted, {
             SEND_MESSAGES: false
-        }).catch(() => { return })
+        }).catch(() => { })
         channel.updateOverwrite(settings.ruoliModeration.tempmuted, {
             SEND_MESSAGES: false
-        }).catch(() => { return })
+        }).catch(() => { })
         channel.updateOverwrite(settings.ruoliModeration.banned, {
             VIEW_CHANNEL: false
-        }).catch(() => { return })
+        }).catch(() => { })
         channel.updateOverwrite(settings.ruoliModeration.tempbanned, {
             VIEW_CHANNEL: false
-        }).catch(() => { return })
+        }).catch(() => { })
     },
 };

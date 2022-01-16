@@ -46,7 +46,7 @@ module.exports = {
 
                         msg.edit(embed)
                     })
-                    .catch(() => { return })
+                    .catch(() => { })
             })
     },
 };

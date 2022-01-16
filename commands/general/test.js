@@ -17,6 +17,6 @@ module.exports = {
             .addField(":floppy_disk: Ram", "```" + `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` + "```", true)
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

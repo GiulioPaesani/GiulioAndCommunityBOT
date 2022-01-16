@@ -43,7 +43,7 @@ module.exports = {
                     .addField(":inbox_tray: Message", `**${message.author.username}** ti ha lasciato un messaggio: ` + "`" + message.content.slice(0, 900) + "`")
 
                 utente.send(embed)
-                    .catch(() => { return })
+                    .catch(() => { })
             })
     },
 };

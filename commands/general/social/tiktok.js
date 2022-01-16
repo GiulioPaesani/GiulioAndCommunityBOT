@@ -14,6 +14,6 @@ module.exports = {
             .setDescription("Ecco il profilo TikTok di **Giulio**\r:link: [giulio.paesani](https://www.tiktok.com/@giulio.paesani)")
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

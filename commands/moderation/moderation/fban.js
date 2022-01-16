@@ -164,7 +164,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
 
         utente.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
 
         message.guild.members.ban(utente.id, { reason: reason })
     },

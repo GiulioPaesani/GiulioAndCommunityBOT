@@ -137,6 +137,6 @@ ${userstats.moderation.moderator}
             .then(() => {
                 utente.kick({ reason: reason })
             })
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

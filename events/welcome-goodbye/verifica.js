@@ -58,7 +58,7 @@ module.exports = {
         else {
             userstatsList.find(x => x.id == button.clicker.user.id).roles.forEach(role => {
                 button.clicker.member.roles.add(role)
-                    .catch(() => { return })
+                    .catch(() => { })
             })
             userstatsList[userstatsList.findIndex(x => x.id == button.clicker.user.id)] = userstats
         }

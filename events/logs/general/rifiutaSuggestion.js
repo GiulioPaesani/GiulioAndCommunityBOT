@@ -20,7 +20,7 @@ module.exports = {
             .addField(":bookmark_tabs: Suggestion", button.message.embeds[0].fields[2].value)
 
         utente.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
 
         button.message.embeds[0].fields[1].value = "Refused by " + button.clicker.user.username
         button.message.embeds[0].color = "15548997"

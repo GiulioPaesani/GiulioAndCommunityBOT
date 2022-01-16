@@ -104,7 +104,7 @@ module.exports = {
             .addField("Moderator", button.clicker.user.toString())
 
         utente.send(embedUtente)
-            .catch(() => { return })
+            .catch(() => { })
 
 
     },

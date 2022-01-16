@@ -52,7 +52,7 @@ _Oggetti totali: ${totItems}_`)
                 .setFooter(`Coins: ${userstats.money}$`)
 
             message.channel.send(embed)
-                .catch(() => { return })
+                .catch(() => { })
             return
         }
 
@@ -96,9 +96,9 @@ _Oggetti totali: ${totItems}_`)
 
         if (totPage > 1)
             message.channel.send(embed, row)
-                .catch(() => { return })
+                .catch(() => { })
         else
             message.channel.send(embed)
-                .catch(() => { return })
+                .catch(() => { })
     },
 };

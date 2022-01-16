@@ -14,6 +14,6 @@ module.exports = {
             .setDescription("Ecco il profilo Instagram di **Giulio**\r:link: [giulio_paesani](https://www.instagram.com/giulio_paesani/)")
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

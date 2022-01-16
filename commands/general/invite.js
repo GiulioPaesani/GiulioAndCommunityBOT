@@ -15,6 +15,6 @@ https://discord.gg/ypTCaveew2`)
             .setColor("#677BC4");
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

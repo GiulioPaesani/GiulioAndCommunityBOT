@@ -69,6 +69,6 @@ module.exports = {
             .setDescription(`${message.author.toString()} ti ha regalato \`${xp} xp\`\rGoditi questi nuovi punti esperienza`)
 
         utente.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

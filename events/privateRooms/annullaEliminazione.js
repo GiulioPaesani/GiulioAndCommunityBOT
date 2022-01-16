@@ -19,5 +19,6 @@ module.exports = {
         serverstats.privateRooms[serverstats.privateRooms.findIndex(x => x.owner == room.owner)].lastActivityCount = 0
 
         button.message.delete()
+            .catch(() => { })
     },
 };

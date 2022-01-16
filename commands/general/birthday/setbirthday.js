@@ -85,9 +85,10 @@ module.exports = {
         message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
             .then(msg => {
                 msg.delete({ timeout: 60000 })
+                    .catch(() => { })
                 message.delete({ timeout: 60000 })
-                    .catch(() => { return })
+                    .catch(() => { })
             })
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

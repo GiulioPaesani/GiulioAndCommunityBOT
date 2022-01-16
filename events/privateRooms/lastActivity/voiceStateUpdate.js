@@ -16,7 +16,7 @@ module.exports = {
             client.channels.cache.get(room.text).messages.fetch()
                 .then(messages => {
                     var msg = messages.array().find(x => x.embeds[0]?.title == "Stanza un po' inattiva")
-                    if (msg) msg.delete()
+                    if (msg) msg.delete().catch(() => { })
                 })
         }
     },

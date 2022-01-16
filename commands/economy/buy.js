@@ -118,6 +118,6 @@ _Hai ${userstats.money}$ - Rimanenti: ${userstats.money - (item.price * amount)}
             .addComponent(button4)
 
         message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

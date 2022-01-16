@@ -29,6 +29,6 @@ module.exports = {
             .addField(":calendar_spiral: Server created", "```" + moment(server.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(server.createdAt).fromNow() + ")```", false)
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

@@ -18,6 +18,7 @@ module.exports = {
 
         if (userstats.birthday && userstats.birthday[0]) {
             button.message.delete()
+                .catch(() => { })
             return botMessage(button.clicker.user, "Warning", "Compleanno già inserito", "Hai già settato il tuo compleanno, non puoi più **modificarlo**")
         }
         else {
@@ -98,7 +99,7 @@ module.exports = {
 - **Boost x2** livellamento per tutto il giorno`)
 
                 client.users.cache.get(userstats.id).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
-                    .catch(() => { return })
+                    .catch(() => { })
 
                 userstats = await addXp(userstats, userstats.level * 40, 0);
                 userstats.coins += userstats.level * 10

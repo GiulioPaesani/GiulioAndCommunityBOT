@@ -444,20 +444,20 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\r${canaliConcessiL
 		message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: components })
 			.then(msg => {
 				if (type != "Correct") {
-					msg.delete({ timeout: 30000 }).catch(() => { })
-					message.delete({ timeout: 30000 }).catch(() => { })
+					msg.delete({ timeout: 20000 }).catch(() => { })
+					message.delete({ timeout: 20000 }).catch(() => { })
 				}
 			})
-			.catch(() => { return })
+			.catch(() => { })
 	else
 		message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
 			.then(msg => {
 				if (type != "Correct") {
-					msg.delete({ timeout: 30000 }).catch(() => { })
-					message.delete({ timeout: 30000 }).catch(() => { })
+					msg.delete({ timeout: 20000 }).catch(() => { })
+					message.delete({ timeout: 20000 }).catch(() => { })
 				}
 			})
-			.catch(() => { return })
+			.catch(() => { })
 
 	return true
 }
@@ -491,8 +491,8 @@ global.botMessage = async function (channel, type, title, description, fields, c
 	channel.send(embed, components)
 		.then(msg => {
 			if (type != "Correct") {
-				msg.delete({ timeout: 30000 }).catch(() => { })
-				message.delete({ timeout: 30000 }).catch(() => { })
+				msg.delete({ timeout: 20000 }).catch(() => { })
+				message.delete({ timeout: 20000 }).catch(() => { })
 			}
 		})
 		.catch(() => { })
@@ -674,13 +674,13 @@ global.checkActivityPrivateRooms = function () {
 
 			if (room.text) {
 				client.channels.cache.get(room.text).send(`<@${room.owner}>`)
-					.then(msg => msg.delete())
+					.then(msg => msg.delete().catch(() => { }))
 
 				client.channels.cache.get(room.text).send(embed, button1)
 			}
 			else {
 				client.users.cache.get(room.owner).send(embed, button1)
-					.catch(() => { return })
+					.catch(() => { })
 			}
 
 			serverstats.privateRooms[index].lastActivity = new Date().getTime()
@@ -699,7 +699,7 @@ global.checkActivityPrivateRooms = function () {
 
 			if (room.text) {
 				client.channels.cache.get(room.text).send(`<@${room.owner}>`)
-					.then(msg => msg.delete())
+					.then(msg => msg.delete().catch(() => { }))
 
 				client.channels.cache.get(room.text).send(embed, button1)
 
@@ -707,12 +707,12 @@ global.checkActivityPrivateRooms = function () {
 				client.channels.cache.get(room.text).messages.fetch()
 					.then(messages => {
 						var msg = messages.array().find(x => x.embeds[0]?.title == "Stanza un po' inattiva")
-						if (msg) msg.delete()
+						if (msg) msg.delete().catch(() => { })
 					})
 			}
 			else {
 				client.users.cache.get(room.owner).send(embed, button1)
-					.catch(() => { return })
+					.catch(() => { })
 			}
 
 			serverstats.privateRooms[index].lastActivity = new Date().getTime()
@@ -820,7 +820,7 @@ global.checkBirthday = async function () {
 - **Boost x2** livellamento per tutto il giorno`)
 
 					client.users.cache.get(userstats.id).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
-						.catch(() => { return })
+						.catch(() => { })
 
 					userstats = await addXp(userstats, userstats.level * 40, 0);
 					userstats.coins += userstats.level * 10
@@ -905,10 +905,10 @@ global.checkRoomInDB = function () {
 	client.guilds.cache.get(settings.idServer).channels.cache.forEach(channel => {
 		if (channel.parentID == settings.idCanaliServer.categoriaPrivateRooms && channel.id != settings.idCanaliServer.privateRooms) {
 			if (channel.type == "text") {
-				if (!serverstats.privateRooms.find(x => x.text == channel.id)) channel.delete().catch(() => { return })
+				if (!serverstats.privateRooms.find(x => x.text == channel.id)) channel.delete().catch(() => { })
 			}
 			if (channel.type == "voice") {
-				if (!serverstats.privateRooms.find(x => x.voice == channel.id)) channel.delete().catch(() => { return })
+				if (!serverstats.privateRooms.find(x => x.voice == channel.id)) channel.delete().catch(() => { })
 			}
 		}
 	})

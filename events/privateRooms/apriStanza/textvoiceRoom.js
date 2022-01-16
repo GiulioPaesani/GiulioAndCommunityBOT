@@ -97,7 +97,7 @@ Ci sono alcune **regole** da seguire nelle tue stanze
 - Vietato lo spam di link **illeciti**, software o plugin **malevoli**
 - Si applicano anche tutte le regole del server`)
 
-                text.send(`<@${button.clicker.user.id}>`).then(msg => msg.delete())
+                text.send(`<@${button.clicker.user.id}>`).then(msg => msg.delete().catch(() => { }))
                 text.send(embed)
 
                 serverstats.privateRooms.push({

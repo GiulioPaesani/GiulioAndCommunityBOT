@@ -51,7 +51,7 @@ module.exports = {
                     .addField(`:grey_exclamation: Not setted`, `_Questo utente non ha ancora inserito il suo compleanno_`)
             }
             message.channel.send(embed)
-                .catch(() => { return })
+                .catch(() => { })
         }
         else {
             if (new Date().getMonth() == userstats.birthday[0] - 1 && new Date().getDate() == userstats.birthday[1]) {
@@ -106,7 +106,7 @@ module.exports = {
             }
 
             message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
-                .catch(() => { return })
+                .catch(() => { })
         }
     },
 };

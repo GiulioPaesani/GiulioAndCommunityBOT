@@ -101,7 +101,7 @@ ${userstats.moderation.moderator}
             embed
                 .addField(":interrobang: Total", "```Nessuna infrazione```", false)
             message.channel.send(embed)
-                .catch(() => { return })
+                .catch(() => { })
         }
         else {
             var ultimi7d = 0
@@ -167,7 +167,7 @@ ${userstats.moderation.moderator}
                     .addComponent(button2)
 
             message.channel.send(embed, row)
-                .catch(() => { return })
+                .catch(() => { })
         }
     },
 };

@@ -20,6 +20,6 @@ Video, tutorial, contenuti sulla programmazione, nello specifico nel mondo di Bo
 Contenuti più personali e incentrati sull'intrattenimento`)
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

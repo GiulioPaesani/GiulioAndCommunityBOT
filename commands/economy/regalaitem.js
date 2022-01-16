@@ -79,6 +79,6 @@ module.exports = {
             .setDescription(`${message.author.toString()} ti ha regalato l'oggetto ${item.icon}**${item.name}**\rGoditi questo bellissimo item`)
 
         utente.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
-            .catch(() => { return })
+            .catch(() => { })
     },
 };

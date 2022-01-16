@@ -85,7 +85,7 @@ _Seleziona la categoria dal menù qua sotto_`)
                 .addOption(option6)
 
             message.channel.send(embed, select)
-                .catch(() => { return })
+                .catch(() => { })
             return
         }
 
@@ -150,7 +150,7 @@ _Seleziona la categoria dal menù qua sotto_`)
                 .then(msg => {
                     msg.edit({ timeout: 60000 })
                 })
-                .catch(() => { return })
+                .catch(() => { })
         }
         else {
             utente.send(embed, row)

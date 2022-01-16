@@ -12,6 +12,7 @@ module.exports = {
                 messages.forEach(msg => {
                     if (msg.embeds[0]?.fields[1]?.value == button.message.embeds[0]?.fields[1]?.value) {
                         msg.delete()
+                            .catch(() => { })
                     }
                 });
             })

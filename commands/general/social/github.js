@@ -20,6 +20,6 @@ module.exports = {
             .setThumbnail("https://i.postimg.cc/rpKN8qn2/Github-Logo.png")
 
         message.channel.send(embed)
-            .catch(() => { return })
+            .catch(() => { })
     },
 };
