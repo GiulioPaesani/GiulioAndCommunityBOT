@@ -1,6 +1,6 @@
 module.exports = {
     name: "github",
-    aliases: [],
+    aliases: ["repository", "repo"],
     onlyStaff: false,
     availableOnDM: true,
     description: "Link alle repository pubbliche di Giulio",
