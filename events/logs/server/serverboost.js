@@ -19,14 +19,13 @@ module.exports = {
         var livelloVecchio;
         var testoMancano;
         var nuovoLivello;
-        if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1" || 2 - message.guild.premiumSubscriptionCount <= 0) {
-            nuovoLivello = `:crystal_ball: **LIVELLO 1 sbloccato**
-+50 emoji
-+15 sticker
-Qualità audio 128 Kpms
-Icona server animata
-Sfondo inviti
-Streaming fino a 720p`
+        if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3" || 14 - message.guild.premiumSubscriptionCount <= 0) {
+            nuovoLivello = `:crystal_ball: **LIVELLO 3 sbloccato**
++100 emoji
++30 sticker
+Qualità audio 384 Kpms
+Vanity URL
+100 MB limite di caricamenti in chat`
         }
         else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2" || 7 - message.guild.premiumSubscriptionCount <= 0) {
             nuovoLivello = `:crystal_ball: **LIVELLO 2 sbloccato**
@@ -39,39 +38,15 @@ Streaming fino a 1080p 60fps
 Icone ruoli personalizzate
 `
         }
-        else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3" || 14 - message.guild.premiumSubscriptionCount <= 0) {
-            nuovoLivello = `:crystal_ball: **LIVELLO 3 sbloccato**
-+100 emoji
-+30 sticker
-Qualità audio 384 Kpms
-Vanity URL
-100 MB limite di caricamenti in chat`
+        else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1" || 2 - message.guild.premiumSubscriptionCount <= 0) {
+            nuovoLivello = `:crystal_ball: **LIVELLO 1 sbloccato**
++50 emoji
++15 sticker
+Qualità audio 128 Kpms
+Icona server animata
+Sfondo inviti
+Streaming fino a 720p`
         }
-
-        if (message.guild.premiumSubscriptionCount - numeroBoost < 2) {
-            livelloVecchio = 0
-            if (2 - message.guild.premiumSubscriptionCount == 1)
-                testoMancano = `_Manca solo **1 potenziamento** per il **Livello 1**_`
-            else
-                testoMancano = `_Mancano solo **${2 - message.guild.premiumSubscriptionCount} potenziamenti** per il **Livello 1**_`
-        }
-        else if (message.guild.premiumSubscriptionCount - numeroBoost < 7) {
-            livelloVecchio = 1
-            if (7 - message.guild.premiumSubscriptionCount == 1)
-                testoMancano = `_Manca solo **1 potenziamento** per il **Livello 2**_`
-            else
-                testoMancano = `_Mancano solo **${7 - message.guild.premiumSubscriptionCount} potenziamenti** per il **Livello 2**_`
-        }
-        else {
-            livelloVecchio = 3
-            if (14 - message.guild.premiumSubscriptionCount == 1)
-                testoMancano = `_Manca solo **1 potenziamento** per il **Livello 3**_`
-            else if (14 - message.guild.premiumSubscriptionCount > 0)
-                testoMancano = `_Mancano solo **${14 - message.guild.premiumSubscriptionCount} potenziamenti** per il **Livello 3**_`
-            else
-                testoMancano = ""
-        }
-
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":tada: Serverboost :tada:")
@@ -82,9 +57,8 @@ Vanity URL
 ${nuovoLivello ? nuovoLivello : testoMancano}
 `)
 
-        var canale = client.channels.cache.get(settings.idCanaliServer.announcements);
+        var canale = client.channels.cache.get(settings.idCanaliServer.general);
         canale.send(embed);
-
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Serverboost")

@@ -18,6 +18,8 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle(`${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""} ${codice.name.toUpperCase()} ${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""}`)
             .setDescription(codice.description + "\r_Version: `Discord.js v13`_")
+            .setDescription(`${codice.description}
+_Version: \`Discord.js v${version}\`_`)
 
         button.clicker.user.send({ embed, files: [attachment] })
             .catch(() => { })

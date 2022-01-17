@@ -38,8 +38,11 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${member.toString()} - ID: ${member.id}`, false)
                 .addField("Account created", `${moment(member.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.user.createdAt).fromNow()})`, false)
                 .addField("Leaved server", `${moment(userstats.leavedAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(userstats.leavedAt).fromNow()})`, false)
-                .addField("Invite", `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)`, false)
-                .addField("Roles", roles, false)
+
+            if (invite)
+                embed.addField("Invite", `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)`, false)
+
+            embed.addField("Roles", roles, false)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.welcomeGoodbye).send(embed)

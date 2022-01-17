@@ -17,7 +17,7 @@ module.exports = {
             .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-            .addField(":ledger: Channel", `#${message.channel}`)
+            .addField(":ledger: Channel", `#${message.channel.name}`)
 
         if (message.mentions.roles) {
             message.mentions.roles.array().forEach(role => {

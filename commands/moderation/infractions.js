@@ -100,6 +100,7 @@ ${userstats.moderation.moderator}
         if (warn.length == 0) {
             embed
                 .addField(":interrobang: Total", "```Nessuna infrazione```", false)
+
             message.channel.send(embed)
                 .catch(() => { })
         }
@@ -159,15 +160,16 @@ ${userstats.moderation.moderator}
             if (page == totalPage)
                 button2.setDisabled()
 
-            var row = new disbut.MessageActionRow()
-
-            if (totalPage != 1)
-                row
+            if (totalPage != 1) {
+                var row = new disbut.MessageActionRow()
                     .addComponent(button1)
                     .addComponent(button2)
-
-            message.channel.send(embed, row)
-                .catch(() => { })
+                message.channel.send(embed, row)
+            }
+            else {
+                message.channel.send(embed)
+                // .catch(() => { })
+            }
         }
     },
 };

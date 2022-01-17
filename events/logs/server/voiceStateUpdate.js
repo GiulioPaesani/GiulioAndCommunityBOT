@@ -13,7 +13,7 @@ module.exports = {
                 .setThumbnail(client.users.cache.get(newState.id).displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                .addField("Channel", `#${client.channels.cache.get(newState.channelID).name}`)
+                .addField("Channel", client.channels.cache.get(newState.channelID).name ? `#${client.channels.cache.get(newState.channelID).name}` : newState.channelID)
 
             client.channels.cache.get(log.server.voiceChannels).send(embed)
         }
@@ -38,7 +38,7 @@ module.exports = {
 
             embed
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(oldState.id).toString()} - ID: ${oldState.id}`, false)
-                .addField("Channel", `#${client.channels.cache.get(oldState.channelID).name}`)
+                .addField("Channel", client.channels.cache.get(oldState.channelID).name ? `#${client.channels.cache.get(oldState.channelID).name}` : oldState.channelID)
 
             client.channels.cache.get(log.server.voiceChannels).send(embed)
         }
@@ -64,8 +64,8 @@ module.exports = {
 
                 embed
                     .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                    .addField("From channel", `#${client.channels.cache.get(oldState.channelID).name}`)
-                    .addField("To channel", `#${client.channels.cache.get(newState.channelID).name}`)
+                    .addField("From channel", client.channels.cache.get(oldState.channelID).name ? `#${client.channels.cache.get(oldState.channelID).name}` : oldState.channelID)
+                    .addField("To channel", client.channels.cache.get(newState.channelID).name ? `#${client.channels.cache.get(newState.channelID).name}` : newState.channelID)
 
                 client.channels.cache.get(log.server.voiceChannels).send(embed)
             }
@@ -85,7 +85,7 @@ module.exports = {
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                    .addField("Channel", `#${client.channels.cache.get(newState.channelID).name}`)
+                    .addField("Channel", client.channels.cache.get(newState.channelID).name ? `#${client.channels.cache.get(newState.channelID).name}` : newState.channelID)
 
                 if (oldState.serverDeaf != newState.serverDeaf) {
                     if (oldState.serverDeaf) {

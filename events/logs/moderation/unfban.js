@@ -3,7 +3,7 @@ module.exports = {
     async execute(guild, user) {
         if (isMaintenance()) return
 
-        if (ban.guild.id != settings.idServer) return
+        if (guild.id != settings.idServer) return
 
         const fetchedLogs = await guild.fetchAuditLogs({
             limit: 1,

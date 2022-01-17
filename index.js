@@ -99,7 +99,7 @@ client.on("message", async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase()
 
-    if (!command[0].replace(/[^a-z]/g, "")) return
+    if (!command[0]?.replace(/[^a-z]/g, "")) return
 
     trovata = getParolaccia(message.content)[0];
     if (trovata && !utenteMod(message.author)) return

@@ -15,6 +15,7 @@ module.exports = {
         if (logs.executor.bot) return
 
         if (logs.createdAt < member.joinedAt) return
+        if (logs.target.id != member.id) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":ping_pong: Kick :ping_pong:")
