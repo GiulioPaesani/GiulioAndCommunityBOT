@@ -17,7 +17,9 @@ global.utenteMod = function (member) {
 global.codeError = async function (err) {
 	console.log(err);
 
-	if (err.toString().startsWith("Response: Internal Server Error") || err.stack.toString().startsWith("Response: Internal Server Error")) return
+	if (err.toString().startsWith("Response: Internal Server Error") || err.stack.toString().startsWith("Response: Internal Server Error") ||
+		err.toString().startsWith("DiscordAPIError: Cannot send an empty message") || err.stack.toString().startsWith("DiscordAPIError: Cannot send an empty message")
+	) return
 
 	var embed = new Discord.MessageEmbed()
 		.setTitle(`ERROR`)

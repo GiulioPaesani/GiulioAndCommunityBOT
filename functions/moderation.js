@@ -169,7 +169,7 @@ global.checkUnverifedUser = function () {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":skull: User not verified :skull:")
                     .setColor("#ababab")
-                    .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail(user.user.displayAvatarURL({ dynamic: true }))
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":bust_in_silhouette: Member", `${user.user.toString()} - ID: ${user.id}`, false)
                     .addField("Joined server", `${moment(user.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(user.joinedTimestamp).fromNow()})`, false)

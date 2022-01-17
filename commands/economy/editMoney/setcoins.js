@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["setmoney"],
     onlyStaff: true,
     availableOnDM: true,
-    description: "Rimuovere coins a un utente",
+    description: "Settare coins a un utente",
     syntax: "!setcoins [user] [coins]",
     category: "ranking",
     channelsGranted: [],
