@@ -22,7 +22,7 @@ module.exports = {
             return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
-        var userstats = userstatsList.find(x => x.id == message.author.id);
+        var userstats = userstatsList.find(x => x.id == utente.id);
         if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
 
         var elencoRuoli = "";
