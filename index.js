@@ -95,7 +95,7 @@ client.on("message", async message => {
     if (message.channel.id == log.general.thingsToDo) return
 
     if (isMaintenance(message.author.id)) return
-
+    
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase()
 
