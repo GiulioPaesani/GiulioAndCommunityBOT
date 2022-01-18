@@ -142,14 +142,22 @@ global.checkModeration = async function () {
 }
 
 global.checkUnverifedUser = function () {
-    if (settings.inMaintenanceMode) return
-
     var server = client.guilds.cache.get(settings.idServer)
     var users = server.members.cache.filter(x => x.roles.cache.has(settings.idRuoloNonVerificato)).array()
 
     users.forEach(user => {
         if (!utenteMod(user)) {
             if (new Date().getTime() - user.joinedTimestamp > 345600000) { //Utente ancora non verificato da 4 giorni
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(":skull: User not verified :skull:")
+                    .setColor("#ababab")
+                    .setThumbnail(user.user.displayAvatarURL({ dynamic: true }))
+                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                    .addField(":bust_in_silhouette: Member", `${user.user.toString()} - ID: ${user.id}`, false)
+                    .addField("Joined server", `${moment(user.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(user.joinedTimestamp).fromNow()})`, false)
+
+                client.channels.cache.get(log.server.other).send(embed)
+
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Non ti sei VERIFICATO")
                     .setColor(`#919191`)
@@ -165,16 +173,6 @@ global.checkUnverifedUser = function () {
                         user.kick()
                             .catch(() => { })
                     })
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":skull: User not verified :skull:")
-                    .setColor("#ababab")
-                    .setThumbnail(user.user.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":bust_in_silhouette: Member", `${user.user.toString()} - ID: ${user.id}`, false)
-                    .addField("Joined server", `${moment(user.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(user.joinedTimestamp).fromNow()})`, false)
-
-                client.channels.cache.get(log.server.other).send(embed)
             }
 
             if (Math.round(new Date().getTime() / 1000) - Math.round(user.joinedTimestamp / 1000) == 3600) { //Utente ancora non verificato da un ora
