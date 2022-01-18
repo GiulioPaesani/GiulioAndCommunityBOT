@@ -93,6 +93,8 @@ module.exports = {
 };
 
 setInterval(() => {
+    if (!userstatsList) return
+
     var date = new Date();
     if (date.getFullYear() != 2022) return
 
