@@ -16,7 +16,7 @@ module.exports = {
 
         if (logs.createdAt < member.joinedAt) return
         if (logs.target.id != member.id) return
-        if (new Date.getTime() - logs.createdAt > 10000) return
+        if (new Date().getTime() - logs.createdAt > 10000) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":ping_pong: Kick :ping_pong:")

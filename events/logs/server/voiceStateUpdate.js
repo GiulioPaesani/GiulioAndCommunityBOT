@@ -26,7 +26,7 @@ module.exports = {
             const logs = fetchedLogs.entries.first();
 
             if (logs && logs.executor.bot) return
-            if (logs && new Date.getTime() - logs.createdAt > 10000) return
+            if (logs && new Date().getTime() - logs.createdAt > 10000) return
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":outbox_tray: Member disconnetted :outbox_tray:")
@@ -53,7 +53,7 @@ module.exports = {
                 const logs = fetchedLogs.entries.first();
 
                 if (logs && logs.executor.bot) return
-                if (logs && new Date.getTime() - logs.createdAt > 10000) return
+                if (logs && new Date().getTime() - logs.createdAt > 10000) return
 
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":twisted_rightwards_arrows: Member moved :twisted_rightwards_arrows:")
@@ -79,7 +79,7 @@ module.exports = {
                 const logs = fetchedLogs.entries.first();
 
                 if (logs.executor.bot) return
-                if (logs && new Date.getTime() - logs.createdAt > 10000) return
+                if (logs && new Date().getTime() - logs.createdAt > 10000) return
 
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":loud_sound: Member state update :loud_sound:")
