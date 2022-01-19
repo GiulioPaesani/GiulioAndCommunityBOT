@@ -10,7 +10,7 @@ module.exports = {
     async execute(message, args, client, property) {
         var embed = new Discord.MessageEmbed()
             .setTitle(":frame_photo: Le mie ILLUSTRAZIONI :frame_photo:")
-            .setThumbnail("https://i.postimg.cc/D0RPcgRf/Profilo-composition.png")
+            .setThumbnail("https://i.postimg.cc/3xLMLxNH/Profilo-composition.png")
             .setDescription(`Ecco come ho realizzato il mio **avatar** e le mie **illustrazioni**`)
             .addField(":globe_with_meridians: Sito", `
 https://stubborn.fun/

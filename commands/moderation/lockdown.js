@@ -49,7 +49,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":skull: LOCKDOWN DISATTIVATO :skull:")
                     .setColor("#77B155")
-                    .setThumbnail("https://i.postimg.cc/9z3rCG1z/Lockdown-OFF.png")
+                    .setThumbnail("https://i.postimg.cc/NfkvH4wF/Lockdown-OFF.png")
                     .setDescription("È appena stato disattivato il **sistema di lockdown**\n\nTutti gli utenti possono continuare a partecipare nel server")
                 message.channel.send(embed)
 
@@ -66,7 +66,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
                         var embed = new Discord.MessageEmbed()
                             .setTitle(":skull: LOCKDOWN DISATTIVATO :skull:")
                             .setColor("#77B155")
-                            .setThumbnail("https://i.postimg.cc/9z3rCG1z/Lockdown-OFF.png")
+                            .setThumbnail("https://i.postimg.cc/NfkvH4wF/Lockdown-OFF.png")
                             .setDescription(`Il **sistema di lockdown** è ora disattivato, tutti i pericoli sono stati scampati. Potete ritornare a **scrivere** e divertirvi all'interno del server`)
 
                         msg.edit(embed)
@@ -124,7 +124,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":skull: LOCKDOWN DISATTIVATO :skull:")
                     .setColor("#77B155")
-                    .setThumbnail("https://i.postimg.cc/9z3rCG1z/Lockdown-OFF.png")
+                    .setThumbnail("https://i.postimg.cc/NfkvH4wF/Lockdown-OFF.png")
                     .setDescription("È appena stato disattivato il **sistema di lockdown**\n\nTutti gli utenti possono continuare a partecipare nel server")
                 message.channel.send(embed)
 
@@ -141,7 +141,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
                         var embed = new Discord.MessageEmbed()
                             .setTitle(":skull: LOCKDOWN DISATTIVATO :skull:")
                             .setColor("#77B155")
-                            .setThumbnail("https://i.postimg.cc/9z3rCG1z/Lockdown-OFF.png")
+                            .setThumbnail("https://i.postimg.cc/NfkvH4wF/Lockdown-OFF.png")
                             .setDescription(`Il **sistema di lockdown** è ora disattivato, tutti i pericoli sono stati scampati. Potete ritornare a **scrivere** e divertirvi all'interno del server`)
 
                         msg.edit(embed)
