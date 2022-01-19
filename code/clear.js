@@ -46,7 +46,7 @@ client.on("messageCreate", message => {
         }
         message.channel.bulkDelete(count, true)
         message.channel.send(count + " messaggi eliminati").then(msg => {
-            msg.delete({ timeout: 5000 })
+            setTimeout(() => msg.delete(), 5000)
         })
     }
 })`

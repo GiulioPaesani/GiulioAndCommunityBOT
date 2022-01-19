@@ -20,7 +20,7 @@ client.on("message", message => {
         var row = new disbut.MessageActionRow()
             .addComponents(button1)
 
-        message.channel.send({ content: "Clicca sul bottone per aprire un ticket", components: [row] })
+        message.channel.send("Clicca sul bottone per aprire un ticket", row)
     }
 })
 
