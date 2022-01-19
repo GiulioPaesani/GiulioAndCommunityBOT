@@ -92,7 +92,8 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${button.clicker.member.toString()} - ID: ${button.clicker.member.id}`, false)
                 .addField("Account created", `${moment(button.clicker.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(button.clicker.user.createdAt).fromNow()})`, false)
-                .addField("Invite", `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)`, false)
+            if (invite)
+                embed.addField("Invite", `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)`, false)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.welcomeGoodbye).send(embed)
