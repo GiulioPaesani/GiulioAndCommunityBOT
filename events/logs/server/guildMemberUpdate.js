@@ -14,6 +14,7 @@ module.exports = {
             });
 
             const logs = fetchedLogs.entries.first();
+            if (new Date.getTime() - logs.createdAt > 10000) return
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":inbox_tray: Nickname setted :inbox_tray:")
@@ -53,6 +54,7 @@ module.exports = {
             });
 
             const logs = fetchedLogs.entries.first();
+            if (new Date.getTime() - logs.createdAt > 10000) return
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":outbox_tray: Nickname removed :outbox_tray:")
@@ -92,6 +94,7 @@ module.exports = {
             });
 
             const logs = fetchedLogs.entries.first();
+            if (new Date.getTime() - logs.createdAt > 10000) return
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":pencil: Nickname updated :pencil:")

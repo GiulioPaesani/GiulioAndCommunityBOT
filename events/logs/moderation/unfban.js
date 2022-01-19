@@ -13,6 +13,7 @@ module.exports = {
         const logs = fetchedLogs.entries.first();
         if (!logs) return
         if (logs.executor.bot) return
+        if (new Date.getTime() - logs.createdAt > 10000) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":name_badge: Unban :name_badge:")

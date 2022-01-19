@@ -15,6 +15,8 @@ module.exports = {
 
         if (logs.executor.bot) return
 
+        if (new Date.getTime() - logs.createdAt > 10000) return
+
         var embed = new Discord.MessageEmbed()
             .setTitle(":mouse_three_button: Channel created :mouse_three_button:")
             .setColor("#22c90c")

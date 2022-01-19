@@ -12,6 +12,7 @@ module.exports = {
         const logs = fetchedLogs.entries.first();
 
         if (logs.executor.bot) return
+        if (new Date.getTime() - logs.createdAt > 10000) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":wastebasket: Emoji deleted :wastebasket:")

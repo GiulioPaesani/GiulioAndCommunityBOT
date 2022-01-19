@@ -13,6 +13,7 @@ module.exports = {
         });
 
         const logs = fetchedLogs.entries.first();
+        if (new Date.getTime() - logs.createdAt > 10000) return
 
         if (logs.executor.bot) return
 

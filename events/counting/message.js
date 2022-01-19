@@ -45,6 +45,7 @@ module.exports = {
                     if (!isMaintenance())
                         client.channels.cache.get(log.counting.numbers).send(embed)
                 })
+
             message.channel.send("0")
                 .then(msg => {
                     msg.react("🟢")

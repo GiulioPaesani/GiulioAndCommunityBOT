@@ -14,6 +14,7 @@ module.exports = {
         if (!logs) return
 
         if (logs.executor.bot) return
+        if (new Date.getTime() - logs.createdAt > 10000) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":no_entry: Forceban :no_entry:")
