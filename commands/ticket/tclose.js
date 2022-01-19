@@ -34,7 +34,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle("Ticket in chiusura...")
             .setColor("#ED1C24")
-            .setDescription("Questo ticket si chiuderà tra `30 secondi`")
+            .setDescription("Questo ticket si chiuderà tra `20 secondi`")
 
         var button1 = new disbut.MessageButton()
             .setLabel("Annulla")
@@ -52,93 +52,82 @@ module.exports = {
                     if (!ticket) return;
 
                     if (ticket.daEliminare) {
-                        embed.setDescription("Questo ticket si chiuderà tra `20 secondi`")
+                        embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
                         msg.edit(embed)
                             .catch(() => { })
 
-                        setTimeout(function () {
+                        setTimeout(async function () {
                             var ticket = serverstats.ticket.find((x) => x.channel == idChannelTicket);
                             if (!ticket) return;
 
                             if (ticket.daEliminare) {
-                                embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
-                                msg.edit(embed)
-                                    .catch(() => { })
+                                client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
+                                    .then(async msg => {
+                                        var embed = new Discord.MessageEmbed()
+                                            .setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")
+                                            .setColor("#22c90c")
+                                            .addField(":alarm_clock: Time", `${moment(message.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                                            .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
 
-                                setTimeout(async function () {
-                                    var ticket = serverstats.ticket.find((x) => x.channel == idChannelTicket);
-                                    if (!ticket) return;
+                                        if (msg.embeds[0].title == ":speech_balloon: Segli CATEGORIA :speech_balloon:")
+                                            embed.addField("Category", `_Null_`)
+                                        else if (!msg.embeds[0].description.endsWith("`"))
+                                            embed.addField("Category", msg.embeds[0].title.split(" ").slice(1, -1).join(" "))
+                                        else
+                                            embed.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.slice(1, -1)}`)
 
-                                    if (ticket.daEliminare) {
-                                        client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                                            .then(async msg => {
-                                                var embed = new Discord.MessageEmbed()
-                                                    .setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")
-                                                    .setColor("#22c90c")
-                                                    .addField(":alarm_clock: Time", `${moment(message.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                                                    .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
+                                        if (ticket.inserimentoCategory)
+                                            if (!isMaintenance())
+                                                client.channels.cache.get(log.community.ticket).send(embed)
 
-                                                if (msg.embeds[0].title == ":speech_balloon: Segli CATEGORIA :speech_balloon:")
-                                                    embed.addField("Category", `_Null_`)
-                                                else if (!msg.embeds[0].description.endsWith("`"))
-                                                    embed.addField("Category", msg.embeds[0].title.split(" ").slice(1, -1).join(" "))
-                                                else
-                                                    embed.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.slice(1, -1)}`)
+                                        var embed = new Discord.MessageEmbed()
+                                            .setTitle(":paperclips: Ticket closed :paperclips:")
+                                            .setColor("#e31705")
+                                            .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+                                            .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
+                                            .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
 
-                                                if (ticket.inserimentoCategory)
-                                                    if (!isMaintenance())
-                                                        client.channels.cache.get(log.community.ticket).send(embed)
+                                        if (msg.embeds[0].title == ":speech_balloon: Segli CATEGORIA :speech_balloon:")
+                                            embed.addField("Category", `_Null_`)
+                                        else if (!msg.embeds[0].description.startsWith("`"))
+                                            embed.addField("Category", msg.embeds[0].title.split(" ").slice(1, -1).join(" "))
+                                        else
+                                            embed.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.split("`")[1]}`)
 
-                                                var embed = new Discord.MessageEmbed()
-                                                    .setTitle(":paperclips: Ticket closed :paperclips:")
-                                                    .setColor("#e31705")
-                                                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                                                    .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                                                    .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
-
-                                                if (msg.embeds[0].title == ":speech_balloon: Segli CATEGORIA :speech_balloon:")
-                                                    embed.addField("Category", `_Null_`)
-                                                else if (!msg.embeds[0].description.startsWith("`"))
-                                                    embed.addField("Category", msg.embeds[0].title.split(" ").slice(1, -1).join(" "))
-                                                else
-                                                    embed.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.split("`")[1]}`)
-
-                                                var chatLog = ""
-                                                await message.channel.messages.fetch()
-                                                    .then(async messages => {
-                                                        for (var msg of messages.array().reverse()) {
-                                                            var attachments = ""
-                                                            msg.attachments.array().forEach(attachment => {
-                                                                attachments += `${attachment.name} (${attachment.url}), `
-                                                            })
-                                                            if (attachments != "")
-                                                                attachments = attachments.slice(0, -2)
-
-                                                            chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == ticket.owner ? "[OWNER] " : utenteMod(msg.author) ? "[MOD] " : (msg.member.roles.cache.has(settings.idRuoloAiutante) || msg.member.roles.cache.has(settings.idRuoloAiutanteInProva)) ? "[HELPER] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
-                                                        }
+                                        var chatLog = ""
+                                        await message.channel.messages.fetch()
+                                            .then(async messages => {
+                                                for (var msg of messages.array().reverse()) {
+                                                    var attachments = ""
+                                                    msg.attachments.array().forEach(attachment => {
+                                                        attachments += `${attachment.name} (${attachment.url}), `
                                                     })
+                                                    if (attachments != "")
+                                                        attachments = attachments.slice(0, -2)
 
-                                                if (chatLog != "") {
-                                                    var attachment1 = await new Discord.MessageAttachment(
-                                                        Buffer.from(chatLog, "utf-8"), `ticket${ticket.channel}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
-                                                    );
-                                                    if (!isMaintenance())
-                                                        client.channels.cache.get(log.community.ticket).send({ embed, files: [attachment1] })
+                                                    chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == ticket.owner ? "[OWNER] " : utenteMod(msg.author) ? "[MOD] " : (msg.member.roles.cache.has(settings.idRuoloAiutante) || msg.member.roles.cache.has(settings.idRuoloAiutanteInProva)) ? "[HELPER] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
                                                 }
-                                                else
-                                                    if (!isMaintenance())
-                                                        client.channels.cache.get(log.community.ticket).send(embed)
-
-                                                embed.setDescription("Questo ticket si sta per chiudere")
-                                                msg.edit(embed)
-                                                    .catch(() => { })
-
-                                                message.channel.delete()
-                                                    .catch(() => { });
-                                                serverstats.ticket = serverstats.ticket.filter((x) => x.channel != idChannelTicket);
                                             })
-                                    }
-                                }, 10000);
+
+                                        if (chatLog != "") {
+                                            var attachment1 = await new Discord.MessageAttachment(
+                                                Buffer.from(chatLog, "utf-8"), `ticket${ticket.channel}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
+                                            );
+                                            if (!isMaintenance())
+                                                client.channels.cache.get(log.community.ticket).send({ embed, files: [attachment1] })
+                                        }
+                                        else
+                                            if (!isMaintenance())
+                                                client.channels.cache.get(log.community.ticket).send(embed)
+
+                                        embed.setDescription("Questo ticket si sta per chiudere")
+                                        msg.edit(embed)
+                                            .catch(() => { })
+
+                                        message.channel.delete()
+                                            .catch(() => { });
+                                        serverstats.ticket = serverstats.ticket.filter((x) => x.channel != idChannelTicket);
+                                    })
                             }
                         }, 10000);
                     }

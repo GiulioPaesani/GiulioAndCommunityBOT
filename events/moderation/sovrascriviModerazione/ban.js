@@ -71,6 +71,8 @@ module.exports = {
 
         if (utente.user) utente = utente.user
 
+        button.message.delete()
+
         var embed = new Discord.MessageEmbed()
             .setAuthor("[BAN] " + utente.tag, utente.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")

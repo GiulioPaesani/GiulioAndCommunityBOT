@@ -74,6 +74,8 @@ module.exports = {
 
         if (utente.user) utente = utente.user
 
+        button.message.delete()
+
         var embed = new Discord.MessageEmbed()
             .setAuthor("[TEMPMUTE] " + utente.tag, utente.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
