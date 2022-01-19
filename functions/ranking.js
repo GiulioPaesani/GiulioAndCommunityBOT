@@ -110,6 +110,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
         ],
     }
 
+    console.log(userstats.xp)
     userstats.xp += xp
 
     if (boost) userstats.xp += xp / 100 * boost
@@ -117,7 +118,8 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
     var level = 0
 
     while (userstats.xp >= getXpNecessari(level + 1)) {
-        level++;
+        console.log(userstats.xp + " - " + (level + 1) + " - " + getXpNecessari(level + 1))
+        level++
     }
 
     if (userstats.level != level) {
