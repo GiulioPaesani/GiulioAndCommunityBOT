@@ -89,6 +89,6 @@ module.exports = {
                 return
             })
 
-        button.message.guild.members.ban(utente.id, { reason: reason })
+        button.message.guild.members.ban(utente.id, { reason: button.id.split(",")[3] })
     },
 };

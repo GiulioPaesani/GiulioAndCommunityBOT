@@ -177,7 +177,7 @@ module.exports = {
 						},
 						{
 							id: button.clicker.user.id,
-							allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS']
+							allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS', "SEND_MESSAGES"]
 						}
 					],
 					parent: settings.idCanaliServer.categoriaModerationTicket
@@ -194,7 +194,7 @@ module.exports = {
 					var embed2 = new Discord.MessageEmbed()
 						.setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")
 						.setColor("#22c90c")
-						.addField(":alarm_clock: Time", `${moment(menu.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
+						.addField(":alarm_clock: Time", `${moment(button.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
 						.addField(":bust_in_silhouette: Owner", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`)
 
 					if (userstats.moderation.type != "") {
@@ -258,9 +258,7 @@ ${userstats.moderation.moderator}
 						.setStyle('red')
 						.setID('ticketChiudi')
 
-					canale.send({
-						component: button1, embed: embed
-					})
+					canale.send(embed, button1)
 						.then((msg) => {
 							ticket.push({
 								type: 'Moderation',
@@ -279,8 +277,8 @@ ${userstats.moderation.moderator}
 					if (!embed2.fields[2])
 						embed2.addField("Category", "Moderation")
 
-					// if (!isMaintenance())
-					client.channels.cache.get(log.community.ticket).send(embed2)
+					if (!isMaintenance())
+						client.channels.cache.get(log.community.ticket).send(embed2)
 				});
 		}
 	}

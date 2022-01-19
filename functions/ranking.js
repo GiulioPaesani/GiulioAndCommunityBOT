@@ -195,7 +195,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
             userstats.money += level * 10
     }
 
-    setLevelRole(client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == userstats.id), userstats.level)
+    setLevelRole({ id: userstats.id }, userstats.level)
 
     return userstats
 }
