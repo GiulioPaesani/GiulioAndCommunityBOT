@@ -21,6 +21,7 @@ module.exports = {
             return botCommandMessage(message, "Error", "Numero troppo alto", "Non puoi ripristinare un numero maggiore del record del server", property)
         }
 
+        var oldNumber = serverstats.numero
         serverstats.numero = count;
         serverstats.ultimoUtente = "NessunUtente"
 
@@ -36,8 +37,8 @@ module.exports = {
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
                     .addField("Number", `
-Old: ${serverstats.numero}
-New: ${count}`, false)
+Old: ${oldNumber}
+New: ${serverstats.numero}`, false)
 
                 if (!isMaintenance())
                     client.channels.cache.get(log.counting.setNumber).send(embed)
