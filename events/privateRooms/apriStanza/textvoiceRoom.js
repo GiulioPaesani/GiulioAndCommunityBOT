@@ -85,7 +85,6 @@ module.exports = {
                     .setColor("#FFAC33")
                     .addField(":bookmark_tabs: Tutti i comandi", `
 - \`!pdelete\` - **Eliminare** la stanza
-- \`!plock\` - Rendere **privata** la stanza, in modo che possano entrare e vedere solo chi inviti tu
 - \`!padd [user]\` - **Aggiungere** un utente alla stanza privata
 - \`!premove [user]\` - **Rimuovere** un utente dalla stanza privata
 - \`!pkick [user]\` - **Kickare** un utente dalla stanza (Potrà **rientrare** quando vuole)
