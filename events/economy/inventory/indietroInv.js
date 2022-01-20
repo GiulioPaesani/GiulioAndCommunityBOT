@@ -23,7 +23,7 @@ module.exports = {
             for (var index in userstats.inventory) {
                 if (userstats.inventory[index] && userstats.inventory[index] > 0) {
                     totItems++
-                    items.push({ item: require("../../config/items.json").find(x => x.id == index), amount: userstats.inventory[index] })
+                    items.push({ item: require("../../../config/items.json").find(x => x.id == index), amount: userstats.inventory[index] })
                 }
             }
         }
