@@ -118,18 +118,18 @@ New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscription
             ],
         }
 
-        var textPrivilegi = `- Ruolo @Server Booster\r`
+        var textPrivilegi = `Ruolo @Server Booster\r`
 
         for (var index in privilegiLevel) {
             if (parseInt(index) <= 30) {
                 privilegiLevel[index].forEach(privilegio => {
                     if (!privilegio.startsWith("Nuove **emoji**"))
-                        textPrivilegi += `- ${privilegio}\r`
+                        textPrivilegi += `${privilegio}\r`
                 })
             }
         }
 
-        textPrivilegi += `- Tutte le **emoji** del server: ${client.emojis.cache.find(emoji => emoji.name === "GiulioHappy")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioPopCorn")} e molte altre...\r`
+        textPrivilegi += `Tutte le **emoji** del server: ${client.emojis.cache.find(emoji => emoji.name === "GiulioHappy")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioPopCorn")} e molte altre...\r`
 
         var items = require("../../../config/items.json")
         var textItems = ""
@@ -139,7 +139,7 @@ New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscription
             }
         })
         if (textItems != "")
-            textPrivilegi += `- Nuovi oggetti nello **shop**: ${textItems}\r`
+            textPrivilegi += `Nuovi oggetti nello **shop**: ${textItems}\r`
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":tada: Grazie per il boost!")

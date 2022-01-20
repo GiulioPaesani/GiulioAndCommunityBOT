@@ -8,7 +8,7 @@ module.exports = {
         if (newMessage.author?.bot) return
         if (!newMessage.author) return
 
-        if (oldMessage.content != newMessage.content || JSON.stringify(oldMessage.attachments) != JSON.stringify(newMessage.attachments)) return
+        if (oldMessage.content == newMessage.content && JSON.stringify(oldMessage.attachments) == JSON.stringify(newMessage.attachments)) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":pencil: Message updated :pencil:")

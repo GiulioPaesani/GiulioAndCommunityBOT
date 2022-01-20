@@ -123,15 +123,15 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
     }
 
     if (userstats.level != level) {
-        var textPrivilegi = `- +${level * 10} Coins\r`
+        var textPrivilegi = `+${level * 10} Coins\r`
 
         if (settings.ruoliLeveling["level" + level]) {
-            textPrivilegi += `- Ruolo @Level ${level}\r`
+            textPrivilegi += `Ruolo @Level ${level}\r`
         }
 
         if (privilegiLevel[level])
             privilegiLevel[level].forEach(privilegio => {
-                textPrivilegi += `- ${privilegio}\r`
+                textPrivilegi += `${privilegio}\r`
             })
 
         var items = require("../config/items.json")
@@ -142,7 +142,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
             }
         })
         if (textItems != "")
-            textPrivilegi += `- Nuovi oggetti nello **shop**: ${textItems}\r`
+            textPrivilegi += `Nuovi oggetti nello **shop**: ${textItems}\r`
 
         var nextPrivilegi;
         for (var i = level + 1; i <= parseInt(Object.keys(privilegiLevel)[Object.keys(privilegiLevel).length - 1]); i++) {

@@ -60,11 +60,13 @@ module.exports = {
                 delete userstats.warn.splice(code - 1, 1)
             }
 
+            if(utente.user) utente = utente.user
+
             var embed = new Discord.MessageEmbed()
                 .setTitle(":fire_extinguisher: Clear warns :fire_extinguisher:")
                 .setColor("#8227cc")
                 .setDescription(`[Message link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
-                .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
                 .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
