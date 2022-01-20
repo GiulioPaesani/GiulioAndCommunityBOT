@@ -13,7 +13,7 @@ module.exports = {
         if (!userstats) return
 
         for (var i = 0; i < 22; i++) {
-            userstats.inventory[require("../../config/items.json")[i].id] = 2
+            userstats.inventory[require("../../../config/items.json")[i].id] = 2
         }
 
         var totItems = 0

@@ -14,7 +14,7 @@ client.on("guildMemberAdd", member => {
         .setTitle("WELCOME")
         .setDescription(\`Ciao \${member.toString()}, benvenuto in \${member.guild.name}. Sei il **\${member.guild.memberCount}° Membro**\`)
 
-    message.channel.send(embed); 
+    client.channels.cache.get("idCanale").send(embed); 
 })
 //ADDIO
 client.on("guildMemberRemove", member => {
@@ -23,7 +23,7 @@ client.on("guildMemberRemove", member => {
         .setTitle("GOODBEY")
         .setDescription(\`Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
 
-    message.channel.send(embed); 
+    client.channels.cache.get("idCanale").send(embed); 
 })`,
     v13: `
 //BENVENUTO
@@ -33,7 +33,7 @@ client.on("guildMemberAdd", member => {
         .setTitle("WELCOME")
         .setDescription(\`Ciao \${member.toString()}, benvenuto in \${member.guild.name}. Sei il **\${member.guild.memberCount}° Membro**\`)
 
-    message.channel.send({embeds: [embed]}); 
+    client.channels.cache.get("idCanale").send({embeds: [embed]}); 
 })
 //ADDIO
 client.on("guildMemberRemove", member => {
@@ -42,6 +42,6 @@ client.on("guildMemberRemove", member => {
         .setTitle("GOODBEY")
         .setDescription(\`Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
 
-    message.channel.send({embeds: [embed]}); 
+    client.channels.cache.get("idCanale").send({embeds: [embed]}); 
 })`
 };

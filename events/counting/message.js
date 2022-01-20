@@ -26,7 +26,7 @@ module.exports = {
 
             var embed = new Discord.MessageEmbed()
                 .setColor("#EB3140")
-                .setDescription(`__Utente non valido!__\r${message.author.toString()} ogni utente può iscrivere un solo numero alla volta`)
+                .setDescription(`__Utente non valido!__\r${message.author.toString()} ogni utente può scrivere un solo numero alla volta`)
 
             embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
             message.channel.send(embed)
