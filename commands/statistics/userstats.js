@@ -16,12 +16,14 @@ module.exports = {
             if (!utente) {
                 var utente = await getUser(args.join(" "))
             }
+            utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == utente.id);
         }
 
-        if (!utente || !utente._roles) {
+        if (!utente) {
             return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
+        
         var userstats = userstatsList.find(x => x.id == utente.id);
         if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
 
