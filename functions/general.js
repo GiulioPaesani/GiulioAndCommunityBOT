@@ -776,7 +776,7 @@ global.checkBirthday = async function () {
 	var birthdayToday = []
 
 	userstatsList.forEach(userstats => {
-		if (userstats.birthday && ((userstats.birthday[0] == data.getMonth() + 1 && userstats.birthday[1] == data.getDate()) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && data.getMonth() == 2 && data.getDate() == 1))) {
+		if (userstats.birthday && ((userstats.birthday[0] == data.getMonth() + 1 && userstats.birthday[1] == data.getDate()) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && data.getMonth() == 2 && data.getDate() == 1 && !isAnnoBisestile(new Date().getFullYear())))) {
 			birthdayToday.push(userstats)
 		}
 	})
@@ -872,7 +872,7 @@ global.checkBirthday = async function () {
 				textUsers += ` e ${client.users.cache.get(birthdayToday[birthdayToday.length - 1].id).toString()}`
 
 				embed
-					.setDescription(`Oggi è il compleanno di ${textUsers}\rFategli a tutti tanti **auguri** e tanti **regali**`)
+					.setDescription(`Oggi è il compleanno di ${textUsers}\rFate a tutti tanti **auguri** e tanti **regali**`)
 			}
 
 			client.channels.cache.get(settings.idCanaliServer.general).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
@@ -937,4 +937,50 @@ global.isMaintenance = function (idUtente) {
 		if (isTester) return true
 
 	return false
+}
+
+global.isAnnoBisestile = function(year){
+	year = parseInt(year)
+	if(!year) return
+
+	return moment([year]).isLeapYear()
+}
+global.prossimoBirthday = function(month, day){
+	var year;
+
+	if(month == 2 && day == 29){
+		if(isAnnoBisestile(new Date().getFullYear())){
+			if(moment([new Date().getFullYear(), month - 1, day]).diff(moment()) > 0 ){
+				year = new Date().getFullYear()
+			}
+			else{
+				year = new Date().getFullYear() + 1
+				month = 3
+				day = 1
+			}
+		}
+		else{
+			if(moment([new Date().getFullYear(), 2, 1]).diff(moment()) > 0 ){
+				year = new Date().getFullYear()
+				month = 3
+				day = 1
+			}
+			else{
+				if(!isAnnoBisestile(new Date().getFullYear() + 1)){
+					month = 3
+					day = 1
+				}
+				year = new Date().getFullYear() + 1
+			}
+		}
+	}
+
+	if(moment([new Date().getFullYear(), month - 1, day]).diff(moment()) > 0 ){
+		year = new Date().getFullYear()
+	}
+	else{
+		year = new Date().getFullYear() + 1
+	}
+
+	return [year, month - 1, day]
 }

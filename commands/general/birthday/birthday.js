@@ -54,7 +54,7 @@ module.exports = {
                 .catch(() => { })
         }
         else {
-            if (new Date().getMonth() == userstats.birthday[0] - 1 && new Date().getDate() == userstats.birthday[1]) {
+            if ((new Date().getMonth() == userstats.birthday[0] - 1 && new Date().getDate() == userstats.birthday[1]) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && new Date().getMonth() == 2 && new Date.getMonth() == 1 && !isAnnoBisestile(new Date().getFullYear()))) {
                 var canvas = await createCanvas(400, 400)
                 var ctx = await canvas.getContext('2d')
 
@@ -76,7 +76,7 @@ module.exports = {
                 embed
                     .setColor("#FF1180")
                     .setThumbnail("attachment://canvas.png")
-                    .addField(`:gift: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `**Oggi** è il compleanno di ${utente.toString()}\rFagli gli auguri e tanti regali`)
+                    .addField(`:gift: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `**Oggi** è il compleanno di ${utente.toString()}\rFategli gli auguri e tanti regali`)
             }
             else {
                 var canvas = await createCanvas(400, 400)
@@ -98,11 +98,11 @@ module.exports = {
                     .setColor("#FB1B3A")
                     .setThumbnail("attachment://canvas.png")
 
-                if (moment([moment([new Date().getFullYear(), userstats.birthday[0] - 1, userstats.birthday[1]]).diff(moment()) < 0 ? new Date().getFullYear() + 1 : new Date().getFullYear(), userstats.birthday[0] - 1, userstats.birthday[1]]).diff(moment(), "days") + 1 == 1) {
-                    embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Manca **${moment([moment([new Date().getFullYear(), userstats.birthday[0] - 1, userstats.birthday[1]]).diff(moment()) < 0 ? new Date().getFullYear() + 1 : new Date().getFullYear(), userstats.birthday[0] - 1, userstats.birthday[1]]).diff(moment(), "days") + 1} giorno** al compleanno di ${utente.toString()}`)
+                if (moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1 == 1) {
+                    embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Manca **${moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1} giorno** al compleanno di ${utente.toString()}`)
                 }
                 else
-                    embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Mancano **${moment([moment([new Date().getFullYear(), userstats.birthday[0] - 1, userstats.birthday[1]]).diff(moment()) < 0 ? new Date().getFullYear() + 1 : new Date().getFullYear(), userstats.birthday[0] - 1, userstats.birthday[1]]).diff(moment(), "days") + 1} giorni** al compleanno di ${utente.toString()}`)
+                    embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Mancano **${moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1} giorni** al compleanno di ${utente.toString()}`)
             }
 
             message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
