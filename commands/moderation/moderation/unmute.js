@@ -93,7 +93,7 @@ ${userstats.moderation.moderator}
             .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        await message.channel.send(embed)
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":loud_sound: Unmute :loud_sound:")
@@ -103,7 +103,7 @@ ${userstats.moderation.moderator}
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
+                    .addField("Duration", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
                     .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 if (!isMaintenance())
@@ -119,8 +119,6 @@ ${userstats.moderation.moderator}
 
         utente.send(embed)
             .catch(() => { })
-
-
 
         userstats.moderation = {
             "type": "",

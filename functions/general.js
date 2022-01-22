@@ -576,6 +576,8 @@ global.getCanvasMessage = async function (message, type) {
 }
 
 global.deleteDBLeavedUsers = async function () {
+	if (!userstatsList) return
+
 	userstatsList.forEach(async userstats => {
 		if (!client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == userstats.id)) {
 
@@ -939,34 +941,34 @@ global.isMaintenance = function (idUtente) {
 	return false
 }
 
-global.isAnnoBisestile = function(year){
+global.isAnnoBisestile = function (year) {
 	year = parseInt(year)
-	if(!year) return
+	if (!year) return
 
 	return moment([year]).isLeapYear()
 }
-global.prossimoBirthday = function(month, day){
+global.prossimoBirthday = function (month, day) {
 	var year;
 
-	if(month == 2 && day == 29){
-		if(isAnnoBisestile(new Date().getFullYear())){
-			if(moment([new Date().getFullYear(), month - 1, day]).diff(moment()) > 0 ){
+	if (month == 2 && day == 29) {
+		if (isAnnoBisestile(new Date().getFullYear())) {
+			if (moment([new Date().getFullYear(), month - 1, day]).diff(moment()) > 0) {
 				year = new Date().getFullYear()
 			}
-			else{
+			else {
 				year = new Date().getFullYear() + 1
 				month = 3
 				day = 1
 			}
 		}
-		else{
-			if(moment([new Date().getFullYear(), 2, 1]).diff(moment()) > 0 ){
+		else {
+			if (moment([new Date().getFullYear(), 2, 1]).diff(moment()) > 0) {
 				year = new Date().getFullYear()
 				month = 3
 				day = 1
 			}
-			else{
-				if(!isAnnoBisestile(new Date().getFullYear() + 1)){
+			else {
+				if (!isAnnoBisestile(new Date().getFullYear() + 1)) {
 					month = 3
 					day = 1
 				}
@@ -975,10 +977,10 @@ global.prossimoBirthday = function(month, day){
 		}
 	}
 
-	if(moment([new Date().getFullYear(), month - 1, day]).diff(moment()) > 0 ){
+	if (moment([new Date().getFullYear(), month - 1, day]).diff(moment()) > 0) {
 		year = new Date().getFullYear()
 	}
-	else{
+	else {
 		year = new Date().getFullYear() + 1
 	}
 

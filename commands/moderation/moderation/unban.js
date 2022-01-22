@@ -74,7 +74,7 @@ ${userstats.moderation.moderator}
             .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        await message.channel.send(embed)
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":name_badge: Unban :name_badge:")
@@ -84,7 +84,7 @@ ${userstats.moderation.moderator}
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
+                    .addField("Duration", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
                     .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 if (!isMaintenance())
