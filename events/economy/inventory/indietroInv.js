@@ -12,10 +12,6 @@ module.exports = {
         var userstats = userstatsList.find(x => x.id == button.id.split(",")[2]);
         if (!userstats) return
 
-        for (var i = 0; i < 22; i++) {
-            userstats.inventory[require("../../../config/items.json")[i].id] = 2
-        }
-
         var totItems = 0
         var items = []
 
