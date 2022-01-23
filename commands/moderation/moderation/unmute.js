@@ -90,7 +90,7 @@ ${userstats.moderation.moderator}
             .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
             .setColor("#6143CB")
             .addField("Moderator", message.author.toString())
-            .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
+            .addField("Time muted", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
             .setFooter("User ID: " + utente.id)
 
         await message.channel.send(embed)

@@ -148,7 +148,15 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
                 nextPrivilegi = i
         }
 
-        if (!notSendMessage) {
+        if (!userstats.livelliSuperati) {
+            userstats.livelliSuperati = {}
+
+            for (var i = 1; i <= userstats.level; i++) {
+                userstats.livelliSuperati[i] = true
+            }
+        }
+
+        if (!userstats.livelliSuperati[level]) {
             var messages = ["Hai sprecato il tuo tempo per raggiungere un livello superiore", "Congratulazioni, ora la tua vita ha finalmente un senso", "Sei fortissimo, hai finalmente raggiunto un grande obbiettivo della tua vita", "Un nuovo livello, nuovi privilegi, un colore bellissimo, la tua vita è ora un successo", "Grande! Ora si che la tua vita ha un senso", "Hai veramente sprecato tutto questo tempo per raggiungere un nuovo livello?", "Mi spiace, devi avere una vita molto triste per essere arrivato a questo punto", "Ma esci un po' invece di salire di livello"]
 
             const levelColor = require("../config/levelColor.json")
@@ -178,6 +186,9 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
             client.users.cache.get(userstats.id).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                 .catch(() => { })
         }
+        else {
+            textPrivilegi = "_Nessun privilegio - Livello già superato_"
+        }
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":beginner: Level up :beginner:")
@@ -190,9 +201,12 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
         if (!isMaintenance())
             client.channels.cache.get(log.ranking.levelUp).send(embed)
 
-        userstats.level = level
-        if (!notSendMessage)
+        if (!userstats.livelliSuperati[level])
             userstats.money += level * 10
+
+        userstats.level = level
+
+        userstats.livelliSuperati[level] = true
     }
 
     setLevelRole({ id: userstats.id }, userstats.level)

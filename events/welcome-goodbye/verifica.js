@@ -33,6 +33,7 @@ module.exports = {
             level: 0,
             xp: 0,
             cooldownXp: 0,
+            livelliSuperati: {},
             money: 0,
             inventory: {},
             warn: [],
