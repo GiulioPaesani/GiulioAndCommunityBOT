@@ -61,6 +61,7 @@ module.exports = {
             setInterval(checkBirthday, 1000)
 
             setInterval(checkRoomInDB, 1000 * 60 * 5)
+            setInterval(checkTicketInDB, 1000 * 60 * 5)
         }
         client.channels.cache.get(log.general.ready).send(embed)
 

@@ -986,3 +986,9 @@ global.prossimoBirthday = function (month, day) {
 
 	return [year, month - 1, day]
 }
+
+global.checkTicketInDB = function () {
+	serverstats.ticket.forEach(ticket => {
+		if (!client.guilds.cache.get(settings.idServer).channels.cache.find(x => x.id == ticket.channel)) serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
+	})
+}
