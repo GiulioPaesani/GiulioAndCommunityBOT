@@ -95,7 +95,7 @@ client.on("message", async message => {
     if (message.channel.id == log.general.thingsToDo) return
 
     if (isMaintenance(message.author.id)) return
-    
+
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase()
 
@@ -194,7 +194,7 @@ client.on("message", async message => {
     var date = new Date();
     if (date.getFullYear() != 2022) return
 
-    if (settings.inMaintenanceMode) return
+    if (isMaintenance()) return
 
     if (!userstats.wrapped) {
         userstats.wrapped = {
