@@ -32,7 +32,7 @@ module.exports = {
 Old: ${userstats.money}$
 `)
 
-        userstats.inventory[item.id] -= amount
+        userstats.inventory[item.id] = userstats.inventory[item.id] - amount
         userstats.money += item.sellPrice * amount
 
         embed.fields[5].value += `New: ${userstats.money}$`
