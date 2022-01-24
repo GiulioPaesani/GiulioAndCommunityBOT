@@ -1,6 +1,6 @@
 module.exports = {
     name: "lockdown",
-    aliases: [],
+    aliases: ["lock"],
     onlyStaff: true,
     availableOnDM: true,
     description: "Abilitare/Disabilitare il sistema di blocco nel server",
