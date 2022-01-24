@@ -1,7 +1,7 @@
 module.exports = {
     name: `channelUpdate`,
     async execute(oldChannel, newChannel) {
-        if (isMaintenance()) return
+        // if (isMaintenance()) return
 
         if (newChannel.guild?.id != settings.idServer) return
 
@@ -26,7 +26,7 @@ module.exports = {
 
             for (var permission in Object.fromEntries(oldChannel.permissionOverwrites)) {
                 if (!Object.fromEntries(newChannel.permissionOverwrites)[permission]) {
-                    var permissionsText = Object.fromEntries(oldChannel.permissionOverwrites)[permission].type == "member" ? `User: <@${permission}>\r` : `Role: ${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission).name).toString() : `@${newChannel.guild.roles.cache.find(y => y.id == permission).name}`}\r`
+                    var permissionsText = Object.fromEntries(oldChannel.permissionOverwrites)[permission].type == "member" ? `User: <@${permission}>\r` : `Role: ${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission)?.name) ? `<@${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission).name).id}>` : `@${newChannel.guild.roles.cache.find(y => y.id == permission).name}`}\r`
                     permissionsText += Object.fromEntries(oldChannel.permissionOverwrites)[permission].type == "member" ? `_User removed_\r` : `_Role removed_\r`
 
                     var permissionsAllow = Object.fromEntries(oldChannel.permissionOverwrites)[permission]?.allow.serialize() || {}
@@ -57,7 +57,7 @@ module.exports = {
 
             for (var permission in Object.fromEntries(newChannel.permissionOverwrites)) {
                 if (!Object.fromEntries(oldChannel.permissionOverwrites)[permission]) {
-                    var permissionsText = Object.fromEntries(newChannel.permissionOverwrites)[permission].type == "member" ? `User: <@${permission}>\r` : `Role: <@&${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission)?.name) ? client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission).name).toString() : `@${newChannel.guild.roles.cache.find(y => y.id == permission).toString()}`}>\r`
+                    var permissionsText = Object.fromEntries(newChannel.permissionOverwrites)[permission].type == "member" ? `User: <@${permission}>\r` : `Role: ${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission)?.name) ? `<@&${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == permission).name).id}>` : `@${newChannel.guild.roles.cache.find(y => y.id == permission).name}`}\r`
                     permissionsText += Object.fromEntries(newChannel.permissionOverwrites)[permission].type == "member" ? `_User added_\r` : `_Role added_\r`
 
                     embed
@@ -68,7 +68,7 @@ module.exports = {
                 }
             }
 
-            var permissionsText = logs.extra.username ? `User: ${logs.extra.toString()}\r` : `Role: ${logs.extra.toString()}\r`
+            var permissionsText = logs.extra.username ? `User: ${logs.extra.toString()}\r` : `Role: ${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == logs.extra.id)?.name) ? `<@&${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == newChannel.guild.roles.cache.find(y => y.id == logs.extra.id).name).id}>` : `@${logs.extra.name}`}\r`
 
             var oldPermissionsAllow = Object.fromEntries(oldChannel.permissionOverwrites)[logs.extra.id]?.allow.serialize() || {}
             var oldPermissionsDeny = Object.fromEntries(oldChannel.permissionOverwrites)[logs.extra.id]?.deny.serialize() || {}
@@ -120,11 +120,9 @@ module.exports = {
             });
 
             const logs = fetchedLogs.entries.first();
-            console.log(logs)
+
             if (logs.executor.bot) return
             if (new Date().getTime() - logs.createdAt > 10000) return
-
-            if (isMaintenance(logs.executor.id)) return
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":pencil: Channel updated :pencil:")

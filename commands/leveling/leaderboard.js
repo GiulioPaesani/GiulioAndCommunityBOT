@@ -55,7 +55,7 @@ module.exports = {
                     default:
                         leaderboardEconomy += `**#${i + 1}** `
                 }
-                console.log(leaderboardListEconomy[i].money)
+
                 var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
                 leaderboardEconomy += `${utente.nickname ? utente.nickname : utente.user.username} - **${humanize((leaderboardListEconomy[i].money ? leaderboardListEconomy[i].money : 0), { delimiter: '.', separator: ',' })}$**\r`
             }
