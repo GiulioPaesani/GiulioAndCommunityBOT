@@ -677,13 +677,14 @@ global.checkActivityPrivateRooms = function () {
 				.setID(`annullaEliminazione`)
 
 			if (room.text) {
-				client.channels.cache.get(room.text).send(`<@${room.owner}>`)
+				client.channels.cache.get(room.text)?.send(`<@${room.owner}>`)
 					.then(msg => msg.delete().catch(() => { }))
 
-				client.channels.cache.get(room.text).send(embed, button1)
+				client.channels.cache.get(room.text)?.send(embed, button1)
+					.catch(() => { })
 			}
 			else {
-				client.users.cache.get(room.owner).send(embed, button1)
+				client.users.cache.get(room.owner)?.send(embed, button1)
 					.catch(() => { })
 			}
 

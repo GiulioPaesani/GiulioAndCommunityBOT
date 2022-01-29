@@ -39,7 +39,6 @@ module.exports = {
         }
 
         client.user.setActivity('!help', { type: 'WATCHING' });
-
         if (!isMaintenance()) {
             setInterval(checkModeration, 5 * 1000);
 
