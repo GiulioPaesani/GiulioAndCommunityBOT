@@ -10,7 +10,7 @@ module.exports = {
         trovata = getParolaccia(message.content)[0];
         if (trovata && !utenteMod(message.author)) return
 
-        if ([settings.idCanaliServer.welcome, settings.idCanaliServer.announcements, settings.idCanaliServer.rules, settings.idCanaliServer.info, settings.idCanaliServer.youtubeNotification, settings.idCanaliServer.becomeHelper, settings.idCanaliServer.staffHelp, settings.idCanaliServer.levelUp, settings.idCanaliServer.log, settings.idCanaliServer.privateRooms, settings.idCanaliServer.mutedTicket, settings.idCanaliServer.tempmutedTicket, settings.idCanaliServer.bannedTicket, settings.idCanaliServer.tempbannedTicket, settings.idCanaliServer.lockdown].includes(message.channel.id)) {
+        if ([settings.idCanaliServer.announcements, settings.idCanaliServer.rules, settings.idCanaliServer.info, settings.idCanaliServer.youtubeNotification, settings.idCanaliServer.becomeHelper, settings.idCanaliServer.staffHelp, settings.idCanaliServer.privateRooms, settings.idCanaliServer.mutedTicket, settings.idCanaliServer.tempmutedTicket, settings.idCanaliServer.bannedTicket, settings.idCanaliServer.tempbannedTicket, settings.idCanaliServer.lockdown].includes(message.channel.id)) {
             if (message.author.id != settings.idGiulio)
                 message.delete()
                     .catch(() => { })

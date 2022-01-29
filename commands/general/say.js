@@ -8,7 +8,8 @@ module.exports = {
     category: "fun",
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(message, args, client, property) {
-        let testo = args.join(" ");
+        var testo = args.join(" ");
+
         if (!testo) {
             return botCommandMessage(message, "Error", "Inserire un testo", "Scrivi il tempo che dovrà riprodurre il bot", property)
         }

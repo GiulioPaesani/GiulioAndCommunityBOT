@@ -46,7 +46,7 @@ module.exports = {
         if (totItems == 0) {
             var embed = new Discord.MessageEmbed()
                 .setTitle(":handbag: Inventory :handbag:")
-                .setDescription(`Tutto il tuo inventario con gli oggetti che possiedi
+                .setDescription(`Tutto l'inventario di ${utente.toString()} con gli oggetti che possiede
 
 _Oggetti totali: ${totItems}_`)
                 .setFooter(`Coins: ${userstats.money}$`)
@@ -62,7 +62,7 @@ _Oggetti totali: ${totItems}_`)
         var embed = new Discord.MessageEmbed()
             .setTitle(":handbag: Inventory :handbag:")
             .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-            .setDescription(`Tutto l'inventario di ${utente.toString()} con gli oggetti che possiedi
+            .setDescription(`Tutto l'inventario di ${utente.toString()} con gli oggetti che possiede
 
 _Oggetti totali: ${totItems}_`)
             .setFooter(totPage > 1 ? `Coins: ${userstats.money}$ - Page ${page}/${totPage}` : `Coins: ${userstats.money}$`)

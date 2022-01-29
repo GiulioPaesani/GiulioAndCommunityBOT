@@ -98,9 +98,6 @@ module.exports = {
                                 client.channels.cache.get(log.moderation.tempmute).send(embed)
                         })
 
-                    var canale = client.channels.cache.get(settings.idCanaliServer.log);
-                    canale.send(embed);
-
                     var embedUtente = new Discord.MessageEmbed()
                         .setTitle("Sei stato mutato temporaneamente")
                         .setColor("#6143CB")

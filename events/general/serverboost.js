@@ -17,7 +17,6 @@ module.exports = {
             numeroBoost = parseInt(message.content)
 
         var livelloVecchio;
-        var testoMancano;
         var nuovoLivello;
         if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3" || 14 - message.guild.premiumSubscriptionCount <= 0) {
             nuovoLivello = `:crystal_ball: **LIVELLO 3 sbloccato**
@@ -48,13 +47,26 @@ Sfondo inviti
 Streaming fino a 720p`
         }
 
+        if (message.guild.premiumSubscriptionCount - numeroBoost < 2) {
+            livelloVecchio = 0
+        }
+        else if (message.guild.premiumSubscriptionCount - numeroBoost < 7) {
+            livelloVecchio = 1
+        }
+        else if (message.guild.premiumSubscriptionCount - numeroBoost < 14) {
+            livelloVecchio = 2
+        }
+        else {
+            livelloVecchio = 3
+        }
+
         var embed = new Discord.MessageEmbed()
             .setTitle(":tada: Serverboost :tada:")
             .setColor("#FF73FA")
             .setDescription(`Grazie tantissime a <@${message.author.id}> per aver boostato il server!`)
             .addField(`Ha potenziato il server con ${numeroBoost} boost`, `\`Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscriptionCount}\`
 
-${nuovoLivello ? nuovoLivello : testoMancano}
+${nuovoLivello ? nuovoLivello : ""}
 `)
 
         var canale = client.channels.cache.get(settings.idCanaliServer.general);
@@ -123,23 +135,25 @@ New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscription
         for (var index in privilegiLevel) {
             if (parseInt(index) <= 30) {
                 privilegiLevel[index].forEach(privilegio => {
-                    if (!privilegio.startsWith("Nuove **emoji**"))
+                    if (!privilegio.startsWith("Nuove **emoji**") && !privilegio.startsWith("Creare"))
                         textPrivilegi += `${privilegio}\r`
                 })
             }
         }
 
-        textPrivilegi += `Tutte le **emoji** del server: ${client.emojis.cache.find(emoji => emoji.name === "GiulioHappy")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioPopCorn")} e molte altre...\r`
+        textPrivilegi += `Tutte le **emoji** del server: ${client.emojis.cache.find(emoji => emoji.name === "GiulioBan")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} e molte altre...\r`
+        textPrivilegi += `Creare **stanze private testuali+vocali** in <#${settings.idCanaliServer.privateRooms}>\r`
 
-        var items = require("../../../config/items.json")
+        var items = require("../../config/items.json")
         var textItems = ""
         items.forEach(item => {
             if (item.priviled && item.priviled <= 30) {
                 textItems += `${item.icon} `
             }
         })
+
         if (textItems != "")
-            textPrivilegi += `Nuovi oggetti nello **shop**: ${textItems}\r`
+            textPrivilegi += `Nuovi oggetti nello **shop**: ${textItems.split(" ").slice(0, 7).join(" ")} e molti altri...\r`
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":tada: Grazie per il boost!")

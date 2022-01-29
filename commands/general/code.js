@@ -156,7 +156,7 @@ _Seleziona la categoria dal menù qua sotto_`)
             utente.send(embed, row)
                 .then(() => {
                     if (message.channel.type != "dm")
-                        botCommandMessage(message, "Correct", "Ecco il codice", `Il codice di ** ${codice.name.toUpperCase()}** è stato mandato in privato a ${utente.toString()} `)
+                        botCommandMessage(message, "Correct", "Ecco il codice", `Il codice di **${codice.name.toUpperCase()}** è stato mandato in privato a ${utente.toString()} `)
                 })
                 .catch(() => {
                     return botCommandMessage(message, "Warning", "DM non aperti", `Questo utente non può ricevere messaggi privati`)

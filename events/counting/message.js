@@ -10,6 +10,8 @@ module.exports = {
         trovata = getParolaccia(message.content)[0];
         if (trovata && !utenteMod(message.author)) return
 
+        if (message.content == "cos") return
+
         try {
             var numero = Parser.evaluate(message.content.replace(/\\/g, "")); //Get numero scritto o risultato espressione
         }
