@@ -19,6 +19,7 @@ module.exports = {
                 if (msg.embeds[0]?.title != ":beetle: Bug report :beetle:") return
 
                 var idUtente = msg.embeds[0].fields[1].value.slice(msg.embeds[0].fields[1].value.length - 19, -1)
+                console.log(idUtente)
                 if (!idUtente) return
 
                 var utente = client.users.cache.get(idUtente)
@@ -34,19 +35,18 @@ module.exports = {
                     .addField(":inbox_tray: Response", message.content.slice(0, 1000))
 
                 utente.send(embed)
-                    .then(() => {
-                        var embed = new Discord.MessageEmbed()
-                            .setTitle(":outbox_tray: Bug Response :outbox_tray:")
-                            .setColor("#D72D42")
-                            .addField(":alarm_clock: Time", msg.embeds[0].fields[0].value, true)
-                            .addField(":bust_in_silhouette: User", msg.embeds[0].fields[1].value, false)
-                            .addField("Text", msg.embeds[0].fields[2].value)
-                            .addField("Attachments", msg.embeds[0].fields[3].value)
-                            .addField(`Response by ${message.author.username}`, message.content.slice(0, 1000))
-
-                        msg.edit(embed)
-                    })
                     .catch(() => { })
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(":outbox_tray: Bug Response :outbox_tray:")
+                    .setColor("#D72D42")
+                    .addField(":alarm_clock: Time", msg.embeds[0].fields[0].value, true)
+                    .addField(":bust_in_silhouette: User", msg.embeds[0].fields[1].value, false)
+                    .addField("Text", msg.embeds[0].fields[2].value)
+                    .addField("Attachments", msg.embeds[0].fields[3].value)
+                    .addField(`Response by ${message.author.username}`, message.content.slice(0, 1000))
+
+                msg.edit(embed)
             })
     },
 };
