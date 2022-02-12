@@ -104,6 +104,8 @@ client.on("message", async message => {
     trovata = getParolaccia(message.content)[0];
     if (trovata && !utenteMod(message.author)) return
 
+    if (new Date().getDate() == 14 && new Date().getMonth() == 1 && message.content.startsWith("!match")) return
+
     //Verifica esistenza comando
     if (!client.commands.has(command) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command))) {
         if (message.author.id != settings.idGiulio) {
@@ -260,3 +262,87 @@ process.on("unhandledRejection", err => {
 //.setColor("#22c90c")
 //.setColor("#fcba03")
 //.setColor("#e31705")
+
+const { createCanvas, loadImage, registerFont } = require('canvas')
+registerFont("./canvas/font/roboto.ttf", { family: "roboto" })
+registerFont("./canvas/font/robotoBold.ttf", { family: "robotoBold" })
+
+client.on("message", async message => {
+    if (new Date().getDate() != 14 || new Date().getMonth() != 1) return
+
+    if (message.author.bot) return
+    if (!message.content.startsWith(prefix)) return;
+    if (!message.channel.type == "dm" && (message.guild.id != settings.idServer && message.guild.id != log.idServer)) return
+
+    if (message.channel.id == log.general.thingsToDo) return
+
+    if (isMaintenance(message.author.id)) return
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase()
+
+    if (!command[0]?.replace(/[^a-z]/g, "")) return
+
+    trovata = getParolaccia(message.content)[0];
+    if (trovata && !utenteMod(message.author)) return
+
+    if (message.content.startsWith("!match")) {
+        var utente1 = message.mentions.users?.first()
+        if (!utente1) {
+            var utente1 = await getUser(args[0])
+        }
+
+        var utente2 = message.mentions.users?.first()
+        if (!utente2) {
+            var utente2 = await getUser(args[1])
+        }
+
+        if (!utente1 || !utente2) {
+            return botCommandMessage(message, "Error", "Utenti non trovato o non validi", "Hai inseriti utenti non disponibili o non validi", { syntax: "!match [user1] [user2]" })
+        }
+
+        if (utente1.user) utente1 = utente1.user
+        if (utente2.user) utente2 = utente2.user
+
+        var canvas = await createCanvas(1000, 1000)
+        var ctx = await canvas.getContext('2d')
+
+
+        ctx.fillStyle = "#C74141";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        var canvas2 = await createCanvas(1000, 1000)
+        var ctx2 = await canvas2.getContext('2d')
+
+        ctx2.beginPath();
+        ctx2.arc(canvas2.width / 2, canvas2.height / 2, canvas2.width / 2, 0, 2 * Math.PI, true);
+        ctx2.clip();
+
+        var img = await loadImage(utente1.displayAvatarURL({ format: 'png' }))
+        ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height);
+
+        var canvas3 = await createCanvas(1000, 1000)
+        var ctx3 = await canvas3.getContext('2d')
+
+        ctx3.beginPath();
+        ctx3.arc(canvas3.width / 2, canvas3.height / 2, canvas3.width / 2, 0, 2 * Math.PI, true);
+        ctx3.clip();
+
+        var img = await loadImage(utente2.displayAvatarURL({ format: 'png' }))
+        ctx3.drawImage(img, 0, 0, canvas3.width, canvas3.height);
+
+        ctx.drawImage(canvas2, 50, 50, 500, 500);
+        ctx.drawImage(canvas3, canvas.width - 50 - 500, canvas.height - 50 - 500, 500, 500);
+
+        var img = await loadImage("https://i.postimg.cc/Fz9ngM2c/heart.png")
+        ctx.drawImage(img, canvas.width / 2 - 300 / 2, canvas.height / 2 - 300 / 2, 300, 300);
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(`${utente1.username} ❤️ ${utente2.username}`)
+            .setColor("#C74141")
+            .setThumbnail("attachment://canvas.png")
+            .setDescription(`Ecco la percentuale di **corrispondenza** tra ${utente1.toString()} e ${utente2.toString()}: **${Math.floor(Math.random() * 101)}%** `)
+
+        message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+    }
+})
