@@ -104,7 +104,7 @@ client.on("message", async message => {
     trovata = getParolaccia(message.content)[0];
     if (trovata && !utenteMod(message.author)) return
 
-    if (new Date().getDate() == 14 && new Date().getMonth() == 1 && message.content.startsWith("!match")) return
+    if (new Date().getDate() == 14 && new Date().getMonth() == 1 && (message.content.startsWith("!match") || message.content.startsWith("!secret"))) return
 
     //Verifica esistenza comando
     if (!client.commands.has(command) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command))) {
@@ -268,13 +268,10 @@ registerFont("./canvas/font/roboto.ttf", { family: "roboto" })
 registerFont("./canvas/font/robotoBold.ttf", { family: "robotoBold" })
 
 client.on("message", async message => {
-    if (new Date().getDate() != 14 || new Date().getMonth() != 1) return
+    //! if (new Date().getDate() != 14 || new Date().getMonth() != 1) return
 
     if (message.author.bot) return
     if (!message.content.startsWith(prefix)) return;
-    if (!message.channel.type == "dm" && (message.guild.id != settings.idServer && message.guild.id != log.idServer)) return
-
-    if (message.channel.id == log.general.thingsToDo) return
 
     if (isMaintenance(message.author.id)) return
 
@@ -344,5 +341,34 @@ client.on("message", async message => {
             .setDescription(`Ecco la percentuale di **corrispondenza** tra ${utente1.toString()} e ${utente2.toString()}: **${Math.floor(Math.random() * 101)}%** `)
 
         message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+    }
+
+    if (message.content.startsWith("!secret")) {
+        if (message.channel.type != "dm") {
+            return botCommandMessage(message, "Warning", "Scrivi in DM", "Puoi eseguire questo comando solo nei DM del bot, in modo da scrivere in modo anonimo", { syntax: "!secret [user] [text]" })
+        }
+
+        var utente = message.mentions.users?.first()
+        if (!utente) {
+            var utente = await getUser(args[0])
+        }
+
+        if (!utente) {
+            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Inserisci un utente valido a cui vuoi mandare anoninamente un messaggio", { syntax: "!secret [user] [text]" })
+        }
+
+        var testo = args.slice(1).join(" ");
+
+        if (!testo) {
+            return botCommandMessage(message, "Error", "Inserire un messaggio", "Scrivi il messaggio che vuoi mandare anonimamente all'utente", { syntax: "!secret [user] [text]" })
+        }
+
+        if (testo.length > 500) {
+            return botCommandMessage(message, "Warning", "Messaggio troppo lungo", "Puoi scrivere un messaggio di massimo 500 caratteri", { syntax: "!secret [user] [text]" })
+        }
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":shushing_face: Confermi il messaggio segreto?")
+            .setDescription(`Conferma il messaggio con il bottone qua sotto:`)
     }
 })
