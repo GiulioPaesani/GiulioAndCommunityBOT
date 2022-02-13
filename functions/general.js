@@ -716,7 +716,7 @@ global.checkActivityPrivateRooms = function () {
 					})
 			}
 			else {
-				client.users.cache.get(room.owner).send(embed, button1)
+				client.users.cache.get(room.owner)?.send(embed, button1)
 					.catch(() => { })
 			}
 
