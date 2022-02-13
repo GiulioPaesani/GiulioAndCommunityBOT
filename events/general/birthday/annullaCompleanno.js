@@ -9,9 +9,6 @@ module.exports = {
 
         if (button.id.split(",")[1] != button.clicker.user.id) return
 
-        var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
-        if (!userstats) return
-
         button.message.delete()
             .catch(() => { })
     },

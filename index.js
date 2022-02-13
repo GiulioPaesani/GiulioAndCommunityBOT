@@ -268,7 +268,7 @@ registerFont("./canvas/font/roboto.ttf", { family: "roboto" })
 registerFont("./canvas/font/robotoBold.ttf", { family: "robotoBold" })
 
 client.on("message", async message => {
-    //! if (new Date().getDate() != 14 || new Date().getMonth() != 1) return
+    if (new Date().getDate() != 14 || new Date().getMonth() != 1) return
 
     if (message.author.bot) return
     if (!message.content.startsWith(prefix)) return;
@@ -357,6 +357,10 @@ client.on("message", async message => {
             return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Inserisci un utente valido a cui vuoi mandare anoninamente un messaggio", { syntax: "!secret [user] [text]" })
         }
 
+        if (utente.id == message.author.id) {
+            return botCommandMessage(message, "Warning", "Non a te stesso", "Non puoi scriverti un messaggio segreto da solo", { syntax: "!secret [user] [text]" })
+        }
+
         var testo = args.slice(1).join(" ");
 
         if (!testo) {
@@ -367,8 +371,54 @@ client.on("message", async message => {
             return botCommandMessage(message, "Warning", "Messaggio troppo lungo", "Puoi scrivere un messaggio di massimo 500 caratteri", { syntax: "!secret [user] [text]" })
         }
 
+        if (utente.user) utente = utente.user
+
         var embed = new Discord.MessageEmbed()
             .setTitle(":shushing_face: Confermi il messaggio segreto?")
-            .setDescription(`Conferma il messaggio con il bottone qua sotto:`)
+            .setColor("#ebaa13")
+            .setDescription(`Conferma il messaggio per ${utente.toString()} con il bottone qua sotto
+\`\`\`${testo}\`\`\`
+Una volta inviato il messaggio a ${utente.username}, **NESSUNO** saprà chi lo ha inviato, quindi sarai completamente **anonimo**`)
+
+        var button1 = new disbut.MessageButton()
+            .setLabel("Annulla")
+            .setStyle("red")
+            .setID(`annullaCompleanno,${message.author.id}`)
+
+        var button2 = new disbut.MessageButton()
+            .setLabel("Conferma messaggio")
+            .setStyle("green")
+            .setID(`confermaSegreto,${utente.id}`)
+
+        var row = new disbut.MessageActionRow()
+            .addComponent(button1)
+            .addComponent(button2)
+
+        message.channel.send(embed, row)
+    }
+})
+
+client.on("clickButton", button => {
+    if (button.id.startsWith("confermaSegreto")) {
+        var utente = client.users.cache.get(button.id.split(",")[1])
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":shushing_face: Messaggio segreto :shushing_face:")
+            .setColor("#8227cc")
+            .setDescription(`Ti è arrivato un messaggio **anonimo** da una persona segreta:
+\`\`\`${button.message.embeds[0].description.split("```")[1]}\`\`\`
+**Nessuno** sa da chi è scritto questo messaggio`)
+
+        utente.send(embed)
+            .catch(() => { })
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(":shushing_face: Messaggio segreto INVIATO :shushing_face:")
+            .setColor("#22c90c")
+            .setDescription(`Il messaggio anonimo per ${utente.toString()} è stato inviato con successo
+\`\`\`${button.message.embeds[0].description.split("```")[1]}\`\`\`
+**Nessuno** saprà mai il creatore di questo messaggio`)
+
+        button.message.edit(embed, null)
     }
 })
