@@ -665,7 +665,7 @@ global.checkActivityPrivateRooms = function () {
 	for (var index in serverstats.privateRooms) {
 		var room = serverstats.privateRooms[index]
 
-		if (room.lastActivity && room.lastActivityCount == 0 && new Date().getTime() - room.lastActivity >= 604800000) {
+		if (room?.lastActivity && room.lastActivityCount == 0 && new Date().getTime() - room.lastActivity >= 604800000) {
 			var embed = new Discord.MessageEmbed()
 				.setTitle("Stanza un po' inattiva")
 				.setColor("#FFAC33")
