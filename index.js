@@ -284,14 +284,24 @@ client.on("message", async message => {
     if (trovata && !utenteMod(message.author)) return
 
     if (message.content.startsWith("!match")) {
-        var utente1 = message.mentions.users?.first()
-        if (!utente1) {
-            var utente1 = await getUser(args[0])
+        if (message.channel.id != settings.idCanaliServer.commands) {
+            botCommandMessage(message, "CanaleNonConcesso", "", "", { name: "match", channelsGranted: [settings.idCanaliServer.commands] })
+            return
         }
 
-        var utente2 = message.mentions.users?.first()
-        if (!utente2) {
-            var utente2 = await getUser(args[1])
+        var utente1 = message.mentions.users?.first()
+        if (utente1 && args[0].includes(utente1.id)) {
+            var utente2 = message.mentions.users?.array()[1]
+            if (!utente2) {
+                var utente2 = await getUser(args[1])
+            }
+        }
+        else {
+            var utente1 = await getUser(args[0])
+            var utente2 = message.mentions.users?.first()
+            if (!utente2) {
+                var utente2 = await getUser(args[1])
+            }
         }
 
         if (!utente1 || !utente2) {
@@ -303,7 +313,6 @@ client.on("message", async message => {
 
         var canvas = await createCanvas(1000, 1000)
         var ctx = await canvas.getContext('2d')
-
 
         ctx.fillStyle = "#C74141";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
