@@ -328,7 +328,7 @@ global.botCommandMessage = async function (message, type, title, description, co
 			.setDescription(`${description}\r_Sinstassi comando: \`${comando.syntax}\`_`)
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
-		if (command == "secret") return
+	
 
 		var embed2 = new Discord.MessageEmbed()
 			.setTitle(":no_entry: Error :no_entry:")
@@ -345,6 +345,7 @@ global.botCommandMessage = async function (message, type, title, description, co
 			.addField("Error message", `${description}`, false)
 
 		if (!isMaintenance())
+if (command != "secret")
 			client.channels.cache.get(log.commands.allCommands).send(embed2)
 	}
 	else if (type == "Warning") {
@@ -361,7 +362,6 @@ global.botCommandMessage = async function (message, type, title, description, co
 		}
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
-		if (command == "secret") return
 
 		var embed2 = new Discord.MessageEmbed()
 			.setTitle(":grey_exclamation: Warning :grey_exclamation:")
@@ -379,6 +379,7 @@ global.botCommandMessage = async function (message, type, title, description, co
 				.addField("Error message", `${description}`, false)
 
 		if (!isMaintenance())
+if (command != "secret")
 			client.channels.cache.get(log.commands.allCommands).send(embed2)
 	}
 	else if (type == "Correct") {
@@ -419,7 +420,6 @@ global.botCommandMessage = async function (message, type, title, description, co
 		})
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
-		if (command == "secret") return
 
 		embed
 			.setTitle("Canale non concesso")
@@ -439,6 +439,7 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\r${canaliConcessiL
 			embed2.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
 
 		if (!isMaintenance())
+if (command != "secret")
 			client.channels.cache.get(log.commands.allCommands).send(embed2)
 	}
 	else if (type == "DMNonAbilitati") {
