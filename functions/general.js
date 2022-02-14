@@ -328,6 +328,8 @@ global.botCommandMessage = async function (message, type, title, description, co
 			.setDescription(`${description}\r_Sinstassi comando: \`${comando.syntax}\`_`)
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
+		if (commando == "secret") return
+
 		var embed2 = new Discord.MessageEmbed()
 			.setTitle(":no_entry: Error :no_entry:")
 			.setColor("#ed3737")
@@ -359,6 +361,8 @@ global.botCommandMessage = async function (message, type, title, description, co
 		}
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
+		if (commando == "secret") return
+
 		var embed2 = new Discord.MessageEmbed()
 			.setTitle(":grey_exclamation: Warning :grey_exclamation:")
 			.setColor("#919191")
@@ -415,6 +419,8 @@ global.botCommandMessage = async function (message, type, title, description, co
 		})
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
+		if (commando == "secret") return
+
 		embed
 			.setTitle("Canale non concesso")
 			.setColor("#e3b009")
