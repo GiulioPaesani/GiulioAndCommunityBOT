@@ -52,7 +52,7 @@ module.exports = {
             setInterval(updateUserstats, 60 * 1000)
             setInterval(updateServerstats, 60 * 1000)
 
-            setInterval(deleteDBLeavedUsers, 10 * 1000)
+            // setInterval(deleteDBLeavedUsers, 10 * 1000)
 
             setInterval(youtubeNotification, 60 * 1000)
 
