@@ -599,7 +599,7 @@ global.deleteDBLeavedUsers = async function () {
 					Buffer.from(JSON.stringify(userstats, null, '\t'), "utf-8"), `userstats${userstats.id}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`
 				);
 
-				client.channels.cache.get(log.server.other).send({ embeds: [embed2], files: [attachment1] })
+				client.channels.cache.get(log.server.other).send({ embeds: [embed], files: [attachment1] })
 
 				userstatsList = userstatsList.filter(x => x.id != userstats.id)
 				database.collection("userstats").deleteOne({ id: userstats.id })
