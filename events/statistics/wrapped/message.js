@@ -29,7 +29,7 @@ module.exports = {
             }
         }
 
-        await message.guild.emojis.cache.array().forEach(emoji => {
+        await message.guild.emojis.cache.forEach(emoji => {
             if (message.content.includes(`<:${emoji.name}:${emoji.id}>`)) {
 
                 if (!userstats.wrapped.emojis[emoji.name])
