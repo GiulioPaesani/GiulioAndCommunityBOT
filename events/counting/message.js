@@ -39,7 +39,7 @@ module.exports = {
                         .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
                         .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                         .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                        .addField("Number", numero, false)
+                        .addField("Number", numero.toString(), false)
 
                     if (message.content != numero.toString())
                         embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
@@ -94,8 +94,8 @@ module.exports = {
                         .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
                         .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                         .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                        .addField("Correct number", serverstats.numero + 1, false)
-                        .addField("Number written", numero, false)
+                        .addField("Correct number", (serverstats.numero + 1).toString(), false)
+                        .addField("Number written", numero.toString(), false)
 
                     if (message.content != numero.toString())
                         embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
@@ -120,7 +120,7 @@ module.exports = {
                 .setDescription(`[Message link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                .addField("Number", numero, false)
+                .addField("Number", numero.toString(), false)
 
             if (message.content != numero.toString())
                 embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
