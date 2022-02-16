@@ -20,12 +20,12 @@ module.exports = {
             .addField(":ledger: Channel", `#${newMessage.channel.name}`)
 
         if (oldMessage.mentions.roles) {
-            oldMessage.mentions.roles.array().forEach(role => {
+            oldMessage.mentions.roles.forEach(role => {
                 oldMessage.content = oldMessage.content.replace(`<@&${role.id}>`, `<@&${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == role.name).id}>`)
             })
         }
         if (newMessage.mentions.roles) {
-            newMessage.mentions.roles.array().forEach(role => {
+            newMessage.mentions.roles.forEach(role => {
                 newMessage.content = newMessage.content.replace(`<@&${role.id}>`, `<@&${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == role.name).id}>`)
             })
         }

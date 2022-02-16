@@ -20,7 +20,7 @@ module.exports = {
             .addField(":ledger: Channel", `#${message.channel.name}`)
 
         if (message.mentions.roles) {
-            message.mentions.roles.array().forEach(role => {
+            message.mentions.roles.forEach(role => {
                 message.content = message.content.replace(`<@&${role.id}>`, `<@&${client.guilds.cache.get(log.idServer).roles.cache.find(x => x.name == role.name).id}>`)
             })
         }

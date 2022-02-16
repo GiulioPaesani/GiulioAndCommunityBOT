@@ -92,7 +92,7 @@ module.exports = {
             } break
         }
 
-        var codes = client.codes.array().filter(x => x.category == category)
+        var codes = client.codes.filter(x => x.category == category)
         codes.forEach(code => {
             embed
                 .addField(`${code.name}`, `

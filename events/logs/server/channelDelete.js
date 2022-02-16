@@ -58,7 +58,7 @@ module.exports = {
 
         var chatLog = ""
         if (channel.type != "GUILD_VOICE") {
-            for (var msg of channel.messages.cache.array()) {
+            for (var msg of channel.messages.cache) {
                 var attachments = ""
                 msg.attachments.array().forEach(attachment => {
                     attachments += `${attachment.name} (${attachment.url}), `

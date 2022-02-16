@@ -91,7 +91,7 @@ global.makeBackup = async function () {
 			banned.array().forEach((ban) => backup.guild.bans.push(ban.user.id));
 		});
 		if (server.emojis)
-			await server.emojis.cache.array().forEach((emoji) =>
+			await server.emojis.cache.forEach((emoji) =>
 				backup.guild.emojis.push({
 					name: emoji.name,
 					url: `https://cdn.discordapp.com/emojis/${emoji.id}.png?size=96`
@@ -506,18 +506,18 @@ global.getCanvasMessage = async function (message, type) {
 
 	var messageContent = message.content;
 	if (message.mentions.roles) {
-		message.mentions.roles.array().forEach(role => {
+		message.mentions.roles.forEach(role => {
 			messageContent = messageContent.replace(`<@&${role.id}>`, `@${role.name}`)
 		})
 	}
 	if (message.mentions.users) {
-		message.mentions.users.array().forEach(user => {
+		message.mentions.users.forEach(user => {
 			messageContent = messageContent.replace(`<@${user.id}>`, `@${client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == user.id)?.nickname ? client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == user.id).nickname : client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == user.id).user.username}`)
 			messageContent = messageContent.replace(`<@!${user.id}>`, `@${client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == user.id)?.nickname ? client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == user.id).nickname : client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == user.id).user.username}`)
 		})
 	}
 	if (message.mentions.channels) {
-		message.mentions.channels.array().forEach(channel => {
+		message.mentions.channels.forEach(channel => {
 			messageContent = messageContent.replace(`<#${channel.id}>`, `#${channel.name.replace("│", "|")}`)
 		})
 	}
