@@ -1,10 +1,10 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (utenteMod(message.author)) return
         if (!userstatsList) return
@@ -22,8 +22,8 @@ module.exports = {
                 if (user.msgCount >= 7) {
                     var ruoloTempmuted = message.guild.roles.cache.find(role => role.id == settings.ruoliModeration.tempmuted);
                     message.guild.channels.cache.forEach((canale) => {
-                        if (canale.parentID != settings.idCanaliServer.categoriaModerationTicket) {
-                            canale.updateOverwrite(ruoloTempmuted, {
+                        if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
+                            canale.permissionOverwrites.edit(ruoloTempmuted, {
                                 SEND_MESSAGES: false,
                                 ADD_REACTIONS: false,
                                 SPEAK: false
@@ -37,7 +37,7 @@ module.exports = {
                     message.member.roles.add(ruoloTempmuted)
                         .then(() => {
                             if (message.member.voice.channel) {
-                                var canale = message.member.voice.channelID
+                                var canale = message.member.voice.channelId
                                 if (canale == settings.idCanaliServer.general1)
                                     message.member.voice.setChannel(settings.idCanaliServer.general2)
                                 else
@@ -69,7 +69,7 @@ module.exports = {
                         .addField("Moderator", "GiulioAndCommunity BOT")
                         .setFooter("User ID: " + message.member.user.id)
 
-                    message.channel.send(embed)
+                    message.channel.send({ embeds: [embed] })
                         .then(msg => {
                             var embed = new Discord.MessageEmbed()
                                 .setTitle(":thought_balloon: Individual spam :thought_balloon:")
@@ -81,7 +81,7 @@ module.exports = {
                                 .addField("Channel", `#${message.channel.name}`, false)
 
                             if (!isMaintenance())
-                                client.channels.cache.get(log.moderation.spam).send(embed)
+                                client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
 
                             var embed = new Discord.MessageEmbed()
                                 .setTitle(":speaker: Tempmute :speaker:")
@@ -95,10 +95,10 @@ module.exports = {
                                 .addField("Reason", reason, false)
 
                             if (!isMaintenance())
-                                client.channels.cache.get(log.moderation.tempmute).send(embed)
+                                client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
                         })
 
-                    var embedUtente = new Discord.MessageEmbed()
+                    var embed = new Discord.MessageEmbed()
                         .setTitle("Sei stato mutato temporaneamente")
                         .setColor("#6143CB")
                         .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
@@ -106,7 +106,7 @@ module.exports = {
                         .addField("Time", ms(time, { long: true }))
                         .addField("Moderator", "GiulioAndCommunity BOT")
 
-                    message.member.send(embedUtente).catch(() => {
+                    message.member.send({ embeds: [embed] }).catch(() => {
                         return
                     })
 
@@ -148,7 +148,7 @@ module.exports = {
                                 .setColor("#ED1C24")
                                 .setThumbnail("https://i.postimg.cc/nr9Cyd46/Lockdown-ON.png")
                                 .setDescription("È appena stato attivato il **sistema di lockdown** automaticamente per una rilevazione di **spam eccessivo**\n\nTutti gli utenti con **livello inferiore o uguale a 10** non vedranno piu nessun canale fino alla disattivazione di questo sistema")
-                            message.channel.send(embed)
+                            message.channel.send({ embeds: [embed] })
                                 .then(msg => {
                                     var embed = new Discord.MessageEmbed()
                                         .setTitle(":thought_balloon: Group spam :thought_balloon:")
@@ -158,7 +158,7 @@ module.exports = {
                                         .addField("Channel", `#${message.channel.name}`, false)
 
                                     if (!isMaintenance())
-                                        client.channels.cache.get(log.moderation.spam).send(embed)
+                                        client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
                                 })
 
                             serverstats.lockdown = true;
@@ -167,7 +167,7 @@ module.exports = {
                             ruolo.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD"])
 
                             var canale = client.channels.cache.get(settings.idCanaliServer.lockdown);
-                            canale.updateOverwrite(ruolo, {
+                            canale.permissionOverwrites.edit(ruolo, {
                                 VIEW_CHANNEL: true,
                             })
                             canale.messages.fetch("873963745938919495")
@@ -181,12 +181,12 @@ module.exports = {
 
 Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potrete continuare a partecipare al server`)
 
-                                    msg.edit(embed)
+                                    msg.edit({ embeds: [embed] })
                                 })
 
                             if (message.channel.id == settings.idCanaliServer.general) return
                             var canale = client.channels.cache.get(settings.idCanaliServer.general);
-                            canale.send(embed);
+                            canale.send({ embeds: [embed] });
                         }
 
                         channel.msgCount = 0;
@@ -201,7 +201,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
             }
             else {
                 usersGroupSpam.set(message.channel.id, {
-                    channelID: message.channel.id,
+                    channelId: message.channel.id,
                     msgCount: 1,
                     lastMessage: message.createdTimestamp
                 });

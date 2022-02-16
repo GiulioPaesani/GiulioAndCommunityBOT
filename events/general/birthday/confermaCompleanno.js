@@ -3,32 +3,33 @@ registerFont("./canvas/font/roboto.ttf", { family: "roboto" })
 registerFont("./canvas/font/robotoBold.ttf", { family: "robotoBold" })
 
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("confermaCompleanno")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("confermaCompleanno")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
+        var userstats = userstatsList.find(x => x.id == button.user.id);
         if (!userstats) return
 
         if (userstats.birthday && userstats.birthday[0]) {
             button.message.delete()
                 .catch(() => { })
-            return botMessage(button.clicker.user, "Warning", "Compleanno già inserito", "Hai già settato il tuo compleanno, non puoi più **modificarlo**")
+            return botMessage(button.user, "Warning", "Compleanno già inserito", "Hai già settato il tuo compleanno, non puoi più **modificarlo**")
         }
         else {
             var data = new Date()
 
-            var day = parseInt(button.id.split(",")[3])
-            var month = parseInt(button.id.split(",")[2])
+            var day = parseInt(button.customId.split(",")[3])
+            var month = parseInt(button.customId.split(",")[2])
 
             userstats.birthday = [month, day]
-            userstatsList[userstatsList.findIndex(x => x.id == button.clicker.user.id)] = userstats
+            userstatsList[userstatsList.findIndex(x => x.id == button.user.id)] = userstats
 
             var embed = new Discord.MessageEmbed()
                 .setTitle("Compleanno inserito")
@@ -36,9 +37,9 @@ module.exports = {
                 .setThumbnail("attachment://canvas.png")
 
             if (month == 2 && day == 29)
-                embed.setDescription(`${button.clicker.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per riceve **auguri** e **regali**\r_Negli anni non bisestili il tuo compleanno sarà contato il 1 Marzo_`)
+                embed.setDescription(`${button.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per riceve **auguri** e **regali**\r_Negli anni non bisestili il tuo compleanno sarà contato il 1 Marzo_`)
             else
-                embed.setDescription(`${button.clicker.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per riceve **auguri** e **regali**`)
+                embed.setDescription(`${button.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per riceve **auguri** e **regali**`)
 
             if (moment([moment([data.getFullYear(), month - 1, day]).diff(moment()) < 0 ? data.getFullYear() + 1 : data.getFullYear(), month - 1, day]).diff(moment(), "days") + 1 == 1) {
                 embed.addField(`:balloon: ${day} ${moment().set("month", month - 1).format("MMMM")}`, `Manca **${moment([moment([data.getFullYear(), month - 1, day]).diff(moment()) < 0 ? data.getFullYear() + 1 : data.getFullYear(), month - 1, day]).diff(moment(), "days") + 1} giorno** al tuo compleanno`)
@@ -46,18 +47,18 @@ module.exports = {
             else
                 embed.addField(`:balloon: ${day} ${moment().set("month", month - 1).format("MMMM")}`, `Mancano **${moment([moment([data.getFullYear(), month - 1, day]).diff(moment()) < 0 ? data.getFullYear() + 1 : data.getFullYear(), month - 1, day]).diff(moment(), "days") + 1} giorni** al tuo compleanno`)
 
-            button.message.edit(embed, null)
+            button.message.edit({ embeds: [embed], components: [] })
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":pencil: Birthday added :pencil:")
                 .setColor("#22c90c")
                 .setDescription(`[Message link](https://discord.com/channels/${button.guild.id}/${button.message.channel.id}/${button.message.id})`)
                 .addField(":alarm_clock: Time", `${moment(button.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":bust_in_silhouette: Member", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`)
+                .addField(":bust_in_silhouette: Member", `${button.user.toString()} - ID: ${button.user.id}`)
                 .addField("Date", `${day} ${moment().set("month", month - 1).format("MMMM")}`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.birthday.setBirthday).send(embed)
+                client.channels.cache.get(log.birthday.setBirthday).send({ embeds: [embed] })
 
             if (data.getHours() < 8) return
 
@@ -98,7 +99,7 @@ module.exports = {
 - 4 oggetti random dallo **shop** ${randomItems.map(x => x.icon).join(" ")}
 - **Boost x2** livellamento per tutto il giorno`)
 
-                client.users.cache.get(userstats.id).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+                client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                     .catch(() => { })
 
                 userstats = await addXp(userstats, userstats.level * 40, 0);
@@ -113,20 +114,20 @@ module.exports = {
                     .then(messages => {
                         for (var msg of messages.array()) {
                             if (msg.embeds[0]?.fields[0]?.value == moment(data.getTime()).format("ddd DD MMM YYYY")) {
-                                msg.embeds[0].fields[1].value += `- ${button.clicker.user.toString()}\r`
+                                msg.embeds[0].fields[1].value += `- ${button.user.toString()}\r`
 
                                 if (!isMaintenance())
-                                    msg.edit(msg.embeds[0])
+                                    msg.edit({ embeds: [msg.embeds[0]] })
                             }
                             else {
                                 var embed = new Discord.MessageEmbed()
                                     .setTitle(":gift: Birthdays today :gift:")
                                     .setColor("#8227cc")
                                     .addField(":alarm_clock: Day", `${moment(data.getTime()).format("ddd DD MMM YYYY")}`, false)
-                                    .addField("Birthdays", `- ${button.clicker.user.toString()}\r`)
+                                    .addField("Birthdays", `- ${button.user.toString()}\r`)
 
                                 if (!isMaintenance())
-                                    client.channels.cache.get(log.birthday.birthdaysToday).send(embed)
+                                    client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
                             }
                         }
                     })

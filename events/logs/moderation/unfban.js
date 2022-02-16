@@ -40,6 +40,6 @@ module.exports = {
             }
         }
 
-        client.channels.cache.get(log.moderation.unban).send(embed)
+        client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
     },
 };

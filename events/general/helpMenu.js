@@ -1,62 +1,65 @@
 module.exports = {
-    name: `clickMenu`,
+    name: `interactionCreate`,
     async execute(menu) {
-        if (!menu.id.startsWith("helpMenu")) return
+        if (!menu.isSelectMenu()) return
+        if (!menu.customId.startsWith("helpMenu")) return
 
-        if (isMaintenance(menu.clicker.user.id)) return
+        if (isMaintenance(menu.user.id)) return
 
-        if (menu.id.split(",")[1] != menu.clicker.user.id) return menu.reply.defer()
+        if (menu.customId.split(",")[1] != menu.user.id) return menu.deferUpdate()
 
-        menu.reply.defer()
+        menu.deferUpdate()
 
-        let option1 = new disbut.MessageMenuOption()
-            .setLabel('General')
-            .setEmoji('🎡')
-            .setValue('helpGeneral')
-            .setDescription('!test, !help, !github, !youtube...')
-        let option2 = new disbut.MessageMenuOption()
-            .setLabel('Community')
-            .setEmoji('💡')
-            .setValue('helpCommunity')
-            .setDescription('!suggest, !tclose, !tadd...')
-        let option3 = new disbut.MessageMenuOption()
-            .setLabel('Statistics')
-            .setEmoji('📊')
-            .setValue('helpStatistics')
-            .setDescription('!userstats, !avatar, !channelinfo...')
-        let option4 = new disbut.MessageMenuOption()
-            .setLabel('Fun')
-            .setEmoji('😂')
-            .setValue('helpFun')
-            .setDescription('!say, !cuser, !cserver...')
-        let option5 = new disbut.MessageMenuOption()
-            .setLabel('Ranking')
-            .setEmoji('💵')
-            .setValue('helpRanking')
-            .setDescription('!rank, !lb...')
-        let option6 = new disbut.MessageMenuOption()
-            .setLabel('Moderation')
-            .setEmoji('👮')
-            .setValue('helpModeration')
-            .setDescription('!kick, !mute, !infractions, !warn...')
-        let option7 = new disbut.MessageMenuOption()
-            .setLabel('Private rooms')
-            .setEmoji('🔐')
-            .setValue('helpPrivateRooms')
-            .setDescription('!pclose, !padd, !premove, !prename...')
-
-        let select = new disbut.MessageMenu()
-            .setID(`helpMenu,${menu.clicker.user.id}`)
+        var select = new Discord.MessageSelectMenu()
+            .setCustomId(`helpMenu,${menu.user.id}`)
             .setPlaceholder('Select category...')
             .setMaxValues(1)
             .setMinValues(1)
-            .addOption(option1)
-            .addOption(option2)
-            .addOption(option3)
-            .addOption(option4)
-            .addOption(option5)
-            .addOption(option6)
-            .addOption(option7)
+            .addOptions({
+                label: "General",
+                emoji: "🎡",
+                value: "helpGeneral",
+                description: "!test, !help, !github, !youtube..."
+            })
+            .addOptions({
+                label: "Community",
+                emoji: "💡",
+                value: "helpCommunity",
+                description: "!suggest, !tclose, !tadd..."
+            })
+            .addOptions({
+                label: "Statistics",
+                emoji: "📊",
+                value: "helpStatistics",
+                description: "!userstats, !avatar, !channelinfo..."
+            })
+            .addOptions({
+                label: "Fun",
+                emoji: "😂",
+                value: "helpFun",
+                description: "!say, !cuser, !cserver..."
+            })
+            .addOptions({
+                label: "Ranking",
+                emoji: "💵",
+                value: "helpRanking",
+                description: "!rank, !lb..."
+            })
+            .addOptions({
+                label: "Moderation",
+                emoji: "👮",
+                value: "helpModeration",
+                description: "!kick, !mute, !infractions, !warn..."
+            })
+            .addOptions({
+                label: "Private rooms",
+                emoji: "🔐",
+                value: "helpPrivateRooms",
+                description: "!pclose, !padd, !premove, !prename..."
+            })
+
+        var row = new Discord.MessageActionRow()
+            .addComponents(select)
 
         var category;
         var embed = new Discord.MessageEmbed()
@@ -113,9 +116,9 @@ module.exports = {
             } break
         }
 
-        var commands = client.commands.array().filter(x => x.category == category)
+        var commands = client.commands.toArray().filter(x => x.category == category)
 
-        if (!utenteMod(menu.clicker.user))
+        if (!utenteMod(menu.user))
             commands = commands.filter(x => !x.onlyStaff)
 
         commands.forEach(command => {
@@ -126,6 +129,6 @@ ${command.aliases.length > 0 ? `_Alias: \`${command.aliases.join("` `")}\`_` : `
 `)
         });
 
-        menu.message.edit(embed, select)
+        menu.message.edit({ embeds: [embed], components: [row] })
     },
 };

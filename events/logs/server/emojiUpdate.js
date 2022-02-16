@@ -33,6 +33,6 @@ New: ${change.new}
 `)
         })
 
-        client.channels.cache.get(log.server.emojiSticker).send(embed)
+        client.channels.cache.get(log.server.emojiSticker).send({ embeds: [embed] })
     },
 };

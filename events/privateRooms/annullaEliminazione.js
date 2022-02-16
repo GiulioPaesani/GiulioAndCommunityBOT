@@ -1,15 +1,16 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (button.id != "annullaEliminazione") return
+        if (!button.isButton()) return
+        if (button.customId != "annullaEliminazione") return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
         var room
-        if (button.message.channel.type == "dm")
-            room = serverstats.privateRooms.find(x => x.owner == button.clicker.user.id)
+        if (button.message.channel.type == "DM")
+            room = serverstats.privateRooms.find(x => x.owner == button.user.id)
         else
             room = serverstats.privateRooms.find(x => x.text == button.message.channel.id)
 

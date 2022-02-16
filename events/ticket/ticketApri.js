@@ -1,11 +1,12 @@
 module.exports = {
-	name: `clickButton`,
+	name: `interactionCreate`,
 	async execute(button) {
-		if (button.id != 'ticketApri') return;
+		if (!button.isButton()) return
+		if (button.customId != 'ticketApri') return;
 
-		button.reply.defer().catch(() => { })
+		button.deferUpdate().catch(() => { })
 
-		if (isMaintenance(button.clicker.user.id)) return
+		if (isMaintenance(button.user.id)) return
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle(button.message.embeds[0].title)
@@ -46,12 +47,15 @@ Non siamo ne onniscenti ne tuoi schiavi, quindi non pretendere di riuscire a ris
 Farsi correggere o mandare codice da altri non è mai un buon strumento per imparare. Cerca sempre di capire cosa sbagli e come non sbagliare più. Insomma non essere stupido`)
 		}
 
-		var button1 = new disbut.MessageButton()
+		var button1 = new Discord.MessageButton()
 			.setLabel("Chiudi ticket")
-			.setStyle("red")
-			.setID("ticketChiudi")
+			.setStyle("DANGER")
+			.setCustomId("ticketChiudi")
 
-		button.message.edit(embed, button1)
+		var row = new Discord.MessageActionRow()
+			.addComponents(button1)
+
+		button.message.edit({ embeds: [embed], components: [row] })
 
 		var index = serverstats.ticket.findIndex(x => x.channel == button.channel.id);
 		var ticket = serverstats.ticket[index];
@@ -59,16 +63,16 @@ Farsi correggere o mandare codice da altri non è mai un buon strumento per impa
 
 		serverstats.ticket[index].inserimentoCategory = false;
 
-		button.channel.updateOverwrite(ticket.owner, {
+		button.channel.permissionOverwrites.edit(ticket.owner, {
 			SEND_MESSAGES: true
 		})
-		button.channel.updateOverwrite(settings.idRuoloAiutante, {
+		button.channel.permissionOverwrites.edit(settings.idRuoloAiutante, {
 			SEND_MESSAGES: true
 		})
-		button.channel.updateOverwrite(settings.idRuoloAiutanteInProva, {
+		button.channel.permissionOverwrites.edit(settings.idRuoloAiutanteInProva, {
 			SEND_MESSAGES: true
 		})
-		button.reply.defer().catch(() => { })
+		button.deferUpdate().catch(() => { })
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")
@@ -78,6 +82,6 @@ Farsi correggere o mandare codice da altri non è mai un buon strumento per impa
 			.addField("Category", `${button.message.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${button.message.embeds[0].description.slice(1, -1)}`)
 
 		if (!isMaintenance())
-			client.channels.cache.get(log.community.ticket).send(embed)
+			client.channels.cache.get(log.community.ticket).send({ embeds: [embed] })
 	}
 };

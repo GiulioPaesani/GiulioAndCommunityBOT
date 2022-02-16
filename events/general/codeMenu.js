@@ -1,55 +1,53 @@
 module.exports = {
-    name: `clickMenu`,
+    name: `interactionCreate`,
     async execute(menu) {
-        if (!menu.id.startsWith("codeMenu")) return
-       
-        if (isMaintenance(menu.clicker.user.id)) return
+        if (!menu.isSelectMenu()) return
+        if (!menu.customId.startsWith("codeMenu")) return
 
-        if (menu.id.split(",")[1] != menu.clicker.user.id) return menu.reply.defer()
+        if (isMaintenance(menu.user.id)) return
 
-        menu.reply.defer()
+        if (menu.customId.split(",")[1] != menu.user.id) return menu.deferUpdate()
 
-        var option1 = new disbut.MessageMenuOption()
-            .setLabel('Utility')
-            .setEmoji('🧰')
-            .setValue('codeUtility')
+        menu.deferUpdate()
 
-        var option2 = new disbut.MessageMenuOption()
-            .setLabel('Moderation')
-            .setEmoji('🔨')
-            .setValue('codeModeration')
-
-        var option3 = new disbut.MessageMenuOption()
-            .setLabel('Altri comandi')
-            .setEmoji('🎡')
-            .setValue('codeCommands')
-
-        var option4 = new disbut.MessageMenuOption()
-            .setLabel('Fun')
-            .setEmoji('🤣')
-            .setValue('codeFun')
-
-        var option5 = new disbut.MessageMenuOption()
-            .setLabel('Gestione messaggi/canali/ruoli/utenti')
-            .setEmoji('📁')
-            .setValue('codeManage')
-
-        var option6 = new disbut.MessageMenuOption()
-            .setLabel('Errori comuni')
-            .setEmoji('🚫')
-            .setValue('codeErrors')
-
-        var select = new disbut.MessageMenu()
-            .setID(`codeMenu,${menu.clicker.user.id}`)
+        var select = new Discord.MessageSelectMenu()
+            .setCustomId(`codeMenu,${menu.user.id}`)
             .setPlaceholder('Select category...')
             .setMaxValues(1)
             .setMinValues(1)
-            .addOption(option1)
-            .addOption(option2)
-            .addOption(option3)
-            .addOption(option4)
-            .addOption(option5)
-            .addOption(option6)
+            .addOptions({
+                label: "Utility",
+                emoji: "🧰",
+                value: "codeUtility",
+            })
+            .addOptions({
+                label: "Moderation",
+                emoji: "🔨",
+                value: "codeModeration",
+            })
+            .addOptions({
+                label: "Altri comandi",
+                emoji: "🎡",
+                value: "codeCommands",
+            })
+            .addOptions({
+                label: "Fun",
+                emoji: "🤣",
+                value: "codeFun",
+            })
+            .addOptions({
+                label: "Gestione messaggi/canali/ruoli/utenti",
+                emoji: "📁",
+                value: "codeManage",
+            })
+            .addOptions({
+                label: "Errori comuni",
+                emoji: "🚫",
+                value: "codeErrors",
+            })
+
+        var row = new Discord.MessageActionRow()
+            .addComponents(select)
 
         var category;
         var embed = new Discord.MessageEmbed()
@@ -103,6 +101,6 @@ _IDs: \`${[code.name.toLowerCase()].concat(code.aliases).join("` `")}\`_
 `)
         });
 
-        menu.message.edit(embed, select)
+        menu.message.edit({ embeds: [embed], components: [row] })
     },
 };

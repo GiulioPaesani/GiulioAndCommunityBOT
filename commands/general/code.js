@@ -42,49 +42,46 @@ I comandi sono divisi nelle seguenti categorie:
 
 _Seleziona la categoria dal menù qua sotto_`)
 
-            var option1 = new disbut.MessageMenuOption()
-                .setLabel('Utility')
-                .setEmoji('🧰')
-                .setValue('codeUtility')
-
-            var option2 = new disbut.MessageMenuOption()
-                .setLabel('Moderation')
-                .setEmoji('🔨')
-                .setValue('codeModeration')
-
-            var option3 = new disbut.MessageMenuOption()
-                .setLabel('Altri comandi')
-                .setEmoji('🎡')
-                .setValue('codeCommands')
-
-            var option4 = new disbut.MessageMenuOption()
-                .setLabel('Fun')
-                .setEmoji('🤣')
-                .setValue('codeFun')
-
-            var option5 = new disbut.MessageMenuOption()
-                .setLabel('Gestione messaggi/canali/ruoli/utenti')
-                .setEmoji('📁')
-                .setValue('codeManage')
-
-            var option6 = new disbut.MessageMenuOption()
-                .setLabel('Errori comuni')
-                .setEmoji('🚫')
-                .setValue('codeErrors')
-
-            var select = new disbut.MessageMenu()
-                .setID(`codeMenu,${message.author.id}`)
+            var select = new Discord.MessageSelectMenu()
+                .setCustomId(`codeMenu,${message.author.id}`)
                 .setPlaceholder('Select category...')
                 .setMaxValues(1)
                 .setMinValues(1)
-                .addOption(option1)
-                .addOption(option2)
-                .addOption(option3)
-                .addOption(option4)
-                .addOption(option5)
-                .addOption(option6)
+                .addOptions({
+                    label: "Utility",
+                    emoji: "🧰",
+                    value: "codeUtility",
+                })
+                .addOptions({
+                    label: "Moderation",
+                    emoji: "🔨",
+                    value: "codeModeration",
+                })
+                .addOptions({
+                    label: "Altri comandi",
+                    emoji: "🎡",
+                    value: "codeCommands",
+                })
+                .addOptions({
+                    label: "Fun",
+                    emoji: "🤣",
+                    value: "codeFun",
+                })
+                .addOptions({
+                    label: "Gestione messaggi/canali/ruoli/utenti",
+                    emoji: "📁",
+                    value: "codeManage",
+                })
+                .addOptions({
+                    label: "Errori comuni",
+                    emoji: "🚫",
+                    value: "codeErrors",
+                })
 
-            message.channel.send(embed, select)
+            var row = new Discord.MessageActionRow()
+                .addComponents(select)
+
+            message.channel.send({ embeds: [embed], components: [row] })
                 .catch(() => { })
             return
         }
@@ -107,24 +104,24 @@ _Seleziona la categoria dal menù qua sotto_`)
         if (codice.info)
             embed.addField(":name_badge: Info - Leggere attentamente", codice.info)
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("v12")
-            .setID(`codeSwitch,${message.author.id},${codice.id},12`)
-            .setStyle("gray")
+            .setCustomId(`codeSwitch,${message.author.id},${codice.id},12`)
+            .setStyle("SECONDARY")
 
-        var button2 = new disbut.MessageButton()
+        var button2 = new Discord.MessageButton()
             .setLabel("v13")
-            .setID(`codeSwitch,${message.author.id},${codice.id},13`)
-            .setStyle("blurple")
+            .setCustomId(`codeSwitch,${message.author.id},${codice.id},13`)
+            .setStyle("PRIMARY")
 
-        var button3 = new disbut.MessageButton()
+        var button3 = new Discord.MessageButton()
             .setLabel("Ottieni codice completo")
-            .setID(`codeCompleto,${message.author.id},${codice.id},13`)
-            .setStyle("green")
+            .setCustomId(`codeCompleto,${message.author.id},${codice.id},13`)
+            .setStyle("SUCCESS")
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
         var codeText = ""
         var codeSplit = codice.v13.trim().split("\n")
@@ -142,20 +139,20 @@ _Seleziona la categoria dal menù qua sotto_`)
 
         if (tooLong) {
             embed.addField(":warning: Il codice è troppo lungo", "Ottieni il codice completo con il pulsante **\"Ottieni codice completo\"**")
-            row.addComponent(button3)
+            row.addComponents(button3)
         }
 
         if (args[args.length - 1].toLowerCase() == "here") {
-            message.channel.send(embed, row)
+            message.channel.send({ embeds: [embed], components: [row] })
                 .then(msg => {
-                    msg.edit({ timeout: 60000 })
+                    setTimeout(() => msg.delete(), 60000)
                 })
                 .catch(() => { })
         }
         else {
-            utente.send(embed, row)
+            utente.send({ embeds: [embed], components: [row] })
                 .then(() => {
-                    if (message.channel.type != "dm")
+                    if (message.channel.type != "DM")
                         botCommandMessage(message, "Correct", "Ecco il codice", `Il codice di **${codice.name.toUpperCase()}** è stato mandato in privato a ${utente.toString()} `)
                 })
                 .catch(() => {

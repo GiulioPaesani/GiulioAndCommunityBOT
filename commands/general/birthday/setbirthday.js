@@ -68,26 +68,24 @@ module.exports = {
             .setDescription("**Confermi** il complenno che hai inserito?")
             .addField(`:balloon: ${day} ${moment().set("month", month - 1).format("MMMM")}`, "Se vuoi **rinserire** la data, riscrivi il comando `!setbirthday` altrimenti clicca su **\"Conferma compleanno\"** per inserire quella seleziona\r_Non potrai più modificare la data del tuo compleanno_")
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Annulla inserimento")
-            .setStyle("red")
-            .setID(`annullaCompleanno,${message.author.id}`)
+            .setStyle("DANGER")
+            .setCustomId(`annullaCompleanno,${message.author.id}`)
 
-        var button2 = new disbut.MessageButton()
+        var button2 = new Discord.MessageButton()
             .setLabel("Conferma compleanno")
-            .setStyle("green")
-            .setID(`confermaCompleanno,${message.author.id},${month},${day}`)
+            .setStyle("SUCCESS")
+            .setCustomId(`confermaCompleanno,${message.author.id},${month},${day}`)
 
-        var row = new disbut.MessageActionRow()
+        var row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
 
-        message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
+        message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
             .then(msg => {
-                msg.delete({ timeout: 60000 })
-                    .catch(() => { })
-                message.delete({ timeout: 60000 })
-                    .catch(() => { })
+                setTimeout(() => msg.delete(), 60000)
+                setTimeout(() => message.delete(), 60000)
             })
             .catch(() => { })
     },

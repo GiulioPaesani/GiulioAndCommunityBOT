@@ -1,13 +1,14 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (button.id != "candidatiHelper") return
+        if (!button.isButton()) return
+        if (button.customId != "candidatiHelper") return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
+        var userstats = userstatsList.find(x => x.id == button.user.id);
         if (!userstats) return
 
         if (userstats.level < 15) {
@@ -17,7 +18,7 @@ module.exports = {
                 .setDescription(":no_entry_sign: Per candidarsi come **Aiutante** è necessario almeno il **Livello 15**")
                 .setThumbnail("https://i.postimg.cc/ZKghn7NF/Copertina-triste.jpg")
 
-            button.clicker.user.send(embed)
+            button.user.send({ embeds: [embed] })
                 .catch(() => { })
             return
         }
@@ -29,14 +30,17 @@ module.exports = {
             .addField(":page_facing_up: Come candidarsi", "Ti basta cliccare sul bottone qua sotto per aprire il **form** da compilare\rDovrai rispondere diverse domande sia **personali** che **teoriche** in modo che lo staff possa riuscire a trovare le persone giuste\rQuindi **clicca qua sotto** per iniziare subito")
             .setThumbnail("https://i.postimg.cc/SNjhyFnx/Copertina.jpg")
 
-        let button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Candidati")
-            .setStyle("url")
+            .setStyle("LINK")
             .setURL("https://forms.gle/J2e7UuquMr9HpKzz8")
 
-        button.clicker.user.send({
-            component: button1,
-            embed: embed
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+
+        button.user.send({
+            components: [row],
+            embeds: [embed]
         }).catch(() => { })
     },
 };

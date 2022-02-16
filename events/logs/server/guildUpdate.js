@@ -66,6 +66,6 @@ New: ${change.new}
 `)
         })
 
-        client.channels.cache.get(log.server.server).send(embed)
+        client.channels.cache.get(log.server.server).send({ embeds: [embed] })
     },
 };

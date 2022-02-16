@@ -5,7 +5,7 @@ module.exports = {
 
         if (isMaintenance(newState.id)) return
 
-        if (!oldState.channelID && newState.channelID) {
+        if (!oldState.channelId && newState.channelId) {
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":inbox_tray: Member joined :inbox_tray:")
@@ -13,11 +13,11 @@ module.exports = {
                 .setThumbnail(client.users.cache.get(newState.id).displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                .addField("Channel", client.channels.cache.get(newState.channelID).name ? `#${client.channels.cache.get(newState.channelID).name}` : newState.channelID)
+                .addField("Channel", client.channels.cache.get(newState.channelId).name ? `#${client.channels.cache.get(newState.channelId).name}` : newState.channelId)
 
-            client.channels.cache.get(log.server.voiceChannels).send(embed)
+            client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
         }
-        else if (oldState.channelID && !newState.channelID) {
+        else if (oldState.channelId && !newState.channelId) {
             const fetchedLogs = await oldState.guild.fetchAuditLogs({
                 limit: 1,
                 type: 'MEMBER_DISCONNECT',
@@ -39,12 +39,12 @@ module.exports = {
 
             embed
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(oldState.id).toString()} - ID: ${oldState.id}`, false)
-                .addField("Channel", client.channels.cache.get(oldState.channelID).name ? `#${client.channels.cache.get(oldState.channelID).name}` : oldState.channelID)
+                .addField("Channel", client.channels.cache.get(oldState.channelId).name ? `#${client.channels.cache.get(oldState.channelId).name}` : oldState.channelId)
 
-            client.channels.cache.get(log.server.voiceChannels).send(embed)
+            client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
         }
         else {
-            if (oldState.channelID != newState.channelID) {
+            if (oldState.channelId != newState.channelId) {
                 const fetchedLogs = await oldState.guild.fetchAuditLogs({
                     limit: 1,
                     type: 'MEMBER_MOVE',
@@ -66,10 +66,10 @@ module.exports = {
 
                 embed
                     .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                    .addField("From channel", client.channels.cache.get(oldState.channelID).name ? `#${client.channels.cache.get(oldState.channelID).name}` : oldState.channelID)
-                    .addField("To channel", client.channels.cache.get(newState.channelID).name ? `#${client.channels.cache.get(newState.channelID).name}` : newState.channelID)
+                    .addField("From channel", client.channels.cache.get(oldState.channelId).name ? `#${client.channels.cache.get(oldState.channelId).name}` : oldState.channelId)
+                    .addField("To channel", client.channels.cache.get(newState.channelId).name ? `#${client.channels.cache.get(newState.channelId).name}` : newState.channelId)
 
-                client.channels.cache.get(log.server.voiceChannels).send(embed)
+                client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
             }
             else {
                 const fetchedLogs = await newState.guild.fetchAuditLogs({
@@ -88,7 +88,7 @@ module.exports = {
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                     .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ID: ${newState.id}`, false)
-                    .addField("Channel", client.channels.cache.get(newState.channelID).name ? `#${client.channels.cache.get(newState.channelID).name}` : newState.channelID)
+                    .addField("Channel", client.channels.cache.get(newState.channelId).name ? `#${client.channels.cache.get(newState.channelId).name}` : newState.channelId)
 
                 if (oldState.serverDeaf != newState.serverDeaf) {
                     if (oldState.serverDeaf) {
@@ -112,7 +112,7 @@ module.exports = {
                 }
 
                 if (embed.fields[3])
-                    client.channels.cache.get(log.server.voiceChannels).send(embed)
+                    client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
             }
         }
     },

@@ -13,7 +13,7 @@ module.exports = {
             .setColor("#F00044")
             .setDescription("Ecco il profilo TikTok di **Giulio**\r:link: [giulio.paesani](https://www.tiktok.com/@giulio.paesani)")
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

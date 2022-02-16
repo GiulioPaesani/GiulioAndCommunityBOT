@@ -18,7 +18,7 @@ Attraverso questo sito ho scaricato tutte le **risorse** e immagini necessarie, 
             .addField(":video_camera: Video", `
 Guarda il questo [video completo](https://youtu.be/mT-G-bRIREc) in cui mostro nel **dettaglio** come ho realizzato tutto ciò`)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

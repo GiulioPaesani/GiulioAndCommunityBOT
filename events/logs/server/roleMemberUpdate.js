@@ -31,7 +31,7 @@ module.exports = {
                     .addField(":bust_in_silhouette: Member", `${newMember.user.toString()} - ID: ${newMember.id}`)
                     .addField("Role", roles)
 
-                client.channels.cache.get(log.server.roles).send(embed)
+                client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
             }
 
             if (logs.changes.find(x => x.key == "$remove")) {
@@ -49,7 +49,7 @@ module.exports = {
                     .addField(":bust_in_silhouette: Member", `${newMember.user.toString()} - ID: ${newMember.id}`)
                     .addField("Role", roles)
 
-                client.channels.cache.get(log.server.roles).send(embed)
+                client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
             }
         }
     },

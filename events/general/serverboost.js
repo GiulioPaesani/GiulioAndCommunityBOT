@@ -1,5 +1,5 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
@@ -70,7 +70,7 @@ ${nuovoLivello ? nuovoLivello : ""}
 `)
 
         var canale = client.channels.cache.get(settings.idCanaliServer.general);
-        canale.send(embed);
+        canale.send({ embeds: [embed] });
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Serverboost")
@@ -83,7 +83,7 @@ Old: Lvl. ${livelloVecchio} Boost ${message.guild.premiumSubscriptionCount - num
 New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscriptionCount}`)
 
         if (!isMaintenance())
-            client.channels.cache.get(log.server.serverBoostes).send(embed)
+            client.channels.cache.get(log.server.serverBoostes).send({ embeds: [embed] })
 
         const privilegiLevel = {
             "5": [
@@ -162,6 +162,6 @@ New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscription
             .setDescription("Grazie mille per aver boostato il server\rPer tutto il periodo di boost avrai accesso a tutti i **privilegi** che trovi di seguito:")
             .addField(":beginner: Privilegi", textPrivilegi)
 
-        message.author.send(embed)
+        message.author.send({ embeds: [embed] })
     },
 };

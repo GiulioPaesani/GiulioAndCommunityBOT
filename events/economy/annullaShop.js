@@ -1,30 +1,31 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("annullaShop")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("annullaShop")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
+        var userstats = userstatsList.find(x => x.id == button.user.id);
         if (!userstats) return
 
-        var item = require("../../config/items.json").find(x => x.id == button.id.split(",")[2])
+        var item = require("../../config/items.json").find(x => x.id == button.customId.split(",")[2])
         if (!item) return
 
         if (!item.priviled || (item.priviled && userstats.level >= item.priviled)) {
-            var button1 = new disbut.MessageButton()
+            var button1 = new Discord.MessageButton()
                 .setLabel("Sell")
-                .setID(`sell,${button.clicker.user.id},${item.id}`)
-                .setStyle("blurple")
+                .setCustomId(`sell,${button.user.id},${item.id}`)
+                .setStyle("PRIMARY")
 
-            var button2 = new disbut.MessageButton()
+            var button2 = new Discord.MessageButton()
                 .setLabel("Buy")
-                .setID(`buy,${button.clicker.user.id},${item.id}`)
-                .setStyle("green")
+                .setCustomId(`buy,${button.user.id},${item.id}`)
+                .setStyle("SUCCESS")
 
             if (!userstats.inventory[item.id] || userstats.inventory[item.id] == 0) {
                 button1
@@ -37,9 +38,9 @@ module.exports = {
                     .setLabel("Buy (No money)")
             }
 
-            var row = new disbut.MessageActionRow()
-                .addComponent(button1)
-                .addComponent(button2)
+            var row = new Discord.MessageActionRow()
+                .addComponents(button1)
+                .addComponents(button2)
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(`${item.name.toUpperCase()}`)
@@ -52,18 +53,18 @@ Selling price: ${item.sellPrice}$
 Category: ${item.category == "technology" ? "Technology" : item.category == "food" ? "Food" : item.category == "home" ? "Home" : item.category == "mezziTrasporto" ? "Mezzi di trasporto" : "Abbigliamento"}`)
                 .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
-            button.message.edit(embed, row)
+            button.message.edit({ embeds: [embed], components: [row] })
         }
         else {
-            var button1 = new disbut.MessageButton()
+            var button1 = new Discord.MessageButton()
                 .setLabel("Sell")
-                .setID(`sell,${button.clicker.user.id},${item.id}`)
-                .setStyle("blurple")
+                .setCustomId(`sell,${button.user.id},${item.id}`)
+                .setStyle("PRIMARY")
 
-            var button2 = new disbut.MessageButton()
+            var button2 = new Discord.MessageButton()
                 .setLabel("Buy (Not unlocked)")
-                .setID(`buy,${button.clicker.user.id},${item.id}`)
-                .setStyle("green")
+                .setCustomId(`buy,${button.user.id},${item.id}`)
+                .setStyle("SUCCESS")
                 .setDisabled()
 
             if (!userstats.inventory[item.id] || userstats.inventory[item.id] == 0) {
@@ -72,9 +73,9 @@ Category: ${item.category == "technology" ? "Technology" : item.category == "foo
                     .setLabel("Sell (No items in inventory)")
             }
 
-            var row = new disbut.MessageActionRow()
-                .addComponent(button1)
-                .addComponent(button2)
+            var row = new Discord.MessageActionRow()
+                .addComponents(button1)
+                .addComponents(button2)
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(`${item.name.toUpperCase()} - Not unlocked`)
@@ -89,7 +90,7 @@ Selling price: ${item.sellPrice}$
 Category: ${item.category == "technology" ? "Technology" : item.category == "food" ? "Food" : item.category == "home" ? "Home" : item.category == "mezziTrasporto" ? "Mezzi di trasporto" : "Abbigliamento"}`)
                 .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
-            button.message.edit(embed, row)
+            button.message.edit({ embeds: [embed], components: [row] })
         }
     },
 };

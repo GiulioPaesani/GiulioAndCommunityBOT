@@ -16,7 +16,7 @@ module.exports = {
             .addField(":turtle: Ping", "```" + `${client.ws.ping}ms` + "```", true)
             .addField(":floppy_disk: Ram", "```" + `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` + "```", true)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

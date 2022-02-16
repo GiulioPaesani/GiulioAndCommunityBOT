@@ -23,8 +23,8 @@ module.exports = {
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
             .addField("Channel", `#${channel.name}`)
-            .addField("Category", channel.parentID ? channel.parent : "_Null_")
-            .addField("Type", channel.type == "text" ? "Text" : channel.type == "voice" ? "Voice" : channel.type == "news" ? "News" : channel.type)
+            .addField("Category", channel.parentId ? channel.parent : "_Null_")
+            .addField("Type", channel.type == "GUILD_TEXT" ? "Text" : channel.type == "GUILD_VOICE" ? "GUILD_VOICE" : channel.type == "news" ? "News" : channel.type)
             .addField("Topic", channel.topic ? (channel.topic.length > 300 ? (`${channel.topic.slice(0, 300)}...`) : channel.topic) : "_Null_")
 
         if (channel.rateLimitPerUser)
@@ -57,7 +57,7 @@ module.exports = {
             embed.addField("Permissions", permissionsText)
 
         var chatLog = ""
-        if (channel.type != "voice") {
+        if (channel.type != "GUILD_VOICE") {
             for (var msg of channel.messages.cache.array()) {
                 var attachments = ""
                 msg.attachments.array().forEach(attachment => {
@@ -74,9 +74,9 @@ module.exports = {
             var attachment1 = await new Discord.MessageAttachment(
                 Buffer.from(chatLog, "utf-8"), `chanel${channel.id}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
             );
-            client.channels.cache.get(log.server.channels).send({ embed, files: [attachment1] })
+            client.channels.cache.get(log.server.channels).send({ embeds: [embed], files: [attachment1] })
         }
         else
-            client.channels.cache.get(log.server.channels).send(embed)
+            client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
     },
 };

@@ -51,13 +51,13 @@ module.exports = {
             reason = "Nessun motivo";
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Sovrascrivi moderazione (Force ban)")
-            .setStyle("red")
-            .setID(`fban,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 57)}`)
+            .setStyle("DANGER")
+            .setCustomId(`fban,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 57)}`)
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
         if (userstats.moderation.type == "Muted") {
             return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
@@ -140,7 +140,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":no_entry: Forceban :no_entry:")
@@ -153,7 +153,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", reason, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.forceban).send(embed)
+                    client.channels.cache.get(log.moderation.forceban).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -163,7 +163,7 @@ ${userstats.moderation.moderator}
             .addField("Reason", reason)
             .addField("Moderator", message.author.toString())
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
 
         message.guild.members.ban(utente.id, { reason: reason })

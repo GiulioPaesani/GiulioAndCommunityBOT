@@ -1,14 +1,14 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
-       
+
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (!userstatsList) return
 
-        if (message.channel.parentID == settings.idCanaliServer.categoriaAdmin) return
+        if (message.channel.parentId == settings.idCanaliServer.categoriaAdmin) return
 
         var userstats = userstatsList.find(x => x.id == message.author.id);
         if (!userstats) return

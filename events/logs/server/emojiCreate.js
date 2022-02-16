@@ -23,6 +23,6 @@ module.exports = {
             .addField("Name", emoji.name)
             .addField("ID", emoji.id)
 
-        client.channels.cache.get(log.server.emojiSticker).send(embed)
+        client.channels.cache.get(log.server.emojiSticker).send({ embeds: [embed] })
     },
 };

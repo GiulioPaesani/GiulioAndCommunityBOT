@@ -34,7 +34,7 @@ Other formats: **[.gif](${utente.displayAvatarURL({ dynamic: true, size: 1024, f
                 size: 1024
             }))
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

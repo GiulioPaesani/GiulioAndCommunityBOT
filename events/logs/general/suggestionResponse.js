@@ -1,10 +1,10 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.channel.id != log.community.suggestions) return
 
         message.delete()
@@ -14,7 +14,7 @@ module.exports = {
 
         if (!message.content) return
 
-        client.channels.cache.get(log.community.suggestions).messages.fetch(message.reference.messageID)
+        client.channels.cache.get(log.community.suggestions).messages.fetch(message.reference.messageId)
             .then(msg => {
                 var idUtente = msg.embeds[0].fields[0].value.slice(msg.embeds[0].fields[0].value.length - 19, -1)
                 if (!idUtente) return
@@ -31,9 +31,9 @@ module.exports = {
                 })
 
                 msg.embeds[0].fields[1].value = "Refused by " + message.author.username
-                msg.embeds[0].color = "15548997"
+                msg.embeds[0].color = "#ED4245"
 
-                msg.edit(msg.embeds[0], null)
+                msg.edit({ embeds: [msg.embeds[0]], components: [] })
 
                 var embed = new Discord.MessageEmbed()
                     .setTitle("💡Suggestion RIFIUTATO")
@@ -42,7 +42,7 @@ module.exports = {
                     .addField(":bookmark_tabs: Suggestion", msg.embeds[0].fields[2].value)
                     .addField(":inbox_tray: Message", `**${message.author.username}** ti ha lasciato un messaggio: ` + "`" + message.content.slice(0, 900) + "`")
 
-                utente.send(embed)
+                utente.send({ embeds: [embed] })
                     .catch(() => { })
             })
     },

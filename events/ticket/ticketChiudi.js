@@ -1,17 +1,18 @@
 module.exports = {
-	name: `clickButton`,
+	name: `interactionCreate`,
 	async execute(button) {
-		if (button.id != 'ticketChiudi') return;
+		if (!button.isButton()) return
+		if (button.customId != 'ticketChiudi') return;
 
-		button.reply.defer().catch(() => { })
+		button.deferUpdate().catch(() => { })
 
-		if (isMaintenance(button.clicker.user.id)) return
+		if (isMaintenance(button.user.id)) return
 
 		var index = serverstats.ticket.findIndex((x) => x.channel == button.channel.id);
 		var ticket = serverstats.ticket[index];
 		if (!ticket) return
 
-		if (!utenteMod(button.clicker.member) && button.clicker.user.id != ticket.owner && !button.clicker.member.roles.cache.has(settings.idRuoloAiutante) && !button.clicker.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
+		if (!utenteMod(button.member) && button.user.id != ticket.owner && !button.member.roles.cache.has(settings.idRuoloAiutante) && !button.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
 			return;
 		}
 		else {
@@ -20,8 +21,8 @@ module.exports = {
 				button.message.components[0].components[0].disabled = true
 
 				button.message.edit({
-					embed: button.message.embeds[0],
-					components: button.message.components
+					embeds: [button.message.embeds[0]],
+					componentss: button.message.components
 				})
 			}
 			else {
@@ -30,7 +31,7 @@ module.exports = {
 				button.message.components[0].components[1].disabled = true
 
 				button.message.edit({
-					embed: button.message.embeds[0],
+					embeds: [button.message.embeds[0]],
 					components: button.message.components
 				})
 			}
@@ -40,13 +41,16 @@ module.exports = {
 				.setColor("#ED1C24")
 				.setDescription("Questo ticket si chiuderà tra `20 secondi`")
 
-			var button1 = new disbut.MessageButton()
+			var button1 = new Discord.MessageButton()
 				.setLabel("Annulla")
-				.setStyle("red")
-				.setID("annullaChiusura")
+				.setStyle("DANGER")
+				.setCustomId("annullaChiusura")
+
+			var row = new Discord.MessageActionRow()
+				.addComponents(button1)
 
 			var idChannelTicket = ticket.channel
-			button.message.channel.send(embed, button1)
+			button.message.channel.send({ embeds: [embed], components: [row] })
 				.then(msg => {
 					ticket.daEliminare = true;
 					serverstats.ticket[serverstats.ticket.findIndex((x) => x.channel == idChannelTicket)] = ticket;
@@ -57,7 +61,7 @@ module.exports = {
 
 						if (ticket.daEliminare) {
 							embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
-							msg.edit(embed)
+							msg.edit({ embeds: [embed] })
 								.catch(() => { })
 
 							setTimeout(function () {
@@ -82,13 +86,13 @@ module.exports = {
 
 											if (ticket.inserimentoCategory)
 												if (!isMaintenance())
-													client.channels.cache.get(log.community.ticket).send(embed)
+													client.channels.cache.get(log.community.ticket).send({ embeds: [embed] })
 
 											var embed = new Discord.MessageEmbed()
 												.setTitle(":paperclips: Ticket closed :paperclips:")
 												.setColor("#e31705")
 												.addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-												.addField(":brain: Executor", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`, false)
+												.addField(":brain: Executor", `${button.user.toString()} - ID: ${button.user.id}`, false)
 												.addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
 												.addField("Category", `${msg.embeds[0].title.split(" ").slice(1, -1).join(" ")} - ${msg.embeds[0].description.split("`")[1]}`)
 
@@ -112,14 +116,14 @@ module.exports = {
 													Buffer.from(chatLog, "utf-8"), `ticket${ticket.channel}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
 												);
 												if (!isMaintenance())
-													client.channels.cache.get(log.community.ticket).send({ embed, files: [attachment1] })
+													client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] })
 											}
 											else
 												if (!isMaintenance())
-													client.channels.cache.get(log.community.ticket).send(embed)
+													client.channels.cache.get(log.community.ticket).send({ embeds: [embed] })
 
 											embed.setDescription("Questo ticket si sta per chiudere")
-											msg.edit(embed)
+											msg.edit({ embeds: [embed] })
 												.catch(() => { })
 
 											button.channel.delete()

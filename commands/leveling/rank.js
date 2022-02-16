@@ -107,6 +107,6 @@ ${xpProgress}
 XP ${humanize(userstats.xp - getXpNecessari(userstats.level))}/${humanize(getXpNecessari(userstats.level + 1) - getXpNecessari(userstats.level))} - Rank #${positionXp}`)
             .addField(`:coin: ${humanize(userstats.money)}$`, `${Object.keys(userstats.inventory).length == 0 ? "0" : Object.values(userstats.inventory).reduce((a, b) => a + b)} ${Object.keys(userstats.inventory).length == 0 ? "Items" : Object.values(userstats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
     },
 };

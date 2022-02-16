@@ -8,7 +8,7 @@ module.exports = {
     category: "community",
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(message, args, client, property) {
-        let contenuto = args.join(" ")
+        var contenuto = args.join(" ")
 
         if (!contenuto) {
             return botCommandMessage(message, "Error", "Inserire un suggerimento", "Scrivi il testo della tua suggestion", property)
@@ -25,7 +25,7 @@ module.exports = {
             .setDescription("Attendi che lo staff approvi il tuo suggerimento")
             .addField(":bookmark_tabs: Suggestion", contenuto)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
 
         var embed = new Discord.MessageEmbed()
             .setTitle("💡 New suggestion 💡")
@@ -35,21 +35,21 @@ module.exports = {
             .addField("Status", "Pending")
             .addField("Text", contenuto)
 
-        var button1 = new disbut.MessageButton()
-            .setStyle('red')
+        var button1 = new Discord.MessageButton()
+            .setStyle('DANGER')
             .setLabel('Rifiuta')
-            .setID(`rifiutaSuggestion`)
-        var button2 = new disbut.MessageButton()
-            .setStyle('green')
+            .setCustomId(`rifiutaSuggestion`)
+        var button2 = new Discord.MessageButton()
+            .setStyle('SUCCESS')
             .setLabel('Approva')
-            .setID(`approvaSuggestion`)
+            .setCustomId(`approvaSuggestion`)
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
-        let canale = client.channels.cache.find(channel => channel.id == log.community.suggestions);
+        var canale = client.channels.cache.find(channel => channel.id == log.community.suggestions);
 
-        canale.send(embed, row)
+        canale.send({ embeds: [embed], components: [row] })
     },
 };

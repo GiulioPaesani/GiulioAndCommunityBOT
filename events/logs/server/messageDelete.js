@@ -57,6 +57,6 @@ module.exports = {
         embed
             .addField("Attachments", attachments ? attachments : "_Null_")
 
-        client.channels.cache.get(log.server.messages).send(embed)
+        client.channels.cache.get(log.server.messages).send({ embeds: [embed] })
     },
 };

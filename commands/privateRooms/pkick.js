@@ -41,7 +41,7 @@ module.exports = {
             return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
-        if (!utente.voice || utente.voice.channelID != canale.id) {
+        if (!utente.voice || utente.voice.channelId != canale.id) {
             return botCommandMessage(message, "Error", "Utente non valido", "Questo utente non è presente nel tuo canale vocale", property)
         }
 

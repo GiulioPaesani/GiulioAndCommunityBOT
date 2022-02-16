@@ -3,9 +3,9 @@ module.exports = {
     async execute(oldMember, newMember) {
         if (isMaintenance(newMember.id)) return
 
-        var room = serverstats.privateRooms.find(x => x.voice && x.voice == newMember.channelID)
+        var room = serverstats.privateRooms.find(x => x.voice && x.voice == newMember.channelId)
         if (!room)
-            room = serverstats.privateRooms.find(x => x.voice && x.voice == oldMember.channelID)
+            room = serverstats.privateRooms.find(x => x.voice && x.voice == oldMember.channelId)
 
         if (!room) return
 

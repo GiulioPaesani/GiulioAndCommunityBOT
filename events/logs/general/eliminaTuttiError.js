@@ -1,11 +1,12 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (button.id != "eliminaTuttiError") return
+        if (!button.isButton()) return
+        if (button.customId != "eliminaTuttiError") return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
         button.message.channel.messages.fetch()
             .then(messages => {

@@ -60,7 +60,7 @@ module.exports = {
                 delete userstats.warn.splice(code - 1, 1)
             }
 
-            if(utente.user) utente = utente.user
+            if (utente.user) utente = utente.user
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":fire_extinguisher: Clear warns :fire_extinguisher:")
@@ -73,7 +73,7 @@ module.exports = {
                 .addField("Infractions", warnList.length > 1000 ? `${warnList.slice(0, 993)}...` : warnList, false)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.moderation.clearwarn).send(embed)
+                client.channels.cache.get(log.moderation.clearwarn).send({ embeds: [embed] })
 
             userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
         }

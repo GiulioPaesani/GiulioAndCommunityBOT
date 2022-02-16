@@ -5,20 +5,20 @@ module.exports = {
 
         if (!channel.guild) return
 
-        channel.updateOverwrite(settings.idRuoloNonVerificato, {
+        channel.permissionOverwrites.edit(settings.idRuoloNonVerificato, {
             VIEW_CHANNEL: false
         }).catch(() => { })
 
-        channel.updateOverwrite(settings.ruoliModeration.muted, {
+        channel.permissionOverwrites.edit(settings.ruoliModeration.muted, {
             SEND_MESSAGES: false
         }).catch(() => { })
-        channel.updateOverwrite(settings.ruoliModeration.tempmuted, {
+        channel.permissionOverwrites.edit(settings.ruoliModeration.tempmuted, {
             SEND_MESSAGES: false
         }).catch(() => { })
-        channel.updateOverwrite(settings.ruoliModeration.banned, {
+        channel.permissionOverwrites.edit(settings.ruoliModeration.banned, {
             VIEW_CHANNEL: false
         }).catch(() => { })
-        channel.updateOverwrite(settings.ruoliModeration.tempbanned, {
+        channel.permissionOverwrites.edit(settings.ruoliModeration.tempbanned, {
             VIEW_CHANNEL: false
         }).catch(() => { })
     },

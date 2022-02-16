@@ -14,7 +14,7 @@ module.exports = {
 https://discord.gg/ypTCaveew2`)
             .setColor("#677BC4");
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

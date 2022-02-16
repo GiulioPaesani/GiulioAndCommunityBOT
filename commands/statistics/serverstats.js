@@ -12,9 +12,9 @@ module.exports = {
         var botCount = server.members.cache.filter(member => member.user.bot).size;
         var memberCount = server.memberCount - botCount;
 
-        var categoryCount = server.channels.cache.filter(c => c.type == "category").size;
-        var textCount = server.channels.cache.filter(c => c.type == "text").size;
-        var vocalCount = server.channels.cache.filter(c => c.type == "voice").size;
+        var categoryCount = server.channels.cache.filter(c => c.type == "GUILD_CATEGORY").size;
+        var textCount = server.channels.cache.filter(c => c.type == "GUILD_TEXT").size;
+        var vocalCount = server.channels.cache.filter(c => c.type == "GUILD_VOICE").size;
 
         var embed = new Discord.MessageEmbed()
             .setTitle(server.name)
@@ -28,7 +28,7 @@ module.exports = {
             .addField(":loud_sound: Server categories and channels", "```Category: " + categoryCount + " | Text: " + textCount + " | Voice: " + vocalCount + "```", false)
             .addField(":calendar_spiral: Server created", "```" + moment(server.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(server.createdAt).fromNow() + ")```", false)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

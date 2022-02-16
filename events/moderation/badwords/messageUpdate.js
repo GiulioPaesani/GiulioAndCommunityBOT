@@ -6,7 +6,7 @@ module.exports = {
 
         if (isMaintenance(newMessage.author.id)) return
 
-        if (newMessage.channel.type == "dm") return
+        if (newMessage.channel.type == "DM") return
         if (utenteMod(newMessage.member)) return
 
         [trovata, nonCensurato, censurato] = getParolaccia(newMessage.content);
@@ -32,7 +32,7 @@ module.exports = {
             .addField("Channel", newMessage.channel.toString())
             .setFooter("User ID: " + newMessage.member.user.id)
 
-        newMessage.channel.send(embed)
+        newMessage.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":sweat_drops: Badwords :sweat_drops:")
@@ -47,7 +47,7 @@ Old: ${oldMessage.content.length > 500 ? `${oldMessage.content.slice(0, 497)}...
 New: ${nonCensurato.length > 500 ? `${nonCensurato.slice(0, 497)}...` : nonCensurato}`, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.badwords).send(embed)
+                    client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -57,7 +57,7 @@ New: ${nonCensurato.length > 500 ? `${nonCensurato.slice(0, 497)}...` : nonCensu
             .addField("Message edit", censurato)
             .addField("Channel", newMessage.channel.toString())
 
-        newMessage.member.send(embed)
+        newMessage.member.send({ embeds: [embed] })
             .catch(() => { })
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats

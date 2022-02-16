@@ -44,7 +44,7 @@ module.exports = {
             return botCommandMessage(message, "Warning", "Non ti puoi rimuovere", "Non ti puoi rimuovere da solo dal questo ticket")
         }
 
-        message.channel.updateOverwrite(utente, {
+        message.channel.permissionOverwrites.edit(utente, {
             VIEW_CHANNEL: false
         })
 

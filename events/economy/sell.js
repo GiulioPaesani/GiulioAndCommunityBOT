@@ -1,18 +1,19 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("sell")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("sell")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
+        var userstats = userstatsList.find(x => x.id == button.user.id);
         if (!userstats) return
 
-        var item = require("../../config/items.json").find(x => x.id == button.id.split(",")[2])
+        var item = require("../../config/items.json").find(x => x.id == button.customId.split(",")[2])
         if (!item) return
 
         if (!userstats.inventory[item.id] || userstats.inventory[item.id] < 1) return
@@ -29,20 +30,20 @@ Amount: **1**
 _Hai ${userstats.money}$ - Con guadagno: ${userstats.money + item.sellPrice}$_`)
             .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Annulla")
-            .setID(`annullaShop,${button.clicker.user.id},${item.id}`)
-            .setStyle("red")
+            .setCustomId(`annullaShop,${button.user.id},${item.id}`)
+            .setStyle("DANGER")
 
-        var button2 = new disbut.MessageButton()
-            .setID(`-sell,${button.clicker.user.id},${item.id},1`)
-            .setStyle("blurple")
+        var button2 = new Discord.MessageButton()
+            .setCustomId(`-sell,${button.user.id},${item.id},1`)
+            .setStyle("PRIMARY")
             .setDisabled()
             .setEmoji("🔽")
 
-        var button3 = new disbut.MessageButton()
-            .setID(`+sell,${button.clicker.user.id},${item.id},1`)
-            .setStyle("blurple")
+        var button3 = new Discord.MessageButton()
+            .setCustomId(`+sell,${button.user.id},${item.id},1`)
+            .setStyle("PRIMARY")
             .setEmoji("🔼")
 
         if (userstats.inventory[item.id] < 2) {
@@ -51,17 +52,17 @@ _Hai ${userstats.money}$ - Con guadagno: ${userstats.money + item.sellPrice}$_`)
                 .setDisabled()
         }
 
-        var button4 = new disbut.MessageButton()
+        var button4 = new Discord.MessageButton()
             .setLabel("Conferma")
-            .setID(`confermaSell,${button.clicker.user.id},${item.id},1`)
-            .setStyle("green")
+            .setCustomId(`confermaSell,${button.user.id},${item.id},1`)
+            .setStyle("SUCCESS")
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
-            .addComponent(button3)
-            .addComponent(button4)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
+            .addComponents(button3)
+            .addComponents(button4)
 
-        button.message.edit(embed, row)
+        button.message.edit({ embeds: [embed], components: [row] })
     },
 };

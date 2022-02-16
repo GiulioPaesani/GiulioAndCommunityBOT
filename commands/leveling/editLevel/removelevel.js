@@ -52,7 +52,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setTitle(":outbox_tray: Remove levels :outbox_tray:")
             .setColor("#e31705")
-            .setDescription(message.channel.type != "dm" ? `[Message link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})` : "")
+            .setDescription(message.channel.type != "DM" ? `[Message link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})` : "")
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`)
@@ -78,6 +78,6 @@ Old: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp)})
         embed.fields[4].value += `New: Lvl. ${userstats.level} (XP: ${humanize(userstats.xp)})`
 
         if (!isMaintenance())
-            client.channels.cache.get(log.ranking.editLevel).send(embed)
+            client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
     },
 };

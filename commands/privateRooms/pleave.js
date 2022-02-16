@@ -42,14 +42,14 @@ module.exports = {
         setTimeout(() => {
             if (room.text) {
                 var canale = client.channels.cache.get(room.text)
-                canale.updateOverwrite(message.member, {
+                canale.permissionOverwrites.edit(message.member, {
                     VIEW_CHANNEL: false
                 })
             }
             if (room.voice) {
-                if (message.member.voice && message.member.voice.channelID == room.voice) message.member.voice.kick()
+                if (message.member.voice && message.member.voice.channelId == room.voice) message.member.voice.kick()
                 var canale = client.channels.cache.get(room.voice)
-                canale.updateOverwrite(message.member, {
+                canale.permissionOverwrites.edit(message.member, {
                     VIEW_CHANNEL: false
                 })
             }

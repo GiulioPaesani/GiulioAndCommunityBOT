@@ -1,10 +1,10 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (!userstatsList) return
 

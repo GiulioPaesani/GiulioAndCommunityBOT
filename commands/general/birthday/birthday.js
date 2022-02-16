@@ -50,7 +50,7 @@ module.exports = {
                 embed
                     .addField(`:grey_exclamation: Not setted`, `_Questo utente non ha ancora inserito il suo compleanno_`)
             }
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
                 .catch(() => { })
         }
         else {
@@ -105,7 +105,7 @@ module.exports = {
                     embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Mancano **${moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1} giorni** al compleanno di ${utente.toString()}`)
             }
 
-            message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+            message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                 .catch(() => { })
         }
     },

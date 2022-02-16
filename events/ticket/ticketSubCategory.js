@@ -1,13 +1,14 @@
 module.exports = {
-    name: `clickMenu`,
+    name: `interactionCreate`,
     async execute(menu) {
-        if (!menu.id.startsWith("ticketSubCategory")) return
+        if (!menu.isSelectMenu()) return
+        if (!menu.customId.startsWith("ticketSubCategory")) return
 
-        if (isMaintenance(menu.clicker.user.id)) return
+        if (isMaintenance(menu.user.id)) return
 
-        if (menu.id.split(",")[1] != menu.clicker.user.id) return menu.reply.defer()
+        if (menu.customId.split(",")[1] != menu.user.id) return menu.deferUpdate()
 
-        menu.reply.defer()
+        menu.deferUpdate()
 
         if (menu.values[0] == "ticketCategory15" || menu.values[0] == "ticketCategory23" || menu.values[0] == "ticketCategory34") {
             var embed = new Discord.MessageEmbed()
@@ -52,12 +53,15 @@ Non dire "posso fare una domanda?" ma chiedila direttamente, in modo da non spre
 Non siamo ne onniscenti ne tuoi schiavi, quindi non pretendere di riuscire ad avere una risposta adeguata alle tue aspettative`)
             }
 
-            var button1 = new disbut.MessageButton()
+            var button1 = new Discord.MessageButton()
                 .setLabel("Chiudi ticket")
-                .setStyle("red")
-                .setID("ticketChiudi")
+                .setStyle("DANGER")
+                .setCustomId("ticketChiudi")
 
-            menu.message.edit(embed, button1)
+            var row = new Discord.MessageActionRow()
+                .addComponents(button1)
+
+            menu.message.edit({ embeds: [embed], components: [row] })
 
             var index = serverstats.ticket.findIndex(x => x.channel == menu.channel.id);
             var ticket = serverstats.ticket[index];
@@ -65,13 +69,13 @@ Non siamo ne onniscenti ne tuoi schiavi, quindi non pretendere di riuscire ad av
 
             serverstats.ticket[index].inserimentoCategory = false;
 
-            menu.channel.updateOverwrite(ticket.owner, {
+            menu.channel.permissionOverwrites.edit(ticket.owner, {
                 SEND_MESSAGES: true
             })
-            menu.channel.updateOverwrite(settings.idRuoloAiutante, {
+            menu.channel.permissionOverwrites.edit(settings.idRuoloAiutante, {
                 SEND_MESSAGES: true
             })
-            menu.channel.updateOverwrite(settings.idRuoloAiutanteInProva, {
+            menu.channel.permissionOverwrites.edit(settings.idRuoloAiutanteInProva, {
                 SEND_MESSAGES: true
             })
 
@@ -83,7 +87,7 @@ Non siamo ne onniscenti ne tuoi schiavi, quindi non pretendere di riuscire ad av
                 .addField("Category", `${embed.title.split(" ").slice(1, -1).join(" ")} - Altro...`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.community.ticket).send(embed)
+                client.channels.cache.get(log.community.ticket).send({ embeds: [embed] })
         }
         else {
             var embed = new Discord.MessageEmbed()
@@ -238,21 +242,21 @@ _Se hai risolto, chiudi questo ticket con **"Problema risolto"**_
 Se con le **soluzioni** qua sopra non hai ancora risolto, **apri il ticket** per parlare direttamente con lo staff
 `)
 
-            var button1 = new disbut.MessageButton()
+            var button1 = new Discord.MessageButton()
                 .setLabel("Problema risolto")
-                .setStyle("red")
-                .setID("ticketChiudi")
+                .setStyle("DANGER")
+                .setCustomId("ticketChiudi")
 
-            var button2 = new disbut.MessageButton()
+            var button2 = new Discord.MessageButton()
                 .setLabel("Apri ticket")
-                .setStyle("blurple")
-                .setID("ticketApri")
+                .setStyle("PRIMARY")
+                .setCustomId("ticketApri")
 
-            var row = new disbut.MessageActionRow()
-                .addComponent(button1)
-                .addComponent(button2)
+            var row = new Discord.MessageActionRow()
+                .addComponents(button1)
+                .addComponents(button2)
 
-            menu.message.edit(embed, row)
+            menu.message.edit({ embeds: [embed], components: [row] })
         }
     },
 };

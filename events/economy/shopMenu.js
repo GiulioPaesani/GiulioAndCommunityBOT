@@ -1,52 +1,51 @@
 module.exports = {
-    name: `clickMenu`,
+    name: `interactionCreate`,
     async execute(menu) {
-        if (!menu.id.startsWith("shopMenu")) return
+        if (!menu.isSelectMenu()) return
+        if (!menu.customId.startsWith("shopMenu")) return
 
-        if (isMaintenance(menu.clicker.user.id)) return
+        if (isMaintenance(menu.user.id)) return
 
-        if (menu.id.split(",")[1] != menu.clicker.user.id) return menu.reply.defer()
+        if (menu.customId.split(",")[1] != menu.user.id) return menu.deferUpdate()
 
-        menu.reply.defer()
+        menu.deferUpdate()
 
-        var userstats = userstatsList.find(x => x.id == menu.clicker.user.id);
+        var userstats = userstatsList.find(x => x.id == menu.user.id);
         if (!userstats) return
 
-        var option1 = new disbut.MessageMenuOption()
-            .setLabel('Technology')
-            .setEmoji('🖥️')
-            .setValue('shopTechnology')
-
-        var option2 = new disbut.MessageMenuOption()
-            .setLabel('Food')
-            .setEmoji('🍗')
-            .setValue('shopFood')
-
-        var option3 = new disbut.MessageMenuOption()
-            .setLabel('Home')
-            .setEmoji('🏠')
-            .setValue('shopHome')
-
-        var option4 = new disbut.MessageMenuOption()
-            .setLabel('Mezzi di trasporto')
-            .setEmoji('🛻')
-            .setValue('shopMezziTrasporto')
-
-        var option5 = new disbut.MessageMenuOption()
-            .setLabel('Abbigliamento')
-            .setEmoji('👕')
-            .setValue('shopAbbigliamento')
-
-        let select = new disbut.MessageMenu()
-            .setID(`shopMenu,${menu.clicker.user.id}`)
+        var select = new Discord.MessageSelectMenu()
+            .setCustomId(`shopMenu, ${menu.user.id} `)
             .setPlaceholder('Select category...')
             .setMaxValues(1)
             .setMinValues(1)
-            .addOption(option1)
-            .addOption(option2)
-            .addOption(option3)
-            .addOption(option4)
-            .addOption(option5)
+            .addOptions({
+                label: "Technology",
+                emoji: "🖥️",
+                value: "shopTechnology",
+            })
+            .addOptions({
+                label: "Food",
+                emoji: "🍗",
+                value: "shopFood",
+            })
+            .addOptions({
+                label: "Home",
+                emoji: "🏠",
+                value: "shopHome",
+            })
+            .addOptions({
+                label: "Mezzi di trasporto",
+                emoji: "🛻",
+                value: "shopMezziTrasporto",
+            })
+            .addOptions({
+                label: "Abbigliamento",
+                emoji: "👕",
+                value: "shopAbbigliamento",
+            })
+
+        var row = new Discord.MessageActionRow()
+            .addComponents(select)
 
         var category;
         var embed = new Discord.MessageEmbed()
@@ -99,6 +98,6 @@ _Sblocca con \r<@&${settings.ruoliLeveling["level" + item.priviled]}>_`, true)
         });
 
 
-        menu.message.edit(embed, select)
+        menu.message.edit({ embeds: [embed], components: [row] })
     },
 };

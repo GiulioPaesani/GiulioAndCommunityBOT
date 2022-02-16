@@ -1,13 +1,14 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("avanti2Lb")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("avanti2Lb")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
         var leaderboardListLeveling = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
         var leaderboardLeveling = ""
@@ -70,14 +71,14 @@ module.exports = {
             .addField(":coin: Economy", leaderboardEconomy)
             .setFooter(`Page ${page}/${totPage}`)
 
-        var button1 = new disbut.MessageButton()
-            .setID(`indietro2Lb,${button.clicker.user.id},${page}`)
-            .setStyle("blurple")
+        var button1 = new Discord.MessageButton()
+            .setCustomId(`indietro2Lb,${button.user.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("⏮️")
 
-        var button2 = new disbut.MessageButton()
-            .setID(`indietroLb,${button.clicker.user.id},${page}`)
-            .setStyle("blurple")
+        var button2 = new Discord.MessageButton()
+            .setCustomId(`indietroLb,${button.user.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("◀️")
 
         if (page == 1) {
@@ -85,14 +86,14 @@ module.exports = {
             button2.setDisabled()
         }
 
-        var button3 = new disbut.MessageButton()
-            .setID(`avantiLb,${button.clicker.user.id},${page}`)
-            .setStyle("blurple")
+        var button3 = new Discord.MessageButton()
+            .setCustomId(`avantiLb,${button.user.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("▶️")
 
-        var button4 = new disbut.MessageButton()
-            .setID(`avanti2Lb,${button.clicker.user.id},${page}`)
-            .setStyle("blurple")
+        var button4 = new Discord.MessageButton()
+            .setCustomId(`avanti2Lb,${button.user.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("⏭️")
 
         if (page == totPage) {
@@ -100,12 +101,12 @@ module.exports = {
             button4.setDisabled()
         }
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
-            .addComponent(button3)
-            .addComponent(button4)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
+            .addComponents(button3)
+            .addComponents(button4)
 
-        button.message.edit(embed, row)
+        button.message.edit({ embeds: [embed], components: [row] })
     },
 };

@@ -1,5 +1,5 @@
 module.exports = {
-    name: "message",
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
@@ -31,7 +31,7 @@ module.exports = {
                 .setDescription(`__Utente non valido!__\r${message.author.toString()} ogni utente può scrivere un solo numero alla volta`)
 
             embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
                 .then(msg => {
                     var embed = new Discord.MessageEmbed()
                         .setTitle(":no_entry: User writted twice :no_entry:")
@@ -45,7 +45,7 @@ module.exports = {
                         embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
 
                     if (!isMaintenance())
-                        client.channels.cache.get(log.counting.numbers).send(embed)
+                        client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
                 })
 
             message.channel.send("0")
@@ -86,7 +86,7 @@ module.exports = {
                 var titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", `MA SIETE SCEMI?`, "MEGLIO SE TORNATE A PROGRAMMARE", "QUANTO HAI IN MATEMATICA?", "MEGLIO SE TORNATE A PROGRAMMARE", "QUALCUNO QUI NON SA CONTARE", "SIETE DELLE CAPRE", `SAD FOR YOU`]
                 embed.setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
             }
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
                 .then(msg => {
                     var embed = new Discord.MessageEmbed()
                         .setTitle(":no_entry_sign: Wrong number :no_entry_sign:")
@@ -101,7 +101,7 @@ module.exports = {
                         embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
 
                     if (!isMaintenance())
-                        client.channels.cache.get(log.counting.numbers).send(embed)
+                        client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
                 })
             message.channel.send("0")
                 .then(msg => {
@@ -131,7 +131,7 @@ User best score: ${numero > userstats.bestScore ? "Yes" : "No"}
 Server best score: ${numero > serverstats.bestScore ? "Yes" : "No"}`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.counting.numbers).send(embed)
+                client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
 
             serverstats.numero = serverstats.numero + 1;
             serverstats.ultimoUtente = message.author.id

@@ -45,7 +45,7 @@ Upvotes: **${userUp.length}** - ${upvotes}%
 Downvotes: **${userDown.length}** - ${downvotes}%
 `)
 
-                messageReaction.message.edit(embed)
+                messageReaction.message.edit({ embeds: [embed] })
             }
             catch {
 

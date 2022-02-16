@@ -55,13 +55,13 @@ module.exports = {
 
         if (room.text) {
             var canale = client.channels.cache.get(room.text)
-            canale.updateOverwrite(utente, {
+            canale.permissionOverwrites.edit(utente, {
                 VIEW_CHANNEL: true
             })
         }
         if (room.voice) {
             var canale = client.channels.cache.get(room.voice)
-            canale.updateOverwrite(utente, {
+            canale.permissionOverwrites.edit(utente, {
                 VIEW_CHANNEL: true
             })
         }

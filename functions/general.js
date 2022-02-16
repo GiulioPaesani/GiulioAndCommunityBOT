@@ -28,22 +28,22 @@ global.codeError = async function (err) {
 		.addField(':alarm_clock: Time', `${moment(new Date().getTime()).format('ddd DD MMM YYYY, HH:mm:ss')}`)
 		.addField(':name_badge: Error', err.stack ? `${err.stack.slice(0, 900)}` : `${err.slice(0, 900)}`);
 
-	var button1 = new disbut.MessageButton()
+	var button1 = new Discord.MessageButton()
 		.setLabel("Elimina")
-		.setID("eliminaError")
-		.setStyle("red")
+		.setCustomId("eliminaError")
+		.setStyle("DANGER")
 
-	var button2 = new disbut.MessageButton()
+	var button2 = new Discord.MessageButton()
 		.setLabel("Elimina tutti")
-		.setID("eliminaTuttiError")
-		.setStyle("red")
+		.setCustomId("eliminaTuttiError")
+		.setStyle("DANGER")
 
-	var row = new disbut.MessageActionRow()
-		.addComponent(button1)
-		.addComponent(button2)
+	var row = new Discord.MessageActionRow()
+		.addComponents(button1)
+		.addComponents(button2)
 
 	if (!isMaintenance())
-		client.channels.cache.get(log.general.codeErrors).send(embed, row);
+		client.channels.cache.get(log.general.codeErrors).send({ embeds: [embed], components: [row] });
 };
 
 global.humanize = function (number) {
@@ -97,15 +97,15 @@ global.makeBackup = async function () {
 					url: `https://cdn.discordapp.com/emojis/${emoji.id}.png?size=96`
 				})
 			);
-		backup.guild.rulesChannel = server.rulesChannelID;
-		backup.guild.systemChannel = server.systemChannelID;
-		backup.guild.publicUpdatesChannel = server.publicUpdatesChannelID;
+		backup.guild.rulesChannel = server.rulesChannelId;
+		backup.guild.systemChannel = server.systemChannelId;
+		backup.guild.publicUpdatesChannel = server.publicUpdatesChannelId;
 		backup.guild.verificationLevel = server.verificationLevel;
 
 		//CATEGORY
 		var categories = await server.channels.cache
 			.array()
-			.filter((x) => x.type == 'category')
+			.filter((x) => x.type == "GUILD_CATEGORY")
 			.sort((a, b) => a.position - b.position);
 		for (var categoria of categories) {
 			backup.categories.push(categoria.name);
@@ -114,7 +114,7 @@ global.makeBackup = async function () {
 		//CHANNELS
 		var canali = await server.channels.cache
 			.array()
-			.filter((x) => x.type != 'category')
+			.filter((x) => x.type != "GUILD_CATEGORY")
 			.sort((a, b) => a.position - b.position);
 		for (var canale of canali) {
 			var info = {
@@ -124,7 +124,7 @@ global.makeBackup = async function () {
 				slowmode: canale.rateLimitPerUser,
 				bitrate: canale.bitrate,
 				userlimit: canale.topic,
-				category: canale.parentID,
+				category: canale.parentId,
 				permissions: canale.permissionOverwrites,
 				messages: []
 			};
@@ -159,7 +159,7 @@ global.makeBackup = async function () {
 		//ROLES
 		var ruoli = server.roles.cache
 			.array()
-			.filter((x) => x.type != 'category')
+			.filter((x) => x.type != "GUILD_CATEGORY")
 			.sort((a, b) => b.position - a.position);
 		for (var ruolo of ruoli) {
 			var info = {
@@ -218,7 +218,7 @@ global.makeBackup = async function () {
 			.addField("Time", moment().format("dddd DD MMMM, HH:mm:ss"))
 
 		var canale = client.channels.cache.get(log.general.backup);
-		canale.send({ embed, files: [attachment1, attachment2, attachment3] });
+		canale.send({ embeds: [embed], files: [attachment1, attachment2, attachment3] });
 	}
 };
 
@@ -328,8 +328,6 @@ global.botCommandMessage = async function (message, type, title, description, co
 			.setDescription(`${description}\r_Sinstassi comando: \`${comando.syntax}\`_`)
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
-	
-
 		var embed2 = new Discord.MessageEmbed()
 			.setTitle(":no_entry: Error :no_entry:")
 			.setColor("#ed3737")
@@ -345,8 +343,7 @@ global.botCommandMessage = async function (message, type, title, description, co
 			.addField("Error message", `${description}`, false)
 
 		if (!isMaintenance())
-if (command != "secret")
-			client.channels.cache.get(log.commands.allCommands).send(embed2)
+			client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
 	}
 	else if (type == "Warning") {
 		embed
@@ -362,7 +359,6 @@ if (command != "secret")
 		}
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
-
 		var embed2 = new Discord.MessageEmbed()
 			.setTitle(":grey_exclamation: Warning :grey_exclamation:")
 			.setColor("#919191")
@@ -379,8 +375,7 @@ if (command != "secret")
 				.addField("Error message", `${description}`, false)
 
 		if (!isMaintenance())
-if (command != "secret")
-			client.channels.cache.get(log.commands.allCommands).send(embed2)
+			client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
 	}
 	else if (type == "Correct") {
 		embed
@@ -411,7 +406,7 @@ if (command != "secret")
 				.addField("Error message", `${description}`, false)
 
 		if (!isMaintenance())
-			client.channels.cache.get(log.commands.allCommands).send(embed2)
+			client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
 	}
 	else if (type == "CanaleNonConcesso") {
 		var canaliConcessiLista = "";
@@ -420,7 +415,6 @@ if (command != "secret")
 		})
 
 		var command = message.content.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
-
 		embed
 			.setTitle("Canale non concesso")
 			.setColor("#e3b009")
@@ -439,8 +433,7 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\r${canaliConcessiL
 			embed2.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
 
 		if (!isMaintenance())
-if (command != "secret")
-			client.channels.cache.get(log.commands.allCommands).send(embed2)
+			client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
 	}
 	else if (type == "DMNonAbilitati") {
 		embed
@@ -450,20 +443,20 @@ if (command != "secret")
 	}
 
 	if (components)
-		message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: components })
+		message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: components })
 			.then(msg => {
 				if (type != "Correct") {
-					msg.delete({ timeout: 20000 }).catch(() => { })
-					message.delete({ timeout: 20000 }).catch(() => { })
+					setTimeout(() => msg.delete(), 20000)
+					setTimeout(() => message.delete(), 20000)
 				}
 			})
 			.catch(() => { })
 	else
-		message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+		message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
 			.then(msg => {
 				if (type != "Correct") {
-					msg.delete({ timeout: 20000 }).catch(() => { })
-					message.delete({ timeout: 20000 }).catch(() => { })
+					setTimeout(() => msg.delete(), 20000)
+					setTimeout(() => message.delete(), 20000)
 				}
 			})
 			.catch(() => { })
@@ -497,11 +490,11 @@ global.botMessage = async function (channel, type, title, description, fields, c
 		}
 	}
 
-	channel.send(embed, components)
+	channel.send({ embeds: [embed], components: [components] })
 		.then(msg => {
 			if (type != "Correct") {
-				msg.delete({ timeout: 20000 }).catch(() => { })
-				message.delete({ timeout: 20000 }).catch(() => { })
+				setTimeout(() => msg.delete(), 20000)
+				setTimeout(() => message.delete(), 20000)
 			}
 		})
 		.catch(() => { })
@@ -540,7 +533,7 @@ global.getCanvasMessage = async function (message, type) {
 
 	ctx2.font = "63px roboto"
 	ctx2.fillStyle = "#72767D";
-	await fillTextWithTwemoji(ctx2, `Invia un messaggio in ${message.channel.type != "dm" ? `#${message.channel.name?.replace("│", "|")}` : `@GiulioAndCommunityBOT`}`, 10, 75);
+	await fillTextWithTwemoji(ctx2, `Invia un messaggio in ${message.channel.type != "DM" ? `#${message.channel.name?.replace("│", "|")}` : `@GiulioAndCommunityBOT`}`, 10, 75);
 
 	ctx.drawImage(textChannel, 345, 600)
 
@@ -606,7 +599,7 @@ global.deleteDBLeavedUsers = async function () {
 					Buffer.from(JSON.stringify(userstats, null, '\t'), "utf-8"), `userstats${userstats.id}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`
 				);
 
-				client.channels.cache.get(log.server.other).send({ embed, files: [attachment1] })
+				client.channels.cache.get(log.server.other).send({ embeds: [embed2], files: [attachment1] })
 
 				userstatsList = userstatsList.filter(x => x.id != userstats.id)
 				database.collection("userstats").deleteOne({ id: userstats.id })
@@ -672,26 +665,29 @@ global.checkActivityPrivateRooms = function () {
 	for (var index in serverstats.privateRooms) {
 		var room = serverstats.privateRooms[index]
 
-		if (room?.lastActivity && room.lastActivityCount == 0 && new Date().getTime() - room.lastActivity >= 604800000) {
+		if (room.lastActivity && room.lastActivityCount == 0 && new Date().getTime() - room.lastActivity >= 604800000) {
 			var embed = new Discord.MessageEmbed()
 				.setTitle("Stanza un po' inattiva")
 				.setColor("#FFAC33")
 				.setDescription("La tua stanza privata è inutilizzata da più di **7 giorni**\rTra una settimana verrà eliminata se risulterà ancora inattiva. Premi sul pulsante **\"Annulla eliminazione\"** per poter continuare ad usarla")
 
-			var button1 = new disbut.MessageButton()
+			var button1 = new Discord.MessageButton()
 				.setLabel("Annulla eliminazione")
-				.setStyle("red")
-				.setID(`annullaEliminazione`)
+				.setStyle("DANGER")
+				.setCustomId(`annullaEliminazione`)
+
+			var row = new Discord.MessageActionRow()
+				.addComponents(button1)
 
 			if (room.text) {
 				client.channels.cache.get(room.text)?.send(`<@${room.owner}>`)
 					.then(msg => msg.delete().catch(() => { }))
 
-				client.channels.cache.get(room.text)?.send(embed, button1)
+				client.channels.cache.get(room.text)?.send({ embeds: [embed], components: [row] })
 					.catch(() => { })
 			}
 			else {
-				client.users.cache.get(room.owner)?.send(embed, button1)
+				client.users.cache.get(room.owner)?.send({ embeds: [embed], components: [row] })
 					.catch(() => { })
 			}
 
@@ -704,17 +700,19 @@ global.checkActivityPrivateRooms = function () {
 				.setColor("#FFAC33")
 				.setDescription("La tua stanza privata è inutilizzata da più di **14 giorni**\rTra meno di un minuto verrà **eliminata**. Premi sul pulsante **\"Annulla eliminazione\"** per poter continuare ad usarla")
 
-			var button1 = new disbut.MessageButton()
+			var button1 = new Discord.MessageButton()
 				.setLabel("Annulla eliminazione")
-				.setStyle("red")
-				.setID(`annullaEliminazione`)
+				.setStyle("DANGER")
+				.setCustomId(`annullaEliminazione`)
+
+			var row = new Discord.MessageActionRow()
+				.addComponents(button1)
 
 			if (room.text) {
 				client.channels.cache.get(room.text).send(`<@${room.owner}>`)
 					.then(msg => msg.delete().catch(() => { }))
 
-				client.channels.cache.get(room.text).send(embed, button1)
-
+				client.channels.cache.get(room.text).send({ embeds: [embed], components: [row] })
 
 				client.channels.cache.get(room.text).messages.fetch()
 					.then(messages => {
@@ -723,7 +721,7 @@ global.checkActivityPrivateRooms = function () {
 					})
 			}
 			else {
-				client.users.cache.get(room.owner)?.send(embed, button1)
+				client.users.cache.get(room.owner).send({ embeds: [embed], components: [row] })
 					.catch(() => { })
 			}
 
@@ -750,7 +748,7 @@ global.statsVocal = function () {
 	if (settings.inMaintenanceMode) return
 
 	var server = client.guilds.cache.get(settings.idServer)
-	server.channels.cache.filter(x => x.type == "voice").forEach(channel => {
+	server.channels.cache.filter(x => x.type == "GUILD_VOICE").forEach(channel => {
 		channel.members.forEach(member => {
 
 			var userstats = userstatsList.find(x => x.id == member.id);
@@ -831,7 +829,7 @@ global.checkBirthday = async function () {
 - 4 oggetti random dallo **shop** ${randomItems.map(x => x.icon).join(" ")}
 - **Boost x2** livellamento per tutto il giorno`)
 
-					client.users.cache.get(userstats.id).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+					client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
 						.catch(() => { })
 
 					userstats = await addXp(userstats, userstats.level * 40, 0);
@@ -885,7 +883,7 @@ global.checkBirthday = async function () {
 					.setDescription(`Oggi è il compleanno di ${textUsers}\rFate a tutti tanti **auguri** e tanti **regali**`)
 			}
 
-			client.channels.cache.get(settings.idCanaliServer.general).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+			client.channels.cache.get(settings.idCanaliServer.general).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
 
 			var textUsers = ""
 			birthdayToday.forEach(userstats => {
@@ -898,7 +896,7 @@ global.checkBirthday = async function () {
 				.addField(":alarm_clock: Day", `${moment(data.getTime()).format("ddd DD MMM YYYY")}`, false)
 				.addField("Birthdays", textUsers)
 
-			client.channels.cache.get(log.birthday.birthdaysToday).send(embed)
+			client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
 		}
 
 	}
@@ -915,11 +913,11 @@ global.checkRoomInDB = function () {
 	})
 
 	client.guilds.cache.get(settings.idServer).channels.cache.forEach(channel => {
-		if (channel.parentID == settings.idCanaliServer.categoriaPrivateRooms && channel.id != settings.idCanaliServer.privateRooms) {
-			if (channel.type == "text") {
+		if (channel.parentId == settings.idCanaliServer.categoriaPrivateRooms && channel.id != settings.idCanaliServer.privateRooms) {
+			if (channel.type == "GUILD_TEXT") {
 				if (!serverstats.privateRooms.find(x => x.text == channel.id)) channel.delete().catch(() => { })
 			}
-			if (channel.type == "voice") {
+			if (channel.type == "GUILD_VOICE") {
 				if (!serverstats.privateRooms.find(x => x.voice == channel.id)) channel.delete().catch(() => { })
 			}
 		}

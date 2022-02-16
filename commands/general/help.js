@@ -33,56 +33,58 @@ _Seleziona la categoria dal menù qua sotto_`)
 <:DmTag:905795088171540500> - Il comando è disponibile anche nei DM del bot
 `)
 
-        let option1 = new disbut.MessageMenuOption()
-            .setLabel('General')
-            .setEmoji('🎡')
-            .setValue('helpGeneral')
-            .setDescription('!test, !help, !github, !youtube...')
-        let option2 = new disbut.MessageMenuOption()
-            .setLabel('Community')
-            .setEmoji('💡')
-            .setValue('helpCommunity')
-            .setDescription('!suggest, !tclose, !tadd...')
-        let option3 = new disbut.MessageMenuOption()
-            .setLabel('Statistics')
-            .setEmoji('📊')
-            .setValue('helpStatistics')
-            .setDescription('!userstats, !avatar, !channelinfo...')
-        let option4 = new disbut.MessageMenuOption()
-            .setLabel('Fun')
-            .setEmoji('😂')
-            .setValue('helpFun')
-            .setDescription('!say, !cuser, !cserver...')
-        let option5 = new disbut.MessageMenuOption()
-            .setLabel('Ranking')
-            .setEmoji('💵')
-            .setValue('helpRanking')
-            .setDescription('!rank, !lb...')
-        let option6 = new disbut.MessageMenuOption()
-            .setLabel('Moderation')
-            .setEmoji('👮')
-            .setValue('helpModeration')
-            .setDescription('!kick, !mute, !infractions, !warn...')
-        let option7 = new disbut.MessageMenuOption()
-            .setLabel('Private rooms')
-            .setEmoji('🔐')
-            .setValue('helpPrivateRooms')
-            .setDescription('!pclose, !padd, !premove, !prename...')
-
-        let select = new disbut.MessageMenu()
-            .setID(`helpMenu,${message.author.id}`)
+        var select = new Discord.MessageSelectMenu()
+            .setCustomId(`helpMenu,${message.author.id}`)
             .setPlaceholder('Select category...')
             .setMaxValues(1)
             .setMinValues(1)
-            .addOption(option1)
-            .addOption(option2)
-            .addOption(option3)
-            .addOption(option4)
-            .addOption(option5)
-            .addOption(option6)
-            .addOption(option7)
+            .addOptions({
+                label: "General",
+                emoji: "🎡",
+                value: "helpGeneral",
+                description: "!test, !help, !github, !youtube..."
+            })
+            .addOptions({
+                label: "Community",
+                emoji: "💡",
+                value: "helpCommunity",
+                description: "!suggest, !tclose, !tadd..."
+            })
+            .addOptions({
+                label: "Statistics",
+                emoji: "📊",
+                value: "helpStatistics",
+                description: "!userstats, !avatar, !channelinfo..."
+            })
+            .addOptions({
+                label: "Fun",
+                emoji: "😂",
+                value: "helpFun",
+                description: "!say, !cuser, !cserver..."
+            })
+            .addOptions({
+                label: "Ranking",
+                emoji: "💵",
+                value: "helpRanking",
+                description: "!rank, !lb..."
+            })
+            .addOptions({
+                label: "Moderation",
+                emoji: "👮",
+                value: "helpModeration",
+                description: "!kick, !mute, !infractions, !warn..."
+            })
+            .addOptions({
+                label: "Private rooms",
+                emoji: "🔐",
+                value: "helpPrivateRooms",
+                description: "!pclose, !padd, !premove, !prename..."
+            })
 
-        message.channel.send(embed, select)
+        var row = new Discord.MessageActionRow()
+            .addComponents(select)
+
+        message.channel.send({ embeds: [embed], components: [row] })
             .catch(() => { })
     },
 };

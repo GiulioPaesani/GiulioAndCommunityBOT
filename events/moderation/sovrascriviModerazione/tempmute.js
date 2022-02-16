@@ -1,15 +1,16 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("tmute")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("tmute")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var utente = button.message.guild.members.cache.find(x => x.id == button.id.split(",")[2])
+        var utente = button.message.guild.members.cache.find(x => x.id == button.customId.split(",")[2])
         if (!utente) return
 
         var userstats = userstatsList.find(x => x.id == utente.id);
@@ -35,8 +36,8 @@ module.exports = {
 
         if (button.message.guild.members.cache.find(x => x.id == utente.id)) {
             button.message.guild.channels.cache.forEach((canale) => {
-                if (canale.parentID != settings.idCanaliServer.categoriaModerationTicket) {
-                    canale.updateOverwrite(settings.ruoliModeration.tempmuted, {
+                if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
+                    canale.permissionOverwrites.edit(settings.ruoliModeration.tempmuted, {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false,
                         SPEAK: false
@@ -51,7 +52,7 @@ module.exports = {
             utente.roles.add(settings.ruoliModeration.tempmuted)
                 .then(() => {
                     if (utente.voice?.channel) {
-                        var canale = utente.voice.channelID
+                        var canale = utente.voice.channelId
                         if (canale == settings.idCanaliServer.general1)
                             utente.voice.setChannel(settings.idCanaliServer.general2)
                         else
@@ -64,9 +65,9 @@ module.exports = {
         userstats.moderation = {
             "type": "Tempmuted",
             "since": new Date().getTime(),
-            "until": moment(new Date().getTime()).add(button.id.split(",")[4], "ms").valueOf(),
-            "reason": button.id.split(",")[3],
-            "moderator": button.clicker.user.username,
+            "until": moment(new Date().getTime()).add(button.customId.split(",")[4], "ms").valueOf(),
+            "reason": button.customId.split(",")[3],
+            "moderator": button.user.username,
             "ticketOpened": false
         }
 
@@ -80,12 +81,12 @@ module.exports = {
             .setAuthor("[TEMPMUTE] " + utente.tag, utente.displayAvatarURL({ dynamic: true }))
             .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
             .setColor("#6143CB")
-            .addField("Reason", button.id.split(",")[3])
-            .addField("Time", ms(parseInt(button.id.split(",")[4]), { long: true }))
-            .addField("Moderator", button.clicker.user.toString())
+            .addField("Reason", button.customId.split(",")[3])
+            .addField("Time", ms(parseInt(button.customId.split(",")[4]), { long: true }))
+            .addField("Moderator", button.user.toString())
             .setFooter("User ID: " + utente.id)
 
-        button.message.channel.send(embed)
+        button.message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":speaker: Tempmute :speaker:")
@@ -93,24 +94,24 @@ module.exports = {
                     .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
                     .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
                     .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":brain: Executor", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`, false)
+                    .addField(":brain: Executor", `${button.user.toString()} - ID: ${button.user.id}`, false)
                     .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Duration", `${ms(parseInt(button.id.split(",")[4]), { long: true })} (Until: ${moment(new Date().getTime()).add(parseInt(button.id.split(",")[4]), "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", button.id.split(",")[3], false)
+                    .addField("Duration", `${ms(parseInt(button.customId.split(",")[4]), { long: true })} (Until: ${moment(new Date().getTime()).add(parseInt(button.customId.split(",")[4]), "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
+                    .addField("Reason", button.customId.split(",")[3], false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.tempmute).send(embed)
+                    client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
             })
 
-        var embedUtente = new Discord.MessageEmbed()
+        var embed = new Discord.MessageEmbed()
             .setTitle("Sei stato mutato temporaneamente")
             .setColor("#6143CB")
             .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
-            .addField("Reason", button.id.split(",")[3])
-            .addField("Time", ms(parseInt(button.id.split(",")[4]), { long: true }))
-            .addField("Moderator", button.clicker.user.toString())
+            .addField("Reason", button.customId.split(",")[3])
+            .addField("Time", ms(parseInt(button.customId.split(",")[4]), { long: true }))
+            .addField("Moderator", button.user.toString())
 
-        utente.send(embedUtente).catch(() => {
+        utente.send({ embeds: [embed] }).catch(() => {
             return
         })
     },

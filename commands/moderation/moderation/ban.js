@@ -51,13 +51,13 @@ module.exports = {
             reason = "Nessun motivo";
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Sovrascrivi moderazione (Ban)")
-            .setStyle("red")
-            .setID(`ban,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 58)}`)
+            .setStyle("DANGER")
+            .setCustomId(`ban,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 58)}`)
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
         if (userstats.moderation.type == "Muted") {
             return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
@@ -123,8 +123,8 @@ ${userstats.moderation.moderator}
             var ruoloBanned = message.guild.roles.cache.find(role => role.id == settings.ruoliModeration.banned);
 
             message.guild.channels.cache.forEach((canale) => {
-                if (canale.parentID != settings.idCanaliServer.categoriaModerationTicket && canale.id != settings.idCanaliServer.rules) {
-                    canale.updateOverwrite(ruoloBanned, {
+                if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket && canale.id != settings.idCanaliServer.rules) {
+                    canale.permissionOverwrites.edit(ruoloBanned, {
                         VIEW_CHANNEL: false,
                         SPEAK: false
                     })
@@ -163,7 +163,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":o: Ban :o:")
@@ -176,7 +176,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", reason, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.ban).send(embed)
+                    client.channels.cache.get(log.moderation.ban).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -186,7 +186,7 @@ ${userstats.moderation.moderator}
             .addField("Reason", reason)
             .addField("Moderator", message.author.toString())
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

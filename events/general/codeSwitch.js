@@ -1,19 +1,20 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("codeSwitch")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("codeSwitch")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var version = button.id.split(",")[3];
+        var version = button.customId.split(",")[3];
 
         if (button.message.embeds[0].description.endsWith("_Version: `Discord.js v" + version + "`_")) return
 
-        var codice = client.codes.find(cmd => cmd.id == button.id.split(",")[2]);
+        var codice = client.codes.find(cmd => cmd.id == button.customId.split(",")[2]);
 
         var embed = new Discord.MessageEmbed()
             .setTitle(`${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""} ${codice.name.toUpperCase()} ${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""}`)
@@ -27,24 +28,24 @@ module.exports = {
         if (codice.info)
             embed.addField(":name_badge: Info - Leggere attentamente", codice.info)
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("v12")
-            .setID(`codeSwitch,${button.clicker.user.id},${codice.id},12`)
-            .setStyle(version == "12" ? "blurple" : "gray")
+            .setCustomId(`codeSwitch,${button.user.id},${codice.id},12`)
+            .setStyle(version == "12" ? "PRIMARY" : "SECONDARY")
 
-        var button2 = new disbut.MessageButton()
+        var button2 = new Discord.MessageButton()
             .setLabel("v13")
-            .setID(`codeSwitch,${button.clicker.user.id},${codice.id},13`)
-            .setStyle(version == "13" ? "blurple" : "gray")
+            .setCustomId(`codeSwitch,${button.user.id},${codice.id},13`)
+            .setStyle(version == "13" ? "PRIMARY" : "SECONDARY")
 
-        var button3 = new disbut.MessageButton()
+        var button3 = new Discord.MessageButton()
             .setLabel("Ottieni codice completo")
-            .setID(`codeCompleto,${button.clicker.user.id},${codice.id},${version}`)
-            .setStyle("green")
+            .setCustomId(`codeCompleto,${button.user.id},${codice.id},${version}`)
+            .setStyle("SUCCESS")
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
         var codeText = ""
         var codeSplit = codice["v" + version].trim().split("\n")
@@ -62,9 +63,9 @@ module.exports = {
 
         if (tooLong) {
             embed.addField(":warning: Il codice è troppo lungo", "Ottieni il codice completo con il pulsante **\"Ottieni codice completo\"**")
-            row.addComponent(button3)
+            row.addComponents(button3)
         }
 
-        button.message.edit(embed, row)
+        button.message.edit({ embeds: [embed], components: [row] })
     },
 };

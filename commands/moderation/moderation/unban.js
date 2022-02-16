@@ -74,7 +74,7 @@ ${userstats.moderation.moderator}
             .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
             .setFooter("User ID: " + utente.id)
 
-        await message.channel.send(embed)
+        await message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":name_badge: Unban :name_badge:")
@@ -88,7 +88,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.unban).send(embed)
+                    client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -98,7 +98,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
 
         userstats.moderation = {

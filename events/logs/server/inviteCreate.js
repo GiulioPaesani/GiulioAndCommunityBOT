@@ -27,6 +27,6 @@ module.exports = {
             .addField("Temponary", invite.temporary ? "Yes" : "No", false)
             .addField("Channel", invite.channel.toString(), false)
 
-        client.channels.cache.get(log.server.invites).send(embed)
+        client.channels.cache.get(log.server.invites).send({ embeds: [embed] })
     },
 };

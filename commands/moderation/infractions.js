@@ -101,7 +101,7 @@ ${userstats.moderation.moderator}
             embed
                 .addField(":interrobang: Total", "```Nessuna infrazione```", false)
 
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
                 .catch(() => { })
         }
         else {
@@ -123,7 +123,7 @@ ${userstats.moderation.moderator}
             }
 
             var totalPage = Math.ceil(warn.length / 10);
-            let page = 0;
+            var page = 0;
 
             for (var i = page * 10; i < (page * 10 + ((page * 10 + 10) > warn.length ? warn.length % 10 : 10)); i++) {
                 elencoInfrazioni += `#${i + 1} - ${warn[i].reason} (${moment(warn[i].time).fromNow()})\r`
@@ -144,30 +144,30 @@ ${userstats.moderation.moderator}
                     .addField(":no_entry_sign: All infractions", "```" + elencoInfrazioni + "```", false)
             }
 
-            var button1 = new disbut.MessageButton()
-                .setID(`indietroInfractions,${message.author.id},${page},${utente.id}`)
-                .setStyle("blurple")
+            var button1 = new Discord.MessageButton()
+                .setCustomId(`indietroInfractions,${message.author.id},${page},${utente.id}`)
+                .setStyle("PRIMARY")
                 .setEmoji("◀️")
 
             if (page == 0)
                 button1.setDisabled()
 
-            var button2 = new disbut.MessageButton()
-                .setID(`avantiInfractions,${message.author.id},${page},${utente.id}`)
-                .setStyle("blurple")
+            var button2 = new Discord.MessageButton()
+                .setCustomId(`avantiInfractions,${message.author.id},${page},${utente.id}`)
+                .setStyle("PRIMARY")
                 .setEmoji("▶️")
 
             if (page == totalPage)
                 button2.setDisabled()
 
             if (totalPage != 1) {
-                var row = new disbut.MessageActionRow()
-                    .addComponent(button1)
-                    .addComponent(button2)
-                message.channel.send(embed, row)
+                var row = new Discord.MessageActionRow()
+                    .addComponents(button1)
+                    .addComponents(button2)
+                message.channel.send({ embeds: [embed], components: [row] })
             }
             else {
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
                 // .catch(() => { })
             }
         }

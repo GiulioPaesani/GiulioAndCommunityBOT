@@ -1,20 +1,21 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (button.id != "verifica") return
+        if (!button.isButton()) return
+        if (button.customId != "verifica") return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (userstatsList.find(x => x.id == button.clicker.user.id) && userstatsList.find(x => x.id == button.clicker.user.id).joinedAt) return
+        if (userstatsList.find(x => x.id == button.user.id) && userstatsList.find(x => x.id == button.user.id).joinedAt) return
 
-        if (button.clicker.member.roles.cache.has(settings.idRuoloNonVerificato))
-            button.clicker.member.roles.remove(settings.idRuoloNonVerificato)
+        if (button.member.roles.cache.has(settings.idRuoloNonVerificato))
+            button.member.roles.remove(settings.idRuoloNonVerificato)
 
         var userstats = {
-            id: button.clicker.member.id,
-            username: button.clicker.member.user.username,
+            id: button.member.id,
+            username: button.member.user.username,
             roles: [],
             statistics: {
                 "totalMessage": 0,
@@ -47,25 +48,25 @@ module.exports = {
             }
         }
 
-        if (userstatsList.find(x => x.id == button.clicker.user.id)) {
-            userstats.moderation = userstatsList.find(x => x.id == button.clicker.user.id).moderation
-            userstats.warn = userstatsList.find(x => x.id == button.clicker.user.id).warn
+        if (userstatsList.find(x => x.id == button.user.id)) {
+            userstats.moderation = userstatsList.find(x => x.id == button.user.id).moderation
+            userstats.warn = userstatsList.find(x => x.id == button.user.id).warn
         }
 
-        if (!userstatsList.find(x => x.id == button.clicker.user.id)) {
+        if (!userstatsList.find(x => x.id == button.user.id)) {
             database.collection("userstats").insertOne(userstats);
             userstatsList.push(userstats)
         }
         else {
-            userstatsList.find(x => x.id == button.clicker.user.id).roles.forEach(role => {
-                button.clicker.member.roles.add(role)
+            userstatsList.find(x => x.id == button.user.id).roles.forEach(role => {
+                button.member.roles.add(role)
                     .catch(() => { })
             })
-            userstatsList[userstatsList.findIndex(x => x.id == button.clicker.user.id)] = userstats
+            userstatsList[userstatsList.findIndex(x => x.id == button.user.id)] = userstats
         }
 
         var embed = new Discord.MessageEmbed()
-            .setTitle(`:wave: Benvenuto ${button.clicker.user.username}`)
+            .setTitle(`:wave: Benvenuto ${button.user.username}`)
             .setColor("#42A9F6")
             .setImage("https://i.postimg.cc/MZ45kGMN/Banner2.jpg")
             .setDescription(`Ciao, benvenuto all'interno del server **GiulioAndCommunity**. In questo server potrai **parlare** e** divertirti** con tantissimi utenti tutti i giorni
@@ -74,12 +75,15 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
 :bust_in_silhouette: Prosegui per **configurare** il tuo profilo nel server con il bottone **"Configura profilo"** e impostare cose molto interessanti...
 `)
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Configura profilo")
-            .setStyle("blurple")
-            .setID("setupAvanti,1")
+            .setStyle("PRIMARY")
+            .setCustomId("setupAvanti,1")
 
-        button.clicker.user.send(embed, button1)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+
+        button.user.send({ embeds: [embed], components: [row] })
             .catch(() => { })
 
         button.message.guild.fetchInvites().then(guildInvites => {
@@ -89,15 +93,15 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
             var embed = new Discord.MessageEmbed()
                 .setTitle(":inbox_tray: Welcome :inbox_tray:")
                 .setColor("#22c90c")
-                .setThumbnail(button.clicker.member.user.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(button.member.user.displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":bust_in_silhouette: Member", `${button.clicker.member.toString()} - ID: ${button.clicker.member.id}`, false)
-                .addField("Account created", `${moment(button.clicker.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(button.clicker.user.createdAt).fromNow()})`, false)
+                .addField(":bust_in_silhouette: Member", `${button.member.toString()} - ID: ${button.member.id}`, false)
+                .addField("Account created", `${moment(button.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(button.user.createdAt).fromNow()})`, false)
             if (invite)
                 embed.addField("Invite", `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)`, false)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.welcomeGoodbye).send(embed)
+                client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
         })
     },
 };

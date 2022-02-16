@@ -25,6 +25,6 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${logs.target.toString()} - ID: ${logs.target.id}`, false)
             .addField("Reason", logs.reason, false)
 
-        client.channels.cache.get(log.moderation.forceban).send(embed)
+        client.channels.cache.get(log.moderation.forceban).send({ embeds: [embed] })
     },
 };

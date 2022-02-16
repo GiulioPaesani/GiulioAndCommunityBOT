@@ -1,40 +1,41 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (button.id != "textRoom") return
+        if (!button.isButton()) return
+        if (button.customId != "textRoom") return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        var userstats = userstatsList.find(x => x.id == button.clicker.user.id);
+        var userstats = userstatsList.find(x => x.id == button.user.id);
         if (!userstats) return
 
-        if (userstats.level < 5 && !button.clicker.member.roles.cache.has(settings.idRuoloServerBooster)) {
-            botMessage(button.clicker.user, "Warning", "Non ha il livello", "Per aprire una **stanza privata testuale** devi avere almeno il **Level 5** o **boostare** il server")
+        if (userstats.level < 5 && !button.member.roles.cache.has(settings.idRuoloServerBooster)) {
+            botMessage(button.user, "Warning", "Non ha il livello", "Per aprire una **stanza privata testuale** devi avere almeno il **Level 5** o **boostare** il server")
 
-            button.reply.defer().catch(() => { })
+            button.deferUpdate().catch(() => { })
             return
         }
 
         var privaterooms = serverstats.privateRooms
 
-        if (privaterooms.find(x => x.owner == button.clicker.user.id)) {
-            botMessage(button.clicker.user, "Warning", "Hai già una stanza", "Hai già una stanza privata aperta")
+        if (privaterooms.find(x => x.owner == button.user.id)) {
+            botMessage(button.user, "Warning", "Hai già una stanza", "Hai già una stanza privata aperta")
 
-            button.reply.defer().catch(() => { })
+            button.deferUpdate().catch(() => { })
             return
         }
 
-        button.message.guild.channels.create(`💬│${button.clicker.user.username}-text`, {
-            type: "text",
+        button.message.guild.channels.create(`💬│${button.user.username}-text`, {
+            type: "GUILD_TEXT",
             permissionOverwrites: [
                 {
                     id: button.message.guild.id,
                     deny: ['VIEW_CHANNEL'],
                 },
                 {
-                    id: button.clicker.user.id,
+                    id: button.user.id,
                     allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS'],
                 },
                 {
@@ -54,10 +55,10 @@ module.exports = {
                     deny: ['VIEW_CHANNEL', "SEND_MESSAGES"]
                 }
             ],
-            parent: button.message.channel.parentID,
-            topic: `Text room by: ${button.clicker.user.username}`
+            parent: button.message.channel.parentId,
+            topic: `Text room by: ${button.user.username}`
         }).then(text => {
-            button.reply.defer().catch(() => { })
+            button.deferUpdate().catch(() => { })
 
             var embed = new Discord.MessageEmbed()
                 .setTitle(":closed_lock_with_key: Private room :closed_lock_with_key:")
@@ -75,14 +76,14 @@ Ci sono alcune **regole** da seguire nelle tue stanze
 - Vietato lo spam di link **illeciti**, software o plugin **malevoli**
 - Si applicano anche tutte le regole del server`)
 
-            text.send(`<@${button.clicker.user.id}>`)
+            text.send(`<@${button.user.id}>`)
                 .then(msg => msg.delete().catch(() => { }))
-            text.send(embed)
+            text.send({ embeds: [embed] })
 
             serverstats.privateRooms.push({
-                "text": text.id,
-                "voice": null,
-                "owner": button.clicker.user.id,
+                "GUILD_TEXT": text.id,
+                "GUILD_VOICE": null,
+                "owner": button.user.id,
                 "type": "onlyText",
                 "bans": [],
                 "lastActivity": new Date().getTime(),
@@ -93,14 +94,14 @@ Ci sono alcune **regole** da seguire nelle tue stanze
                 .setTitle(":envelope_with_arrow: Room opened :envelope_with_arrow:")
                 .setColor("#22c90c")
                 .addField(":alarm_clock: Time", `${moment(button.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":bust_in_silhouette: Owner", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`)
+                .addField(":bust_in_silhouette: Owner", `${button.user.toString()} - ID: ${button.user.id}`)
                 .addField("Type", `Text`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.community.privateRooms).send(embed)
+                client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
         }).catch(() => {
-            botMessage(button.clicker.user, "Warning", "Troppe stanze", "Sono state create più di **50 stanze** in questa categoria. Discord non permette al bot di crearne di più, mi spiace...")
-            button.reply.defer().catch(() => { })
+            botMessage(button.user, "Warning", "Troppe stanze", "Sono state create più di **50 stanze** in questa categoria. Discord non permette al bot di crearne di più, mi spiace...")
+            button.deferUpdate().catch(() => { })
                 .catch(() => { })
             return
         })

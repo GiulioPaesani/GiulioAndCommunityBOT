@@ -1,15 +1,16 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("avantiInv")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("avantiInv")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var userstats = userstatsList.find(x => x.id == button.id.split(",")[2]);
+        var userstats = userstatsList.find(x => x.id == button.customId.split(",")[2]);
         if (!userstats) return
 
         var totItems = 0
@@ -25,12 +26,12 @@ module.exports = {
         }
 
         var totPage = Math.ceil(totItems / 20)
-        var page = parseInt(button.id.split(",")[3]) + 1;
+        var page = parseInt(button.customId.split(",")[3]) + 1;
         if (page > totPage) return
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":handbag: Inventory :handbag:")
-            .setDescription(`Tutto l'inventario di <@${button.id.split(",")[2]}> con gli oggetti che possiedi
+            .setDescription(`Tutto l'inventario di <@${button.customId.split(",")[2]}> con gli oggetti che possiedi
 
 _Oggetti totali: ${totItems}_`)
             .setFooter(totPage > 1 ? `Coins: ${userstats.money}$ - Page ${page}/${totPage}` : `Coins: ${userstats.money}$`)
@@ -42,26 +43,26 @@ _Oggetti totali: ${totItems}_`)
             }
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setEmoji("◀️")
-            .setID(`indietroInv,${button.clicker.user.id},${button.id.split(",")[2]},${page}`)
-            .setStyle("blurple")
+            .setCustomId(`indietroInv,${button.user.id},${button.customId.split(",")[2]},${page}`)
+            .setStyle("PRIMARY")
 
         if (page == 1)
             button1.setDisabled()
 
-        var button2 = new disbut.MessageButton()
+        var button2 = new Discord.MessageButton()
             .setEmoji("▶️")
-            .setID(`avantiInv,${button.clicker.user.id},${button.id.split(",")[2]},${page}`)
-            .setStyle("blurple")
+            .setCustomId(`avantiInv,${button.user.id},${button.customId.split(",")[2]},${page}`)
+            .setStyle("PRIMARY")
 
         if (page + 1 > totPage)
             button2.setDisabled()
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
-        button.message.edit(embed, row)
+        button.message.edit({ embeds: [embed], components: [row] })
     },
 };

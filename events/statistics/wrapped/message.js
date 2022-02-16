@@ -1,5 +1,5 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         var date = new Date();
         if (date.getFullYear() != 2022) return
@@ -7,7 +7,7 @@ module.exports = {
         if (isMaintenance()) return
 
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (!userstatsList) return
 
@@ -102,7 +102,7 @@ setInterval(() => {
 
     var server = client.guilds.cache.get(settings.idServer)
     if (!server) return
-    server.channels.cache.filter(x => x.type == "voice").forEach(channel => {
+    server.channels.cache.filter(x => x.type == "GUILD_VOICE").forEach(channel => {
         channel.members.forEach(member => {
 
             var userstats = userstatsList.find(x => x.id == member.id);

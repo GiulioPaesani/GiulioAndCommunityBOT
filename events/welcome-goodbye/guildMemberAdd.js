@@ -45,7 +45,7 @@ module.exports = {
             embed.addField("Roles", roles, false)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.welcomeGoodbye).send(embed)
+                client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
             userstats.leavedAt = null
 
@@ -75,7 +75,7 @@ Prima di partecipare al server leggi nuovamente tutte le <#${settings.idCanaliSe
 Prima di uscire dal server avevi dei ruoli, ecco che ti sono stati ridati:
 ${elencoRuoli}`)
 
-            member.send(embed)
+            member.send({ embeds: [embed] })
                 .catch(() => { })
         })
     },

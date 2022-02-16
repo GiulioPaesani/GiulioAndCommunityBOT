@@ -36,7 +36,7 @@ module.exports = {
             return botCommandMessage(message, "Warning", "Utente già presente", "Questo utente ha già accesso a questo ticket")
         }
 
-        message.channel.updateOverwrite(utente, {
+        message.channel.permissionOverwrites.edit(utente, {
             VIEW_CHANNEL: true
         })
 

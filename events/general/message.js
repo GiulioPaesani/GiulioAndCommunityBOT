@@ -1,9 +1,9 @@
 module.exports = {
-    name: "message",
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.author.bot) return
         if (message.guild.id != settings.idServer) return //Server sconosciuti non accettati
 

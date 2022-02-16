@@ -1,10 +1,10 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.channel.id != log.general.bugReport) return
 
         message.delete()
@@ -14,7 +14,7 @@ module.exports = {
 
         if (!message.content) return
 
-        client.channels.cache.get(log.general.bugReport).messages.fetch(message.reference.messageID)
+        client.channels.cache.get(log.general.bugReport).messages.fetch(message.reference.messageId)
             .then(msg => {
                 if (msg.embeds[0]?.title != ":beetle: Bug report :beetle:") return
 
@@ -34,7 +34,7 @@ module.exports = {
                     .addField(":beetle: Bug", `Text: ${msg.embeds[0].fields[2].value} - Attachments: ${msg.embeds[0].fields[3].value}`)
                     .addField(":inbox_tray: Response", message.content.slice(0, 1000))
 
-                utente.send(embed)
+                utente.send({ embeds: [embed] })
                     .catch(() => { })
 
                 var embed = new Discord.MessageEmbed()
@@ -46,7 +46,7 @@ module.exports = {
                     .addField("Attachments", msg.embeds[0].fields[3].value)
                     .addField(`Response by ${message.author.username}`, message.content.slice(0, 1000))
 
-                msg.edit(embed)
+                msg.edit({ embeds: [embed] })
             })
     },
 };

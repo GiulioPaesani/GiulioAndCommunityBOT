@@ -1,5 +1,5 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (message.author.bot) return
         if (!serverstats) return

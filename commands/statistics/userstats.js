@@ -61,7 +61,7 @@ Total messages: ${userstats.statistics.totalMessage}
 Commands executed: ${userstats.statistics.commands}
 Reactions added: ${userstats.statistics.addReaction}\`\`\``, false)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

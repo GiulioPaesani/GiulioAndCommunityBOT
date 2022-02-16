@@ -23,14 +23,14 @@ module.exports = {
         }
 
         switch (canale.type) {
-            case "text": canale.type = "Text"; break;
-            case "voice": canale.type = "Voice"; break;
+            case "GUILD_TEXT": canale.type = "Text"; break;
+            case "GUILD_VOICE": canale.type = "GUILD_VOICE"; break;
             case "news": canale.type = "News"; break;
-            case "category": canale.type = "Category"; break;
+            case "GUILD_CATEGORY": canale.type = "Category"; break;
         }
 
-        if (canale.type == "Voice") {
-            let embed = new Discord.MessageEmbed()
+        if (canale.type == "GUILD_VOICE") {
+            var embed = new Discord.MessageEmbed()
                 .setTitle(canale.name)
                 .setDescription("Tutte le statistiche su questo canale")
                 .addField(":receipt: Channel ID", "```" + canale.id + "```", true)
@@ -39,19 +39,19 @@ module.exports = {
                 .addField(":bricks: Category", "```" + canale.parent.name + "```", true)
                 .addField(":loud_sound: Bitrate", "```" + canale.bitrate + "```", true)
                 .addField(":bust_in_silhouette: User limit", canale.userLimit == 0 ? "```∞```" : "```" + canale.userLimit + "```", true)
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
             return
         }
 
         if (canale.type == "Category") {
-            let embed = new Discord.MessageEmbed()
+            var embed = new Discord.MessageEmbed()
                 .setTitle(canale.name)
                 .setDescription("Tutte le statistiche su questa categoria")
                 .addField(":receipt: Category ID", "```" + canale.id + "```", true)
                 .addField(":thought_balloon: Type", "```" + canale.type + "```", true)
                 .addField(":1234: Position", "```" + canale.rawPosition + "```", true)
                 .addField(":pencil: Category created", "```" + moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
             return
         }
 
@@ -59,9 +59,9 @@ module.exports = {
             .permissionsFor(message.member)
             .has('VIEW_CHANNEL', true);
 
-        let lastMessage = canale.messages.fetch(canale.lastMessageID)
+        var lastMessage = canale.messages.fetch(canale.lastMessageID)
             .then(lastMessage => {
-                let embed = new Discord.MessageEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setTitle(canale.name)
                     .setDescription("Tutte le statistiche su questo canale")
                     .addField(":receipt: Channel ID", "```" + canale.id + "```", true)
@@ -72,10 +72,10 @@ module.exports = {
                     .addField(":underage: NSFW", canale.nsfw ? "```Yes```" : "```No```", true)
                     .addField(":pushpin: Last message", !hasPermissionInChannel ? "```You don't have permission to view this channel```" : ("```" + lastMessage.author.username + "#" + lastMessage.author.discriminator + " (" + moment(new Date(lastMessage.createdTimestamp).getTime()).fromNow() + ") - " + lastMessage.content + "```"), true)
                     .addField(":pencil: Channel created", "```" + moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             })
             .catch(() => {
-                let embed = new Discord.MessageEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setTitle(canale.name)
                     .setDescription("Tutte le statistiche su questo canale")
                     .addField(":receipt: Channel ID", "```" + canale.id + "```", true)
@@ -86,7 +86,7 @@ module.exports = {
                     .addField(":underage: NSFW", canale.nsfw ? "```Yes```" : "```No```", true)
                     .addField(":pushpin: Last message", !hasPermissionInChannel ? "```You don't have permission to view this channel```" : "```Not found```", true)
                     .addField(":pencil: Channel created", "```" + moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(canale.createdAt).fromNow() + ")```", false)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             })
     },
 };

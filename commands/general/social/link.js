@@ -20,7 +20,7 @@ module.exports = {
             .addField("<:discord:927643636043247698> Discord", "[GiulioAndCommunity](https://discord.com/invite/ypTCaveew2)")
             .addField("<:github:927643636051628112> GitHub", "[GiulioPaesani](https://github.com/GiulioPaesani)")
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

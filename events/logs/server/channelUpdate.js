@@ -50,7 +50,7 @@ module.exports = {
                     embed
                         .addField("Permissions", permissionsText)
 
-                    client.channels.cache.get(log.server.channels).send(embed)
+                    client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
                     return
                 }
             }
@@ -63,7 +63,7 @@ module.exports = {
                     embed
                         .addField("Permissions", permissionsText)
 
-                    client.channels.cache.get(log.server.channels).send(embed)
+                    client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
                     return
                 }
             }
@@ -109,7 +109,7 @@ module.exports = {
             embed
                 .addField("Permissions", permissionsText)
 
-            client.channels.cache.get(log.server.channels).send(embed)
+            client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
         }
         else {
             await Discord.Util.delayFor(900);
@@ -156,7 +156,7 @@ New: ${change.new}
 `)
             })
 
-            client.channels.cache.get(log.server.channels).send(embed)
+            client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
         }
 
     },

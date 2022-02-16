@@ -7,7 +7,7 @@ module.exports = {
         if (isMaintenance(newMessage.author.id)) return
 
         if (newMessage.author.bot) return
-        if (newMessage.channel.type == "dm") return
+        if (newMessage.channel.type == "DM") return
         if (newMessage.guild.id != settings.idServer) return
         if (!userstatsList) return
 

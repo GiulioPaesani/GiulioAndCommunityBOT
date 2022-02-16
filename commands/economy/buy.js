@@ -76,20 +76,20 @@ _Hai ${userstats.money}$ - Rimanenti: ${userstats.money - (item.price * amount)}
                 .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Info prodotto")
-            .setID(`annullaShop,${message.author.id},${item.id}`)
-            .setStyle("red")
+            .setCustomId(`annullaShop,${message.author.id},${item.id}`)
+            .setStyle("DANGER")
 
-        var button2 = new disbut.MessageButton()
-            .setID(`-buy,${message.author.id},${item.id},${amount}`)
-            .setStyle("blurple")
+        var button2 = new Discord.MessageButton()
+            .setCustomId(`-buy,${message.author.id},${item.id},${amount}`)
+            .setStyle("PRIMARY")
             .setDisabled()
             .setEmoji("🔽")
 
-        var button3 = new disbut.MessageButton()
-            .setID(`+buy,${message.author.id},${item.id},${amount}`)
-            .setStyle("blurple")
+        var button3 = new Discord.MessageButton()
+            .setCustomId(`+buy,${message.author.id},${item.id},${amount}`)
+            .setStyle("PRIMARY")
             .setEmoji("🔼")
 
         if (embed.title.endsWith("Not unlocked")) {
@@ -103,21 +103,21 @@ _Hai ${userstats.money}$ - Rimanenti: ${userstats.money - (item.price * amount)}
                 .setDisabled()
         }
 
-        var button4 = new disbut.MessageButton()
+        var button4 = new Discord.MessageButton()
             .setLabel("Conferma")
-            .setID(`confermaBuy,${message.author.id},${item.id},${amount}`)
-            .setStyle("green")
+            .setCustomId(`confermaBuy,${message.author.id},${item.id},${amount}`)
+            .setStyle("SUCCESS")
 
         if (amount == 0)
             button4.setDisabled()
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
-            .addComponent(button3)
-            .addComponent(button4)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
+            .addComponents(button3)
+            .addComponents(button4)
 
-        message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
+        message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
             .catch(() => { })
     },
 };

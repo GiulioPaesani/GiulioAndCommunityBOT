@@ -1,13 +1,14 @@
 module.exports = {
-	name: `clickButton`,
+	name: `interactionCreate`,
 	async execute(button) {
-		if (!button.id.startsWith('ticketCategoryIndietro')) return;
+		if (!button.isButton()) return
+		if (!button.customId.startsWith('ticketCategoryIndietro')) return;
 
-		button.reply.defer().catch(() => { })
+		button.deferUpdate().catch(() => { })
 
-		if (isMaintenance(button.clicker.user.id)) return
+		if (isMaintenance(button.user.id)) return
 
-		if (button.id.split(",")[1] != button.clicker.user.id) return button.reply.defer().catch(() => { })
+		if (button.customId.split(",")[1] != button.user.id) return button.deferUpdate().catch(() => { })
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle(":speech_balloon: Segli CATEGORIA :speech_balloon:")
@@ -33,33 +34,33 @@ module.exports = {
 `)
 			.setFooter("Seleziona la categoria per continuare")
 
-		var option1 = new disbut.MessageMenuOption()
-			.setLabel('Problemi con bot')
-			.setEmoji("🤖")
-			.setValue('ticketCategory1')
-			.setDescription('Problemi con il tuo bot in Discord.js')
-
-		var option2 = new disbut.MessageMenuOption()
-			.setLabel('Problemi nel server')
-			.setEmoji("🎡")
-			.setValue('ticketCategory2')
-			.setDescription("Problemi con bot o utenti nel server")
-
-		var option3 = new disbut.MessageMenuOption()
-			.setLabel('Domande allo staff')
-			.setEmoji("👀")
-			.setValue('ticketCategory3')
-			.setDescription("Domande di altro tipo allo staff")
-
-		var select = new disbut.MessageMenu()
-			.setID(`ticketCategory,${button.clicker.user.id}`)
+		var select = new Discord.MessageSelectMenu()
+			.setCustomId(`ticketCategory,${button.user.id}`)
 			.setPlaceholder('Select category...')
 			.setMaxValues(1)
 			.setMinValues(1)
-			.addOption(option1)
-			.addOption(option2)
-			.addOption(option3)
+			.addOption({
+				label: "Problemi con bot",
+				emoji: "🤖",
+				value: "ticketCategory1",
+				description: "Problemi con il tuo bot in Discord.js"
+			})
+			.addOption({
+				label: "Problemi nel server",
+				emoji: "🎡",
+				value: "ticketCategory2",
+				description: "Problemi con bot o utenti nel server"
+			})
+			.addOption({
+				label: "Domande allo staff",
+				emoji: "👀",
+				value: "ticketCategory3",
+				description: "Domande di altro tipo allo staff"
+			})
 
-		button.message.edit(embed, select)
+		var row = new Discord.MessageActionRow()
+			.addComponents(select)
+
+		button.message.edit({ embeds: [embed], components: [row] })
 	}
 };

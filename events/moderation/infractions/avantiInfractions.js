@@ -1,20 +1,21 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (!button.id.startsWith("avantiInfractions")) return
+        if (!button.isButton()) return
+        if (!button.customId.startsWith("avantiInfractions")) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var userstats = userstatsList.find(x => x.id == button.id.split(",")[3]);
+        var userstats = userstatsList.find(x => x.id == button.customId.split(",")[3]);
         if (!userstats) return
 
         var warn = userstats.warn;
 
-        var page = parseInt(button.id.split(",")[2])
+        var page = parseInt(button.customId.split(",")[2])
         var totalPage = Math.ceil(warn.length / 10);
 
         page++
@@ -29,29 +30,29 @@ module.exports = {
         button.message.embeds[0].fields[button.message.embeds[0].fields.length == 4 ? 3 : 4].value = "```" + elencoInfrazioni + "```"
         button.message.embeds[0].footer.text = `Page ${page + 1}/${totalPage}`
 
-        var button1 = new disbut.MessageButton()
-            .setID(`indietroInfractions,${button.clicker.user.id},${page},${userstats.id}`)
-            .setStyle("blurple")
+        var button1 = new Discord.MessageButton()
+            .setCustomId(`indietroInfractions,${button.user.id},${page},${userstats.id}`)
+            .setStyle("PRIMARY")
             .setEmoji("◀️")
 
         if (page == 0)
             button1.setDisabled()
 
-        var button2 = new disbut.MessageButton()
-            .setID(`avantiInfractions,${button.clicker.user.id},${page},${userstats.id}`)
-            .setStyle("blurple")
+        var button2 = new Discord.MessageButton()
+            .setCustomId(`avantiInfractions,${button.user.id},${page},${userstats.id}`)
+            .setStyle("PRIMARY")
             .setEmoji("▶️")
 
         if (page == totalPage - 1)
             button2.setDisabled()
 
-        var row = new disbut.MessageActionRow()
+        var row = new Discord.MessageActionRow()
 
         if (totalPage != 1)
             row
-                .addComponent(button1)
-                .addComponent(button2)
+                .addComponents(button1)
+                .addComponents(button2)
 
-        button.message.edit(button.message.embeds[0], row)
+        button.message.edit({ embeds: [button.message.embeds[0]], components: [row] })
     },
 };

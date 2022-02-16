@@ -19,7 +19,7 @@ Video, tutorial, contenuti sulla programmazione, nello specifico nel mondo di Bo
 [View channel](https://www.youtube.com/channel/UCvIafNR8ZvZyE5jVGVqgVfA)
 Contenuti più personali e incentrati sull'intrattenimento`)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

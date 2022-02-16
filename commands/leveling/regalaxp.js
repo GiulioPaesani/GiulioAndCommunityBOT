@@ -60,7 +60,7 @@ module.exports = {
             .setColor("#FF3E75")
             .setDescription(`Hai regalato con successo \`${xp} xp\` a ${utente.toString()}`)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Un piccolo regalo per te")
@@ -68,7 +68,7 @@ module.exports = {
             .setColor("#FF3E75")
             .setDescription(`${message.author.toString()} ti ha regalato \`${xp} xp\`\rGoditi questi nuovi punti esperienza`)
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

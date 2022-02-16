@@ -34,13 +34,13 @@ module.exports = {
             reason = "Nessun motivo";
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Sovrascrivi moderazione (Kick)")
-            .setStyle("red")
-            .setID(`kick,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 57)}`)
+            .setStyle("DANGER")
+            .setCustomId(`kick,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 57)}`)
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
         if (userstats.moderation.type == "Muted") {
             return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
@@ -110,7 +110,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .setFooter("User ID: " + utente.user.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":ping_pong: Kick :ping_pong:")
@@ -123,7 +123,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", reason, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.kick).send(embed)
+                    client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -133,7 +133,7 @@ ${userstats.moderation.moderator}
             .addField("Reason", reason)
             .addField("Moderator", message.author.toString())
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .then(() => {
                 utente.kick({ reason: reason })
             })

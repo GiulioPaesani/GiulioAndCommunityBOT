@@ -28,43 +28,41 @@ Con \`!shop [item]\` puoi avere più **informazioni** riguardo un oggetto, quand
 Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vendere più velocemente
 `)
 
-            var option1 = new disbut.MessageMenuOption()
-                .setLabel('Technology')
-                .setEmoji('🖥️')
-                .setValue('shopTechnology')
-
-            var option2 = new disbut.MessageMenuOption()
-                .setLabel('Food')
-                .setEmoji('🍗')
-                .setValue('shopFood')
-
-            var option3 = new disbut.MessageMenuOption()
-                .setLabel('Home')
-                .setEmoji('🏠')
-                .setValue('shopHome')
-
-            var option4 = new disbut.MessageMenuOption()
-                .setLabel('Mezzi di trasporto')
-                .setEmoji('🛻')
-                .setValue('shopMezziTrasporto')
-
-            var option5 = new disbut.MessageMenuOption()
-                .setLabel('Abbigliamento')
-                .setEmoji('👕')
-                .setValue('shopAbbigliamento')
-
-            let select = new disbut.MessageMenu()
-                .setID(`shopMenu,${message.author.id}`)
+            var select = new Discord.MessageSelectMenu()
+                .setCustomId(`shopMenu,${message.author.id}`)
                 .setPlaceholder('Select category...')
                 .setMaxValues(1)
                 .setMinValues(1)
-                .addOption(option1)
-                .addOption(option2)
-                .addOption(option3)
-                .addOption(option4)
-                .addOption(option5)
+                .addOptions({
+                    label: "Technology",
+                    emoji: "🖥️",
+                    value: "shopTechnology",
+                })
+                .addOptions({
+                    label: "Food",
+                    emoji: "🍗",
+                    value: "shopFood",
+                })
+                .addOptions({
+                    label: "Home",
+                    emoji: "🏠",
+                    value: "shopHome",
+                })
+                .addOptions({
+                    label: "Mezzi di trasporto",
+                    emoji: "🛻",
+                    value: "shopMezziTrasporto",
+                })
+                .addOptions({
+                    label: "Abbigliamento",
+                    emoji: "👕",
+                    value: "shopAbbigliamento",
+                })
 
-            message.channel.send(embed, select)
+            var row = new Discord.MessageActionRow()
+                .addComponents(select)
+
+            message.channel.send({ embeds: [embed], components: [row] })
                 .catch(() => { })
         }
         else {
@@ -80,15 +78,15 @@ Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vend
             if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
 
             if (!item.priviled || (item.priviled && userstats.level >= item.priviled)) {
-                var button1 = new disbut.MessageButton()
+                var button1 = new Discord.MessageButton()
                     .setLabel("Sell")
-                    .setID(`sell,${message.author.id},${item.id}`)
-                    .setStyle("blurple")
+                    .setCustomId(`sell,${message.author.id},${item.id}`)
+                    .setStyle("PRIMARY")
 
-                var button2 = new disbut.MessageButton()
+                var button2 = new Discord.MessageButton()
                     .setLabel("Buy")
-                    .setID(`buy,${message.author.id},${item.id}`)
-                    .setStyle("green")
+                    .setCustomId(`buy,${message.author.id},${item.id}`)
+                    .setStyle("SUCCESS")
 
                 if (!userstats.inventory[item.id] || userstats.inventory[item.id] == 0) {
                     button1
@@ -101,9 +99,9 @@ Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vend
                         .setLabel("Buy (No money)")
                 }
 
-                var row = new disbut.MessageActionRow()
-                    .addComponent(button1)
-                    .addComponent(button2)
+                var row = new Discord.MessageActionRow()
+                    .addComponents(button1)
+                    .addComponents(button2)
 
                 var canvas = await createCanvas(400, 400)
                 var ctx = await canvas.getContext('2d')
@@ -125,19 +123,19 @@ Selling price: ${item.sellPrice}$
 Category: ${item.category == "technology" ? "Technology" : item.category == "food" ? "Food" : item.category == "home" ? "Home" : item.category == "mezziTrasporto" ? "Mezzi di trasporto" : "Abbigliamento"}`)
                     .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
-                message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
+                message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
                     .catch(() => { })
             }
             else {
-                var button1 = new disbut.MessageButton()
+                var button1 = new Discord.MessageButton()
                     .setLabel("Sell")
-                    .setID(`sell,${message.author.id.id},${item.id}`)
-                    .setStyle("blurple")
+                    .setCustomId(`sell,${message.author.id.id},${item.id}`)
+                    .setStyle("PRIMARY")
 
-                var button2 = new disbut.MessageButton()
+                var button2 = new Discord.MessageButton()
                     .setLabel("Buy (Not unlocked)")
-                    .setID(`buy,${message.author.id.id},${item.id}`)
-                    .setStyle("green")
+                    .setCustomId(`buy,${message.author.id.id},${item.id}`)
+                    .setStyle("SUCCESS")
                     .setDisabled()
 
                 if (!userstats.inventory[item.id] || userstats.inventory[item.id] == 0) {
@@ -146,9 +144,9 @@ Category: ${item.category == "technology" ? "Technology" : item.category == "foo
                         .setLabel("Sell (No items in inventory)")
                 }
 
-                var row = new disbut.MessageActionRow()
-                    .addComponent(button1)
-                    .addComponent(button2)
+                var row = new Discord.MessageActionRow()
+                    .addComponents(button1)
+                    .addComponents(button2)
 
                 var canvas = await createCanvas(400, 400)
                 var ctx = await canvas.getContext('2d')
@@ -172,7 +170,7 @@ Selling price: ${item.sellPrice}$
 Category: ${item.category == "technology" ? "Technology" : item.category == "food" ? "Food" : item.category == "home" ? "Home" : item.category == "mezziTrasporto" ? "Mezzi di trasporto" : "Abbigliamento"}`)
                     .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
 
-                message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
+                message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
                     .catch(() => { })
             }
 

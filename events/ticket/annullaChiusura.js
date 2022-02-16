@@ -1,11 +1,12 @@
 module.exports = {
-	name: `clickButton`,
+	name: `interactionCreate`,
 	async execute(button) {
-		if (button.id != 'annullaChiusura') return;
+		if (!button.isButton()) return
+		if (button.customId != 'annullaChiusura') return;
 
-		button.reply.defer().catch(() => { })
+		button.deferUpdate().catch(() => { })
 
-		if (isMaintenance(button.clicker.user.id)) return
+		if (isMaintenance(button.user.id)) return
 
 		var index = serverstats.ticket.findIndex((x) => x.channel == button.channel.id);
 		var ticket = serverstats.ticket[index];
@@ -20,34 +21,36 @@ module.exports = {
 			client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
 				.then(msg => {
 					if (msg.embeds[0].fields[0].name == ":brain: Alcune soluzioni") {
-						var button1 = new disbut.MessageButton()
+						var button1 = new Discord.MessageButton()
 							.setLabel("Problema risolto")
-							.setStyle("red")
-							.setID("ticketChiudi")
+							.setStyle("DANGER")
+							.setCustomId("ticketChiudi")
 
-						var button2 = new disbut.MessageButton()
+						var button2 = new Discord.MessageButton()
 							.setLabel("Apri ticket")
-							.setStyle("blurple")
-							.setID("ticketApri")
+							.setStyle("PRIMARY")
+							.setCustomId("ticketApri")
 
-						var row = new disbut.MessageActionRow()
-							.addComponent(button1)
-							.addComponent(button2)
+						var row = new Discord.MessageActionRow()
+							.addComponents(button1)
+							.addComponents(button2)
 
-						msg.edit(msg.embeds[0], row)
-
+						msg.edit({ embeds: [msg.embeds[0]], components: [row] })
 					}
 					else {
-						var button1 = new disbut.MessageButton()
+						var button1 = new Discord.MessageButton()
 							.setLabel("Chiudi ticket")
-							.setStyle("red")
-							.setID("ticketChiudi")
+							.setStyle("DANGER")
+							.setCustomId("ticketChiudi")
+
+						var row = new Discord.MessageActionRow()
+							.addComponents(button1)
 
 						if (!ticket.inserimentoCategory)
-							msg.edit(msg.embeds[0], button1)
+							msg.edit({ embeds: [msg.embeds[0]], components: [row] })
 					}
 
-					button.reply.defer().catch(() => { })
+					button.deferUpdate().catch(() => { })
 				})
 		}
 	}

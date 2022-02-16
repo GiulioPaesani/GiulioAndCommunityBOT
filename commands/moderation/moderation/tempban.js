@@ -60,13 +60,13 @@ module.exports = {
             return botCommandMessage(message, "Error", "Tempo non valido", "Hai inserito un tempo non valido", property)
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Sovrascrivi moderazione (Tempban)")
-            .setStyle("red")
-            .setID(`tban,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 43)},${time}`)
+            .setStyle("DANGER")
+            .setCustomId(`tban,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 43)},${time}`)
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
         if (userstats.moderation.type == "Muted") {
             return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
@@ -131,8 +131,8 @@ ${userstats.moderation.moderator}
         if (message.guild.members.cache.find(x => x.id == utente.id)) {
             var ruoloTempbanned = message.guild.roles.cache.find(role => role.id == settings.ruoliModeration.tempbanned)
             message.guild.channels.cache.forEach((canale) => {
-                if (canale.parentID != settings.idCanaliServer.categoriaModerationTicket && canale.id != settings.idCanaliServer.rules) {
-                    canale.updateOverwrite(ruoloTempbanned, {
+                if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket && canale.id != settings.idCanaliServer.rules) {
+                    canale.permissionOverwrites.edit(ruoloTempbanned, {
                         VIEW_CHANNEL: false,
                         SPEAK: false
                     })
@@ -172,7 +172,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":o: Tempban :o:")
@@ -186,7 +186,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", reason, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.tempban).send(embed)
+                    client.channels.cache.get(log.moderation.tempban).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -197,7 +197,7 @@ ${userstats.moderation.moderator}
             .addField("Time", ms(time, { long: true }))
             .addField("Moderator", message.author.toString())
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

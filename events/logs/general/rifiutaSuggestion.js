@@ -1,11 +1,12 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (button.id != "rifiutaSuggestion") return
+        if (!button.isButton()) return
+        if (button.customId != "rifiutaSuggestion") return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.clicker.user.id)) return
+        if (isMaintenance(button.user.id)) return
 
         var idUtente = button.message.embeds[0].fields[0].value.slice(button.message.embeds[0].fields[0].value.length - 19, -1)
         if (!idUtente) return
@@ -19,12 +20,12 @@ module.exports = {
             .setDescription(`Un tuo suggerimento è stato purtroppo **rifiutato** dallo staff`)
             .addField(":bookmark_tabs: Suggestion", button.message.embeds[0].fields[2].value)
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
 
-        button.message.embeds[0].fields[1].value = "Refused by " + button.clicker.user.username
-        button.message.embeds[0].color = "15548997"
+        button.message.embeds[0].fields[1].value = "Refused by " + button.user.username
+        button.message.embeds[0].color = "#ED4245"
 
-        button.message.edit(button.message.embeds[0], null)
+        button.message.edit({ embeds: [button.message.embeds[0]], components: [] })
     },
 };

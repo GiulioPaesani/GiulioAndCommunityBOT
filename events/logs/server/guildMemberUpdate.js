@@ -31,7 +31,7 @@ module.exports = {
                 .addField("Nickname", `Old: _Null_\rNew: ${newMember.nickname}`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send(embed)
+                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
 
             if (logs.executor.id == newMember.id) return
 
@@ -42,7 +42,7 @@ module.exports = {
                 .setDescription(`${logs.executor.toString()} ti ha inserito un **nickname** nel server`)
                 .addField(":placard: Nickname", `\`\`\`${newMember.nickname}\`\`\``)
 
-            client.users.cache.get(newMember.id).send(embed)
+            client.users.cache.get(newMember.id).send({ embeds: [embed] })
                 .catch(() => { })
         }
         else if (oldMember.nickname && !newMember.nickname) {
@@ -71,7 +71,7 @@ module.exports = {
                 .addField("Nickname", `Old: ${oldMember.nickname}\rNew: _Null_`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send(embed)
+                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
 
             if (logs.executor.id == newMember.id) return
 
@@ -82,7 +82,7 @@ module.exports = {
                 .setDescription(`${logs.executor.toString()} ha resettato il tuo **nickname** nel server`)
                 .addField(":placard: Old Nickname", `\`\`\`${oldMember.nickname}\`\`\``)
 
-            client.users.cache.get(newMember.id).send(embed)
+            client.users.cache.get(newMember.id).send({ embeds: [embed] })
                 .catch(() => { })
         }
         else if (newMember.nickname && oldMember.nickname != newMember.nickname) {
@@ -111,7 +111,7 @@ module.exports = {
                 .addField("Nickname", `Old: ${oldMember.nickname}\rNew: ${newMember.nickname}`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send(embed)
+                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
 
             if (logs.executor.id == newMember.id) return
 
@@ -122,7 +122,7 @@ module.exports = {
                 .setDescription(`${logs.executor.toString()} ti ha cambiato il tuo **nickname** nel server`)
                 .addField(":placard: New Nickname", `\`\`\`${newMember.nickname}\`\`\``)
 
-            client.users.cache.get(newMember.id).send(embed)
+            client.users.cache.get(newMember.id).send({ embeds: [embed] })
                 .catch(() => { })
         }
     },

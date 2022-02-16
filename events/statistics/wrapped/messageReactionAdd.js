@@ -9,7 +9,7 @@ module.exports = {
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 
         if (user.bot) return
-        if (messageReaction.message.channel.type == "dm") return
+        if (messageReaction.message.channel.type == "DM") return
         if (messageReaction.message.guild.id != settings.idServer) return
         if (!userstatsList) return
 

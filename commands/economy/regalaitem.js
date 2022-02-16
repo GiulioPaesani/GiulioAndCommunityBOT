@@ -70,7 +70,7 @@ module.exports = {
             .setColor("#FF3E75")
             .setDescription(`Hai regalato con successo l'oggetto ${item.icon}**${item.name}** a ${utente.toString()}`)
 
-        message.channel.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+        message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
 
         var embed = new Discord.MessageEmbed()
             .setTitle("Un piccolo regalo per te")
@@ -78,7 +78,7 @@ module.exports = {
             .setColor("#FF3E75")
             .setDescription(`${message.author.toString()} ti ha regalato l'oggetto ${item.icon}**${item.name}**\rGoditi questo bellissimo item`)
 
-        utente.send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+        utente.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
             .catch(() => { })
     },
 };

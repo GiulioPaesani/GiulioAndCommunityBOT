@@ -41,7 +41,7 @@ Old: ${oldNumber}
 New: ${serverstats.numero}`, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.counting.setNumber).send(embed)
+                    client.channels.cache.get(log.counting.setNumber).send({ embeds: [embed] })
             })
     },
 };

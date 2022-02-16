@@ -51,7 +51,7 @@ module.exports = {
 _Oggetti totali: ${totItems}_`)
                 .setFooter(`Coins: ${userstats.money}$`)
 
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
                 .catch(() => { })
             return
         }
@@ -74,31 +74,31 @@ _Oggetti totali: ${totItems}_`)
             }
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setEmoji("◀️")
-            .setID(`indietroInv,${message.author.id},${utente.id},${page}`)
-            .setStyle("blurple")
+            .setCustomId(`indietroInv,${message.author.id},${utente.id},${page}`)
+            .setStyle("PRIMARY")
 
         if (page == 1)
             button1.setDisabled()
 
-        var button2 = new disbut.MessageButton()
+        var button2 = new Discord.MessageButton()
             .setEmoji("▶️")
-            .setID(`avantiInv,${message.author.id},${utente.id},${page}`)
-            .setStyle("blurple")
+            .setCustomId(`avantiInv,${message.author.id},${utente.id},${page}`)
+            .setStyle("PRIMARY")
 
         if (page + 1 > totPage)
             button2.setDisabled()
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
         if (totPage > 1)
-            message.channel.send(embed, row)
+            message.channel.send({ embeds: [embed], components: [row] })
                 .catch(() => { })
         else
-            message.channel.send(embed)
+            message.channel.send({ embeds: [embed] })
                 .catch(() => { })
     },
 };

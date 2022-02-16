@@ -3,8 +3,8 @@ global.getParolaccia = function (content) {
     content = content.replace(/\\/g, "")
 
     var trovata = false;
-    let censurato = content;
-    let nonCensurato = content;
+    var censurato = content;
+    var nonCensurato = content;
 
     const badwords = require("../config/badwords.json");
     for (var paroloccia in badwords) {
@@ -37,7 +37,7 @@ global.checkModeration = async function () {
                     utente.roles.remove(settings.ruoliModeration.tempmuted).then(() => {
                         if (utente.voice) {
                             if (utente.voice?.channel) {
-                                var canale = utente.voice.channelID
+                                var canale = utente.voice.channelId
                                 if (canale == settings.idCanaliServer.general1)
                                     utente.voice.setChannel(settings.idCanaliServer.general2)
                                 else
@@ -51,7 +51,7 @@ global.checkModeration = async function () {
                     userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempmuted)
                 }
 
-                var embedUtente = new Discord.MessageEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setTitle("Sei stato smutato")
                     .setColor("#6143CB")
                     .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
@@ -59,7 +59,7 @@ global.checkModeration = async function () {
                     .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
                     .addField("Moderator", client.user.toString())
 
-                utente.send(embedUtente)
+                utente.send({ embeds: [embed] })
                     .catch(() => { })
 
                 if (utente.user) utente = utente.user
@@ -74,7 +74,7 @@ global.checkModeration = async function () {
                     .addField("Duration", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
                     .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
-                client.channels.cache.get(log.moderation.unmute).send(embed)
+                client.channels.cache.get(log.moderation.unmute).send({ embeds: [embed] })
 
                 userstats.moderation = {
                     "type": "",
@@ -101,7 +101,7 @@ global.checkModeration = async function () {
                     userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempbanned)
                 }
 
-                var embedUtente = new Discord.MessageEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setTitle("Sei stato sbannato")
                     .setColor("#6143CB")
                     .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")
@@ -109,7 +109,7 @@ global.checkModeration = async function () {
                     .addField("Time banned", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
                     .addField("Moderator", client.user.toString())
 
-                utente.send(embedUtente)
+                utente.send({ embeds: [embed] })
                     .catch(() => { })
 
                 if (utente.user) utente = utente.user
@@ -124,7 +124,7 @@ global.checkModeration = async function () {
                     .addField("Time", `${ms(userstats.moderation.until - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
                     .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
-                client.channels.cache.get(log.moderation.unban).send(embed)
+                client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
 
                 userstats.moderation = {
                     "type": "",
@@ -156,7 +156,7 @@ global.checkUnverifedUser = function () {
                     .addField(":bust_in_silhouette: Member", `${user.user.toString()} - ID: ${user.id}`, false)
                     .addField("Joined server", `${moment(user.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(user.joinedTimestamp).fromNow()})`, false)
 
-                client.channels.cache.get(log.server.other).send(embed)
+                client.channels.cache.get(log.server.other).send({ embeds: [embed] })
 
                 var embed = new Discord.MessageEmbed()
                     .setTitle("Non ti sei VERIFICATO")
@@ -164,7 +164,7 @@ global.checkUnverifedUser = function () {
                     .setImage("https://i.postimg.cc/MZ45kGMN/Banner2.jpg")
                     .setDescription("Sono passati più di **4 giorni** da quanto hai provato ad entrare nel server, ma non ti sei verificato e sei stato **espulso**.\r[Rientra nel server](https://discord.gg/bTF589dQd6) per poter **accedere** di nuovo e iniziare a parlare con tutti gli utenti")
 
-                user.send(embed)
+                user.send({ embeds: [embed] })
                     .then(() => {
                         user.kick()
                             .catch(() => { })
@@ -182,7 +182,7 @@ global.checkUnverifedUser = function () {
                     .setImage("https://i.postimg.cc/MZ45kGMN/Banner2.jpg")
                     .setDescription(`È passata più di **un ora** da quanto hai provato ad entrare nel server, ma non ti sei ancora **verificato**\rVai nel canale <#${settings.idCanaliServer.joinTheServer}>, leggi le regole e clicca sul bottone **"Entra nel server"**`)
 
-                user.send(embed)
+                user.send({ embeds: [embed] })
                     .catch(() => { })
             }
         }

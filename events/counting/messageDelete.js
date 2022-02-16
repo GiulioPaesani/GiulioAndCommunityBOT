@@ -26,7 +26,7 @@ module.exports = {
             .setDescription(message.author.toString() + " ha eliminato il numero `" + numero + "`")
             .setColor("#148eff");
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
 
         message.channel.send(numero)
             .then(msg => {
@@ -41,6 +41,6 @@ module.exports = {
             .addField("Number", numero, false)
 
         if (!isMaintenance())
-            client.channels.cache.get(log.counting.editDeleteNumbers).send(embed)
+            client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
     },
 };

@@ -4,7 +4,7 @@ module.exports = {
         if (isMaintenance(newMember.id)) return
 
         //Kick dai canali stats
-        if (newMember.channelID == settings.idCanaliServer.codeSubscriberCounter || newMember.channelID == settings.idCanaliServer.giulioSubscriberCounter || newMember.channelID == settings.idCanaliServer.memberCounter) {
+        if (newMember.channelId == settings.idCanaliServer.codeSubscriberCounter || newMember.channelId == settings.idCanaliServer.giulioSubscriberCounter || newMember.channelId == settings.idCanaliServer.memberCounter) {
             var server = client.guilds.cache.get(settings.idServer);
             var utente = server.members.cache.find(x => x.id == newMember.id);
             utente.voice.kick()
@@ -13,12 +13,12 @@ module.exports = {
         if (oldMember.guild.id != settings.idServer) return
 
         //Canale no-mic-chat
-        if (!oldMember.channelID && newMember.channelID) {
+        if (!oldMember.channelId && newMember.channelId) {
             var utente = client.guilds.cache.get(settings.idServer).members.cache.get(newMember.id)
             if (utente.bot) return
             if (utente) utente.roles.add(settings.idRuoloNoMicChat)
         }
-        if (oldMember.channelID && !newMember.channelID) {
+        if (oldMember.channelId && !newMember.channelId) {
             var utente = client.guilds.cache.get(settings.idServer).members.cache.get(newMember.id)
             if (utente.bot) return
             if (utente) utente.roles.remove(settings.idRuoloNoMicChat)

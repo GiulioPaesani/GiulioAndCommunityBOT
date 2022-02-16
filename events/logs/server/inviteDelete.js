@@ -28,6 +28,6 @@ module.exports = {
             .addField("Temponary", logs.changes.find(x => x.key == "temporary").old ? "Yes" : "No", false)
             .addField("Channel", invite.channel.toString(), false)
 
-        client.channels.cache.get(log.server.invites).send(embed)
+        client.channels.cache.get(log.server.invites).send({ embeds: [embed] })
     },
 };

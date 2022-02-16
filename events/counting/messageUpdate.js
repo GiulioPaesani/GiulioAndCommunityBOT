@@ -36,7 +36,7 @@ module.exports = {
             .setDescription(oldMessage.author.toString() + " ha modificato il numero `" + numero + "`")
             .setColor("#148eff");
 
-        oldMessage.channel.send(embed)
+        oldMessage.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":pencil: Number edited :pencil:")
@@ -49,7 +49,7 @@ Old: ${oldMessage.content}
 New: ${newMessage.content}`, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.counting.editDeleteNumbers).send(embed)
+                    client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
             })
 
         oldMessage.channel.send(numero)

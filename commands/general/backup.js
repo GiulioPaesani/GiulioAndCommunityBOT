@@ -13,7 +13,7 @@ module.exports = {
             .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
             .setColor("#fcba03")
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(async msg => {
                 var server = await getGuild()
 
@@ -54,9 +54,9 @@ module.exports = {
                         name: emoji.name,
                         url: `https://cdn.discordapp.com/emojis/${emoji.id}.png?size=96`
                     }))
-                backup.guild.rulesChannel = server.rulesChannelID
-                backup.guild.systemChannel = server.systemChannelID
-                backup.guild.publicUpdatesChannel = server.publicUpdatesChannelID
+                backup.guild.rulesChannel = server.rulesChannelId
+                backup.guild.systemChannel = server.systemChannelId
+                backup.guild.publicUpdatesChannel = server.publicUpdatesChannelId
                 backup.guild.verificationLevel = server.verificationLevel
 
                 var embed = new Discord.MessageEmbed()
@@ -64,10 +64,10 @@ module.exports = {
                     .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
                     .setColor("#fcba03")
 
-                msg.edit(embed)
+                msg.edit({ embeds: [embed] })
 
                 //CATEGORY
-                var categories = await server.channels.cache.array().filter(x => x.type == "category").sort((a, b) => a.position - b.position)
+                var categories = await server.channels.cache.array().filter(x => x.type == "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
                 for (var categoria of categories) {
                     backup.categories.push(categoria.name)
                 }
@@ -77,10 +77,10 @@ module.exports = {
                     .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
                     .setColor("#fcba03")
 
-                msg.edit(embed)
+                msg.edit({ embeds: [embed] })
 
                 //CHANNELS
-                var canali = await server.channels.cache.array().filter(x => x.type != "category").sort((a, b) => a.position - b.position)
+                var canali = await server.channels.cache.array().filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
                 for (var canale of canali) {
                     var info = {
                         name: canale.name,
@@ -89,7 +89,7 @@ module.exports = {
                         slowmode: canale.rateLimitPerUser,
                         bitrate: canale.bitrate,
                         userlimit: canale.topic,
-                        category: canale.parentID,
+                        category: canale.parentId,
                         permissions: canale.permissionOverwrites,
                         messages: []
                     }
@@ -127,10 +127,10 @@ module.exports = {
                     .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
                     .setColor("#fcba03")
 
-                msg.edit(embed)
+                msg.edit({ embeds: [embed] })
 
                 //ROLES
-                var ruoli = server.roles.cache.array().filter(x => x.type != "category").sort((a, b) => b.position - a.position)
+                var ruoli = server.roles.cache.array().filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => b.position - a.position)
                 for (var ruolo of ruoli) {
                     var info = {
                         name: ruolo.name,
@@ -149,7 +149,7 @@ module.exports = {
                     .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
                     .setColor("#fcba03")
 
-                msg.edit(embed)
+                msg.edit({ embeds: [embed] })
 
                 //THINGS TO DO
                 var messages = await client.channels.cache.get(log.general.thingsToDo).messages.fetch()
@@ -169,7 +169,7 @@ module.exports = {
                     .setDescription("Attendi un attimo, sto facendo un backup di tutto il **server** e del contenuto del **database**")
                     .setColor("#fcba03")
 
-                msg.edit(embed)
+                msg.edit({ embeds: [embed] })
 
                 var attachment1 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `userstats-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`);
                 var attachment2 = await new Discord.MessageAttachment(Buffer.from(JSON.stringify([serverstats], null, "\t"), "utf-8"), `serverstats${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.json`);
@@ -190,7 +190,7 @@ module.exports = {
                             .setColor("#18b83b")
                             .addField("Time", "```" + moment().format("dddd DD MMMM, HH:mm:ss") + "```")
 
-                        msg.edit(embed)
+                        msg.edit({ embeds: [embed] })
                     })
             })
             .catch(() => { })

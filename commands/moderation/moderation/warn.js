@@ -71,7 +71,7 @@ module.exports = {
             .addField("Moderator", message.author.toString())
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":trident: Warn :trident:")
@@ -84,7 +84,7 @@ module.exports = {
                     .addField("Reason", reason, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.warn).send(embed)
+                    client.channels.cache.get(log.moderation.warn).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -94,7 +94,7 @@ module.exports = {
             .addField("Reason", reason)
             .addField("Moderator", message.author.toString())
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats

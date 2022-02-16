@@ -21,14 +21,17 @@ module.exports = {
 
         client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
             .then(msg => {
-                var button1 = new disbut.MessageButton()
+                var button1 = new Discord.MessageButton()
                     .setLabel("In chiusura...")
-                    .setStyle("red")
-                    .setID("ticketChiudi")
+                    .setStyle("DANGER")
+                    .setCustomId("ticketChiudi")
                     .setDisabled()
 
+                var row = new Discord.MessageActionRow()
+                    .addComponents(button1)
+
                 if (!ticket.inserimentoCategory)
-                    msg.edit(msg.embeds[0], button1)
+                    msg.edit({ embeds: [msg.embeds[0]], components: [row] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -36,13 +39,16 @@ module.exports = {
             .setColor("#ED1C24")
             .setDescription("Questo ticket si chiuderà tra `20 secondi`")
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Annulla")
-            .setStyle("red")
-            .setID("annullaChiusura")
+            .setStyle("DANGER")
+            .setCustomId("annullaChiusura")
+
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
         var idChannelTicket = ticket.channel
-        message.channel.send(embed, button1)
+        message.channel.send({ embeds: [embed], components: [row] })
             .then(msg => {
                 ticket.daEliminare = true;
                 serverstats.ticket[serverstats.ticket.findIndex((x) => x.channel == idChannelTicket)] = ticket;
@@ -53,7 +59,7 @@ module.exports = {
 
                     if (ticket.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
-                        msg.edit(embed)
+                        msg.edit({ embeds: [embed] })
                             .catch(() => { })
 
                         setTimeout(async function () {
@@ -78,7 +84,7 @@ module.exports = {
 
                                         if (ticket.inserimentoCategory)
                                             if (!isMaintenance())
-                                                client.channels.cache.get(log.community.ticket).send(embed)
+                                                client.channels.cache.get(log.community.ticket).send({ embeds: [embed] })
 
                                         var embed = new Discord.MessageEmbed()
                                             .setTitle(":paperclips: Ticket closed :paperclips:")
@@ -114,14 +120,14 @@ module.exports = {
                                                 Buffer.from(chatLog, "utf-8"), `ticket${ticket.channel}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
                                             );
                                             if (!isMaintenance())
-                                                client.channels.cache.get(log.community.ticket).send({ embed, files: [attachment1] })
+                                                client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] })
                                         }
                                         else
                                             if (!isMaintenance())
-                                                client.channels.cache.get(log.community.ticket).send(embed)
+                                                client.channels.cache.get(log.community.ticket).send({ embeds: [embed] })
 
                                         embed.setDescription("Questo ticket si sta per chiudere")
-                                        msg.edit(embed)
+                                        msg.edit({ embeds: [embed] })
                                             .catch(() => { })
 
                                         message.channel.delete()

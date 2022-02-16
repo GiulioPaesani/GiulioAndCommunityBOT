@@ -58,11 +58,11 @@ module.exports = {
                     Buffer.from(chatLog, "utf-8"), `room${room.owner}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
                 );
                 if (!isMaintenance())
-                    client.channels.cache.get(log.community.privateRooms).send({ embed, files: [attachment1] })
+                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed], files: [attachment1] })
             }
             else
                 if (!isMaintenance())
-                    client.channels.cache.get(log.community.privateRooms).send(embed)
+                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
 
             if (room.text && client.channels.cache.get(room.text))
                 client.channels.cache.get(room.text).delete()

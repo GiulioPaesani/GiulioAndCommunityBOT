@@ -60,13 +60,13 @@ module.exports = {
             return botCommandMessage(message, "Error", "Tempo non valido", "Hai inserito un tempo non valido", property)
         }
 
-        var button1 = new disbut.MessageButton()
+        var button1 = new Discord.MessageButton()
             .setLabel("Sovrascrivi moderazione (Tempmute)")
-            .setStyle("red")
-            .setID(`tmute,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 42)},${time}`)
+            .setStyle("DANGER")
+            .setCustomId(`tmute,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 42)},${time}`)
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
         if (userstats.moderation.type == "Muted") {
             return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
@@ -131,8 +131,8 @@ ${userstats.moderation.moderator}
         if (message.guild.members.cache.find(x => x.id == utente.id)) {
             var ruoloTempmuted = message.guild.roles.cache.find(role => role.id == settings.ruoliModeration.tempmuted);
             message.guild.channels.cache.forEach((canale) => {
-                if (canale.parentID != settings.idCanaliServer.categoriaModerationTicket) {
-                    canale.updateOverwrite(ruoloTempmuted, {
+                if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
+                    canale.permissionOverwrites.edit(ruoloTempmuted, {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false,
                         SPEAK: false
@@ -143,7 +143,7 @@ ${userstats.moderation.moderator}
             utente.roles.add(ruoloTempmuted)
                 .then(() => {
                     if (utente.voice?.channel) {
-                        var canale = utente.voice.channelID
+                        var canale = utente.voice.channelId
                         if (canale == settings.idCanaliServer.general1)
                             utente.voice.setChannel(settings.idCanaliServer.general2)
                         else
@@ -178,7 +178,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .setFooter("User ID: " + utente.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":speaker: Tempmute :speaker:")
@@ -192,7 +192,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", reason, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.tempmute).send(embed)
+                    client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -203,7 +203,7 @@ ${userstats.moderation.moderator}
             .addField("Time", ms(time, { long: true }))
             .addField("Moderator", message.author.toString())
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

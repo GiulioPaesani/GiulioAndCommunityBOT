@@ -1,41 +1,42 @@
 module.exports = {
-	name: `clickButton`,
+	name: `interactionCreate`,
 	async execute(button) {
-		if (button.id != 'apriTicket') return;
+		if (!button.isButton()) return
+		if (button.customId != 'apriTicket') return;
 
-		if (isMaintenance(button.clicker.user.id)) return
+		if (isMaintenance(button.user.id)) return
 
 		var ticket = serverstats.ticket;
 
 		if (button.channel.id == settings.idCanaliServer.staffHelp) {
-			if (ticket.find((x) => x.type == 'Normal' && x.owner == button.clicker.user.id)) {
-				botMessage(button.clicker.user, "Warning", "Ticket già aperto", "Puoi aprire un solo ticket alla volta")
-				button.reply.defer().catch(() => { })
+			if (ticket.find((x) => x.type == 'Normal' && x.owner == button.user.id)) {
+				botMessage(button.user, "Warning", "Ticket già aperto", "Puoi aprire un solo ticket alla volta")
+				button.deferUpdate().catch(() => { })
 					.catch(() => { })
 				return
 			}
 
-			var userstats = userstatsList.find(x => x.id == button.clicker.user.id)
+			var userstats = userstatsList.find(x => x.id == button.user.id)
 			if (!userstats) return
 
 			if (userstats.moderation.type == "Muted" || userstats.moderation.type == "Tempmuted") {
-				botMessage(button.clicker.user, "Warning", "Non puoi se sei mutato", `Non puoi aprire un ticket di Supporto se sei mutato. Se vuoi parlare con lo staff puoi aprire un ticket in <#${userstats.moderation.type == "Muted" ? settings.idCanaliServer.mutedTicket : settings.idCanaliServer.tempmutedTicket}>`)
-				button.reply.defer().catch(() => { })
+				botMessage(button.user, "Warning", "Non puoi se sei mutato", `Non puoi aprire un ticket di Supporto se sei mutato. Se vuoi parlare con lo staff puoi aprire un ticket in <#${userstats.moderation.type == "Muted" ? settings.idCanaliServer.mutedTicket : settings.idCanaliServer.tempmutedTicket}>`)
+				button.deferUpdate().catch(() => { })
 					.catch(() => { })
 				return
 			}
 
 			var server = client.guilds.cache.get(settings.idServer);
 			server.channels
-				.create(`ticket-${button.clicker.user.username}`, {
-					type: 'text',
+				.create(`ticket-${button.user.username}`, {
+					type: "GUILD_TEXT",
 					permissionOverwrites: [
 						{
 							id: server.id,
 							deny: ['VIEW_CHANNEL', "SEND_MESSAGES"]
 						},
 						{
-							id: button.clicker.user.id,
+							id: button.user.id,
 							allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS']
 						},
 						{
@@ -66,7 +67,7 @@ module.exports = {
 					parent: settings.idCanaliServer.categoriaTicket
 				})
 				.then((canale) => {
-					button.reply.defer().catch(() => { })
+					button.deferUpdate().catch(() => { })
 						.catch(() => { })
 
 					var embed = new Discord.MessageEmbed()
@@ -94,43 +95,43 @@ module.exports = {
 `)
 						.setFooter("Seleziona la categoria per continuare")
 
-					var option1 = new disbut.MessageMenuOption()
-						.setLabel('Problemi con bot')
-						.setEmoji("🤖")
-						.setValue('ticketCategory1')
-						.setDescription('Problemi con il tuo bot in Discord.js')
-
-					var option2 = new disbut.MessageMenuOption()
-						.setLabel('Problemi nel server')
-						.setEmoji("🎡")
-						.setValue('ticketCategory2')
-						.setDescription("Problemi con bot o utenti nel server")
-
-					var option3 = new disbut.MessageMenuOption()
-						.setLabel('Domande allo staff')
-						.setEmoji("👀")
-						.setValue('ticketCategory3')
-						.setDescription("Domande di altro tipo allo staff")
-
-					var select = new disbut.MessageMenu()
-						.setID(`ticketCategory,${button.clicker.user.id}`)
+					var select = new Discord.MessageSelectMenu()
+						.setCustomId(`ticketCategory,${button.user.id}`)
 						.setPlaceholder('Select category...')
 						.setMaxValues(1)
 						.setMinValues(1)
-						.addOption(option1)
-						.addOption(option2)
-						.addOption(option3)
+						.addOption({
+							label: "Problemi con bot",
+							emoji: "🤖",
+							value: "ticketCategory1",
+							description: "Problemi con il tuo bot in Discord.js"
+						})
+						.addOption({
+							label: "Problemi nel server",
+							emoji: "🎡",
+							value: "ticketCategory2",
+							description: "Problemi con bot o utenti nel server"
+						})
+						.addOption({
+							label: "Domande allo staff",
+							emoji: "👀",
+							value: "ticketCategory3",
+							description: "Domande di altro tipo allo staff"
+						})
+
+					var row = new Discord.MessageActionRow()
+						.addComponents(select)
 
 					canale
 						.send({
-							component: select,
-							embed: embed
+							components: [row],
+							embeds: [embed]
 						})
 						.then((msg) => {
 							ticket.push({
 								type: 'Normal',
 								channel: canale.id,
-								owner: button.clicker.user.id,
+								owner: button.user.id,
 								message: msg.id,
 								daEliminare: false,
 								inserimentoCategory: true,
@@ -138,52 +139,52 @@ module.exports = {
 							serverstats.ticket = ticket;
 						});
 
-					canale.send(`<@${button.clicker.user.id}> ecco il tuo ticket`).then((msg) => {
+					canale.send(`<@${button.user.id}> ecco il tuo ticket`).then((msg) => {
 						msg.delete().catch(() => { });
 					});
 				});
 		}
 		if (button.channel.id == settings.idCanaliServer.mutedTicket || button.channel.id == settings.idCanaliServer.tempmutedTicket || button.channel.id == settings.idCanaliServer.bannedTicket || button.channel.id == settings.idCanaliServer.tempbannedTicket) {
-			if (ticket.find((x) => x.type == 'Moderation' && x.owner == button.clicker.user.id)) {
-				botMessage(button.clicker.user, "Warning", "Ticket già aperto", "Puoi aprire un solo ticket alla volta")
-				button.reply.defer().catch(() => { })
+			if (ticket.find((x) => x.type == 'Moderation' && x.owner == button.user.id)) {
+				botMessage(button.user, "Warning", "Ticket già aperto", "Puoi aprire un solo ticket alla volta")
+				button.deferUpdate().catch(() => { })
 					.catch(() => { })
 				return;
 			}
 
-			var userstats = userstatsList.find(x => x.id == button.clicker.user.id)
+			var userstats = userstatsList.find(x => x.id == button.user.id)
 			if (!userstats) return
 
 			if (userstats.moderation.ticketOpened) {
-				botMessage(button.clicker.user, "Warning", "Ticket già precedentemente aperto", "Puoi aprire un solo ticket di segnalazione")
-				button.reply.defer().catch(() => { })
+				botMessage(button.user, "Warning", "Ticket già precedentemente aperto", "Puoi aprire un solo ticket di segnalazione")
+				button.deferUpdate().catch(() => { })
 					.catch(() => { })
 				return;
 			}
 			else {
 				if (userstats.moderation.type != "") {
-					userstatsList[userstatsList.findIndex(x => x.id == button.clicker.user.id)].moderation.ticketOpened = true
+					userstatsList[userstatsList.findIndex(x => x.id == button.user.id)].moderation.ticketOpened = true
 				}
 			}
 
 			var server = client.guilds.cache.get(settings.idServer);
 			server.channels
-				.create(`${button.clicker.user.username}`, {
-					type: 'text',
+				.create(`${button.user.username}`, {
+					type: "GUILD_TEXT",
 					permissionOverwrites: [
 						{
 							id: server.id,
 							deny: ['VIEW_CHANNEL']
 						},
 						{
-							id: button.clicker.user.id,
+							id: button.user.id,
 							allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS', "SEND_MESSAGES"]
 						}
 					],
 					parent: settings.idCanaliServer.categoriaModerationTicket
 				})
 				.then((canale) => {
-					button.reply.defer().catch(() => { })
+					button.deferUpdate().catch(() => { })
 						.catch(() => { })
 
 					var embed = new Discord.MessageEmbed()
@@ -195,7 +196,7 @@ module.exports = {
 						.setTitle(":envelope_with_arrow: Ticket opened :envelope_with_arrow:")
 						.setColor("#22c90c")
 						.addField(":alarm_clock: Time", `${moment(button.channel.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-						.addField(":bust_in_silhouette: Owner", `${button.clicker.user.toString()} - ID: ${button.clicker.user.id}`)
+						.addField(":bust_in_silhouette: Owner", `${button.user.toString()} - ID: ${button.user.id}`)
 
 					if (userstats.moderation.type != "") {
 						if (userstats.moderation.type == "Muted") {
@@ -253,24 +254,27 @@ ${userstats.moderation.moderator}
 						}
 					}
 
-					var button1 = new disbut.MessageButton()
+					var button1 = new Discord.MessageButton()
 						.setLabel('Chiudi ticket')
-						.setStyle('red')
-						.setID('ticketChiudi')
+						.setStyle('DANGER')
+						.setCustomId('ticketChiudi')
 
-					canale.send(embed, button1)
+					var row = new Discord.MessageActionRow()
+						.addComponents(button1)
+
+					canale.send({ embeds: [embed], components: [row] })
 						.then((msg) => {
 							ticket.push({
 								type: 'Moderation',
 								channel: canale.id,
-								owner: button.clicker.user.id,
+								owner: button.user.id,
 								message: msg.id,
 								daEliminare: false
 							});
 							serverstats.ticket = ticket;
 						});
 
-					canale.send(`<@${button.clicker.user.id}> ecco il tuo ticket\r`).then((msg) => {
+					canale.send(`<@${button.user.id}> ecco il tuo ticket\r`).then((msg) => {
 						msg.delete().catch(() => { });
 					});
 
@@ -278,7 +282,7 @@ ${userstats.moderation.moderator}
 						embed2.addField("Category", "Moderation")
 
 					if (!isMaintenance())
-						client.channels.cache.get(log.community.ticket).send(embed2)
+						client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
 				});
 		}
 	}

@@ -32,6 +32,6 @@ module.exports = {
             .addField("Roles", roles, false)
 
         if (!isMaintenance())
-            client.channels.cache.get(log.server.welcomeGoodbye).send(embed)
+            client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
     },
 };

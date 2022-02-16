@@ -1,10 +1,10 @@
 module.exports = {
-    name: `message`,
+    name: "messageCreate",
     async execute(message) {
         if (isMaintenance(message.author.id)) return
 
         if (message.author.bot) return
-        if (message.channel.type == "dm") return
+        if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (utenteMod(message.author)) return
         if (!userstatsList) return
@@ -32,7 +32,7 @@ module.exports = {
             .addField("Channel", message.channel.toString())
             .setFooter("User ID: " + message.member.user.id)
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":sweat_drops: Badwords :sweat_drops:")
@@ -45,7 +45,7 @@ module.exports = {
                     .addField("Message", nonCensurato, false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.badwords).send(embed)
+                    client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -55,7 +55,7 @@ module.exports = {
             .addField("Message", censurato)
             .addField("Channel", message.channel.toString())
 
-        message.member.send(embed)
+        message.member.send({ embeds: [embed] })
             .catch(() => { })
 
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats

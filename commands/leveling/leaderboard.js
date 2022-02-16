@@ -71,14 +71,14 @@ module.exports = {
             .setFooter(`Page ${page}/${totPage}`)
 
 
-        var button1 = new disbut.MessageButton()
-            .setID(`indietro2Lb,${message.author.id},${page}`)
-            .setStyle("blurple")
+        var button1 = new Discord.MessageButton()
+            .setCustomId(`indietro2Lb,${message.author.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("⏮️")
 
-        var button2 = new disbut.MessageButton()
-            .setID(`indietroLb,${message.author.id},${page}`)
-            .setStyle("blurple")
+        var button2 = new Discord.MessageButton()
+            .setCustomId(`indietroLb,${message.author.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("◀️")
 
         if (page == 1) {
@@ -86,14 +86,14 @@ module.exports = {
             button2.setDisabled()
         }
 
-        var button3 = new disbut.MessageButton()
-            .setID(`avantiLb,${message.author.id},${page}`)
-            .setStyle("blurple")
+        var button3 = new Discord.MessageButton()
+            .setCustomId(`avantiLb,${message.author.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("▶️")
 
-        var button4 = new disbut.MessageButton()
-            .setID(`avanti2Lb,${message.author.id},${page}`)
-            .setStyle("blurple")
+        var button4 = new Discord.MessageButton()
+            .setCustomId(`avanti2Lb,${message.author.id},${page}`)
+            .setStyle("PRIMARY")
             .setEmoji("⏭️")
 
         if (page == totPage) {
@@ -101,13 +101,13 @@ module.exports = {
             button4.setDisabled()
         }
 
-        var row = new disbut.MessageActionRow()
-            .addComponent(button1)
-            .addComponent(button2)
-            .addComponent(button3)
-            .addComponent(button4)
+        var row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
+            .addComponents(button3)
+            .addComponents(button4)
 
-        message.channel.send(embed, row)
+        message.channel.send({ embeds: [embed], components: [row] })
             .catch(() => { })
     },
 };

@@ -15,7 +15,7 @@ global.getXpNecessari = function (level) {
 global.setLevelRole = async function (utente, level) {
     var member = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == utente.id)
 
-    let ruoloDaAvere = "";
+    var ruoloDaAvere = "";
     if (level >= 200)
         ruoloDaAvere = settings.ruoliLeveling.level200
     else if (level >= 150)
@@ -183,7 +183,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
             if (nextPrivilegi)
                 embed.setFooter(`Prossimi privilegi al livello ${nextPrivilegi}`)
 
-            client.users.cache.get(userstats.id).send({ embed: embed, files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
+            client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                 .catch(() => { })
         }
         else {
@@ -199,7 +199,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
             .addField("Privilegi", textPrivilegi)
 
         if (!isMaintenance())
-            client.channels.cache.get(log.ranking.levelUp).send(embed)
+            client.channels.cache.get(log.ranking.levelUp).send({ embeds: [embed] })
 
         if (!userstats.livelliSuperati[level])
             userstats.money += level * 10

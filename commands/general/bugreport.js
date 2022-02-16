@@ -8,7 +8,7 @@ module.exports = {
     category: "general",
     channelsGranted: [],
     async execute(message, args, client, property) {
-        let report = args.join(" ");
+        var report = args.join(" ");
 
         if (!report && !(message.attachments).array()[0]) {
             return botCommandMessage(message, "Error", "Inserire un report", "Scrivi il testo del tuo report", property)
@@ -30,7 +30,7 @@ module.exports = {
         embed
             .addField(":paperclip: Attachments", attachments ? attachments : "None")
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
 
         var embed = new Discord.MessageEmbed()
             .setTitle(":beetle: Bug report :beetle:")
@@ -41,6 +41,6 @@ module.exports = {
             .addField("Attachments", attachments ? attachments : "None")
 
         if (!isMaintenance())
-            client.channels.cache.get(log.general.bugReport).send(embed);
+            client.channels.cache.get(log.general.bugReport).send({ embeds: [embed] });
     },
 };

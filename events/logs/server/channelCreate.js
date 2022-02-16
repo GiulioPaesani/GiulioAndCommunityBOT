@@ -23,8 +23,8 @@ module.exports = {
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
             .addField("Channel", "#" + channel.name)
-            .addField("Category", channel.parentID ? channel.parent : "_Null_")
-            .addField("Type", channel.type == "text" ? "Text" : channel.type == "voice" ? "Voice" : channel.type)
+            .addField("Category", channel.parentId ? channel.parent : "_Null_")
+            .addField("Type", channel.type == "GUILD_TEXT" ? "Text" : channel.type == "GUILD_VOICE" ? "GUILD_VOICE" : channel.type)
 
         var permissionsText = ""
         for (var permission in Object.fromEntries(channel.permissionOverwrites)) {
@@ -52,6 +52,6 @@ module.exports = {
         if (permissionsText != "")
             embed.addField("Permissions", permissionsText)
 
-        client.channels.cache.get(log.server.channels).send(embed)
+        client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
     },
 };

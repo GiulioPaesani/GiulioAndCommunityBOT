@@ -19,7 +19,7 @@ module.exports = {
 [Clicca qui](https://github.com/GiulioPaesani/GiulioPortfolio) - Pagina del proprio curriculum realizzata da Giulio`)
             .setThumbnail("https://i.postimg.cc/rpKN8qn2/Github-Logo.png")
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
             .catch(() => { })
     },
 };

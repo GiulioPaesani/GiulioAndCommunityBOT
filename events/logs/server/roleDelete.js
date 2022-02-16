@@ -35,6 +35,6 @@ module.exports = {
             embed
                 .addField("Permissions", permissionsText)
 
-        client.channels.cache.get(log.server.roles).send(embed)
+        client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
     },
 };

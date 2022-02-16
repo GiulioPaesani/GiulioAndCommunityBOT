@@ -14,12 +14,12 @@ module.exports = {
             console.log("► USERSTATS ottenuto")
         })
 
+        console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
+
         var embed = new Discord.MessageEmbed()
             .setTitle("Bot ONLINE - " + (process.env.isHeroku == "true" ? "Heroku" : "Local"))
             .setColor("#3ebd45")
             .addField(":alarm_clock: Time", moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss"))
-
-        console.log(`-- GiulioAndCommunity BOT è ONLINE! --`);
 
         if (process.env.maintenance == "1") {
             console.log(`Maintenance State 1 - Only Tester`)
@@ -38,7 +38,10 @@ module.exports = {
             embed.addField("Maintenance", "State OFF")
         }
 
+        client.channels.cache.get(log.general.ready).send({ embeds: [embed] })
+
         client.user.setActivity('!help', { type: 'WATCHING' });
+
         if (!isMaintenance()) {
             setInterval(checkModeration, 5 * 1000);
 
@@ -49,7 +52,7 @@ module.exports = {
             setInterval(updateUserstats, 60 * 1000)
             setInterval(updateServerstats, 60 * 1000)
 
-            // setInterval(deleteDBLeavedUsers, 1000 * 60 * 5)
+            setInterval(deleteDBLeavedUsers, 10 * 1000)
 
             setInterval(youtubeNotification, 60 * 1000)
 
@@ -62,9 +65,8 @@ module.exports = {
             setInterval(checkRoomInDB, 1000 * 60 * 5)
             setInterval(checkTicketInDB, 1000 * 60 * 5)
         }
-        client.channels.cache.get(log.general.ready).send(embed)
 
-        const firstInvites = await client.guilds.cache.get(settings.idServer).fetchInvites()
-        invites.set(client.guilds.cache.get(settings.idServer).id, new Map(firstInvites.map((invite) => [invite.code, invite.uses])));
+        const firstInvites = await client.guilds.cache.get(settings.idServer).invites.fetch()
+        invites.set(settings.idServer, new Map(firstInvites.map((invite) => [invite.code, invite.uses])));
     },
 };

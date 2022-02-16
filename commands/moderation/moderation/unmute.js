@@ -69,7 +69,7 @@ ${userstats.moderation.moderator}
             utente.roles.remove(settings.ruoliModeration.tempmuted)
                 .then(() => {
                     if (utente.voice?.channel) {
-                        var canale = utente.voice.channelID
+                        var canale = utente.voice.channelId
                         if (canale == settings.idCanaliServer.general1)
                             utente.voice.setChannel(settings.idCanaliServer.general2)
                         else
@@ -93,7 +93,7 @@ ${userstats.moderation.moderator}
             .addField("Time muted", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
             .setFooter("User ID: " + utente.id)
 
-        await message.channel.send(embed)
+        await message.channel.send({ embeds: [embed] })
             .then(msg => {
                 var embed = new Discord.MessageEmbed()
                     .setTitle(":loud_sound: Unmute :loud_sound:")
@@ -107,7 +107,7 @@ ${userstats.moderation.moderator}
                     .addField("Reason", userstats.moderation.reason || "_Null_", false)
 
                 if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.unmute).send(embed)
+                    client.channels.cache.get(log.moderation.unmute).send({ embeds: [embed] })
             })
 
         var embed = new Discord.MessageEmbed()
@@ -117,7 +117,7 @@ ${userstats.moderation.moderator}
             .addField("Moderator", message.author.toString())
             .addField("Time muted", ms(userstats.moderation.until - userstats.moderation.since, { long: true }))
 
-        utente.send(embed)
+        utente.send({ embeds: [embed] })
             .catch(() => { })
 
         userstats.moderation = {

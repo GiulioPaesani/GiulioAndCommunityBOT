@@ -1,17 +1,18 @@
 module.exports = {
-    name: `clickButton`,
+    name: `interactionCreate`,
     async execute(button) {
-        if (isMaintenance(button.clicker.user.id)) return
+        if (!button.isButton()) return
+        if (isMaintenance(button.user.id)) return
 
-        button.reply.defer().catch(() => { })
+        button.deferUpdate().catch(() => { })
 
-        if (!button.id.startsWith("codeCompleto")) return
+        if (!button.customId.startsWith("codeCompleto")) return
 
-        if (button.id.split(",")[1] != button.clicker.user.id) return
+        if (button.customId.split(",")[1] != button.user.id) return
 
-        var version = button.id.split(",")[3];
+        var version = button.customId.split(",")[3];
 
-        var codice = client.codes.find(cmd => cmd.id == button.id.split(",")[2]);
+        var codice = client.codes.find(cmd => cmd.id == button.customId.split(",")[2]);
 
         var attachment = new Discord.MessageAttachment(Buffer.from(codice["v" + version].trim(), 'utf-8'), `${codice.name} v${version} - GiulioAndCode.txt`)
 
@@ -21,7 +22,7 @@ module.exports = {
             .setDescription(`${codice.description}
 _Version: \`Discord.js v${version}\`_`)
 
-        button.clicker.user.send({ embed, files: [attachment] })
+        button.user.send({ embeds: [embed], files: [attachment] })
             .catch(() => { })
     },
 };
