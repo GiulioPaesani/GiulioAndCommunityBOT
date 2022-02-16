@@ -195,7 +195,7 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
             .setColor("#8227cc")
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":bust_in_silhouette: Member", `${client.users.cache.get(userstats.id).toString()} - ID: ${userstats.id}`, false)
-            .addField("Level", level)
+            .addField("Level", level.toString())
             .addField("Privilegi", textPrivilegi)
 
         if (!isMaintenance())

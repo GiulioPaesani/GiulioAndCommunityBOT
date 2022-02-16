@@ -26,7 +26,7 @@ module.exports = {
         serverstats.ultimoUtente = "NessunUtente"
 
         botCommandMessage(message, "Correct", "Numero corrente cambiato", `Numero corrente cambiato in **${count}**, ora potete continuare a contare`)
-        message.channel.send(count)
+        message.channel.send(count.toString())
             .then(msg => {
                 msg.react("🟢")
 
