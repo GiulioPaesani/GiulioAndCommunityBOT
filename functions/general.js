@@ -746,6 +746,7 @@ global.statsVocal = function () {
 	if (date.getFullYear() != 2022) return
 
 	if (settings.inMaintenanceMode) return
+	if (!userstatsList) return
 
 	var server = client.guilds.cache.get(settings.idServer)
 	server.channels.cache.filter(x => x.type == "GUILD_VOICE").forEach(channel => {

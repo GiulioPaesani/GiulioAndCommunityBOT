@@ -143,7 +143,7 @@ global.checkModeration = async function () {
 
 global.checkUnverifedUser = function () {
     var server = client.guilds.cache.get(settings.idServer)
-    var users = server.members.cache.filter(x => x.roles.cache.has(settings.idRuoloNonVerificato)).toArray()
+    var users = server.members.cache.filter(x => x.roles.cache.has(settings.idRuoloNonVerificato))
 
     users.forEach(user => {
         if (!utenteMod(user)) {
