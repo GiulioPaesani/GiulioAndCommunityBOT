@@ -5,8 +5,6 @@ module.exports = {
 
         if (newGuild.id != settings.idServer) return
 
-        await Discord.Util.delayFor(900);
-
         const fetchedLogs = await newGuild.fetchAuditLogs({
             limit: 1,
             type: 'GUILD_UPDATE',

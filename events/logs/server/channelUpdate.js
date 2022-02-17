@@ -112,7 +112,6 @@ module.exports = {
             client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
         }
         else {
-            await Discord.Util.delayFor(900);
 
             const fetchedLogs = await newChannel.guild.fetchAuditLogs({
                 limit: 1,

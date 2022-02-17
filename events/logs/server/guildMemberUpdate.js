@@ -6,7 +6,6 @@ module.exports = {
         if (isMaintenance(newMember.user.id)) return
 
         if (!oldMember.nickname && newMember.nickname) {
-            await Discord.Util.delayFor(500);
 
             const fetchedLogs = await newMember.guild.fetchAuditLogs({
                 limit: 1,
@@ -46,7 +45,6 @@ module.exports = {
                 .catch(() => { })
         }
         else if (oldMember.nickname && !newMember.nickname) {
-            await Discord.Util.delayFor(500);
 
             const fetchedLogs = await newMember.guild.fetchAuditLogs({
                 limit: 1,
@@ -86,7 +84,6 @@ module.exports = {
                 .catch(() => { })
         }
         else if (newMember.nickname && oldMember.nickname != newMember.nickname) {
-            await Discord.Util.delayFor(500);
 
             const fetchedLogs = await newMember.guild.fetchAuditLogs({
                 limit: 1,
