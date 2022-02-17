@@ -105,8 +105,7 @@ module.exports = {
                                             .then(async messages => {
                                                 for (var msg of Array.from(messages).reverse()) {
                                                     var attachments = ""
-                                                    console.log(msg.attachments)
-                                                    Array.from(msg.attachments).forEach(attachment => {
+                                                    Array.from(msg.attachments)?.forEach(attachment => {
                                                         attachments += `${attachment.name} (${attachment.url}), `
                                                     })
                                                     if (attachments != "")
