@@ -105,11 +105,13 @@ module.exports = {
                                             .then(async messages => {
                                                 for (var msg of Array.from(messages).reverse()) {
                                                     var attachments = ""
-                                                    Array.from(msg.attachments)?.forEach(attachment => {
-                                                        attachments += `${attachment.name} (${attachment.url}), `
-                                                    })
-                                                    if (attachments != "")
+                                                    if (msg.attachments) {
+                                                        Array.from(msg.attachments).forEach(attachment => {
+                                                            attachments += `${attachment.name} (${attachment.url}), `
+                                                        })
+
                                                         attachments = attachments.slice(0, -2)
+                                                    }
 
                                                     chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == ticket.owner ? "[OWNER] " : utenteMod(msg.author) ? "[MOD] " : (msg.member.roles.cache.has(settings.idRuoloAiutante) || msg.member.roles.cache.has(settings.idRuoloAiutanteInProva)) ? "[HELPER] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
                                                 }

@@ -6,7 +6,7 @@ module.exports = {
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return
 
-        member.guild.fetchInvites().then(guildInvites => {
+        member.guild.invites.fetch().then(guildInvites => {
             invites[member.guild.id] = guildInvites;
         })
 
@@ -26,7 +26,7 @@ module.exports = {
         if (roles == "")
             roles = "_Nessun ruolo_"
 
-        member.guild.fetchInvites().then(guildInvites => {
+        member.guild.invites.fetch().then(guildInvites => {
             const ei = invites.get(member.guild.id);
             const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 

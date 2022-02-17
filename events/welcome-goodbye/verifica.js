@@ -86,7 +86,7 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
         button.user.send({ embeds: [embed], components: [row] })
             .catch(() => { })
 
-        button.message.guild.fetchInvites().then(guildInvites => {
+        button.message.guild.invites.fetch().then(guildInvites => {
             const ei = invites.get(button.message.guild.id);
             const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 
