@@ -23,7 +23,6 @@ module.exports = {
             return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
         }
 
-
         var userstats = userstatsList.find(x => x.id == utente.id);
         if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
 
@@ -33,7 +32,7 @@ module.exports = {
         if (elencoRuoli == "")
             elencoRuoli = "Nessun ruolo";
 
-        var status = utente.user.presence.status;
+        var status = utente.presence?.status;
         switch (status) {
             case "online": status = "Online"; break;
             case "offline": status = "Offline"; break;
@@ -50,7 +49,7 @@ module.exports = {
             .setDescription("Tutte le statistiche su questo utente")
             .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
             .addField(":receipt: User ID", "```" + utente.user.id + "```", true)
-            .addField(":ok_hand: Status", "```" + status + "```", true)
+            .addField(":ok_hand: Status", "```" + (status || "Offline") + "```", true)
             .addField(":robot: Is a bot", utente.user.bot ? "```Yes```" : "```No```", true)
             .addField(":pencil: Account created", "```" + moment(utente.user.createdAt).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(utente.user.createdAt).fromNow() + ")```", false)
             .addField(":red_car: Joined this server", "```" + moment(utente.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm") + " (" + moment(utente.joinedTimestamp).fromNow() + ")```", false)
@@ -62,6 +61,6 @@ Commands executed: ${userstats.statistics.commands}
 Reactions added: ${userstats.statistics.addReaction}\`\`\``, false)
 
         message.channel.send({ embeds: [embed] })
-            .catch(() => { })
+        // .catch(() => { })
     },
 };
