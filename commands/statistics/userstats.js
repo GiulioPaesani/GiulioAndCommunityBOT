@@ -40,7 +40,7 @@ module.exports = {
             case "idle": status = "Idle"; break;
         }
 
-        const badge = await utente.user.fetchFlags()
+        const badge = await utente.user.flags
         const userFlags = badge.toArray()
         const elencoBadge = userFlags.length ? userFlags.map(flag => flag).join(" ") : 'Nessun badge'
 
