@@ -464,7 +464,7 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\r${canaliConcessiL
 	return true
 }
 
-global.botMessage = async function (channel, type, title, description, fields, components) {
+global.botMessage = async function (channel, type, title, description, fields) {
 	var embed = new Discord.MessageEmbed()
 
 	switch (type) {
@@ -490,14 +490,16 @@ global.botMessage = async function (channel, type, title, description, fields, c
 		}
 	}
 
-	channel.send({ embeds: [embed], components: [components] })
+
+
+	channel.send({ embeds: [embed] })
 		.then(msg => {
 			if (type != "Correct") {
 				setTimeout(() => msg.delete(), 20000)
 				setTimeout(() => message.delete(), 20000)
 			}
 		})
-		.catch(() => { })
+	// .catch(() => { })
 }
 
 global.getCanvasMessage = async function (message, type) {
