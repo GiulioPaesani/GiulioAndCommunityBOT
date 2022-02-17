@@ -103,9 +103,9 @@ module.exports = {
                                         var chatLog = ""
                                         await message.channel.messages.fetch()
                                             .then(async messages => {
-                                                for (var msg of messages.array().reverse()) {
+                                                for (var msg of messages.toArray().reverse()) {
                                                     var attachments = ""
-                                                    msg.attachments.array().forEach(attachment => {
+                                                    msg.attachments.forEach(attachment => {
                                                         attachments += `${attachment.name} (${attachment.url}), `
                                                     })
                                                     if (attachments != "")
