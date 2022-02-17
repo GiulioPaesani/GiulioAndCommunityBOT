@@ -87,7 +87,7 @@ global.makeBackup = async function () {
 		backup.guild.description = server.description;
 		backup.guild.icon = server.iconURL();
 		backup.guild.banner = server.bannerURL();
-		await server.fetchBans().then((banned) => {
+		await server.bans.fetch().then((banned) => {
 			banned.array().forEach((ban) => backup.guild.bans.push(ban.user.id));
 		});
 		if (server.emojis)
