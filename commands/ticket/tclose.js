@@ -104,6 +104,7 @@ module.exports = {
                                         await message.channel.messages.fetch()
                                             .then(async messages => {
                                                 for (var msg of Array.from(messages).reverse()) {
+                                                    console.log(msg)
                                                     var attachments = ""
                                                     if (msg.attachments) {
                                                         Array.from(msg.attachments).forEach(attachment => {
