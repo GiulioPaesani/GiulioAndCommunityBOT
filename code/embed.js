@@ -37,7 +37,7 @@ client.on("messageCreate", message => {
             //Aggiungere elementi
             .addField("Titolo", "Contenuto", true) //QUI TUTTI I PARAMETRI SONO OBBLIGATORI - True o false = se questo elemento deve essere in linea con gli altri
             .setImage("LinkImmagine") //Immagine
-            .setFooter("TestoFooter") /*OPPURE*/.setFooter("TestoFooter", "UrlImmagineFooter") // Testo piccolino in fondo
+            .setFooter({text: "TestoFooter"}) // Testo piccolino in fondo
             .setTimestamp() //Se mettere o no l'orario di arrivo del messaggio
         message.channel.send({embeds: [embed]})
     }
