@@ -23,7 +23,7 @@ module.exports = {
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":brain: Executor", `${logs.executor.toString()} - ID: ${logs.executor.id}`, false)
             .addField("Channel", "#" + channel.name)
-            .addField("Category", channel.parentId ? channel.parent : "_Null_")
+            .addField("Category", channel.parentId ? channel.parent.toString() : "_Null_")
             .addField("Type", channel.type == "GUILD_TEXT" ? "Text" : channel.type == "GUILD_VOICE" ? "GUILD_VOICE" : channel.type)
 
         var permissionsText = ""
