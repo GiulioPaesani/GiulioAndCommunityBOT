@@ -112,7 +112,8 @@ module.exports = {
 
                 client.channels.cache.get(log.birthday.birthdaysToday).messages.fetch({ limit: 10 })
                     .then(messages => {
-                        for (var msg of messages.array()) {
+                        for (var msg of messages) {
+                            var msg = msg[1]
                             if (msg.embeds[0]?.fields[0]?.value == moment(data.getTime()).format("ddd DD MMM YYYY")) {
                                 msg.embeds[0].fields[1].value += `- ${button.user.toString()}\r`
 

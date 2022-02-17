@@ -104,7 +104,7 @@ global.makeBackup = async function () {
 
 		//CATEGORY
 		var categories = await server.channels.cache
-			.array()
+
 			.filter((x) => x.type == "GUILD_CATEGORY")
 			.sort((a, b) => a.position - b.position);
 		for (var categoria of categories) {
@@ -113,7 +113,7 @@ global.makeBackup = async function () {
 
 		//CHANNELS
 		var canali = await server.channels.cache
-			.array()
+
 			.filter((x) => x.type != "GUILD_CATEGORY")
 			.sort((a, b) => a.position - b.position);
 		for (var canale of canali) {
@@ -158,7 +158,7 @@ global.makeBackup = async function () {
 
 		//ROLES
 		var ruoli = server.roles.cache
-			.array()
+
 			.filter((x) => x.type != "GUILD_CATEGORY")
 			.sort((a, b) => b.position - a.position);
 		for (var ruolo of ruoli) {
@@ -176,9 +176,10 @@ global.makeBackup = async function () {
 
 		//THINGS TO DO
 		var messages = await client.channels.cache.get(log.general.thingsToDo).messages.fetch();
-		messages = messages.array();
+		messages = messages
 
 		for (var thing of messages) {
+			thing = thing[1]
 			var ttd = {
 				content: thing.embeds[0].fields[1].value,
 				status:
@@ -718,7 +719,7 @@ global.checkActivityPrivateRooms = function () {
 
 				client.channels.cache.get(room.text).messages.fetch()
 					.then(messages => {
-						var msg = messages.array().find(x => x.embeds[0]?.title == "Stanza un po' inattiva")
+						var msg = messages.find(x => x.embeds[0]?.title == "Stanza un po' inattiva")
 						if (msg) msg.delete().catch(() => { })
 					})
 			}

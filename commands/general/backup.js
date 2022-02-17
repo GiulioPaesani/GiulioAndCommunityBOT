@@ -67,7 +67,7 @@ module.exports = {
                 msg.edit({ embeds: [embed] })
 
                 //CATEGORY
-                var categories = await server.channels.cache.array().filter(x => x.type == "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
+                var categories = await server.channels.cache.filter(x => x.type == "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
                 for (var categoria of categories) {
                     backup.categories.push(categoria.name)
                 }
@@ -80,7 +80,7 @@ module.exports = {
                 msg.edit({ embeds: [embed] })
 
                 //CHANNELS
-                var canali = await server.channels.cache.array().filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
+                var canali = await server.channels.cache.filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
                 for (var canale of canali) {
                     var info = {
                         name: canale.name,
@@ -130,7 +130,7 @@ module.exports = {
                 msg.edit({ embeds: [embed] })
 
                 //ROLES
-                var ruoli = server.roles.cache.array().filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => b.position - a.position)
+                var ruoli = server.roles.cache.filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => b.position - a.position)
                 for (var ruolo of ruoli) {
                     var info = {
                         name: ruolo.name,
@@ -153,9 +153,10 @@ module.exports = {
 
                 //THINGS TO DO
                 var messages = await client.channels.cache.get(log.general.thingsToDo).messages.fetch()
-                messages = messages.array()
+                messages = messages
 
                 for (var thing of messages) {
+                    thing = thing[1]
                     var ttd = {
                         content: thing.embeds[0].fields[1].value,
                         status: thing.embeds[0].fields[0].value == "```⚪ Uncompleted```" ? 0 : thing.embeds[0].fields[0].value == "```🔴 Urgent```" ? 1 : thing.embeds[0].fields[0].value == "```🟢 Completed```" ? 2 : thing.embeds[0].fields[0].value == "```🔵 Tested```" ? 3 : thing.embeds[0].fields[0].value == "```⚫ Finished```" ? 4 : ""

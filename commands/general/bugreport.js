@@ -10,7 +10,7 @@ module.exports = {
     async execute(message, args, client, property) {
         var report = args.join(" ");
 
-        if (!report && !(message.attachments).array()[0]) {
+        if (!report && !Array.from(message.attachments).array()[0]) {
             return botCommandMessage(message, "Error", "Inserire un report", "Scrivi il testo del tuo report", property)
         }
 
