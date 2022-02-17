@@ -48,7 +48,7 @@ module.exports = {
             .addField("Embed", textEmbed ? textEmbed : "_Null_")
 
         var attachments = "";
-        Array.from(message.attachments).forEach(attachment => {
+        message.attachments.forEach(attachment => {
             attachments += `[File link](${attachment.url}), `
         })
         if (attachments)

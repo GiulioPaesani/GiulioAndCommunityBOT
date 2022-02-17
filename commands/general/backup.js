@@ -69,6 +69,7 @@ module.exports = {
                 //CATEGORY
                 var categories = await server.channels.cache.filter(x => x.type == "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
                 for (var categoria of categories) {
+                    categoria = categoria[1]
                     backup.categories.push(categoria.name)
                 }
 
@@ -82,6 +83,7 @@ module.exports = {
                 //CHANNELS
                 var canali = await server.channels.cache.filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => a.position - b.position)
                 for (var canale of canali) {
+                    var canale = canale[1]
                     var info = {
                         name: canale.name,
                         type: canale.type,
@@ -130,8 +132,9 @@ module.exports = {
                 msg.edit({ embeds: [embed] })
 
                 //ROLES
-                var ruoli = server.roles.cache.filter(x => x.type != "GUILD_CATEGORY").sort((a, b) => b.position - a.position)
+                var ruoli = server.roles.cache.sort((a, b) => b.position - a.position)
                 for (var ruolo of ruoli) {
+                    var ruolo = ruolo[1]
                     var info = {
                         name: ruolo.name,
                         color: ruolo.color,
@@ -141,7 +144,7 @@ module.exports = {
                         permissions: ruolo.permissions
                     }
 
-                    await backup.roles.push(info)
+                    backup.roles.push(info)
                 }
 
                 var embed = new Discord.MessageEmbed()
@@ -182,7 +185,7 @@ module.exports = {
                     .addField("Time", moment().format("dddd DD MMMM, HH:mm:ss"))
 
                 var canale = client.channels.cache.get(log.general.backup);
-                canale.send({ embed, files: [attachment1, attachment2, attachment3] })
+                canale.send({ embeds: [embed], files: [attachment1, attachment2, attachment3] })
                     .then(msg2 => {
                         var embed = new Discord.MessageEmbed()
                             .setTitle(":inbox_tray: Backup CREATO :inbox_tray:")

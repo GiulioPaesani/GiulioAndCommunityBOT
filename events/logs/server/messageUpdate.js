@@ -37,13 +37,13 @@ New: ${newMessage.content ? (newMessage.content.length > 500 ? `${newMessage.con
 `)
 
         var oldAttachments = "", newAttachments = "";
-        Array.from(oldMessage.attachments).forEach(attachment => {
+        oldMessage.attachments.forEach(attachment => {
             oldAttachments += `[File link](${attachment.url}), `
         })
         if (oldAttachments)
             oldAttachments = oldAttachments.slice(0, -2);
 
-        Array.from(newMessage.attachments).forEach(attachment => {
+        newMessage.attachments.forEach(attachment => {
             newAttachments += `[File link](${attachment.url}), `
         })
         if (newAttachments)

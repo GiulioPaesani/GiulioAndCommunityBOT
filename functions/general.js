@@ -103,20 +103,17 @@ global.makeBackup = async function () {
 		backup.guild.verificationLevel = server.verificationLevel;
 
 		//CATEGORY
-		var categories = await server.channels.cache
-
-			.filter((x) => x.type == "GUILD_CATEGORY")
-			.sort((a, b) => a.position - b.position);
+		var categories = await server.channels.cache.filter((x) => x.type == "GUILD_CATEGORY").sort((a, b) => a.position - b.position);
 		for (var categoria of categories) {
+			categoria = categoria[1]
 			backup.categories.push(categoria.name);
 		}
 
 		//CHANNELS
-		var canali = await server.channels.cache
-
-			.filter((x) => x.type != "GUILD_CATEGORY")
-			.sort((a, b) => a.position - b.position);
+		var canali = await server.channels.cache.filter((x) => x.type != "GUILD_CATEGORY").sort((a, b) => a.position - b.position);
 		for (var canale of canali) {
+			var canale = canale[1]
+
 			var info = {
 				name: canale.name,
 				type: canale.type,
@@ -157,11 +154,9 @@ global.makeBackup = async function () {
 		}
 
 		//ROLES
-		var ruoli = server.roles.cache
-
-			.filter((x) => x.type != "GUILD_CATEGORY")
-			.sort((a, b) => b.position - a.position);
+		var ruoli = server.roles.cache.sort((a, b) => b.position - a.position);
 		for (var ruolo of ruoli) {
+			ruolo = ruolo[1]
 			var info = {
 				name: ruolo.name,
 				color: ruolo.color,
@@ -171,7 +166,7 @@ global.makeBackup = async function () {
 				permissions: ruolo.permissions
 			};
 
-			await backup.roles.push(info);
+			backup.roles.push(info);
 		}
 
 		//THINGS TO DO
