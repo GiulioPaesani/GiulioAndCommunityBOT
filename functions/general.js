@@ -442,8 +442,8 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\r${canaliConcessiL
 		message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: components })
 			.then(msg => {
 				if (type != "Correct") {
-					setTimeout(() => msg.delete(), 20000)
-					setTimeout(() => message.delete(), 20000)
+					setTimeout(() => msg.delete().catch(() => { }), 20000)
+					setTimeout(() => message.delete().catch(() => { }), 20000)
 				}
 			})
 			.catch(() => { })
@@ -451,8 +451,8 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\r${canaliConcessiL
 		message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
 			.then(msg => {
 				if (type != "Correct") {
-					setTimeout(() => msg.delete(), 20000)
-					setTimeout(() => message.delete(), 20000)
+					setTimeout(() => msg.delete().catch(() => { }), 20000)
+					setTimeout(() => message.delete().catch(() => { }), 20000)
 				}
 			})
 			.catch(() => { })
@@ -491,11 +491,10 @@ global.botMessage = async function (channel, type, title, description, fields) {
 	channel.send({ embeds: [embed] })
 		.then(msg => {
 			if (type != "Correct") {
-				setTimeout(() => msg.delete(), 20000)
-				setTimeout(() => message.delete(), 20000)
+				setTimeout(() => msg.delete().catch(() => { }), 20000)
 			}
 		})
-	// .catch(() => { })
+		.catch(() => { })
 }
 
 global.getCanvasMessage = async function (message, type) {

@@ -52,7 +52,7 @@ New: ${newMessage.content}`, false)
                     client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
             })
 
-        oldMessage.channel.send(numero)
+        oldMessage.channel.send(numero.toString())
             .then(msg => {
                 msg.react("🟢");
             })

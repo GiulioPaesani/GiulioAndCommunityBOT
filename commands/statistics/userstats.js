@@ -61,6 +61,6 @@ Commands executed: ${userstats.statistics.commands}
 Reactions added: ${userstats.statistics.addReaction}\`\`\``, false)
 
         message.channel.send({ embeds: [embed] })
-        // .catch(() => { })
+            .catch(() => { })
     },
 };
