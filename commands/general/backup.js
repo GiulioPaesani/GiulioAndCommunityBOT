@@ -47,10 +47,10 @@ module.exports = {
                 backup.guild.banner = server.bannerURL()
                 await server.bans.fetch()
                     .then(banned => {
-                        banned.array().forEach(ban => backup.guild.bans.push(ban.user.id))
+                        banned.forEach(ban => backup.guild.bans.push(ban.user.id))
                     })
                 if (server.emojis)
-                    await server.emojis.cache.array().forEach(emoji => backup.guild.emojis.push({
+                    await server.emojis.cache.forEach(emoji => backup.guild.emojis.push({
                         name: emoji.name,
                         url: `https://cdn.discordapp.com/emojis/${emoji.id}.png?size=96`
                     }))

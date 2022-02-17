@@ -40,9 +40,9 @@ module.exports = {
             if (room.text) {
                 await client.channels.cache.get(room.text).messages.fetch()
                     .then(async messages => {
-                        for (var msg of messages.array().reverse()) {
+                        for (var msg of Array.from(messages).reverse()) {
                             var attachments = ""
-                            msg.attachments.array().forEach(attachment => {
+                            Array.from(msg.attachments).forEach(attachment => {
                                 attachments += `${attachment.name} (${attachment.url}), `
                             })
                             if (attachments != "")

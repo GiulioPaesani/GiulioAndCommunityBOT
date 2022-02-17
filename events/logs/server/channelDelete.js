@@ -60,7 +60,7 @@ module.exports = {
         if (channel.type != "GUILD_VOICE") {
             for (var msg of channel.messages.cache) {
                 var attachments = ""
-                msg.attachments.array().forEach(attachment => {
+                Array.from(msg.attachments).forEach(attachment => {
                     attachments += `${attachment.name} (${attachment.url}), `
                 })
                 if (attachments != "")

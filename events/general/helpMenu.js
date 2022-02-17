@@ -116,7 +116,7 @@ module.exports = {
             } break
         }
 
-        var commands = client.commands.toArray().filter(x => x.category == category)
+        var commands = client.commands.filter(x => x.category == category)
 
         if (!utenteMod(menu.user))
             commands = commands.filter(x => !x.onlyStaff)

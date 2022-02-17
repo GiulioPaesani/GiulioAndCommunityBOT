@@ -21,7 +21,7 @@ module.exports = {
             .addField(":page_facing_up: Text", report ? report : "None")
 
         var attachments = "";
-        message.attachments.array().forEach(attachment => {
+        Array.from(message.attachments).forEach(attachment => {
             attachments += `[File link](${attachment.url}), `
         })
         if (attachments)

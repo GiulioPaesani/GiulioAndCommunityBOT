@@ -39,19 +39,19 @@ module.exports = {
 			.setPlaceholder('Select category...')
 			.setMaxValues(1)
 			.setMinValues(1)
-			.addOption({
+			.addOptions({
 				label: "Problemi con bot",
 				emoji: "🤖",
 				value: "ticketCategory1",
 				description: "Problemi con il tuo bot in Discord.js"
 			})
-			.addOption({
+			.addOptions({
 				label: "Problemi nel server",
 				emoji: "🎡",
 				value: "ticketCategory2",
 				description: "Problemi con bot o utenti nel server"
 			})
-			.addOption({
+			.addOptions({
 				label: "Domande allo staff",
 				emoji: "👀",
 				value: "ticketCategory3",
