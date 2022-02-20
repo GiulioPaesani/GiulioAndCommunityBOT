@@ -12,12 +12,12 @@ const disbut = require("discord-buttons")
 //Prima di tutto mandare il messaggio del ticket
 client.on("message", message => {
     if (message.content == "!comando") {
-        var button1 = new disbut.MessageButton()
+        let button1 = new disbut.MessageButton()
             .setLabel("Apri ticket")
             .setID("apriTicket")
             .setStyle("blurple")
 
-        var row = new disbut.MessageActionRow()
+        let row = new disbut.MessageActionRow()
             .addComponents(button1)
 
         message.channel.send("Clicca sul bottone per aprire un ticket", row)
@@ -57,13 +57,13 @@ client.on("clickButton", button => {
 
 client.on("message", message => {
     if (message.content == "!close") {
-        var topic = message.channel.topic;
+        let topic = message.channel.topic;
         if (!topic) {
             message.channel.send("Non puoi utilizzare questo comando qui");
             return
         }
         if (topic.startsWith("User ID:")) {
-            var idUtente = topic.slice(9);
+            let idUtente = topic.slice(9);
             if (message.author.id == idUtente || message.member.hasPermission("MANAGE_CHANNELS")) {
                 message.channel.delete();
             }
@@ -73,20 +73,20 @@ client.on("message", message => {
         }
     }
     if (message.content.startsWith("!add")) {
-        var topic = message.channel.topic;
+        let topic = message.channel.topic;
         if (!topic) {
             message.channel.send("Non puoi utilizzare questo comando qui");
             return
         }
         if (topic.startsWith("User ID:")) {
-            var idUtente = topic.slice(9);
+            let idUtente = topic.slice(9);
             if (message.author.id == idUtente || message.member.hasPermission("MANAGE_CHANNELS")) {
-                var utente = message.mentions.members.first();
+                let utente = message.mentions.members.first();
                 if (!utente) {
                     message.channel.send("Inserire un utente valido");
                     return
                 }
-                var haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
+                let haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
                 if (haIlPermesso) {
                     message.channel.send("Questo utente ha gia accesso al ticket")
                     return
@@ -102,20 +102,20 @@ client.on("message", message => {
         }
     }
     if (message.content.startsWith("!remove")) {
-        var topic = message.channel.topic;
+        let topic = message.channel.topic;
         if (!topic) {
             message.channel.send("Non puoi utilizzare questo comando qui");
             return
         }
         if (topic.startsWith("User ID:")) {
-            var idUtente = topic.slice(9);
+            let idUtente = topic.slice(9);
             if (message.author.id == idUtente || message.member.hasPermission("MANAGE_CHANNELS")) {
-                var utente = message.mentions.members.first();
+                let utente = message.mentions.members.first();
                 if (!utente) {
                     message.channel.send("Inserire un utente valido");
                     return
                 }
-                var haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
+                let haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
                 if (!haIlPermesso) {
                     message.channel.send("Questo utente non ha gia accesso al ticket")
                     return
@@ -139,12 +139,12 @@ client.on("message", message => {
 //Prima di tutto mandare il messaggio del ticket
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
-        var button1 = new Discord.MessageButton()
+        let button1 = new Discord.MessageButton()
             .setLabel("Apri ticket")
             .setCustomId("apriTicket")
             .setStyle("PRIMARY")
 
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
 
         message.channel.send({ content: "Clicca sul bottone per aprire un ticket", components: [row] })
@@ -184,13 +184,13 @@ client.on("interactionCreate", interaction => {
 
 client.on("messageCreate", message => {
     if (message.content == "!close") {
-        var topic = message.channel.topic;
+        let topic = message.channel.topic;
         if (!topic) {
             message.channel.send("Non puoi utilizzare questo comando qui");
             return
         }
         if (topic.startsWith("User ID:")) {
-            var idUtente = topic.slice(9);
+            let idUtente = topic.slice(9);
             if (message.author.id == idUtente || message.member.permissions.has("MANAGE_CHANNELS")) {
                 message.channel.delete();
             }
@@ -200,20 +200,20 @@ client.on("messageCreate", message => {
         }
     }
     if (message.content.startsWith("!add")) {
-        var topic = message.channel.topic;
+        let topic = message.channel.topic;
         if (!topic) {
             message.channel.send("Non puoi utilizzare questo comando qui");
             return
         }
         if (topic.startsWith("User ID:")) {
-            var idUtente = topic.slice(9);
+            let idUtente = topic.slice(9);
             if (message.author.id == idUtente || message.member.permissions.has("MANAGE_CHANNELS")) {
-                var utente = message.mentions.members.first();
+                let utente = message.mentions.members.first();
                 if (!utente) {
                     message.channel.send("Inserire un utente valido");
                     return
                 }
-                var haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
+                let haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
                 if (haIlPermesso) {
                     message.channel.send("Questo utente ha gia accesso al ticket")
                     return
@@ -229,20 +229,20 @@ client.on("messageCreate", message => {
         }
     }
     if (message.content.startsWith("!remove")) {
-        var topic = message.channel.topic;
+        let topic = message.channel.topic;
         if (!topic) {
             message.channel.send("Non puoi utilizzare questo comando qui");
             return
         }
         if (topic.startsWith("User ID:")) {
-            var idUtente = topic.slice(9);
+            let idUtente = topic.slice(9);
             if (message.author.id == idUtente || message.member.permissions.has("MANAGE_CHANNELS")) {
-                var utente = message.mentions.members.first();
+                let utente = message.mentions.members.first();
                 if (!utente) {
                     message.channel.send("Inserire un utente valido");
                     return
                 }
-                var haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
+                let haIlPermesso = message.channel.permissionsFor(utente).has("VIEW_CHANNEL", true)
                 if (!haIlPermesso) {
                     message.channel.send("Questo utente non ha gia accesso al ticket")
                     return

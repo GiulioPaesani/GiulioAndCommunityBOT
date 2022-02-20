@@ -9,8 +9,8 @@ module.exports = {
     v12: `
 client.on("message", message => {
     if (message.content.startsWith("!say")) {
-        var args = message.content.split(/\\s+/);
-        var testo;
+        let args = message.content.split(/\\s+/);
+        let testo;
         testo = args.slice(1).join(" ");
         if (!testo) {
             return message.channel.send("Inserire un messaggio");
@@ -24,7 +24,7 @@ client.on("message", message => {
         message.channel.send(testo)
 
         //Embed
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Say")
             .setDescription(testo)
 
@@ -34,8 +34,8 @@ client.on("message", message => {
     v13: `
 client.on("messageCreate", message => {
     if (message.content.startsWith("!say")) {
-        var args = message.content.split(/\\s+/);
-        var testo;
+        let args = message.content.split(/\\s+/);
+        let testo;
         testo = args.slice(1).join(" ");
         if (!testo) {
             return message.channel.send("Inserire un messaggio");
@@ -49,7 +49,7 @@ client.on("messageCreate", message => {
         message.channel.send(testo)
 
         //Embed
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Say")
             .setDescription(testo)
 

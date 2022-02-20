@@ -11,18 +11,18 @@ module.exports = {
     v13: `
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
-        var variabileNumerica = 1234
+        let variabileNumerica = 1234
 
         message.channel.send(variabileNumerica.toString())
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Titolo")
             .setDescription(variabileNumerica.toString())
             .addField("Titolo field", "Valore field")
 
         message.channel.send({ embeds: [embed] })
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Titolo")
             .setDescription("Description")
             .addField("Titolo field", variabileNumerica.toString())

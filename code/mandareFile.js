@@ -15,7 +15,7 @@ client.on("message", message => {
         message.channel.send("Messaggio", { files: ["./Immagine.png", "https://google.it/immagine.png"] })
 
         //Con embed
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Titolo")
             .setDescription("Descrizione")
 
@@ -31,7 +31,7 @@ client.on("messageCreate", message => {
         message.channel.send({ content: "Messaggio", files: ["./Immagine.png", "https://google.it/immagine.png"] })
 
         //Con embed
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Titolo")
             .setDescription("Descrizione")
 

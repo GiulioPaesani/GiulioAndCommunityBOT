@@ -9,7 +9,7 @@ module.exports = {
     v12: `
 client.on("message", message => {
     if (message.content == "!comando") {
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Ping del bot")
             .setDescription("Ecco la latenza del bot")
             .addField("Ping", \`\${client.ws.ping}ms\`)
@@ -20,7 +20,7 @@ client.on("message", message => {
     v13: `
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle("Ping del bot")
             .setDescription("Ecco la latenza del bot")
             .addField("Ping", \`\${client.ws.ping}ms\`)

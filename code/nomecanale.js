@@ -12,7 +12,7 @@ client.on("message", message => {
         //Cambiare il canale del comando
         message.channel.setName("nome modificato")
         //Cambiare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
+        let canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.setName("nome modificato")
     }
 })`,
@@ -22,7 +22,7 @@ client.on("messageCreate", message => {
         //Cambiare il canale del comando
         message.channel.setName("nome modificato")
         //Cambiare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
+        let canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.setName("nome modificato")
     }
 })`

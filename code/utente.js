@@ -7,9 +7,9 @@ module.exports = {
     info: "",
     video: "",
     v12: `
-var utente = client.users.cache.get("idUtente");
+let utente = client.users.cache.get("idUtente");
 utente.send("messaggio");`,
     v13: `
-var utente = client.users.cache.get("idUtente");
+let utente = client.users.cache.get("idUtente");
 utente.send("messaggio");`
 };

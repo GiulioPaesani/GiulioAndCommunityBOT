@@ -13,8 +13,8 @@ client.on("message", async message => {
             return message.channel.send('Non hai il permesso');
         }
 
-        var args = message.content.split(/\\s+/);
-        var idUtente = args[1]
+        let args = message.content.split(/\\s+/);
+        let idUtente = args[1]
 
         if (!idUtente) {
             return message.channel.send("Non hai scritto l'id di nessun utente");
@@ -22,7 +22,7 @@ client.on("message", async message => {
 
         message.guild.members.unban(idUtente)
             .then(() => {
-                var embed = new Discord.MessageEmbed()
+                let embed = new Discord.MessageEmbed()
                     .setTitle("Utente sbannato")
                     .setDescription("Questo utente è stato sbannato")
 
@@ -38,8 +38,8 @@ client.on("messageCreate", async message => {
             return message.channel.send('Non hai il permesso');
         }
 
-        var args = message.content.split(/\\s+/);
-        var idUtente = args[1]
+        let args = message.content.split(/\\s+/);
+        let idUtente = args[1]
 
         if (!idUtente) {
             return message.channel.send("Non hai scritto l'id di nessun utente");
@@ -47,7 +47,7 @@ client.on("messageCreate", async message => {
 
         message.guild.members.unban(idUtente)
             .then(() => {
-                var embed = new Discord.MessageEmbed()
+                let embed = new Discord.MessageEmbed()
                     .setTitle("Utente sbannato")
                     .setDescription("Questo utente è stato sbannato")
 

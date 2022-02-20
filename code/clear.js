@@ -15,7 +15,7 @@ client.on("message", message => {
         if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
             return message.channel.send('Non ho il permesso');
         }
-        var count = parseInt(message.content.split(/\\s+/)[1]);
+        let count = parseInt(message.content.split(/\\s+/)[1]);
         if (!count) {
             return message.channel.send("Inserisci un numero valido")
         }
@@ -37,7 +37,7 @@ client.on("messageCreate", message => {
         if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) {
             return message.channel.send('Non ho il permesso');
         }
-        var count = parseInt(message.content.split(/\\s+/)[1]);
+        let count = parseInt(message.content.split(/\\s+/)[1]);
         if (!count) {
             return message.channel.send("Inserisci un numero valido")
         }

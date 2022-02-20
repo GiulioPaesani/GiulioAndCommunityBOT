@@ -9,7 +9,7 @@ module.exports = {
     v12: `
 channel.send(embed)
 
-var count = 5
+let count = 5
 message.channel.send(user)
 embed.addField('Count', count)
 
@@ -31,7 +31,7 @@ message.delete({ timeout: 10000 })
     v13: `
 channel.send({ embeds: [embed] })
 
-var count = 5
+let count = 5
 message.channel.send(user.toString())
 embed.addField('Count', count.toString())
 

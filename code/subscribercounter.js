@@ -9,7 +9,7 @@ module.exports = {
     v12: `
 const ytch = require("yt-channel-info")
 setInterval(function () {
-    var canale = client.channels.cache.get("idCanaleCounter")
+    let canale = client.channels.cache.get("idCanaleCounter")
     ytch.getChannelInfo("idCanaleYoutube")
         .then(response => {
             canale.setName(\`🧑Subscribers: \${response.subscriberCount}\`)
@@ -18,7 +18,7 @@ setInterval(function () {
     v13: `
 const ytch = require("yt-channel-info")
 setInterval(function () {
-    var canale = client.channels.cache.get("idCanaleCounter")
+    let canale = client.channels.cache.get("idCanaleCounter")
     ytch.getChannelInfo("idCanaleYoutube")
         .then(response => {
             canale.setName(\`🧑Subscribers: \${response.subscriberCount}\`)

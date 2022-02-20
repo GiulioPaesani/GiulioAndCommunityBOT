@@ -12,7 +12,7 @@ client.on("message", message => {
     if (message.content == "!lastvideo") {
         const channelId = 'idCanaleYoutube' //Settare id del tuo canale YouTube
         ytch.getChannelVideos(channelId, "newest").then((response) => {
-            var embed = new Discord.MessageEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setTitle(response.items[0].title)
                 .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
                 .setThumbnail(response.items[0].videoThumbnails[3].url)
@@ -29,7 +29,7 @@ client.on("messageCreate", message => {
     if (message.content == "!lastvideo") {
         const channelId = 'idCanaleYoutube' //Settare id del tuo canale YouTube
         ytch.getChannelVideos(channelId, "newest").then((response) => {
-            var embed = new Discord.MessageEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setTitle(response.items[0].title)
                 .setURL("https://www.youtube.com/watch?v=" + response.items[0].videoId)
                 .setThumbnail(response.items[0].videoThumbnails[3].url)

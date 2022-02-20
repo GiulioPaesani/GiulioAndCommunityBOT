@@ -22,7 +22,7 @@ client.on("message", message => {
     }
     //Modificare un messaggio specifico nel server
     if (message.content == "!comando") {
-        var canale = client.channels.cache.get("idCanale") //Settare id canale in cui si trova il messaggio
+        let canale = client.channels.cache.get("idCanale") //Settare id canale in cui si trova il messaggio
         canale.messages.fetch("idMessaggio") //Settare id messaggio
             .then(msg => {
                 msg.edit("Messaggio modificato")
@@ -45,7 +45,7 @@ client.on("messageCreate", message => {
     }
     //Modificare un messaggio specifico nel server
     if (message.content == "!comando") {
-        var canale = client.channels.cache.get("idCanale") //Settare id canale in cui si trova il messaggio
+        let canale = client.channels.cache.get("idCanale") //Settare id canale in cui si trova il messaggio
         canale.messages.fetch("idMessaggio") //Settare id messaggio
             .then(msg => {
                 msg.edit("Messaggio modificato")

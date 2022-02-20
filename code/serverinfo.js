@@ -9,8 +9,8 @@ module.exports = {
     v12: `
 client.on("message", message => {
     if (message.content == "!serverinfo") {
-        var server = message.guild;
-        var embed = new Discord.MessageEmbed()
+        let server = message.guild;
+        let embed = new Discord.MessageEmbed()
             .setTitle(server.name)
             .setDescription("Tutte le info su questo server")
             .setThumbnail(server.iconURL())
@@ -26,8 +26,8 @@ client.on("message", message => {
     v13: `
 client.on("messageCreate", message => {
     if (message.content == "!serverinfo") {
-        var server = message.guild;
-        var embed = new Discord.MessageEmbed()
+        let server = message.guild;
+        let embed = new Discord.MessageEmbed()
             .setTitle(server.name)
             .setDescription("Tutte le info su questo server")
             .setThumbnail(server.iconURL())

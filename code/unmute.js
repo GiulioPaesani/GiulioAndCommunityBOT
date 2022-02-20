@@ -9,7 +9,7 @@ module.exports = {
     v12: `
 client.on("message", message => {
     if (message.content.startsWith("!unmute")) {
-        var utente = message.mentions.members.first();
+        let utente = message.mentions.members.first();
         if (!message.member.hasPermission("MANAGE_ROLES")) {
             return message.channel.send('Non hai il permesso');
         }
@@ -19,7 +19,7 @@ client.on("message", message => {
         
         utente.roles.remove("idRuolo")
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(\`\${utente.user.username} smutato\`)
             .setDescription(\`Utente smutato da \${message.author.toString()}\`)
 
@@ -29,7 +29,7 @@ client.on("message", message => {
     v13: `
 client.on("messageCreate", message => {
     if (message.content.startsWith("!unmute")) {
-        var utente = message.mentions.members.first();
+        let utente = message.mentions.members.first();
         if (!message.member.permissions.has("MANAGE_ROLES")) {
             return message.channel.send('Non hai il permesso');
         }
@@ -39,7 +39,7 @@ client.on("messageCreate", message => {
 
         utente.roles.remove("idRuolo")
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(\`\${utente.user.username} smutato\`)
             .setDescription(\`Utente smutato da \${message.author.toString()}\`)
 

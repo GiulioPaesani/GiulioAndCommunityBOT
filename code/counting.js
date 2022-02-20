@@ -7,26 +7,26 @@ module.exports = {
         info: "Per realizzare questo codice è necessario un **database**, in particolare è stato realizzato con mysql ma è possibile sostituirlo con qualsiasi altro db. Prima di utilizzare il comando è necessario installare la libraria expr-eval (scrivi nel terminal `npm i expr-eval`)",
         video: "https://www.youtube.com/watch?v=O-mxqZ6Sfs4",
         v12: `
-var canaleCounting = "canaleCounting" //Settare il canale di counting del vostro server
+let canaleCounting = "canaleCounting" //Settare il canale di counting del vostro server
 client.on("message", message => {
         con.query("SELECT * FROM server", (err, result) => {
                 if (err) {
                         console.log(err)
                         return
                 }
-                var server = result[0]
+                let server = result[0]
                 con.query("SELECT * FROM user", (err, result) => {
                         if (err) {
                                 console.log(err)
                                 return
                         }
-                        var userList = result;
+                        let userList = result;
                         if (message.channel == canaleCounting) {
                                 try {
-                                        var numero = Parser.evaluate(message.content)
-                                        var index = userList.findIndex(x => x.id == message.author.id)
+                                        let numero = Parser.evaluate(message.content)
+                                        let index = userList.findIndex(x => x.id == message.author.id)
                                         if (index < 0) {
-                                                var index = userList.length;
+                                                let index = userList.length;
                                                 userList[index] = {
                                                         id: message.author.id,
                                                         username: message.member.user.tag,
@@ -42,7 +42,7 @@ client.on("message", message => {
                                                         }
                                                 })
                                         }
-                                        var user = userList[index];
+                                        let user = userList[index];
                                         if (message.author.id == server.ultimoUtente) {
                                                 message.react("🔴")
                                                 message.channel.send("ERRORE - Ogni utente può scrivere un numero alla volta")
@@ -74,24 +74,24 @@ client.on("message", message => {
                         }
                         if (message.content.startsWith("!cuser")) {
                                 if (message.content == "!cuser") {
-                                        var utente = message.member;
+                                        let utente = message.member;
                                 }
                                 else {
-                                        var utente = message.mentions.members.first()
+                                        let utente = message.mentions.members.first()
                                 }
                                 if (!utente) {
                                         message.channel.send("Utente non trovato");
                                         return
                                 }
-                                var index = userList.findIndex(x => x.id == message.author.id)
+                                let index = userList.findIndex(x => x.id == message.author.id)
                                 if (index < 0) {
                                         message.channel.send("Questo utente non ha mai giocato a Counting")
                                         return
                                 }
-                                var user = userList[index]
-                                var leaderboard = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
-                                var position = leaderboard.findIndex(x => x.id == utente.user.id)
-                                var embed = new Discord.MessageEmbed()
+                                let user = userList[index]
+                                let leaderboard = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                                let position = leaderboard.findIndex(x => x.id == utente.user.id)
+                                let embed = new Discord.MessageEmbed()
                                         .setTitle("COUNTING USER STATS")
                                         .setDescription("Tutte le statistiche di questo utente su counting")
                                         .setThumbnail(utente.user.displayAvatarURL())
@@ -103,15 +103,15 @@ client.on("message", message => {
                                 message.channel.send(embed)
                         }
                         if (message.content == "!cserver") {
-                                var leaderboardList = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
-                                var leaderboard = "";
-                                for (var i = 0; i < 10; i++) {
+                                let leaderboardList = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                                let leaderboard = "";
+                                for (let i = 0; i < 10; i++) {
                                         if (leaderboardList.length - 1 < i) {
                                                 break
                                         }
                                         leaderboard += "**#" + (i + 1) + "** - " + leaderboardList[i].username + " - **" + leaderboardList[i].bestScore + "**\\r";
                                 }
-                                var embed = new Discord.MessageEmbed()
+                                let embed = new Discord.MessageEmbed()
                                         .setTitle("COUNTING SERVER STATS")
                                         .setDescription("Tutte le statistiche del server su counting")
                                         .setThumbnail(message.member.guild.iconURL())
@@ -140,26 +140,26 @@ function updateDatabase(user, server) {
 }
         `,
         v13: `
-var canaleCounting = "canaleCounting" //Settare il canale di counting del vostro server
+let canaleCounting = "canaleCounting" //Settare il canale di counting del vostro server
 client.on("message", message => {
         con.query("SELECT * FROM server", (err, result) => {
                 if (err) {
                         console.log(err)
                         return
                 }
-                var server = result[0]
+                let server = result[0]
                 con.query("SELECT * FROM user", (err, result) => {
                         if (err) {
                                 console.log(err)
                                 return
                         }
-                        var userList = result;
+                        let userList = result;
                         if (message.channel == canaleCounting) {
                                 try {
-                                        var numero = Parser.evaluate(message.content)
-                                        var index = userList.findIndex(x => x.id == message.author.id)
+                                        let numero = Parser.evaluate(message.content)
+                                        let index = userList.findIndex(x => x.id == message.author.id)
                                         if (index < 0) {
-                                                var index = userList.length;
+                                                let index = userList.length;
                                                 userList[index] = {
                                                         id: message.author.id,
                                                         username: message.member.user.tag,
@@ -175,7 +175,7 @@ client.on("message", message => {
                                                         }
                                                 })
                                         }
-                                        var user = userList[index];
+                                        let user = userList[index];
                                         if (message.author.id == server.ultimoUtente) {
                                                 message.react("🔴")
                                                 message.channel.send("ERRORE - Ogni utente può scrivere un numero alla volta")
@@ -207,24 +207,24 @@ client.on("message", message => {
                         }
                         if (message.content.startsWith("!cuser")) {
                                 if (message.content == "!cuser") {
-                                        var utente = message.member;
+                                        let utente = message.member;
                                 }
                                 else {
-                                        var utente = message.mentions.members.first()
+                                        let utente = message.mentions.members.first()
                                 }
                                 if (!utente) {
                                         message.channel.send("Utente non trovato");
                                         return
                                 }
-                                var index = userList.findIndex(x => x.id == message.author.id)
+                                let index = userList.findIndex(x => x.id == message.author.id)
                                 if (index < 0) {
                                         message.channel.send("Questo utente non ha mai giocato a Counting")
                                         return
                                 }
-                                var user = userList[index]
-                                var leaderboard = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
-                                var position = leaderboard.findIndex(x => x.id == utente.user.id)
-                                var embed = new Discord.MessageEmbed()
+                                let user = userList[index]
+                                let leaderboard = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                                let position = leaderboard.findIndex(x => x.id == utente.user.id)
+                                let embed = new Discord.MessageEmbed()
                                         .setTitle("COUNTING USER STATS")
                                         .setDescription("Tutte le statistiche di questo utente su counting")
                                         .setThumbnail(utente.user.displayAvatarURL())
@@ -236,15 +236,15 @@ client.on("message", message => {
                                 message.channel.send(embed)
                         }
                         if (message.content == "!cserver") {
-                                var leaderboardList = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
-                                var leaderboard = "";
-                                for (var i = 0; i < 10; i++) {
+                                let leaderboardList = userList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+                                let leaderboard = "";
+                                for (let i = 0; i < 10; i++) {
                                         if (leaderboardList.length - 1 < i) {
                                                 break
                                         }
                                         leaderboard += "**#" + (i + 1) + "** - " + leaderboardList[i].username + " - **" + leaderboardList[i].bestScore + "**\\r";
                                 }
-                                var embed = new Discord.MessageEmbed()
+                                let embed = new Discord.MessageEmbed()
                                         .setTitle("COUNTING SERVER STATS")
                                         .setDescription("Tutte le statistiche del server su counting")
                                         .setThumbnail(message.member.guild.iconURL())

@@ -10,7 +10,7 @@ module.exports = {
 //BENVENUTO
 client.on("guildMemberAdd", member => {
     if (member.user.bot) return
-    var embed = new Discord.MessageEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle("WELCOME")
         .setDescription(\`Ciao \${member.toString()}, benvenuto in \${member.guild.name}. Sei il **\${member.guild.memberCount}° Membro**\`)
 
@@ -19,7 +19,7 @@ client.on("guildMemberAdd", member => {
 //ADDIO
 client.on("guildMemberRemove", member => {
     if (member.user.bot) return
-    var embed = new Discord.MessageEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle("GOODBEY")
         .setDescription(\`Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
 
@@ -29,7 +29,7 @@ client.on("guildMemberRemove", member => {
 //BENVENUTO
 client.on("guildMemberAdd", member => {
     if (member.user.bot) return
-    var embed = new Discord.MessageEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle("WELCOME")
         .setDescription(\`Ciao \${member.toString()}, benvenuto in \${member.guild.name}. Sei il **\${member.guild.memberCount}° Membro**\`)
 
@@ -38,7 +38,7 @@ client.on("guildMemberAdd", member => {
 //ADDIO
 client.on("guildMemberRemove", member => {
     if (member.user.bot) return
-    var embed = new Discord.MessageEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle("GOODBEY")
         .setDescription(\`Ciao \${member.toString()}, ci rivediamo presto qua in \${member.guild.name}\`)
 

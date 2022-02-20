@@ -7,9 +7,9 @@ module.exports = {
     info: "",
     video: "",
     v12: `
-var canale = client.channels.cache.get("idCanale");
+let canale = client.channels.cache.get("idCanale");
 canale.send("Messaggio");`,
     v13: `
-var canale = client.channels.cache.get("idCanale");
+let canale = client.channels.cache.get("idCanale");
 canale.send("Messaggio");`
 };

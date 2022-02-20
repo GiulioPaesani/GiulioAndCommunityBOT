@@ -10,15 +10,15 @@ module.exports = {
 client.on("message", message => {
     if (message.content.startsWith("!avatar")) {
         if (message.content.trim() == "!avatar") {
-            var utente = message.member;
+            let utente = message.member;
         }
         else {
-            var utente = message.mentions.members.first();
+            let utente = message.mentions.members.first();
         }
         if (!utente) {
             return message.channel.send("Utente non trovato")
         }
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription("L'avatar di questo utente")
             .setImage(utente.user.displayAvatarURL({
@@ -33,15 +33,15 @@ client.on("message", message => {
 client.on("messageCreate", message => {
     if (message.content.startsWith("!avatar")) {
         if (message.content.trim() == "!avatar") {
-            var utente = message.member;
+            let utente = message.member;
         }
         else {
-            var utente = message.mentions.members.first();
+            let utente = message.mentions.members.first();
         }
         if (!utente) {
             return message.channel.send("Utente non trovato")
         }
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(utente.user.tag)
             .setDescription("L'avatar di questo utente")
             .setImage(utente.user.displayAvatarURL({

@@ -10,21 +10,21 @@ module.exports = {
 client.on("message", message => {
     //Random messaggi normali
     if (message.content == "!comando") {
-        var messaggi = ["Ciao, come va?", "Ehi come stai?", "Tutto bene?"] //Qui potete elencare tutti i messaggi che volete separati da una virgola
+        let messaggi = ["Ciao, come va?", "Ehi come stai?", "Tutto bene?"] //Qui potete elencare tutti i messaggi che volete separati da una virgola
         message.channel.send(messaggi[Math.floor(Math.random() * messaggi.length)]);
     }
     //Random messaggi embed
     if (message.content == "!comando2") {
-        var embed1 = new Discord.MessageEmbed()
+        let embed1 = new Discord.MessageEmbed()
             .setTitle("Embed1")
             .setDescription("Questo è il primo embed")
-        var embed2 = new Discord.MessageEmbed()
+        let embed2 = new Discord.MessageEmbed()
             .setTitle("Embed1")
             .setDescription("Questo è il secondo embed")
-        var embed3 = new Discord.MessageEmbed()
+        let embed3 = new Discord.MessageEmbed()
             .setTitle("Embed1")
             .setDescription("Questo è il terzo embed")
-        var messaggi = [embed1, embed2, embed3]
+        let messaggi = [embed1, embed2, embed3]
         message.channel.send(messaggi[Math.floor(Math.random() * messaggi.length)]);
     }
 })`,
@@ -32,21 +32,21 @@ client.on("message", message => {
 client.on("messageCreate", message => {
     //Random messaggi normali
     if (message.content == "!comando") {
-        var messaggi = ["Ciao, come va?", "Ehi come stai?", "Tutto bene?"] //Qui potete elencare tutti i messaggi che volete separati da una virgola
+        let messaggi = ["Ciao, come va?", "Ehi come stai?", "Tutto bene?"] //Qui potete elencare tutti i messaggi che volete separati da una virgola
         message.channel.send(messaggi[Math.floor(Math.random() * messaggi.length)]);
     }
     //Random messaggi embed
     if (message.content == "!comando2") {
-        var embed1 = new Discord.MessageEmbed()
+        let embed1 = new Discord.MessageEmbed()
             .setTitle("Embed1")
             .setDescription("Questo è il primo embed")
-        var embed2 = new Discord.MessageEmbed()
+        let embed2 = new Discord.MessageEmbed()
             .setTitle("Embed1")
             .setDescription("Questo è il secondo embed")
-        var embed3 = new Discord.MessageEmbed()
+        let embed3 = new Discord.MessageEmbed()
             .setTitle("Embed1")
             .setDescription("Questo è il terzo embed")
-        var messaggi = [embed1, embed2, embed3]
+        let messaggi = [embed1, embed2, embed3]
         message.channel.send({ embeds: [messaggi[Math.floor(Math.random() * messaggi.length)]] });
     }
 })`

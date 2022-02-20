@@ -8,12 +8,12 @@ module.exports = {
     video: "",
     v12: `
 setInterval(function () {
-    var canale = client.channels.cache.get("idCanaleCounter");
+    let canale = client.channels.cache.get("idCanaleCounter");
     canale.setName(\`👾│members: \${canale.guild.memberCount}\`);
 }, 1000 * 60 * 5)`,
     v13: `
 setInterval(function () {
-    var canale = client.channels.cache.get("idCanaleCounter");
+    let canale = client.channels.cache.get("idCanaleCounter");
     canale.setName(\`👾│members: \${canale.guild.memberCount}\`);
 }, 1000 * 60 * 5)`
 };

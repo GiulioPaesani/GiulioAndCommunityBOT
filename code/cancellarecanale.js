@@ -12,7 +12,7 @@ client.on("message", message => {
         //Cancellare il canale del comando
         message.channel.delete();
         //Cancellare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
+        let canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.delete();
     }
 })`,
@@ -22,7 +22,7 @@ client.on("messageCreate", message => {
         //Cancellare il canale del comando
         message.channel.delete();
         //Cancellare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
+        let canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.delete();
     }
 })`
