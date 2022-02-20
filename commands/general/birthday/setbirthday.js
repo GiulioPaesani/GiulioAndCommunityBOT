@@ -82,7 +82,7 @@ module.exports = {
             .addComponents(button1)
             .addComponents(button2)
 
-        message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: row })
+        message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: [row] })
             .then(msg => {
                 setTimeout(() => msg.delete(), 60000)
                 setTimeout(() => message.delete(), 60000)
