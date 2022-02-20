@@ -52,8 +52,8 @@ module.exports = {
             button.deferUpdate().catch(() => { })
 
             serverstats.privateRooms.push({
-                "GUILD_TEXT": null,
-                "GUILD_VOICE": voice.id,
+                "text": null,
+                "voice": voice.id,
                 "owner": button.user.id,
                 "type": "onlyVoice",
                 "bans": [],

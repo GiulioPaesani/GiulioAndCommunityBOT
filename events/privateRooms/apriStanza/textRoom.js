@@ -81,8 +81,8 @@ Ci sono alcune **regole** da seguire nelle tue stanze
             text.send({ embeds: [embed] })
 
             serverstats.privateRooms.push({
-                "GUILD_TEXT": text.id,
-                "GUILD_VOICE": null,
+                "text": text.id,
+                "voice": null,
                 "owner": button.user.id,
                 "type": "onlyText",
                 "bans": [],

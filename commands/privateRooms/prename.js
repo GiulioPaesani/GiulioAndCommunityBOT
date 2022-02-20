@@ -38,6 +38,7 @@ module.exports = {
         if (name.length > 100) {
             return botCommandMessage(message, "Error", "Nome troppo lungo", "Scrivi un nome non più lungo di 100 caratteri", property)
         }
+
         if (room.text) {
             var canale = client.channels.cache.get(room.text)
             canale.setName(name)
@@ -49,7 +50,6 @@ module.exports = {
             canale.setName(name)
                 .then(() => botCommandMessage(message, "Correct", "Stanza rinominata", `La stanza è stata rinominata in \`${canale.name}\``))
                 .catch(() => { return botCommandMessage(message, "Error", "Nome non valido", "Hai inserito un nome del canale non valido", property) })
-
         }
     },
 };
