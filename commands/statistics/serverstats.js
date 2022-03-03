@@ -20,7 +20,6 @@ module.exports = {
             .setTitle(server.name)
             .setDescription("Tutte le statistiche su questo server")
             .setThumbnail(server.iconURL({ dynamic: true }))
-            .addField(":technologist: Owner", "```" + client.users.cache.get(server.ownerId).user.username + "```", true)
             .addField(":green_circle: Online users", "```" + server.members.cache.filter(user => user.presence.status != "offline").size + "```", true)
             .addField(":placard: Server ID", "```" + server.id + "```", true)
             .addField(":beginner: Boost level", "```Level " + server.premiumTier + " (" + server.premiumSubscriptionCount + " boost)```", true)

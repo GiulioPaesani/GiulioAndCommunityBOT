@@ -28,7 +28,7 @@ module.exports = {
 
         message.channel.send({ embeds: [embed] })
 
-        message.channel.send(numero)
+        message.channel.send(numero.toString())
             .then(msg => {
                 msg.react("🟢");
             })
@@ -38,7 +38,7 @@ module.exports = {
             .setColor("#ababab")
             .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-            .addField("Number", numero, false)
+            .addField("Number", numero.toString(), false)
 
         if (!isMaintenance())
             client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
