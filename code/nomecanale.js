@@ -24,6 +24,8 @@ client.on("messageCreate", message => {
         //Cambiare un canale specifico
         var canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.setName("nome modificato")
+    } else {
+        return;
     }
 })`
 };
