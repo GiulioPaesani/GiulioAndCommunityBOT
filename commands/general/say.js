@@ -25,6 +25,10 @@ module.exports = {
             return botCommandMessage(message, "Warning", "Non hai il livello", "Puoi utilizzare il comando `!say` solo dal **livello 15** o **boostando il server**")
         }
 
+        if (new Date().getMonth() == 3 && new Date().getDate() == 1) {
+            testo = testo.split("").reverse().join("")
+        }
+
         message.delete()
             .catch(() => { })
         message.channel.send(testo)

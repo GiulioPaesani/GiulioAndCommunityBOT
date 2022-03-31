@@ -28,8 +28,14 @@ module.exports = {
             return botCommandMessage(message, "Warning", "Non un bot", "Non puoi avere le statistiche di ranking di un bot")
         }
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
+        var userStats = userstatsList.find(x => x.id == utente.id);
+        if (!userStats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
+
+        if (new Date().getMonth() == 3 && new Date().getDate() == 1) {
+            userStats.level = Math.floor(Math.random() * (100000 - 0 + 1)) + 0;
+            userStats.xp = getXpNecessari(userStats.level) + Math.floor(Math.random() * ((getXpNecessari(userStats.level + 1) - getXpNecessari(userStats.level)) - 0 + 1)) + 0
+            userStats.money = Math.floor(Math.random() * (10000000 + 100000 + 1)) + -100000
+        }
 
         var rankIcon = {
             "10": `<:10:${client.emojis.cache.find(emoji => emoji.name === "10").id}>`,
@@ -50,8 +56,8 @@ module.exports = {
 
         var xpProgress = ""
         var numEmoji = 8;
-        var maxValue = getXpNecessari(userstats.level + 1) - getXpNecessari(userstats.level);
-        var value = parseInt(userstats.xp - getXpNecessari(userstats.level));
+        var maxValue = getXpNecessari(userStats.level + 1) - getXpNecessari(userStats.level);
+        var value = parseInt(userStats.xp - getXpNecessari(userStats.level));
 
         for (var i = 1; i <= numEmoji; i++) {
             if (i == 1) {
@@ -100,12 +106,12 @@ module.exports = {
 
         var embed = new Discord.MessageEmbed()
             .setTitle(`Ranking - ${utente.nickname ? utente.nickname : utente.username}`)
-            .setColor(levelColor[userstats.level])
+            .setColor(levelColor[userStats.level])
             .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-            .addField(`:beginner: Level ${userstats.level}`, `
+            .addField(`:beginner: Level ${userStats.level}`, `
 ${xpProgress}
-XP ${humanize(userstats.xp - getXpNecessari(userstats.level))}/${humanize(getXpNecessari(userstats.level + 1) - getXpNecessari(userstats.level))} - Rank #${positionXp}`)
-            .addField(`:coin: ${humanize(userstats.money)}$`, `${Object.keys(userstats.inventory).length == 0 ? "0" : Object.values(userstats.inventory).reduce((a, b) => a + b)} ${Object.keys(userstats.inventory).length == 0 ? "Items" : Object.values(userstats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
+XP ${humanize(userStats.xp - getXpNecessari(userStats.level))}/${humanize(getXpNecessari(userStats.level + 1) - getXpNecessari(userStats.level))} - Rank #${positionXp}`)
+            .addField(`:coin: ${humanize(userStats.money)}$`, `${Object.keys(userStats.inventory).length == 0 ? "0" : Object.values(userStats.inventory).reduce((a, b) => a + b)} ${Object.keys(userStats.inventory).length == 0 ? "Items" : Object.values(userStats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
 
         message.channel.send({ embeds: [embed] })
     },
