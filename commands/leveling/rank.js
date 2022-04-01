@@ -31,12 +31,6 @@ module.exports = {
         var userStats = userstatsList.find(x => x.id == utente.id);
         if (!userStats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
 
-        if (new Date().getMonth() == 3 && new Date().getDate() == 1) {
-            userStats.level = Math.floor(Math.random() * (100000 - 0 + 1)) + 0;
-            userStats.xp = getXpNecessari(userStats.level) + Math.floor(Math.random() * ((getXpNecessari(userStats.level + 1) - getXpNecessari(userStats.level)) - 0 + 1)) + 0
-            userStats.money = Math.floor(Math.random() * (10000000 + 100000 + 1)) + -100000
-        }
-
         var rankIcon = {
             "10": `<:10:${client.emojis.cache.find(emoji => emoji.name === "10").id}>`,
             "11": `<:11:${client.emojis.cache.find(emoji => emoji.name === "11").id}>`,
@@ -108,10 +102,10 @@ module.exports = {
             .setTitle(`Ranking - ${utente.nickname ? utente.nickname : utente.username}`)
             .setColor(levelColor[userStats.level])
             .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-            .addField(`:beginner: Level ${userStats.level}`, `
+            .addField(`:beginner: Level ${(new Date().getMonth() == 3 && new Date().getDate() == 1) ? Math.floor(Math.random() * (100000 - 0 + 1)) + 0 : userStats.level}`, `
 ${xpProgress}
 XP ${humanize(userStats.xp - getXpNecessari(userStats.level))}/${humanize(getXpNecessari(userStats.level + 1) - getXpNecessari(userStats.level))} - Rank #${positionXp}`)
-            .addField(`:coin: ${humanize(userStats.money)}$`, `${Object.keys(userStats.inventory).length == 0 ? "0" : Object.values(userStats.inventory).reduce((a, b) => a + b)} ${Object.keys(userStats.inventory).length == 0 ? "Items" : Object.values(userStats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
+            .addField(`:coin: ${humanize((new Date().getMonth() == 3 && new Date().getDate() == 1) ? Math.floor(Math.random() * (10000000 + 100000 + 1)) + -100000 : userStats.money)}$`, `${Object.keys(userStats.inventory).length == 0 ? "0" : Object.values(userStats.inventory).reduce((a, b) => a + b)} ${Object.keys(userStats.inventory).length == 0 ? "Items" : Object.values(userStats.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} - Rank #${positionEconomy}`)
 
         message.channel.send({ embeds: [embed] })
     },
