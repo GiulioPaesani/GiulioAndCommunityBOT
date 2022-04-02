@@ -22,7 +22,7 @@ module.exports = {
             .setTitle("💡 New suggestion 💡")
             .setColor("#fcba03")
             .setThumbnail(message.member.user.displayAvatarURL({ dynamic: true }))
-            .setDescription(((new Date().getMonth() == 3 && new Date().getDate() == 1) ? "Questo suggerimento fa veramente **schifo**! Ti potevi impegnare di più eh! Vabbè, speriamo che lo staff te lo accetti" : "Attendi che lo staff approvi il tuo suggerimento"))
+            .setDescription("Attendi che lo staff approvi il tuo suggerimento")
             .addField(":bookmark_tabs: Suggestion", contenuto)
 
         message.channel.send({ embeds: [embed] })

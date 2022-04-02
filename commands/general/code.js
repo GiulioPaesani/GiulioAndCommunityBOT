@@ -134,15 +134,10 @@ _Seleziona la categoria dal menù qua sotto_`)
                 codeText += row + "\r"
         })
 
-        if (new Date().getMonth() == 3 && new Date().getDate() == 1) {
-            codeText = `NON SI COPIAAA!!!\rLa smetti di continuare a prendere codici dal comando !code???\rBASTA COPIARE!`
-        }
-
-
         embed
             .addField(":wrench: Code:", "```js\r" + codeText + "```")
 
-        if (tooLong || (new Date().getMonth() == 3 && new Date().getDate() == 1)) {
+        if (tooLong) {
             embed.addField(":warning: Il codice è troppo lungo", "Ottieni il codice completo con il pulsante **\"Ottieni codice completo\"**")
             row.addComponents(button3)
         }
