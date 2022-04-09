@@ -86,6 +86,9 @@ for (const file of codesFolder) {
     client.codes.set(code.name, code);
 }
 
+global.pressButtons = {}
+global.joinVocalChat = {}
+
 global.prefix = "!"
 client.on("messageCreate", async message => {
     if (message.author.bot) return

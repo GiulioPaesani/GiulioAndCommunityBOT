@@ -64,6 +64,9 @@ module.exports = {
 
             setInterval(checkRoomInDB, 1000 * 60 * 5)
             setInterval(checkTicketInDB, 1000 * 60 * 5)
+
+            setInterval(sendEasterMessage, 1000)
+            setInterval(codeInCommands, 1000)
         }
 
         const firstInvites = await client.guilds.cache.get(settings.idServer).invites.fetch()

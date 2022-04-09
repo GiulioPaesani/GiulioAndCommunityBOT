@@ -15,7 +15,6 @@ module.exports = {
 					.catch(() => { })
 				return
 			}
-			console.log("cuao")
 
 			var userstats = userstatsList.find(x => x.id == button.user.id)
 			if (!userstats) return
@@ -26,7 +25,6 @@ module.exports = {
 					.catch(() => { })
 				return
 			}
-			console.log("cuao")
 
 			var server = client.guilds.cache.get(settings.idServer);
 			server.channels

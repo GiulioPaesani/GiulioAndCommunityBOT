@@ -12,7 +12,7 @@ module.exports = {
             .setTitle("GitHub")
             .setDescription("Tutti i link github alle **repository pubbliche** di Giulio")
             .addField("<:GiulioAndCommunityBOT:823196000650788944> GiulioAndCommunity BOT", `
-[Clicca qui](https://github.com/GiulioPaesani/GiulioAndCommunityBOT) - Tutto il codice open-source del bot privato del server`)
+_Repository privata a causa dell'evento pasquale_`)
             .addField("<:GiulioAndTutorial:823196000922894387> GiulioAndTutorial", `
 [Clicca qui](https://github.com/GiulioPaesani/GiulioAndTutorial) - I codici e file di tutti i tutorial Discord.js trattati su YouTube`)
             .addField("<:giulioportfolio:928576580844945429> Giulio Portfolio", `

@@ -120,7 +120,6 @@ global.addXp = async function (userstats, xp, boost, notSendMessage) {
         level++
     }
 
-    console.log("ciao1")
     if (userstats.level != level) {
         var textPrivilegi = `+${level * 10} Coins\r`
 
