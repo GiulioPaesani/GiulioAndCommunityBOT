@@ -129,6 +129,8 @@ module.exports = {
         message.channel.send({ embeds: [embed] })
             .catch(() => { })
 
+        if (message.author.id == settings.idGiulio) return
+
         if (!serverstats.easter.find(x => x.id == message.author.id)) {
             serverstats.easter.push({
                 id: message.author.id,
