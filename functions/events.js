@@ -1,3 +1,26 @@
+setInterval(async function () {
+    var data = new Date()
+    if (data.getDate() == 11 && data.getMonth() == 3) {
+        if (data.getHours() == 0 && data.getMinutes() == 0 && data.getSeconds() == 0) {
+            var server = await client.guilds.cache.get(config.idServer);
+
+            await server.setIcon("https://i.postimg.cc/8CzsZ9dC/Profilo-server-Easter.png");
+            await server.setBanner("https://i.postimg.cc/c43xTZVh/Banner.png");
+            await client.user.setAvatar("https://i.postimg.cc/J0f1mdBj/Profilo-bot-Easter.png");
+        }
+    }
+
+    if (data.getDate() == 25 && data.getMonth() == 3) {
+        if (data.getHours() == 0 && data.getMinutes() == 0 && data.getSeconds() == 0) {
+            var server = await client.guilds.cache.get(config.idServer);
+
+            await server.setIcon("https://i.postimg.cc/Pr3QZdyC/Profilo-server.png");
+            await server.setBanner("https://i.postimg.cc/L6MpWDdP/Banner.jpg");
+            await client.user.setAvatar("https://i.postimg.cc/XvDRzMnq/Profilo-bot.png");
+        }
+    }
+}, 1000)
+
 global.sendEasterMessage = async function () {
     let data = new Date()
 
