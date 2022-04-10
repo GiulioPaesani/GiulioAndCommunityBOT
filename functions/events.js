@@ -56,6 +56,8 @@ Potete collaborare e aiutarvi tra di voi per completare le sfide, ma è severame
 :bangbang: Chiunque rivelerà i codici delle sfide ad altri utenti verrà **tempbannato** fino al termine dell'evento
 Cercate di dare a tutti la possibilità di giocare e divertirsi
 
+:warning: È necessario avere i **DM aperti**, in modo che il bot vi possa mandare messaggi in privato
+
 L'evento termina il **24 Aprile** alle 23:59`)
 
     await canale.send(`\u200b
