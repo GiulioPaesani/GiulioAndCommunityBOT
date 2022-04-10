@@ -10,13 +10,7 @@ global.sendEasterMessage = async function () {
 
     let canale = client.channels.cache.get("959488063334142012")
 
-    await canale.messages.fetch()
-        .then(async messages => {
-            var array = Array.from(messages.values())
-            for (var i = 0; i < array.length; i++) {
-                await array[i].delete().catch(() => { })
-            }
-        })
+    await canale.bulkDelete(100, true)
 
     await canale.send(`
 ----- :hatching_chick: 𝐒𝐀𝐕𝐄 𝐓𝐇𝐄 𝐄𝐀𝐒𝐓𝐄𝐑 :dove: -----
@@ -43,9 +37,9 @@ L'evento termina il **24 Aprile** alle 23:59`)
 
     await canale.send(`\u200b
 :placard: Puoi trovare i codici in diversi **formati**: 
-- Lettere + Numeri (Come _F81G5_)
-- Solo lettere (Come _HRXEP_)
-- Solo numeri (Come _62180_)`)
+- Lettere + Numeri (Come \`F81G5\`)
+- Solo lettere (Come \`HRXEP\`)
+- Solo numeri (Come \`62180\`)`)
 
     await canale.send({ files: ["./easter/EsempiCodici.png"] })
 
@@ -78,7 +72,8 @@ L'evento termina il **24 Aprile** alle 23:59`)
         }
     }
 
-    await canale.send(`> **CLASSIFICA**
+    await canale.send(`\u200b
+> **CLASSIFICA**
 Classifica generale tra tutti gli utenti
 
 ${classifica || "_Nessun utente in classifica al momento_"}
