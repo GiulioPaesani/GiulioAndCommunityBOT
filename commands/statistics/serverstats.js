@@ -20,7 +20,6 @@ module.exports = {
             .setTitle(server.name)
             .setDescription("Tutte le statistiche su questo server")
             .setThumbnail(server.iconURL({ dynamic: true }))
-            .addField(":green_circle: Online users", "```" + server.members.cache.filter(user => user.presence.status != "offline").size + "```", true)
             .addField(":placard: Server ID", "```" + server.id + "```", true)
             .addField(":beginner: Boost level", "```Level " + server.premiumTier + " (" + server.premiumSubscriptionCount + " boost)```", true)
             .addField(":busts_in_silhouette: Members", "```Total: " + server.memberCount + " | Members: " + memberCount + " | Bots: " + botCount + "```", false)
