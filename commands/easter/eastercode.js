@@ -122,8 +122,8 @@ module.exports = {
             .setDescription(`Hai completato con successo la **sfida ${code.numSfida}**. Scopri i premi che hai vinto`)
             .addField(":gift: Premi vinti", `
 + **${Math.floor((20160 - minutiPassati) / 5 * code.difficulty)} Punti classifica**
-+ ${Math.floor((20160 - minutiPassati) / 25 * code.difficulty)} XP
-+ ${Math.floor((20160 - minutiPassati) / 40 * code.difficulty)} Coins
++ ${Math.floor((20160 - minutiPassati) / 30 * code.difficulty)} XP
++ ${Math.floor((20160 - minutiPassati) / 45 * code.difficulty)} Coins
 `)
 
         message.channel.send({ embeds: [embed] })
@@ -148,8 +148,8 @@ module.exports = {
         var userstats = userstatsList.find(x => x.id == message.author.id);
         if (!userstats) return
 
-        userstats = await addXp(userstats, Math.floor((20160 - minutiPassati) / 25 * code.difficulty), 0, true);
-        userstats.money += Math.floor((20160 - minutiPassati) / 40 * code.difficulty)
+        userstats = await addXp(userstats, Math.floor((20160 - minutiPassati) / 30 * code.difficulty), 0, true);
+        userstats.money += Math.floor((20160 - minutiPassati) / 45 * code.difficulty)
         userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
     },
 };
