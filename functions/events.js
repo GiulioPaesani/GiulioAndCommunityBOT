@@ -24,7 +24,7 @@ setInterval(async function () {
 global.sendEasterMessage = async function () {
     let data = new Date()
 
-    // if (data.getMinutes() != 0 || data.getSeconds() != 0 || data.getHours() != 0) return
+    if (data.getMinutes() != 0 || data.getSeconds() != 0 || data.getHours() != 0) return
     if (data.getMonth() != 3) return
 
     let giorno = data.getDate()
