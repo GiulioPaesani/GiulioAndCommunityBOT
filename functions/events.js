@@ -318,3 +318,52 @@ global.codeInCommands = function () {
             setTimeout(() => msg.delete(), 1000)
         })
 }
+
+setInterval(async function () {
+    let canale = client.channels.cache.get("959488063334142012")
+
+    canale.messages.fetch()
+        .then(async messages => {
+            for (let msg of Array.from(messages.values()).reverse()) {
+                if (msg.content.includes("**CLASSIFICA**")) {
+                    let userstatsList = serverstats.easter
+
+                    userstatsList = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.get(x.id)).sort((a, b) => b.points - a.points)
+
+                    let page = 1
+                    let classifica = ""
+
+                    for (var i = 10 * (page - 1); i < 10 * page; i++) {
+                        if (userstatsList[i]) {
+                            switch (i) {
+                                case 0:
+                                    classifica += ":first_place: ";
+                                    break
+                                case 1:
+                                    classifica += ":second_place: "
+                                    break
+                                case 2:
+                                    classifica += ":third_place: "
+                                    break
+                                default:
+                                    classifica += `**#${i + 1}** `
+                            }
+
+                            var utente = client.guilds.cache.get(settings.idServer).members.cache.get(userstatsList[i].id)
+
+                            classifica += `${utente.nickname ? utente.nickname : utente.user.username} - **${userstatsList[i].points}**\r`
+                        }
+                    }
+
+                    msg.edit(`\u200b
+> **CLASSIFICA**
+Classifica generale tra tutti gli utenti
+
+${classifica || "_Nessun utente in classifica al momento_"}
+
+:trophy: I primi 5 utenti in classifica al termine dell'evento guadagneranno **super premi extra**`)
+
+                }
+            }
+        })
+}, 1000 * 60 * 5)
