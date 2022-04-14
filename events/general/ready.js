@@ -65,10 +65,10 @@ module.exports = {
             setInterval(checkRoomInDB, 1000 * 60 * 5)
             setInterval(checkTicketInDB, 1000 * 60 * 5)
 
-            setInterval(sendEasterMessage, 1000)
+            // setInterval(sendEasterMessage, 1000)
             setInterval(codeInCommands, 1000)
         }
-
+        sendEasterMessage()
         const firstInvites = await client.guilds.cache.get(settings.idServer).invites.fetch()
         invites.set(settings.idServer, new Map(firstInvites.map((invite) => [invite.code, invite.uses])));
     },

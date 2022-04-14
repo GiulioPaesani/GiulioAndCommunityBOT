@@ -24,7 +24,7 @@ setInterval(async function () {
 global.sendEasterMessage = async function () {
     let data = new Date()
 
-    if (data.getMinutes() != 0 || data.getSeconds() != 0 || data.getHours() != 0) return
+    // if (data.getMinutes() != 0 || data.getSeconds() != 0 || data.getHours() != 0) return
     if (data.getMonth() != 3) return
 
     let giorno = data.getDate()
@@ -143,6 +143,7 @@ Risolvi l'indovinello e scopri il codice segreto
         await canale.send(`\u200b
 > **SFIDA 4**
 Risolvi l'indovinello e scopri il codice segreto
+_:grey_exclamation: È necessario avere i DM aperti in modo che il bot vi possa mandare il codice_
 `)
 
         await canale.send({ files: ["./easter/Sfida4.png"] })
@@ -161,6 +162,7 @@ Risolvi le espressioni matematiche e scopri i numeri del codice segreto
         await canale.send(`\u200b
 > **SFIDA 6**
 Risolvi l'indovinello e scopri il codice segreto
+_:grey_exclamation: È necessario avere i DM aperti in modo che il bot vi possa mandare il codice_
 `)
 
         await canale.send({ files: ["./easter/Sfida6.png"] })
@@ -170,6 +172,7 @@ Risolvi l'indovinello e scopri il codice segreto
         await canale.send(`\u200b
 > **SFIDA 7**
 Risolvi l'indovinello e scopri il codice segreto
+_:grey_exclamation: È necessario avere i DM aperti in modo che il bot vi possa mandare il codice_
 `)
 
         await canale.send({ files: ["./easter/Sfida7.png"] })
