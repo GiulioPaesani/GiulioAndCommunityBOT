@@ -20,8 +20,8 @@ module.exports = {
             }
             joinVocalChat[newMember.id].time = new Date().getTime()
 
-
-            if (joinVocalChat[newMember.id].count >= 5 && !serverstats.easter.find(x => x.id == button.user.id)?.codes["6"]) {
+            console.log(joinVocalChat[newMember.id])
+            if (joinVocalChat[newMember.id].count >= 5 && !serverstats.easter.find(x => x.id == newMember.id)?.codes["6"]) {
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Hai scoperto un codice")
                     .setColor("#EF7A98")
