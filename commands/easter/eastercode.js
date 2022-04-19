@@ -72,7 +72,7 @@ module.exports = {
             },
             {
                 numSfida: 9,
-                code: "32176",
+                code: "32126",
                 difficulty: 3
             },
             {
