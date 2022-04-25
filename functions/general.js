@@ -500,7 +500,6 @@ global.botMessage = async function (channel, type, title, description, fields) {
 global.getCanvasMessage = async function (message, type) {
 	if (type == "DMNonAbilitati") type = "CanaleNonConcesso"
 
-
 	var messageContent = message.content;
 	if (message.mentions.roles) {
 		message.mentions.roles.forEach(role => {
@@ -522,12 +521,7 @@ global.getCanvasMessage = async function (message, type) {
 	var canvas = await createCanvas(1920, 750)
 	var ctx = await canvas.getContext('2d')
 
-	if (new Date().getDate() >= 20 && new Date().getDate() <= 24) {
-		var img = await loadImage(`./canvas/img/EmptyCanvasEaster.png`)
-	}
-	else {
-		var img = await loadImage(`./canvas/img/EmptyCanvas${Math.floor(Math.random() * (5) + 1)}.png`)
-	}
+	var img = await loadImage(`./canvas/img/EmptyCanvas${Math.floor(Math.random() * (5) + 1)}.png`)
 	ctx.drawImage(img, 0, 0)
 
 	var textChannel = await createCanvas(1920, 70)

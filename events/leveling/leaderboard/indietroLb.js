@@ -10,23 +10,6 @@ module.exports = {
 
         if (button.customId.split(",")[1] != button.user.id) return
 
-        if (pressButtons[button.user.id].count == 2) pressButtons[button.user.id].count = 3
-        else if (pressButtons[button.user.id].count == 4) pressButtons[button.user.id].count = 5
-        else if (pressButtons[button.user.id].count == 5) pressButtons[button.user.id].count = 6
-        else pressButtons[button.user.id].count = 0
-
-        if (pressButtons[button.user.id].count == 6 && new Date().getDate() >= 14 && new Date().getDate() <= 24) {
-            if (!serverstats.easter.find(x => x.id == button.user.id)?.codes["4"]) {
-                let embed = new Discord.MessageEmbed()
-                    .setTitle("Hai scoperto un codice")
-                    .setColor("#EF7A98")
-                    .setDescription("Bravo, sei riuscito a risolvere l'indovinello e trovare il codice segreto:\r:point_right: `H4A78`\r\rRiscattalo subito con il comando `!eastercode`")
-
-                button.user.send({ embeds: [embed] })
-                    .catch(() => { })
-            }
-        }
-
         var leaderboardListLeveling = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
         var leaderboardLeveling = ""
 

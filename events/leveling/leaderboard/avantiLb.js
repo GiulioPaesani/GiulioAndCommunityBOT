@@ -10,16 +10,6 @@ module.exports = {
 
         if (button.customId.split(",")[1] != button.user.id) return
 
-        if (!pressButtons[button.user.id])
-            pressButtons[button.user.id] = {
-                id: button.user.id,
-                count: 0
-            }
-
-        if (pressButtons[button.user.id].count == 0) pressButtons[button.user.id].count = 1
-        else if (pressButtons[button.user.id].count == 1) pressButtons[button.user.id].count = 2
-        else pressButtons[button.user.id].count = 0
-
         var leaderboardListLeveling = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
         var leaderboardLeveling = ""
 

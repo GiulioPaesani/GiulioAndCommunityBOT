@@ -92,9 +92,6 @@ module.exports = {
                     .setTitle("😂 FUN commands 😂")
                     .setColor("#F0C048")
                     .setDescription("Comandi fun, di divertimento e di minigames")
-
-                if (new Date().getDate() >= 11 && new Date().getDate() <= 24)
-                    embed.setFooter({ text: "G2LK6" })
             } break
             case "helpRanking": {
                 category = "ranking"

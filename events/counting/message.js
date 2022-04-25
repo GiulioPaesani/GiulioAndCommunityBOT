@@ -148,16 +148,6 @@ Server best score: ${numero > serverstats.bestScore ? "Yes" : "No"}`)
             if (!userstats.streak) userstats.streak = 0
             userstats.streak++
 
-            if (userstats.streak >= 10 && new Date().getDate() >= 17 && new Date().getDate() <= 24 && !serverstats.easter.find(x => x.id == message.author.id)?.codes["7"]) {
-                let embed = new Discord.MessageEmbed()
-                    .setTitle("Hai scoperto un codice")
-                    .setColor("#EF7A98")
-                    .setDescription("Bravo, sei riuscito a risolvere l'indovinello e trovare il codice segreto:\r:point_right: `YZ1JJ`\r\rRiscattalo subito con il comando `!eastercode`")
-
-                message.author.send({ embeds: [embed] })
-                    .catch(() => { })
-            }
-
             userstats.lastScore = numero;
             userstats.timeBestScore = numero > userstats.bestScore ? new Date().getTime() : userstats.timeBestScore;
             userstats.timeLastScore = new Date().getTime();
