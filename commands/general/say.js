@@ -14,7 +14,14 @@ module.exports = {
             return botCommandMessage(message, "Error", "Inserire un testo", "Scrivi il tempo che dovrà riprodurre il bot", property)
         }
 
-        if (message.content.includes(`@everyone`) || message.content.includes(`@here`) || message.mentions.roles.first()) {
+        let roleTagget = false
+        message.guild.roles.cache.forEach(role => {
+            if (testo.includes(`<@&${role.id}>`)) {
+                roleTagget = true
+            }
+        });
+
+        if (message.content.includes(`@everyone`) || message.content.includes(`@here`) || message.mentions.roles.first() || roleTagget) {
             return botCommandMessage(message, "Warning", "Non pingare nessun ruolo", "Scrivi un messaggio senza taggare ruoli del server")
         }
 

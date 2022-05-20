@@ -995,3 +995,29 @@ global.checkTicketInDB = function () {
 		if (!client.guilds.cache.get(settings.idServer).channels.cache.find(x => x.id == ticket.channel)) serverstats.ticket = serverstats.ticket.filter(x => x.channel != ticket.channel)
 	})
 }
+
+setInterval(() => {
+	let channel = client.channels.cache.get("976749578260996126")
+	let dateChangelog = moment("2022-06-21 15:00")
+	let dateNow = moment()
+	let daysDiff = dateChangelog.diff(dateNow, 'days')
+
+	let nome
+	if (daysDiff > 0)
+		nome = `🎪│${daysDiff}-${daysDiff == 1 ? "day" : "days"}-to-changelog`
+	else {
+		let hoursDiff = dateChangelog.diff(dateNow, "hours")
+		if (hoursDiff > 0)
+			nome = `🎪│${hoursDiff}-${hoursDiff == 1 ? "hour" : "hours"}-to-changelog`
+		else {
+			let minutesDiff = dateChangelog.diff(dateNow, "minutes")
+			if (minutesDiff > 0)
+				nome = `🎪│${minutesDiff}-${minutesDiff == 1 ? "minute" : "minutes"}-to-changelog`
+			else
+				nome = `🎪│changelog-is-here`
+		}
+	}
+
+	if (channel.name != nome)
+		channel.setName(nome)
+}, 1000 * 60)

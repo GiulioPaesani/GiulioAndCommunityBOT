@@ -73,6 +73,6 @@ module.exports = {
                     .catch(() => { })
         }, 1000 * 10)
 
-        serverstats.privateRooms = serverstats.privateRooms.filter(x => x.owner != message.author.id)
+        serverstats.privateRooms = serverstats.privateRooms.filter(x => x.owner != room.owner)
     },
 };

@@ -9,7 +9,7 @@ module.exports = {
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(message, args, client, property) {
         var server = client.guilds.cache.get(settings.idServer);
-        var botCount = server.members.cache.filter(member => member.user.bot).size;
+        var botCount = 3;
         var memberCount = server.memberCount - botCount;
 
         var categoryCount = server.channels.cache.filter(c => c.type == "GUILD_CATEGORY").size;
