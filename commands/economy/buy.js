@@ -1,123 +1,106 @@
-const { createCanvas, loadImage, registerFont } = require('canvas')
+const Discord = require("discord.js")
+const settings = require("../../config/general/settings.json")
+const items = require("../../config/ranking/items.json")
+const { getEmoji } = require("../../functions/general/getEmoji")
+const { getUser } = require("../../functions/database/getUser")
+const { addUser } = require("../../functions/database/addUser")
+const { replyMessage } = require("../../functions/general/replyMessage")
+const { humanize } = require("../../functions/general/humanize")
+const { hasSufficientLevels } = require("../../functions/leveling/hasSufficientLevels")
 
 module.exports = {
     name: "buy",
-    aliases: ["compra", "acquista"],
-    onlyStaff: false,
-    availableOnDM: true,
     description: "Compra un qualsiasi oggetto dal negozio",
-    syntax: "!buy [item]",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/buy [item] (quantity)",
     category: "ranking",
+    client: "ranking",
+    data: {
+        options: [
+            {
+                name: "item",
+                description: "Oggetto che si vuole comprare",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            },
+            {
+                name: "quantity",
+                description: "Quantità di oggetti che si vogliono comprare",
+                type: "INTEGER",
+                minValue: 1,
+                required: false,
+            }
+        ]
+    },
     channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        if (!args[0]) {
-            return botCommandMessage(message, "Error", "Oggetto non trovato", "Hai inserito un oggetto non valido o non esistente", property)
-        }
+    async execute(client, interaction, comando) {
+        let item = interaction.options.getString("item")
+        let quantity = interaction.options.getInteger("quantity") || 1
 
-        var oggetto = args.join(" ").toLowerCase()
-
-        var item = require("../../config/items.json").find(x => x.name.toLowerCase() == oggetto || x.id == oggetto || x.id == oggetto.slice(1) || x.alias.includes(oggetto))
+        item = items.find(x => x.name.toLowerCase() == item.toLowerCase() || x.id == item.toLowerCase() || x.id == item.toLowerCase().slice(1) || x.alias.includes(item.toLowerCase()))
 
         if (!item) {
-            return botCommandMessage(message, "Error", "Oggetto non trovato", "Hai inserito un oggetto non valido o non esistente", property)
+            return replyMessage(client, interaction, "Error", "Oggetto non trovato", "Inserisci un oggetto valido", comando)
         }
 
-        var userstats = userstatsList.find(x => x.id == message.author.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
+        let userstats = getUser(interaction.user.id)
+        if (!userstats) userstats = addUser(interaction.member)[0]
 
-        var amount = 0
-        if (userstats.money >= item.price) amount = 1
+        let embed = new Discord.MessageEmbed()
+            .setTitle(`Buy  ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? getEmoji(client, `${item.name.toLowerCase()}Unlocked`) : getEmoji(client, item.name.toLowerCase())} ${item.name.toUpperCase()} ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "- Not unlocked" : ""}`)
+            .setColor(item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "#757575" : item.category == "technology" ? "#3ec2fa" : item.category == "food" ? "#db8616" : item.category == "home" ? "#1dbfaa" : item.category == "mezziTrasporto" ? "#c43812" : "#2683c9")
+            .setDescription(item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? `_Sblocca questo oggetto con ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${item.priviled}`).toString()}_` : `
+Quantity: **${quantity}**
+Price: **${humanize(item.price)}$**
 
-        if (item.priviled && userstats.level < item.priviled) {
-            amount = 0
+:coin: Total cost: **${humanize(item.price * quantity)}$**`)
+            .setFooter({ text: `Hai ${humanize(userstats.economy.money)}$` })
 
-            var canvas = await createCanvas(400, 400)
-            var ctx = await canvas.getContext('2d')
-
-            ctx.fillStyle = "#757575"
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            var img = await loadImage(`https://cdn.discordapp.com/emojis/${item.iconUnlocked.split(":")[2].slice(0, -1)}.png?size=128`)
-            ctx.drawImage(img, canvas.width / 2 - 250 / 2, canvas.height / 2 - 250 / 2, 250, 250)
-
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Buy " + item.name.toUpperCase() + " - Not unlocked")
-                .setColor("#757575")
-                .setThumbnail("attachment://canvas.png")
-                .setDescription(`
-_Sblocca questo oggetto con <@&${settings.ruoliLeveling["level" + item.priviled]}>_
-Unit cost: ${item.price}$
-Amount: **${amount}**
-
-:coin: Total cost: **${item.price * amount}$**
-_Hai ${userstats.money}$ - Rimanenti: ${userstats.money - (item.price * amount)}$_`)
-                .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
-        }
-        else {
-            var canvas = await createCanvas(400, 400)
-            var ctx = await canvas.getContext('2d')
-
-            ctx.fillStyle = item.category == "technology" ? "#999999" : item.category == "food" ? "#db8616" : item.category == "home" ? "#1dbfaa" : item.category == "mezziTrasporto" ? "#c43812" : "#2683c9";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            var img = await loadImage(`https://cdn.discordapp.com/emojis/${item.icon.split(":")[2].slice(0, -1)}.png?size=128`)
-            ctx.drawImage(img, canvas.width / 2 - 250 / 2, canvas.height / 2 - 250 / 2, 250, 250)
-
-            var embed = new Discord.MessageEmbed()
-                .setTitle("Buy " + item.name.toUpperCase())
-                .setColor(item.category == "technology" ? "#999999" : item.category == "food" ? "#db8616" : item.category == "home" ? "#1dbfaa" : item.category == "mezziTrasporto" ? "#c43812" : "#2683c9")
-                .setThumbnail("attachment://canvas.png")
-                .setDescription(`
-Unit cost: ${item.price}$
-Amount: **${amount}**
-
-:coin: Total cost: **${item.price * amount}$**
-_Hai ${userstats.money}$ - Rimanenti: ${userstats.money - (item.price * amount)}$_`)
-                .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
-        }
-
-        var button1 = new Discord.MessageButton()
-            .setLabel("Info prodotto")
-            .setCustomId(`annullaShop,${message.author.id},${item.id}`)
-            .setStyle("DANGER")
-
-        var button2 = new Discord.MessageButton()
-            .setCustomId(`-buy,${message.author.id},${item.id},${amount}`)
+        let button1 = new Discord.MessageButton()
+            .setEmoji(getEmoji(client, "Down"))
+            .setCustomId(`-buy,${interaction.user.id},${item.id},${quantity}`)
             .setStyle("PRIMARY")
-            .setDisabled()
-            .setEmoji("🔽")
 
-        var button3 = new Discord.MessageButton()
-            .setCustomId(`+buy,${message.author.id},${item.id},${amount}`)
+        let button2 = new Discord.MessageButton()
+            .setEmoji(getEmoji(client, "Up"))
+            .setCustomId(`+buy,${interaction.user.id},${item.id},${quantity}`)
             .setStyle("PRIMARY")
-            .setEmoji("🔼")
 
-        if (embed.title.endsWith("Not unlocked")) {
-            button3
-                .setLabel("(Not unlocked)")
-                .setDisabled()
-        }
-        else if (userstats.money < (item.price * (amount + 1))) {
-            button3
-                .setLabel("(No money)")
-                .setDisabled()
-        }
-
-        var button4 = new Discord.MessageButton()
+        let button3 = new Discord.MessageButton()
             .setLabel("Conferma")
-            .setCustomId(`confermaBuy,${message.author.id},${item.id},${amount}`)
+            .setCustomId(`confermaBuy,${interaction.user.id},${item.id},${quantity}`)
             .setStyle("SUCCESS")
 
-        if (amount == 0)
-            button4.setDisabled()
+        if (item.priviled && !hasSufficientLevels(client, userstats, item.priviled)) {
+            button1.setDisabled()
+            button2.setDisabled()
+        }
+        else {
+            if (quantity <= 1) {
+                button1.setDisabled()
+            }
 
-        var row = new Discord.MessageActionRow()
+            if (userstats.economy.money < item.price * (quantity + 1)) {
+                button2
+                    .setLabel("(No money)")
+                    .setDisabled()
+            }
+            if (userstats.economy.money < item.price * quantity) {
+                button3
+                    .setLabel("Conferma (No money)")
+                    .setDisabled()
+            }
+        }
+
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
-            .addComponents(button3)
-            .addComponents(button4)
 
-        message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: [row] })
-            .catch(() => { })
+        let row2 = new Discord.MessageActionRow()
+            .addComponents(button3)
+
+        interaction.reply({ embeds: [embed], components: [row, row2] })
     },
 };

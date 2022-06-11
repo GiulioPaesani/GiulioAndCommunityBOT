@@ -4,32 +4,13 @@ module.exports = {
     description: "**Smutare** un utente nel server",
     category: "moderation",
     id: "1641211896",
+    link: "https://www.toptal.com/developers/hastebin/ihizusebab.js",
     info: "",
     video: "",
-    v12: `
-client.on("message", message => {
-    if (message.content.startsWith("!unmute")) {
-        var utente = message.mentions.members.first();
-        if (!message.member.hasPermission("MANAGE_ROLES")) {
-            return message.channel.send('Non hai il permesso');
-        }
-        if (!utente) {
-            return message.channel.send('Non hai menzionato nessun utente');
-        }
-        
-        utente.roles.remove("idRuolo")
-
-        var embed = new Discord.MessageEmbed()
-            .setTitle(\`\${utente.user.username} smutato\`)
-            .setDescription(\`Utente smutato da \${message.author.toString()}\`)
-
-        message.channel.send(embed)
-    }
-})`,
-    v13: `
+    code: `
 client.on("messageCreate", message => {
     if (message.content.startsWith("!unmute")) {
-        var utente = message.mentions.members.first();
+        let utente = message.mentions.members.first();
         if (!message.member.permissions.has("MANAGE_ROLES")) {
             return message.channel.send('Non hai il permesso');
         }
@@ -39,7 +20,7 @@ client.on("messageCreate", message => {
 
         utente.roles.remove("idRuolo")
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(\`\${utente.user.username} smutato\`)
             .setDescription(\`Utente smutato da \${message.author.toString()}\`)
 

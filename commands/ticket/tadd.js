@@ -1,45 +1,58 @@
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "tadd",
-    aliases: [],
-    onlyStaff: false,
-    availableOnDM: false,
     description: "Aggiungere un utente a un ticket",
-    syntax: "!tadd [user]",
-    category: "community",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/tadd [user]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente che si vuole aggiungere al ticket",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        if (!serverstats.ticket.find(x => x.channel == message.channel.id)) {
-            return botCommandMessage(message, "CanaleNonConcesso", "", "", property)
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
+        let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
+
+        if (!ticket) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
         }
 
-        var index = serverstats.ticket.findIndex(x => x.channel == message.channel.id);
-        var ticket = serverstats.ticket[index];
-
-        if (!utenteMod(message.author) && message.author.id != ticket.owner && !message.member.roles.cache.has(settings.idRuoloAiutante) && !message.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non puoi eseguire il comando `!tadd` in questo ticket")
+        if (!interaction.user.id != ticket.owner && !getUserPermissionLevel(client, interaction.user.id)) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi aggiungere utenti a questo ticket", comando)
         }
 
-        var utente = message.mentions.users?.first()
+        let utente = await getTaggedUser(client, interaction.options.getString("user"), true)
+
         if (!utente) {
-            var utente = await getUser(args.join(" "))
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
-        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
-        }
-
-        const hasPermissionInChannel = message.channel
+        const hasPermissionInChannel = client.channels.cache.get(interaction.channelId)
             .permissionsFor(utente)
             .has('VIEW_CHANNEL', true);
 
         if (hasPermissionInChannel) {
-            return botCommandMessage(message, "Warning", "Utente già presente", "Questo utente ha già accesso a questo ticket")
+            return replyMessage(client, interaction, "Warning", "Utente già presente", "Questo utente ha già accesso a questo ticket", comando)
         }
 
-        message.channel.permissionOverwrites.edit(utente, {
+        client.channels.cache.get(interaction.channelId).permissionOverwrites.edit(utente, {
             VIEW_CHANNEL: true
         })
 
-        botCommandMessage(message, "Correct", "Utente aggiunto", `${utente.toString()} è stato aggiunto al ticket`)
+        replyMessage(client, interaction, "Correct", "Utente aggiunto", `${utente.toString()} è stato aggiunto al ticket`, comando)
     },
 };

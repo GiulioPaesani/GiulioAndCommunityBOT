@@ -1,71 +1,107 @@
+const Discord = require('discord.js');
+const settings = require("../../config/general/settings.json");
+const colors = require("../../config/general/colors.json");
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "padd",
-    aliases: [],
-    onlyStaff: false,
-    availableOnDM: false,
     description: "Aggiungere un utente a una stanza privata",
-    syntax: "!padd [user]",
-    category: "privateRooms",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/padd [room] [user]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "room",
+                description: "Scegli la stanza a cui vuoi aggiungere un utente",
+                type: "CHANNEL",
+                required: true,
+                channelTypes: ["GUILD_TEXT", "GUILD_VOICE"]
+            },
+            {
+                name: "user",
+                description: "Utente che si vuole aggiungere alla stanza privata",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var privaterooms = serverstats.privateRooms
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
 
-        var room
-        if (privaterooms.find(x => x.text == message.channel.id)) {
-            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
-                room = privaterooms.find(x => x.text == message.channel.id)
-            }
-            else {
-                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
-            }
+        if (getUserPermissionLevel(client, interaction.user.id) <= 1 && interaction.channelId != settings.idCanaliServer.commands && !serverstats.privateRooms.find(x => x.channel == interaction.channelId)) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+
+        let room
+        if (!serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)) {
+            return replyMessage(client, interaction, "Error", "Stanza non trovata", "Il canale che hai scelto non è una stanza privata", comando)
         }
         else {
-            if (!privaterooms.find(x => x.owner == message.author.id)) {
-                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            room = serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)
+            if (!room.owners.includes(interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) == 0) {
+                return replyMessage(client, interaction, "NonPermesso", "", "Non puoi aggiungere utenti a questa stanza privata", comando)
             }
-            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
-        if (room.text)
-            var canale = client.channels.cache.get(room.text)
-        if (room.voice)
-            var canale = client.channels.cache.get(room.voice)
-        if (!canale) return
+        let utente = await getTaggedUser(client, interaction.options.getString("user"), true)
 
-        var utente = message.mentions.users?.first()
         if (!utente) {
-            var utente = await getUser(args.join(" "))
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
-        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
-        }
-
-        if (room.bans.includes(utente.id)) {
-            return botCommandMessage(message, "Warning", "Utente bannato", room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi aggiungere un utente bannato dalla tua stanza" : "Non puoi aggiungere un utente bannato dalle tue stanze")
-        }
-
-        const hasPermissionInChannel = canale
+        const hasPermissionInChannel = client.channels.cache.get(room.channel)
             .permissionsFor(utente)
             .has('VIEW_CHANNEL', true);
 
         if (hasPermissionInChannel) {
-            return botCommandMessage(message, "Warning", "Utente già presente", room.type == "onlyText" || room.type == "onlyVoice" ? "Questo utente ha già accesso alla tua stanza privata" : "Questo utente ha già accesso alle tue stanze private")
+            return replyMessage(client, interaction, "Warning", "Utente già presente", "Questo utente ha già accesso a questa stanza", comando)
         }
 
-        if (room.text) {
-            var canale = client.channels.cache.get(room.text)
-            canale.permissionOverwrites.edit(utente, {
-                VIEW_CHANNEL: true
-            })
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Accetta l'aggiunta")
+            .setColor(colors.yellow)
+
+        let button1 = new Discord.MessageButton()
+            .setLabel("Rifiuta invito")
+            .setStyle("DANGER")
+            .setCustomId(`rifiutaInvito,${utente.id},${room.channel}`)
+
+        let button2 = new Discord.MessageButton()
+            .setLabel("Entra nella stanza")
+            .setStyle("PRIMARY")
+            .setCustomId(`accettaInvito,${utente.id},${room.channel}`)
+
+        let row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
+
+        if (room.channel == interaction.channelId) {
+            embed
+                .setDescription(`${utente.toString()} deve accettare l'aggiunta alla stanza premendo "**Entra nella stanza**" nel messaggio che ha ricevuto in DM`)
+
+            interaction.reply({ embeds: [embed] })
+
+            let embed2 = new Discord.MessageEmbed()
+                .setTitle("Accetta l'aggiunta")
+                .setColor(colors.yellow)
+                .setDescription(`Sei stato **invitato** ad entrare nella stanza privata #${client.channels.cache.get(room.channel).name}\nSe vuoi entrare premi "**Entra nella stanza**" altrimenti rifiuta l'invito`)
+
+            utente.send({ embeds: [embed2], components: [row] })
         }
-        if (room.voice) {
-            var canale = client.channels.cache.get(room.voice)
-            canale.permissionOverwrites.edit(utente, {
-                VIEW_CHANNEL: true
-            })
+        else {
+            embed
+                .setDescription(`${utente.toString()} deve accettare l'aggiunta alla stanza premendo "**Entra nella stanza**" in questo messaggio o in quello che ha ricevuto in DM`)
+
+            interaction.reply({ embeds: [embed], components: [row] })
         }
 
-        botCommandMessage(message, "Correct", "Utente aggiunto", room.type == "onlyText" || room.type == "onlyVoice" ? `${utente.toString()} è stato aggiunto alla stanza` : `${utente.toString()} è stato aggiunto alle stanze`)
     },
 };

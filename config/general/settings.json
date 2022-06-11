@@ -1,0 +1,74 @@
+{
+    "idServer": "793776260350083113",
+    "ruoliStaff": {
+        "owner": "793796029878370326",
+        "admin": "799925821904125962",
+        "moderatore":"859413877133410335"
+    },
+    "idCanaliServer": {
+        "memberCounter": "869975166128631808",
+        "announcements": "869975176056541224",
+        "rules": "983665416129892352",
+        "info": "984049493626478612",
+        "youtubeNotification": "869975176895418438",
+        "suggestions": "869975183446933544", 
+        "polls": "976847592472318012",
+        "support": "962257385425088532",
+        "commands": "869975190052929566",
+        "general": "869975177935593483",
+        "general1": "869975179806277724",
+        "general2": "869975181219733534",
+        "noMicChat": "869975179386839101",
+        "ourProjects": "978536291497021440",
+        "codingGeneral":"978536224342028288",
+        "help":"978536821183111178",
+        "counting": "869975192645034085",
+        "countingplus": "977590416264294462",
+        "onewordstory":"977601321546956910",
+        "faq":"978536471000662076",
+        "qna":"978537002456715274",
+        "categoriaPrivateRooms":"869975171115679794",
+        "privateRooms": "984042391575101490",
+        "categoriaAdmin": "869975171795157022",
+        "testing": "869975198483488890",
+        "admin": "793781906478858269",
+        "staffPolls": "965574854067769384",
+        "mutedTicket": "869975202224824380",
+        "tempmutedTicket": "869975202967207956",
+        "bannedTicket": "869975203898343424",
+        "tempbannedTicket": "869975205349572648",
+        "categoriaModerationTicket": "869975172671733760",
+        "lockdown": "869975206310064179",
+        "joinTheServer": "983681233219371058"
+    },
+    "ruoliModeration": {
+        "muted": "800299630897659934",
+        "tempmuted": "834364355059384350",
+        "banned": "834364447823888384",
+        "tempbanned": "834364495227781181"
+    },
+    "idRuoloServerBooster": "800009879371644940",
+    "idRuoloNonVerificato": "901779149545427004",
+    "idRuoloFeatureActivator":"971849703614455859",
+    "ruoliNotification": {
+        "announcements": "815649916574629941",
+        "news": "815649625591382077",
+        "changelog": "826784690487951370",
+        "youtubeVideosCode": "857544584691318814",
+        "youtubeVideosGiulio": "883062518774370345"
+    },
+    "botMusicali":[
+        {
+            "id": "821347785722822676",
+            "color":"#F38BA8"
+        },
+        {
+            "id": "968225374536351754",
+            "color":"#F96464"
+        },
+        {
+            "id": "821364574212587550",
+            "color":"#60BEE8"
+        }
+    ]
+}

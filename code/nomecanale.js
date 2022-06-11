@@ -4,25 +4,17 @@ module.exports = {
     description: "**Modificare** il nome di un canale",
     category: "manage",
     id: "1639466183",
+    link: "https://www.toptal.com/developers/hastebin/yuwazapowi.csharp",
     info: "",
     video: "",
-    v12: `
-client.on("message", message => {
-    if (message.content == "!comando") {
-        //Cambiare il canale del comando
-        message.channel.setName("nome modificato")
-        //Cambiare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
-        canale.setName("nome modificato")
-    }
-})`,
-    v13: `
+    code: `
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
         //Cambiare il canale del comando
         message.channel.setName("nome modificato")
+
         //Cambiare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
+        const canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.setName("nome modificato")
     }
 })`

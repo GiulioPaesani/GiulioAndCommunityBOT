@@ -1,55 +1,62 @@
+const settings = require("../../config/general/settings.json");
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+
 module.exports = {
     name: "prename",
-    aliases: [],
-    onlyStaff: false,
-    availableOnDM: false,
-    description: "Rinominare una stanza privata",
-    syntax: "!prename [name]",
-    category: "privateRooms",
+    description: "Rinominare il canale di una stanza privata",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/prename [room] [name]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "room",
+                description: "Scegli la stanza che vuoi rinominare",
+                type: "CHANNEL",
+                required: true,
+                channelTypes: ["GUILD_TEXT", "GUILD_VOICE"]
+            },
+            {
+                name: "name",
+                description: "Nome che vuoi dare alla stanza",
+                type: "STRING",
+                required: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var privaterooms = serverstats.privateRooms
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
 
-        var room
-        if (privaterooms.find(x => x.text == message.channel.id)) {
-            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
-                room = privaterooms.find(x => x.text == message.channel.id)
-            }
-            else {
-                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
-            }
+        if (getUserPermissionLevel(client, interaction.user.id) <= 1 && interaction.channelId != settings.idCanaliServer.commands && !serverstats.privateRooms.find(x => x.channel == interaction.channelId)) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+
+        let room
+        if (!serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)) {
+            return replyMessage(client, interaction, "Error", "Stanza non trovata", "Il canale che hai scelto non è una stanza privata", comando)
         }
         else {
-            if (!privaterooms.find(x => x.owner == message.author.id)) {
-                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            room = serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)
+            if (!room.owners.includes(interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) == 0) {
+                return replyMessage(client, interaction, "NonPermesso", "", "Non puoi aggiungere utenti a questa stanza privata", comando)
             }
-            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
-        if (room.type == "textVoice") {
-            return botCommandMessage(message, "Error", "Quale canale vuoi rinominare?", "Hai due canali privati e puoi rinominarli **diversamente** entrambi. Per il canale **tesuale** utilizza \`!ptrename [name]\` mentre per il canale **vocale** usa \`!pvrename [name]\`", property)
+        if (interaction.options.getString("name").length > 100) {
+            return replyMessage(client, interaction, "Warning", "Nome troppo lungo", "Puoi inserire un nome di massimo 100 caratteri", comando)
         }
 
-        var name = args.join(" ")
-        if (!name) {
-            return botCommandMessage(message, "Error", "Nome non valido", "Hai inserito un nome del canale non valido", property)
-        }
-
-        if (name.length > 100) {
-            return botCommandMessage(message, "Error", "Nome troppo lungo", "Scrivi un nome non più lungo di 100 caratteri", property)
-        }
-
-        if (room.text) {
-            var canale = client.channels.cache.get(room.text)
-            canale.setName(name)
-                .then(() => botCommandMessage(message, "Correct", "Stanza rinominata", `La stanza è stata rinominata in \`${canale.name}\``))
-                .catch(() => { return botCommandMessage(message, "Error", "Nome non valido", "Hai inserito un nome del canale non valido", property) })
-        }
-        if (room.voice) {
-            var canale = client.channels.cache.get(room.voice)
-            canale.setName(name)
-                .then(() => botCommandMessage(message, "Correct", "Stanza rinominata", `La stanza è stata rinominata in \`${canale.name}\``))
-                .catch(() => { return botCommandMessage(message, "Error", "Nome non valido", "Hai inserito un nome del canale non valido", property) })
-        }
+        interaction.options.getChannel("room").setName(interaction.options.getString("name"))
+            .then((channel) => {
+                replyMessage(client, interaction, "Correct", "Canale rinominato", `Il canale <#${channel.id}> è stato rinominato`, comando)
+            })
+            .catch(() => {
+                return replyMessage(client, interaction, "Error", "Nome non valido", `Hai inserito un nome per un canale non valido`, comando)
+            })
     },
 };

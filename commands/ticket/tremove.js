@@ -1,53 +1,66 @@
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "tremove",
-    aliases: [],
-    onlyStaff: false,
-    availableOnDM: false,
     description: "Rimuovere un utente da un ticket",
-    syntax: "!tremove [user]",
-    category: "community",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/tremove [user]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente che si vuole rimuovere dal ticket",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        if (!serverstats.ticket.find(x => x.channel == message.channel.id)) {
-            return botCommandMessage(message, "CanaleNonConcesso", "", "", property)
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
+        let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
+
+        if (!ticket) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
         }
 
-        var index = serverstats.ticket.findIndex(x => x.channel == message.channel.id);
-        var ticket = serverstats.ticket[index];
-
-        if (!utenteMod(message.author) && message.author.id != ticket.owner && !message.member.roles.cache.has(settings.idRuoloAiutante) && !message.member.roles.cache.has(settings.idRuoloAiutanteInProva)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non puoi eseguire il comando `!tremove` in questo ticket")
+        if (!interaction.user.id != ticket.owner && !getUserPermissionLevel(client, interaction.user.id)) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere utenti da questo ticket", comando)
         }
 
-        var utente = message.mentions.users?.first()
-        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
-            var utente = await getUser(args.join(" "))
-        }
+        let utente = await getTaggedUser(client, interaction.options.getString("user"), true)
 
         if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
-        const hasPermissionInChannel = message.channel
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere questo utente dal ticket", comando)
+        }
+
+        if (utente.id == ticket.owner) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere l'owner dal suo ticket", comando)
+        }
+
+        const hasPermissionInChannel = client.channels.cache.get(interaction.channelId)
             .permissionsFor(utente)
             .has('VIEW_CHANNEL', true);
 
         if (!hasPermissionInChannel) {
-            return botCommandMessage(message, "Warning", "Utente già rimosso", "Questo utente non ha già accesso a questo ticket")
+            return replyMessage(client, interaction, "Warning", "Utente già rimosso", "Questo utente non ha già accesso a questo ticket", comando)
         }
 
-        if (utenteMod(utente)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non puoi rimuovere questo utente dal ticket")
-        }
-
-        if (message.channel.id == utente.id) {
-            return botCommandMessage(message, "Warning", "Non ti puoi rimuovere", "Non ti puoi rimuovere da solo dal questo ticket")
-        }
-
-        message.channel.permissionOverwrites.edit(utente, {
+        client.channels.cache.get(interaction.channelId).permissionOverwrites.edit(utente, {
             VIEW_CHANNEL: false
         })
 
-        botCommandMessage(message, "Correct", "Utente rimosso", `${utente.toString()} è stato rimosso dal ticket`)
+        replyMessage(client, interaction, "Correct", "Utente rimosso", `${utente.toString()} è stato rimosso dal ticket`, comando)
     },
 };

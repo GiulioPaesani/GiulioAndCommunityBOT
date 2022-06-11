@@ -1,76 +1,80 @@
+const settings = require("../../config/general/settings.json");
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "premove",
-    aliases: [],
-    onlyStaff: false,
-    availableOnDM: false,
     description: "Rimuovere un utente da una stanza privata",
-    syntax: "!premove [user]",
-    category: "privateRooms",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/premove [room] [user]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "room",
+                description: "Scegli la stanza da cui vuoi rimuovere un utente",
+                type: "CHANNEL",
+                required: true,
+                channelTypes: ["GUILD_TEXT", "GUILD_VOICE"]
+            },
+            {
+                name: "user",
+                description: "Utente che si vuole rimuovere dalla stanza privata",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var privaterooms = serverstats.privateRooms
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
 
-        var room
-        if (privaterooms.find(x => x.text == message.channel.id)) {
-            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
-                room = privaterooms.find(x => x.text == message.channel.id)
-            }
-            else {
-                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
-            }
+        if (getUserPermissionLevel(client, interaction.user.id) <= 1 && interaction.channelId != settings.idCanaliServer.commands && !serverstats.privateRooms.find(x => x.channel == interaction.channelId)) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+
+        let room
+        if (!serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)) {
+            return replyMessage(client, interaction, "Error", "Stanza non trovata", "Il canale che hai scelto non è una stanza privata", comando)
         }
         else {
-            if (!privaterooms.find(x => x.owner == message.author.id)) {
-                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            room = serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)
+            if (!room.owners.includes(interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) == 0) {
+                return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere utenti da questa stanza privata", comando)
             }
-            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
-        if (room.text)
-            var canale = client.channels.cache.get(room.text)
-        if (room.voice)
-            var canale = client.channels.cache.get(room.voice)
-        if (!canale) return
+        let utente = await getTaggedUser(client, interaction.options.getString("user"), true)
 
-        var utente = message.mentions.users?.first()
         if (!utente) {
-            var utente = await getUser(args.join(" "))
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
-        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere questo utente dal ticket", comando)
         }
 
-        if (utenteMod(utente)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di rimuovere questo utente")
+        if (room.owners.includes(utente.id)) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere l'owner dalla sua stanza privata", comando)
         }
 
-        const hasPermissionInChannel = canale
+        const hasPermissionInChannel = client.channels.cache.get(room.channel)
             .permissionsFor(utente)
             .has('VIEW_CHANNEL', true);
 
         if (!hasPermissionInChannel) {
-            return botCommandMessage(message, "Error", "Utente già rimosso", room.type == "onlyText" || room.type == "onlyVoice" ? "Questo utente non ha già accesso alla tua stanza privata" : "Questo utente non ha già accesso alle tue stanze private", property)
+            return replyMessage(client, interaction, "Warning", "Utente già rimosso", "Questo utente non ha già accesso a questa stanza", comando)
         }
 
-        if (message.member.id == utente.id) {
-            return botCommandMessage(message, "Warning", "Non ti puoi rimuovere", room.type == "onlyText" || room.type == "onlyVoice" ? "Non puoi rimuoverti dalla stanza da solo" : "Non puoi rimuoverti dalle stanze da solo")
-        }
+        client.channels.cache.get(room.channel).permissionOverwrites.edit(utente, {
+            VIEW_CHANNEL: false
+        })
 
-        if (room.text) {
-            var canale = client.channels.cache.get(room.text)
-            canale.permissionOverwrites.edit(utente, {
-                VIEW_CHANNEL: false
-            })
-        }
-        if (room.voice) {
-            if (utente.voice && utente.voice.channelId == room.voice) utente.voice.kick()
-            var canale = client.channels.cache.get(room.voice)
-            canale.permissionOverwrites.edit(utente, {
-                VIEW_CHANNEL: false
-            })
-        }
-
-        botCommandMessage(message, "Correct", "Utente rimosso", room.type == "onlyText" || room.type == "onlyVoice" ? `${utente.toString()} è stato rimosso dalla stanza` : `${utente.toString()} è stato rimosso dalle stanze`)
+        replyMessage(client, interaction, "Correct", "Utente rimosso", `${utente.toString()} è stato rimosso dalla stanza <#${room.channel}>`, comando)
     },
 };

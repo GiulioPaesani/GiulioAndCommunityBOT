@@ -1,39 +1,47 @@
+const settings = require("../../config/general/settings.json")
+const { isMaintenance } = require("../../functions/general/isMaintenance")
+const { addUser } = require("../../functions/database/addUser")
+const { getUser } = require("../../functions/database/getUser")
+const { updateUser } = require("../../functions/database/updateUser")
+const { checkLevelUp } = require("../../functions/leveling/checkLevelUp")
+const { cooldownXp } = require("../../functions/leveling/cooldownXp")
+const { checkBadwords } = require("../../functions/moderaction/checkBadwords")
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel")
+const { checkUserLevelRole } = require("../../functions/leveling/checkLevelRoles")
+
 module.exports = {
     name: "messageCreate",
-    async execute(message) {
+    client: "ranking",
+    async execute(client, message) {
         if (isMaintenance(message.author.id)) return
 
         if (message.author.bot) return
         if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
-        if (!userstatsList) return
 
-        if (message.channel.parentId == settings.idCanaliServer.categoriaAdmin) return
+        if (message.channel.parentId == settings.idCanaliServer.categoriaAdmin || message.channel.parent?.parentId == settings.idCanaliServer.categoriaAdmin) return
 
-        var userstats = userstatsList.find(x => x.id == message.author.id);
-        if (!userstats) return
+        let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
+        if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
 
-        var data = new Date()
-        if (data.getTime() - userstats.cooldownXp > 60000) {
-            var boost = 0;
-            if (message.member.roles.cache.has(settings.ruoliLeveling.level25)) {
-                boost = 10;
-            }
-            if (message.member.roles.cache.has(settings.ruoliLeveling.level50)) {
-                boost = 20;
-            }
+        let userstats = getUser(message.author.id)
+        if (!userstats) userstats = addUser(message.member)[0]
 
-            userstats.cooldownXp = data.getTime();
+        if (!cooldownXp.has(message.author.id)) {
+            let xp = Math.floor(Math.random() * (40 - 15 + 1)) + 15;
 
-            var xp = Math.floor(Math.random() * (40 - 15 + 1)) + 15;
-
-            if (userstats.birthday && ((userstats.birthday[0] == data.getMonth() + 1 && userstats.birthday[1] == data.getDate()) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && data.getMonth() == 2 && data.getDate() == 1))) {
+            if (userstats.birthday && ((userstats.birthday[0] == new Date().getMonth() + 1 && userstats.birthday[1] == new Date().getDate()) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && new Date().getMonth() == 2 && new Date().getDate() == 1))) {
                 xp = xp * 2
             }
 
-            var userstats = await addXp(userstats, xp, boost);
+            userstats.leveling.xp += xp;
+            userstats = await checkLevelUp(client, userstats)
 
-            userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
+            updateUser(userstats)
+
+            cooldownXp.set(message.author.id, 60)
         }
+
+        checkUserLevelRole(client, userstats)
     },
 };

@@ -1,81 +1,141 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const settings = require("../../config/general/settings.json");
+const colors = require("../../config/general/colors.json");
+const log = require("../../config/general/log.json");
+const { addUser } = require("../../functions/database/addUser");
+const { getUser } = require("../../functions/database/getUser");
+const { replyMessage } = require("../../functions/general/replyMessage")
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { updateUser } = require("../../functions/database/updateUser");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
-    name: "clearwarn",
-    aliases: ["clearinfractions", "clearinfraction", "clearinfrazioni"],
-    onlyStaff: true,
-    availableOnDM: false,
-    description: "Eliminare le infrazioni di un utente",
-    syntax: "!clearwarn [user] (code)",
+    name: "clearinfractions",
+    description: "Eliminare le infranzioni di un utente",
+    permissionLevel: 1,
+    requiredLevel: 0,
+    syntax: "/clearinfractions [user] (code)",
     category: "moderation",
+    client: "moderation",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente di cui eliminare le infrazioni",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            },
+            {
+                name: "code",
+                description: "Codice dell'infranzione da eliminare",
+                type: "INTEGER",
+                minValue: 1,
+                required: false
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var utente = message.mentions.members?.first()
-        if (!utente) {
-            var utente = await getUser(args.join(" "), args.slice(0, -1).join(" "))
-        }
+    async execute(client, interaction, comando) {
+        let utente = await getTaggedUser(client, interaction.options.getString("user")) || interaction.user
 
         if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
-        }
-
-        try {
-            var code = parseInt(args[args.length - 1]);
-        } catch {
-            return botCommandMessage(message, "Error", "Codice non valido", "Hai inserito un codice non esistente o non valido", property)
-        }
-
-        if (utenteMod(utente) && message.author.id != settings.idGiulio) {
-            return botCommandMessage(message, "NonPermesso", "", "Non puoi cancellare le infrazioni a questo utente")
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
         if (utente.bot) {
-            return botCommandMessage(message, "Warning", "Non a un bot", "Non puoi rimuovere le infrazioni di un bot")
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi eliminare le infrazioni di un bot", comando)
         }
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
-
-        if (userstats.warn.length == 0) {
-            return botCommandMessage(message, "Warning", "Utente senza infrazioni", "Questo utente è già senza infrazioni")
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi eliminare le infranzioni a questo utente", comando)
         }
-        else {
-            var warnList = ""
-            if (!code) {
-                userstats.warn.forEach(warn => {
-                    warnList += `- ${warn.reason}\r`
-                })
 
-                botCommandMessage(message, "Correct", "Tutte le infrazioni eliminate", `Sono state eliminate tutte le **${userstats.warn.length} infrazioni** di ${utente.toString()}`)
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
 
-                userstats.warn = [];
-            }
-            else {
-                if (!userstats.warn.hasOwnProperty(code - 1)) {
-                    return botCommandMessage(message, "Error", "Codice non valido", "Hai inserito un codice non esistente o non valido", property)
+        let warns = userstats.warns;
+
+        if (warns.length == 0) {
+            return replyMessage(client, interaction, "Warning", "Utente senza infranzioni", "Questo utente non ha nessuna infranzione", comando)
+        }
+
+        let code = interaction.options.getInteger("code")
+        if (code && !warns[code - 1]) {
+            return replyMessage(client, interaction, "Error", "Codice non valido", "Questo codice non corrisponde a una infranzione dell'utente", comando)
+        }
+
+        let warnsList = ""
+        let warnsDeletedList = ""
+        if (!code) {
+            for (let i = 0; i < 10; i++) {
+                if (warns[i]) {
+                    warnsList += `**#${i + 1}**${warns[i].type == "mute" ? " **[Mute]**" : warns[i].type == "tempmute" ? " **[Tempmute]**" : warns[i].type == "ban" ? " **[Ban]**" : warns[i].type == "tempban" ? " **[Tempban]**" : warns[i].type == "fban" ? " **[Forceban]**" : warns[i].type == "kick" ? " **[Kick]**" : ""} ${warns[i].reason}\n`
+                    warnsDeletedList += `- ${warns[i].type == "mute" ? " **[Mute]**" : warns[i].type == "tempmute" ? " **[Tempmute]**" : warns[i].type == "ban" ? " **[Ban]**" : warns[i].type == "tempban" ? " **[Tempban]**" : warns[i].type == "fban" ? " **[Forceban]**" : warns[i].type == "kick" ? " **[Kick]**" : ""} ${warns[i].reason}\n`
                 }
 
-                warnList = `- ${userstats.warn[code - 1].reason}`
-
-                botCommandMessage(message, "Correct", "Infrazione eliminata", `Infrazione di ${utente.toString()} eliminata \r\`\`\`#${code} - ${userstats.warn[code - 1].reason} (${moment(userstats.warn[code - 1].time).fromNow()})\`\`\``)
-
-                delete userstats.warn.splice(code - 1, 1)
+                if (i == 9 && warns.length > 10) {
+                    warnsList += `Altri ${warns.length - 10} warns...`
+                    warnsDeletedList += `Altri ${warns.length - 10} warns...`
+                    break
+                }
             }
 
-            if (utente.user) utente = utente.user
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Tutte le infrazioni eliminate")
+                .setColor(colors.blue)
+                .setDescription(`Sono state eliminate tutte le **${warns.length} infrazioni** di ${utente.toString()}`)
+                .addField(`:warning: ${warns.length} warns deleted`, warnsList)
 
-            var embed = new Discord.MessageEmbed()
-                .setTitle(":fire_extinguisher: Clear warns :fire_extinguisher:")
-                .setColor("#8227cc")
-                .setDescription(`[Message link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
-                .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-                .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                .addField("Infractions", warnList.length > 1000 ? `${warnList.slice(0, 993)}...` : warnList, false)
+            let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
+
+            userstats.warns = []
+            updateUser(userstats)
+
+            embed = new Discord.MessageEmbed()
+                .setTitle(":fire_extinguisher: Clear infractions :fire_extinguisher:")
+                .setColor(colors.purple)
+                .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+                .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+                .addField(":wastebasket: Warns deleted", warnsDeletedList)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.moderation.clearwarn).send({ embeds: [embed] })
+                client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
+        }
+        else {
+            warnsList += `**#${code}**${warns[code - 1].type == "mute" ? " **[Mute]**" : warns[code - 1].type == "tempmute" ? " **[Tempmute]**" : warns[code - 1].type == "ban" ? " **[Ban]**" : warns[code - 1].type == "tempban" ? " **[Tempban]**" : warns[code - 1].type == "fban" ? " **[Forceban]**" : warns[code - 1].type == "kick" ? " **[Kick]**" : ""} ${warns[code - 1].reason}\n`
+            warnsDeletedList += `-${warns[code - 1].type == "mute" ? " **[Mute]**" : warns[code - 1].type == "tempmute" ? " **[Tempmute]**" : warns[code - 1].type == "ban" ? " **[Ban]**" : warns[code - 1].type == "tempban" ? " **[Tempban]**" : warns[code - 1].type == "fban" ? " **[Forceban]**" : warns[code - 1].type == "kick" ? " **[Kick]**" : ""} ${warns[code - 1].reason}\n`
 
-            userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Infranzione eliminata")
+                .setColor(colors.blue)
+                .setDescription(`Infrazioni di ${utente.toString()} eliminata`)
+                .addField(":warning: 1 warn deleted", warnsDeletedList)
+
+            let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
+
+            userstats.warns = []
+            for (let i = 0; i < warns.length; i++) {
+                if (i != code - 1) userstats.warns.push(warns[i])
+            }
+            updateUser(userstats)
+
+            embed = new Discord.MessageEmbed()
+                .setTitle(":fire_extinguisher: Clear infractions :fire_extinguisher:")
+                .setColor(colors.purple)
+                .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+                .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+                .addField(":wastebasket: Warns deleted", warnsList)
+
+            if (!isMaintenance())
+                client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
         }
     },
 };

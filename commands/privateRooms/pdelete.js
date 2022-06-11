@@ -1,78 +1,139 @@
+const Discord = require("discord.js")
+const log = require("../../config/general/log.json")
+const settings = require("../../config/general/settings.json");
+const moment = require("moment")
+const colors = require("../../config/general/colors.json")
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { updateServer } = require("../../functions/database/updateServer");
+const { fetchAllMessages } = require("../../functions/general/fetchAllMessages");
+const { isMaintenance } = require("../../functions/general/isMaintenance");
+
 module.exports = {
     name: "pdelete",
-    aliases: ["pclose"],
-    onlyStaff: false,
-    availableOnDM: false,
     description: "Eliminare una stanza privata",
-    syntax: "!pdelete",
-    category: "privateRooms",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/pdelete [room]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "room",
+                description: "Scegli la stanza che vuoi eliminare",
+                type: "CHANNEL",
+                required: true,
+                channelTypes: ["GUILD_TEXT", "GUILD_VOICE"]
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var privaterooms = serverstats.privateRooms
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
 
-        var room
-        if (privaterooms.find(x => x.text == message.channel.id)) {
-            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
-                room = privaterooms.find(x => x.text == message.channel.id)
-            }
-            else {
-                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
-            }
+        if (getUserPermissionLevel(client, interaction.user.id) <= 1 && interaction.channelId != settings.idCanaliServer.commands && !serverstats.privateRooms.find(x => x.channel == interaction.channelId)) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+
+        let room
+        if (!serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)) {
+            return replyMessage(client, interaction, "Error", "Stanza non trovata", "Il canale che hai scelto non è una stanza privata", comando)
         }
         else {
-            if (!privaterooms.find(x => x.owner == message.author.id)) {
-                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            room = serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)
+            if (!room.owners.includes(interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) == 0) {
+                return replyMessage(client, interaction, "NonPermesso", "", "Non puoi eliminare questa stanza privata", comando)
             }
-            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
-        botCommandMessage(message, "Correct", "Stanza in eliminazione", room.type == "onlyText" || room.type == "onlyVoice" ? "Il tuo canale privato si eliminerà a breve" : "I tuoi canali privati si elimineranno a breve")
+        if (room.daEliminare) {
+            return replyMessage(client, interaction, "Warning", "Già in chiusura", "Questa stanza si sta già eliminando", comando)
+        }
 
-        setTimeout(async () => {
-            var embed = new Discord.MessageEmbed()
-                .setTitle(":paperclips: Room closed :paperclips:")
-                .setColor("#e31705")
-                .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(room.owner).toString()} - ID: ${room.owner}`)
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Stanza in eliminazione...")
+            .setColor(colors.red)
+            .setDescription("Questa stanza si eliminerà tra `20 secondi`")
 
-            var chatLog = ""
-            if (room.text) {
-                await client.channels.cache.get(room.text).messages.fetch()
-                    .then(async messages => {
-                        for (var msg of messages.reverse()) {
-                            var msg = msg[1]
-                            var attachments = ""
-                            msg.attachments.forEach(attachment => {
-                                attachments += `${attachment.name} (${attachment.url}), `
-                            })
-                            if (attachments != "")
-                                attachments = attachments.slice(0, -2)
+        let button1 = new Discord.MessageButton()
+            .setLabel("Annulla")
+            .setStyle("DANGER")
+            .setCustomId(`annullaChiusuraRoom,${room.channel}`)
 
-                            chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == room.owner ? "[OWNER] " : utenteMod(msg.author) ? "[MOD] " : ""}@${msg.author.username} - ${moment(msg.createdAt).format("ddd DD HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? `\nEmbed: ${msg.embeds[0].title}` : ""}${attachments ? `\nAttachments: ${attachments}` : ""}\n\n`
-                        }
-                    })
-            }
+        let row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
-            if (chatLog != "") {
-                var attachment1 = await new Discord.MessageAttachment(
-                    Buffer.from(chatLog, "utf-8"), `room${room.owner}-${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours() < 10 ? (`0${new Date().getHours()}`) : new Date().getHours()}${new Date().getMinutes() < 10 ? (`0${new Date().getMinutes()}`) : new Date().getMinutes()}.txt`
-                );
-                if (!isMaintenance())
-                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed], files: [attachment1] })
-            }
-            else
-                if (!isMaintenance())
-                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
+        interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
+            .then(msg => {
+                serverstats.privateRooms[serverstats.privateRooms.findIndex(x => x.channel == room.channel)].daEliminare = true;
+                updateServer(serverstats)
 
-            if (room.text && client.channels.cache.get(room.text))
-                client.channels.cache.get(room.text).delete()
-                    .catch(() => { })
-            if (room.voice && client.channels.cache.get(room.voice))
-                client.channels.cache.get(room.voice).delete()
-                    .catch(() => { })
-        }, 1000 * 10)
+                setTimeout(function () {
+                    room = serverstats.privateRooms.find(x => x.channel == room.channel)
+                    if (room?.daEliminare) {
+                        embed.setDescription("Questa stanza si eliminerà tra `10 secondi`")
+                        msg.edit({ embeds: [embed] })
 
-        serverstats.privateRooms = serverstats.privateRooms.filter(x => x.owner != room.owner)
+                        setTimeout(async function () {
+                            room = serverstats.privateRooms.find(x => x.channel == room.channel)
+                            if (room?.daEliminare) {
+                                let channel = client.channels.cache.get(room.channel)
+                                if (!channel) return
+
+                                let ownersList = ""
+                                let i = 0
+
+                                while (room.owners[i] && ownersList.length + `- ${client.users.cache.get(room.owners[i])?.toString()} - ID: ${room.owners[i]}\n`.length < 900) {
+                                    ownersList += `- ${client.users.cache.get(room.owners[i])?.toString()} - ID: ${room.owners[i]}\n`
+                                    i++
+                                }
+
+                                if (room.owners.length > i)
+                                    ownersList += `Altri ${room.owners.length - i}...`
+
+                                let embed2 = new Discord.MessageEmbed()
+                                    .setTitle(":paperclips: Room closed :paperclips:")
+                                    .setColor(colors.red)
+                                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                                    .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+                                    .addField(":bust_in_silhouette: Owner", ownersList)
+                                    .addField("Category", room.type == "text" ? "Text" : "Voice")
+
+                                let chatLog = ""
+                                if (channel.type == "GUILD_TEXT")
+                                    await fetchAllMessages(channel)
+                                        .then(async messages => {
+                                            for (let msg of messages) {
+                                                chatLog += `${msg.author.bot ? "[BOT] " : room.owners.includes(msg.author.id) ? "[OWNER] " : getUserPermissionLevel(client, msg.author.id) ? "[STAFF] " : ""}@${msg.author.tag} - ${moment(msg.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? msg.embeds.map(x => `\nEmbed: ${JSON.stringify(x)}`) : ""}${msg.attachments.size > 0 ? `\nAttachments: ${msg.attachments.map(x => `[${x.name}](${x.url})`).join(", ")}` : ""}${msg.stickers.size > 0 ? `\nStickers: ${msg.stickers.map(x => `[${x.name}](${x.url})`).join(", ")}` : ""}\n\n`
+                                            }
+                                        })
+
+                                let attachment1
+                                if (chatLog != "")
+                                    attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `room-${room.channel}-${new Date().getTime()}.txt`);
+
+                                if (!isMaintenance())
+                                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed2], files: attachment1 ? [attachment1] : [] })
+
+                                embed
+                                    .setTitle("Stanza eliminata")
+                                    .setDescription(`La stanza #${client.channels.cache.get(room.channel).name} è stata eliminata`)
+
+                                msg.edit({ embeds: [embed], components: [] })
+
+                                channel.delete()
+                                    .catch(() => { });
+
+                                serverstats.privateRooms = serverstats.privateRooms.filter((x) => x.channel != room.channel);
+                                updateServer(serverstats)
+                            }
+                            else return
+                        }, 10000);
+                    }
+                    else return
+                }, 10000);
+            })
     },
 };

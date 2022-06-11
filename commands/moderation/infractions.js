@@ -1,175 +1,145 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const ms = require("ms")
+const settings = require("../../config/general/settings.json");
+const { addUser } = require("../../functions/database/addUser");
+const { getUser } = require("../../functions/database/getUser");
+const { replyMessage } = require("../../functions/general/replyMessage")
+const { getEmoji } = require("../../functions/general/getEmoji");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "infractions",
-    aliases: ["infraction", "infrazioni"],
-    onlyStaff: false,
-    availableOnDM: true,
     description: "Visualizzare tutte le infrazioni e le info di moderazione di un utente",
-    syntax: "!infractions (user)",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/infractions (user) (code)",
     category: "moderation",
-    channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        if (!args[0]) {
-            var utente = message.author;
-        }
-        else {
-            var utente = message.mentions.users?.first()
-            if (!utente) {
-                var utente = await getUser(args.join(" "))
+    client: "moderation",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente di cui vedere le infrazioni",
+                type: "STRING",
+                required: false,
+                autocomplete: true
+            },
+            {
+                name: "code",
+                description: "Codice dell'infranzione da vedere approfondita",
+                type: "INTEGER",
+                minValue: 1,
+                required: false
             }
-        }
+        ]
+    },
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(client, interaction, comando) {
+        let utente = await getTaggedUser(client, interaction.options.getString("user")) || interaction.user
 
         if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
         if (utente.bot) {
-            return botCommandMessage(message, "Warning", "Non un bot", "Non puoi visualizzare le infrazioni di un bot")
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi vedere le infrazioni di un bot", comando)
         }
 
-        if (utente.user) utente = utente.user
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
+        let warns = userstats.warns;
 
-        var warn = userstats.warn;
+        let code = interaction.options.getInteger("code")
+        if (!code) {
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle("Infractions - " + (utente.nickname ? utente.nickname : utente.username))
-            .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
+            let embed = new Discord.MessageEmbed()
+                .setTitle(`Infractions - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
+                .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
 
-        if (userstats.moderation.type == "Muted") {
-            embed
-                .addField(":sound: MUTED", `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`)
-        }
-        if (userstats.moderation.type == "Tempmuted") {
-            embed
-                .addField(":sound: TEMPMUTED", `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`)
-        }
-        if (userstats.moderation.type == "Banned") {
-            embed
-                .addField(":speaker: BANNED", `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`)
-        }
-        if (userstats.moderation.type == "Tempbanned") {
-            embed
-                .addField(":speaker: TEMPBANNED", `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`)
-        }
-        if (userstats.moderation.type == "ForceBanned") {
-            embed
-                .addField(":mute: FORCEBANNED", `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`)
-        }
+            if (userstats.moderation.type) {
+                embed
+                    .setDescription(userstats.moderation.type == "Muted" ? ":mute: User **muted**" : userstats.moderation.type == "Tempmuted" ? ":mute: User **tempmuted**" : userstats.moderation.type == "Banned" ? ":no_entry: User **banned**" : userstats.moderation.type == "Tempbanned" ? ":no_entry: User **tempbanned**" : userstats.moderation.type == "Forcebanned" ? ":name_badge: User **Forcebanned**" : "")
+                    .addField(":page_facing_up: Reason", userstats.moderation.reason, true)
+                    .addField(":shield: Moderator", userstats.moderation.moderator ? client.users.cache.get(userstats.moderation.moderator).toString() : client.user.toString(), true)
+                    .addField(":alarm_clock: Since", `${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})`)
 
-        if (warn.length == 0) {
-            embed
-                .addField(":interrobang: Total", "```Nessuna infrazione```", false)
+                if (userstats.moderation.until)
+                    embed
+                        .addField(":hourglass: Until", `${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})`)
+            }
 
-            message.channel.send({ embeds: [embed] })
-                .catch(() => { })
+            let warnsList = ""
+            let totPage = Math.ceil(warns.length / 10);
+            let page = 1;
+
+            if (warns.length == 0) warnsList = "Nessuna infranzione"
+            else {
+                for (let i = 10 * (page - 1); i < 10 * page; i++) {
+                    if (warns[i]) {
+                        warnsList += `**#${i + 1}**${warns[i].type == "mute" ? " **[Mute]**" : warns[i].type == "tempmute" ? " **[Tempmute]**" : warns[i].type == "ban" ? " **[Ban]**" : warns[i].type == "tempban" ? " **[Tempban]**" : warns[i].type == "fban" ? " **[Forceban]**" : warns[i].type == "kick" ? " **[Kick]**" : ""} ${warns[i].reason} (${moment(warns[i].time).fromNow()})\n`
+                    }
+                }
+            }
+
+            embed
+                .addField(`:warning: ${warns.length} warns`, warnsList)
+                .setFooter({ text: warns.length > 10 ? `Page ${page}/${totPage}` : "" })
+
+            let button1 = new Discord.MessageButton()
+                .setCustomId(`indietroInfractions,${interaction.user.id},${page},${utente.id}`)
+                .setStyle("PRIMARY")
+                .setEmoji(getEmoji(client, "Previous"))
+
+            if (page == 1) button1.setDisabled()
+
+            let button2 = new Discord.MessageButton()
+                .setCustomId(`avantiInfractions,${interaction.user.id},${page},${utente.id}`)
+                .setStyle("PRIMARY")
+                .setEmoji(getEmoji(client, "Next"))
+
+            if (page == totPage) button2.setDisabled()
+
+            let row = new Discord.MessageActionRow()
+                .addComponents(button1)
+                .addComponents(button2)
+
+            interaction.reply({ embeds: [embed], components: warns.length > 10 ? [row] : [] })
         }
         else {
-            var ultimi7d = 0
-            var ultime24h = 0
-            var elencoInfrazioni = ""
-
-            for (var index in warn) {
-                var time = warn[index].time;
-                var timeOra = new Date().getTime();
-                var diff = timeOra - time;
-
-                if (diff <= 86400000) {
-                    ultime24h++;
-                }
-                if (diff <= 604800000) {
-                    ultimi7d++;
-                }
+            if (code && !warns[code - 1]) {
+                return replyMessage(client, interaction, "Error", "Codice non valido", "Il codice che hai inserito non corrisponde a nessuna infranzione", comando)
             }
 
-            var totalPage = Math.ceil(warn.length / 10);
-            var page = 0;
+            let warn = warns[code - 1]
 
-            for (var i = page * 10; i < (page * 10 + ((page * 10 + 10) > warn.length ? warn.length % 10 : 10)); i++) {
-                elencoInfrazioni += `#${i + 1} - ${warn[i].reason} (${moment(warn[i].time).fromNow()})\r`
-            }
+            let embed = new Discord.MessageEmbed()
+                .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+                .setTitle(`Infraction #${code}${warn.type == "mute" ? " [Mute]" : warn.type == "tempmute" ? " [Tempmute]" : warn.type == "ban" ? " [Ban]" : warn.type == "tempban" ? " [Tempban]" : warn.type == "fban" ? " [Forceban]" : warn.type == "kick" ? " [Kick]" : ""} - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
+                .addField(":alarm_clock: Time", `${moment(warn.time).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(warn.time).fromNow()})`)
 
-            embed
-                .addField(":interrobang: Total", "```" + warn.length + "```", false)
-                .addField(":exclamation: Last 24 hours", "```" + ultime24h + "```", true)
-                .addField(":question: Last 7 days", "```" + ultimi7d + "```", true)
-
-            if (totalPage != 1) {
+            if (warn.type == "warn") {
                 embed
-                    .addField(`:no_entry_sign: All infractions ${page + 1}/${totalPage}`, "```" + elencoInfrazioni + "```", false)
-                    .setFooter(`Page ${page + 1}/${totalPage}`)
+                    .addField(":page_facing_up: Reason", warn.reason || "_Nessuna reason_", true)
+                    .addField(":shield: Moderator", `<@${warn.moderator}>`, true)
             }
             else {
                 embed
-                    .addField(":no_entry_sign: All infractions", "```" + elencoInfrazioni + "```", false)
+                    .addField(":page_facing_up: Reason", warn.reason || "_Nessuna reason_", true)
+                    .addField(":shield: Moderator", `<@${warn.moderator}>`, true)
+
+                if ((warn.type == "mute" || warn.type == "tempmute") && warn.unTime) {
+                    embed
+                        .addField(":anger: Unmuted", `${moment(warn.unTime).format("ddd DD MMM YYYY, HH:mm")} (after ${ms(warn.unTime - warn.time, { long: true })}) from <@${warn.unModerator}>`)
+                }
+                else if ((warn.type == "ban" || warn.type == "tempban" || warn.type == "fban") && warn.unTime) {
+                    embed
+                        .addField(":anger: Unbanned", `${moment(warn.unTime).format("ddd DD MMM YYYY, HH:mm")} (after ${ms(warn.unTime - warn.time, { long: true })}) from <@${warn.unModerator}>`)
+                }
             }
 
-            var button1 = new Discord.MessageButton()
-                .setCustomId(`indietroInfractions,${message.author.id},${page},${utente.id}`)
-                .setStyle("PRIMARY")
-                .setEmoji("◀️")
-
-            if (page == 0)
-                button1.setDisabled()
-
-            var button2 = new Discord.MessageButton()
-                .setCustomId(`avantiInfractions,${message.author.id},${page},${utente.id}`)
-                .setStyle("PRIMARY")
-                .setEmoji("▶️")
-
-            if (page == totalPage)
-                button2.setDisabled()
-
-            if (totalPage != 1) {
-                var row = new Discord.MessageActionRow()
-                    .addComponents(button1)
-                    .addComponents(button2)
-                message.channel.send({ embeds: [embed], components: [row] })
-            }
-            else {
-                message.channel.send({ embeds: [embed] })
-                // .catch(() => { })
-            }
+            interaction.reply({ embeds: [embed] })
         }
     },
 };

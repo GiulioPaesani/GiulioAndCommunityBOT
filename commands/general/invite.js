@@ -1,20 +1,22 @@
+const Discord = require("discord.js")
+const settings = require("../../config/general/settings.json")
+
 module.exports = {
     name: "invite",
-    aliases: ["invito"],
-    onlyStaff: false,
-    availableOnDM: true,
     description: "Link di invito del server",
-    syntax: "!invite",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/invite",
     category: "general",
+    client: "general",
     channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        var embed = new Discord.MessageEmbed()
+    async execute(client, interaction, comando) {
+        let embed = new Discord.MessageEmbed()
             .setTitle(":woman_raising_hand: Invito del server :man_raising_hand:")
             .setDescription(`Ecco a te l'invito da poter **condividere** con amici o chiunque tu voglia per **entrare** nel server
 https://discord.gg/ypTCaveew2`)
-            .setColor("#677BC4");
+            .setColor("#5865F2")
 
-        message.channel.send({ embeds: [embed] })
-            .catch(() => { })
+        interaction.reply({ embeds: [embed] })
     },
 };

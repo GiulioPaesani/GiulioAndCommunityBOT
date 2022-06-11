@@ -1,142 +1,108 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const log = require("../../../config/general/log.json")
+const colors = require("../../../config/general/colors.json")
+const illustrations = require("../../../config/general/illustrations.json")
+const { replyMessage } = require("../../../functions/general/replyMessage")
+const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { getTaggedUser } = require("../../../functions/general/getTaggedUser")
+const { updateUser } = require("../../../functions/database/updateUser")
+const { getUser } = require("../../../functions/database/getUser")
+const { addUser } = require("../../../functions/database/addUser")
+
 module.exports = {
     name: "kick",
-    aliases: [],
-    onlyStaff: true,
-    availableOnDM: false,
-    description: "Espelle un utente dal server",
-    syntax: "!kick [user] (reason)",
+    description: "Kickare un utente",
+    permissionLevel: 1,
+    requiredLevel: 0,
+    syntax: "/kick [user] [reason]",
     category: "moderation",
+    client: "moderation",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente da kickare",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            },
+            {
+                name: "reason",
+                description: "Motivazione del kick",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var utente = message.mentions.members?.first()
-        if (!utente) {
-            var utente = await getUser(args[0])
-        }
+    async execute(client, interaction, comando) {
+        let utente = await getTaggedUser(client, interaction.options.getString("user"), true)
+        let reason = interaction.options.getString("reason")
 
         if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
-        }
-
-        if (utenteMod(utente)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non puoi espellere questo utente")
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
         if (utente.bot) {
-            return botCommandMessage(message, "Warning", "Non a un bot", "Non puoi espellere un bot")
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi kickare un bot", comando)
         }
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
-
-        var reason = args.slice(1).join(" ");
-
-        if (!reason) {
-            reason = "Nessun motivo";
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi kickare questo utente", comando)
         }
 
-        var button1 = new Discord.MessageButton()
-            .setLabel("Sovrascrivi moderazione (Kick)")
-            .setStyle("DANGER")
-            .setCustomId(`kick,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 57)}`)
-
-        var row = new Discord.MessageActionRow()
-            .addComponents(button1)
-
-        if (userstats.moderation.type == "Muted") {
-            return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
-                name: ":sound: MUTED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "Tempmuted") {
-            return botCommandMessage(message, "Warning", "Utente tempmutato", "", null, [{
-                name: ":sound: TEMPMUTED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "Banned") {
-            return botCommandMessage(message, "Warning", "Utente bannato", "", null, [{
-                name: ":speaker: BANNED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "Tempbanned") {
-            return botCommandMessage(message, "Warning", "Utente tempbannato", "", null, [{
-                name: ":speaker: TEMPBANNED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "ForceBanned") {
-            return botCommandMessage(message, "Warning", "Utente bannato forzatamente", "", null, [{
-                name: ":mute: FORCEBANNED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
+        if (interaction.guild.members.cache.get(utente.id) && !utente.manageable) {
+            return replyMessage(client, interaction, "NonHoPermesso", "", "Non ho il permesso di kickare questo utente", comando)
         }
 
-        var embed = new Discord.MessageEmbed()
-            .setAuthor("[KICK] " + utente.user.tag, utente.user.displayAvatarURL({ dynamic: true }))
-            .setThumbnail("https://i.postimg.cc/6QvBsKmr/Kick.png")
-            .setColor("#6143CB")
-            .addField("Reason", reason)
-            .addField("Moderator", message.author.toString())
-            .setFooter("User ID: " + utente.user.id)
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[KICK] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
+            .setThumbnail(illustrations.kick)
+            .setColor(colors.purple)
+            .addField(":page_facing_up: Reason", reason)
+            .addField(":shield: Moderator", interaction.user.toString())
+            .setFooter({ text: "User ID: " + utente.id })
 
-        message.channel.send({ embeds: [embed] })
-            .then(msg => {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":ping_pong: Kick :ping_pong:")
-                    .setColor("#8227cc")
-                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
-                    .setThumbnail(utente.user.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                    .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Reason", reason, false)
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
-            })
+        embed = new Discord.MessageEmbed()
+            .setTitle(":ping_pong: Kick :ping_pong:")
+            .setColor(colors.purple)
+            .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+            .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+            .addField(":page_facing_up: Reason", reason)
 
-        var embed = new Discord.MessageEmbed()
+        if (!isMaintenance())
+            client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
+
+        embed = new Discord.MessageEmbed()
             .setTitle("Sei stato espulso")
-            .setColor("#6143CB")
-            .setThumbnail("https://i.postimg.cc/6QvBsKmr/Kick.png")
-            .addField("Reason", reason)
-            .addField("Moderator", message.author.toString())
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.kick)
+            .addField(":page_facing_up: Reason", reason)
+            .addField(":shield: Moderator", interaction.user.toString())
 
-        utente.send({ embeds: [embed] })
-            .then(() => {
-                utente.kick({ reason: reason })
-            })
+        await utente.send({ embeds: [embed] })
             .catch(() => { })
+
+        interaction.guild.members.cache.get(utente.id)?.kick({ reason: reason })
+
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+
+        userstats.warns.push({
+            type: "kick",
+            reason: reason,
+            time: new Date().getTime(),
+            moderator: interaction.user.id
+        })
+
+        updateUser(userstats)
     },
 };

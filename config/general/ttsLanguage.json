@@ -1,0 +1,561 @@
+[
+    {
+        "name": "Afrikaans (Sudafrica)",
+        "code": "af-ZA"
+    },
+    {
+        "name": "Albanese (Albania)",
+        "code": "sq-AL"
+    },
+    {
+        "name": "Amarico (Etiopia)",
+        "code": "am-ET"
+    },
+    {
+        "name": "Arabo (Algeria)",
+        "code": "ar-DZ"
+    },
+    {
+        "name": "Arabo (Bahrain)",
+        "code": "ar-BH"
+    },
+    {
+        "name": "Arabo (Egitto)",
+        "code": "ar-EG"
+    },
+    {
+        "name": "Arabo (Iraq)",
+        "code": "ar-IQ"
+    },
+    {
+        "name": "Arabo (Israele)",
+        "code": "ar-IL"
+    },
+    {
+        "name": "Arabo (Giordania)",
+        "code": "ar-JO"
+    },
+    {
+        "name": "Arabo (Kuwait)",
+        "code": "ar-KW"
+    },
+    {
+        "name": "Arabo (Libano)",
+        "code": "ar-LB"
+    },
+    {
+        "name": "Arabo (Mauritania)",
+        "code": "ar-MR"
+    },
+    {
+        "name": "Arabo (Marocco)",
+        "code": "ar-MA"
+    },
+    {
+        "name": "Arabo (Oman)",
+        "code": "ar-OM"
+    },
+    {
+        "name": "Arabo (Qatar)",
+        "code": "ar-QA"
+    },
+    {
+        "name": "Arabo (Arabia Saudita)",
+        "code": "ar-SA"
+    },
+    {
+        "name": "Arabo (Stato di Palestina)",
+        "code": "ar-PS"
+    },
+    {
+        "name": "Arabo (Tunisia)",
+        "code": "ar-TN"
+    },
+    {
+        "name": "Arabo (Emirati Arabi Uniti)",
+        "code": "ar-AE"
+    },
+    {
+        "name": "Arabo (Yemen)",
+        "code": "ar-YE"
+    },
+    {
+        "name": "Armeno (Armenia)",
+        "code": "hy-AM"
+    },
+    {
+        "name": "Azero (Azerbaigian)",
+        "code": "az-AZ"
+    },
+    {
+        "name": "Basco (Spagna)",
+        "code": "eu-ES"
+    },
+    {
+        "name": "Bengalese (Bangladesh)",
+        "code": "bn-BD"
+    },
+    {
+        "name": "Bengalese (India)",
+        "code": "bn-IN"
+    },
+    {
+        "name": "Bosnia (Bosnia ed Erzegovina)",
+        "code": "bs-BA"
+    },
+    {
+        "name": "Bulgaro (Bulgaria)",
+        "code": "bg-BG"
+    },
+    {
+        "name": "Birmano (Myanmar)",
+        "code": "my-MM"
+    },
+    {
+        "name": "Catalano (Spagna)",
+        "code": "ca-ES"
+    },
+    {
+        "name": "Cinese, cantonese (Hong Kong tradizionale)",
+        "code": "yue-Hant-HK",
+        "flag":"hk"
+    },
+    {
+        "name": "Cinese, mandarino (Cina)",
+        "code": "zh",
+        "flag": "cn"
+    },
+    {
+        "name": "Cinese, mandarino (tradizionale, Taiwan)",
+        "code": "zh-TW"
+    },
+    {
+        "name": "Croato (Croazia)",
+        "code": "hr-HR"
+    },
+    {
+        "name": "Ceco (Repubblica Ceca)",
+        "code": "cs-CZ"
+    },
+    {
+        "name": "Danese (Danimarca)",
+        "code": "da-DK"
+    },
+    {
+        "name": "Olandese (Belgio)",
+        "code": "nl-BE"
+    },
+    {
+        "name": "Olandese (Paesi Bassi)",
+        "code": "nl-NL"
+    },
+    {
+        "name": "Inglese (Australia)",
+        "code": "en-AU"
+    },
+    {
+        "name": "Inglese (Canada)",
+        "code": "en-CA"
+    },
+    {
+        "name": "Inglese (Ghana)",
+        "code": "en-GH"
+    },
+    {
+        "name": "Inglese (Hong Kong)",
+        "code": "en-HK"
+    },
+    {
+        "name": "Inglese (India)",
+        "code": "en-IN"
+    },
+    {
+        "name": "Inglese (Irlanda)",
+        "code": "en-IE"
+    },
+    {
+        "name": "Inglese (Kenya)",
+        "code": "en-KE"
+    },
+    {
+        "name": "Inglese (Nuova Zelanda)",
+        "code": "en-NZ"
+    },
+    {
+        "name": "Inglese (Nigeria)",
+        "code": "en-NG"
+    },
+    {
+        "name": "Inglese (Pakistan)",
+        "code": "en-PK"
+    },
+    {
+        "name": "Inglese (Filippine)",
+        "code": "en-PH"
+    },
+    {
+        "name": "Inglese (Singapore)",
+        "code": "en-SG"
+    },
+    {
+        "name": "Inglese (Sudafrica)",
+        "code": "en-ZA"
+    },
+    {
+        "name": "Inglese (Tanzania)",
+        "code": "en-TZ"
+    },
+    {
+        "name": "Inglese (UK)",
+        "code": "en-GB"
+    },
+    {
+        "name": "Inglese (USA)",
+        "code": "en-US"
+    },
+    {
+        "name": "Estone (Estonia)",
+        "code": "et-EE"
+    },
+    {
+        "name": "Filippino (Filippine)",
+        "code": "fil-PH"
+    },
+    {
+        "name": "Finlandese (Finlandia)",
+        "code": "fi-FI"
+    },
+    {
+        "name": "Francese (Belgio)",
+        "code": "fr-BE"
+    },
+    {
+        "name": "Francese (Canada)",
+        "code": "fr-CA"
+    },
+    {
+        "name": "Francese (Francia)",
+        "code": "fr-FR"
+    },
+    {
+        "name": "Francese (Svizzera)",
+        "code": "fr-CH"
+    },
+    {
+        "name": "Galiziano (Spagna)",
+        "code": "gl-ES"
+    },
+    {
+        "name": "georgiana (Georgia)",
+        "code": "ka-GE"
+    },
+    {
+        "name": "Tedesco (Austria)",
+        "code": "de-AT"
+    },
+    {
+        "name": "Tedesco (Germania)",
+        "code": "de-DE"
+    },
+    {
+        "name": "Tedesco (Svizzera)",
+        "code": "de-CH"
+    },
+    {
+        "name": "Greco (Grecia)",
+        "code": "el-GR"
+    },
+    {
+        "name": "Gujarati (India)",
+        "code": "gu-IN"
+    },
+    {
+        "name": "Ebraico (Israele)",
+        "code": "iw-IL"
+    },
+    {
+        "name": "Hindi (India)",
+        "code": "hi-IN"
+    },
+    {
+        "name": "Ungherese (Ungheria)",
+        "code": "hu-HU"
+    },
+    {
+        "name": "Islandese (Islanda)",
+        "code": "is-IS"
+    },
+    {
+        "name": "Indonesiano (Indonesia)",
+        "code": "id-ID"
+    },
+    {
+        "name": "Italiano (Italia)",
+        "code": "it-IT"
+    },
+    {
+        "name": "Italiano (Svizzera)",
+        "code": "it-CH"
+    },
+    {
+        "name": "Giapponese (Giappone)",
+        "code": "ja-JP"
+    },
+    {
+        "name": "Giavanese (Indonesia)",
+        "code": "jv-ID"
+    },
+    {
+        "name": "Kannada (India)",
+        "code": "kn-IN"
+    },
+    {
+        "name": "Kazako (Kazakistan)",
+        "code": "kk-KZ"
+    },
+    {
+        "name": "Khmer (Cambogia)",
+        "code": "km-KH"
+    },
+    {
+        "name": "Coreano (Corea del Sud)",
+        "code": "ko-KR"
+    },
+    {
+        "name": "Laoti",
+        "code": "lo-LA"
+    },
+    {
+        "name": "Lettone (Lettonia)",
+        "code": "lv-LV"
+    },
+    {
+        "name": "Lituano (Lituania)",
+        "code": "lt-LT"
+    },
+    {
+        "name": "Macedone (Macedonia del Nord)",
+        "code": "mk-MK"
+    },
+    {
+        "name": "Malese (Malaysia)",
+        "code": "ms-MY"
+    },
+    {
+        "name": "Malayalam (India)",
+        "code": "ml-IN"
+    },
+    {
+        "name": "Marathi (India)",
+        "code": "mr-IN"
+    },
+    {
+        "name": "Mongolo (Mongolia)",
+        "code": "mn-MN"
+    },
+    {
+        "name": "Nepalese (Nepal)",
+        "code": "ne-NP"
+    },
+    {
+        "name": "Norvegese bokmål (Norvegia)",
+        "code": "nb-NO"
+    },
+    {
+        "name": "Norvegese bokmål (Norvegia)",
+        "code": "no-NO"
+    },
+    {
+        "name": "Persiano (Iran)",
+        "code": "fa-IR"
+    },
+    {
+        "name": "Polacco (Polonia)",
+        "code": "pl-PL"
+    },
+    {
+        "name": "Portoghese (Brasile)",
+        "code": "pt-BR"
+    },
+    {
+        "name": "Portoghese (Portogallo)",
+        "code": "pt-PT"
+    },
+    {
+        "name": "Punjabi (Gurmukhi India)",
+        "code": "pa-Guru-IN",
+        "flag":"in"
+    },
+    {
+        "name": "Rumeno (Romania)",
+        "code": "ro-RO"
+    },
+    {
+        "name": "Russo (Russia)",
+        "code": "ru-RU"
+    },
+    {
+        "name": "Serbo (Serbia)",
+        "code": "sr-RS"
+    },
+    {
+        "name": "Singalese (Sri Lanka)",
+        "code": "si-LK"
+    },
+    {
+        "name": "Slovacco (Slovacchia)",
+        "code": "sk-SK"
+    },
+    {
+        "name": "Sloveno (Slovenia)",
+        "code": "sl-SI"
+    },
+    {
+        "name": "Spagnolo (Argentina)",
+        "code": "es-AR"
+    },
+    {
+        "name": "Spagnolo (Bolivia)",
+        "code": "es-BO"
+    },
+    {
+        "name": "Spagnolo (Cile)",
+        "code": "es-CL"
+    },
+    {
+        "name": "Spagnolo (Colombia)",
+        "code": "es-CO"
+    },
+    {
+        "name": "Spagnolo (Costa Rica)",
+        "code": "es-CR"
+    },
+    {
+        "name": "Spagnolo (Repubblica Dominicana)",
+        "code": "es-DO"
+    },
+    {
+        "name": "Spagnolo (Ecuador)",
+        "code": "es-EC"
+    },
+    {
+        "name": "Spagnolo (El Salvador)",
+        "code": "es-SV"
+    },
+    {
+        "name": "Spagnolo (Guatemala)",
+        "code": "es-GT"
+    },
+    {
+        "name": "Spagnolo (Honduras)",
+        "code": "es-HN"
+    },
+    {
+        "name": "Spagnolo (Messico)",
+        "code": "es-MX"
+    },
+    {
+        "name": "Spagnolo (Nicaragua)",
+        "code": "es-NI"
+    },
+    {
+        "name": "Spagnolo (Panama)",
+        "code": "es-PA"
+    },
+    {
+        "name": "Spagnolo (Paraguay)",
+        "code": "es-PY"
+    },
+    {
+        "name": "Spagnolo (Perù)",
+        "code": "es-PE"
+    },
+    {
+        "name": "Spagnolo (Portorico)",
+        "code": "es-PR"
+    },
+    {
+        "name": "Spagnolo (Spagna)",
+        "code": "es-ES"
+    },
+    {
+        "name": "Spagnolo (Stati Uniti)",
+        "code": "es-US"
+    },
+    {
+        "name": "Spagnolo (Uruguay)",
+        "code": "es-UY"
+    },
+    {
+        "name": "Spagnolo (Venezuela)",
+        "code": "es-VE"
+    },
+    {
+        "name": "Sundanese (Indonesia)",
+        "code": "su-ID"
+    },
+    {
+        "name": "Swahili (Kenya)",
+        "code": "sw-KE"
+    },
+    {
+        "name": "Swahili (Tanzania)",
+        "code": "sw-TZ"
+    },
+    {
+        "name": "Svedese (Svezia)",
+        "code": "sv-SE"
+    },
+    {
+        "name": "Tamil (India)",
+        "code": "ta-IN"
+    },
+    {
+        "name": "Tamil (Malaysia)",
+        "code": "ta-MY"
+    },
+    {
+        "name": "Tamil (Singapore)",
+        "code": "ta-SG"
+    },
+    {
+        "name": "Tamil (Sri Lanka)",
+        "code": "ta-LK"
+    },
+    {
+        "name": "Telugu (India)",
+        "code": "te-IN"
+    },
+    {
+        "name": "Thailandese (Thailandia)",
+        "code": "th-TH"
+    },
+    {
+        "name": "Turco (Turchia)",
+        "code": "tr-TR"
+    },
+    {
+        "name": "Ucraino (Ucraina)",
+        "code": "uk-UA"
+    },
+    {
+        "name": "Urdu (India)",
+        "code": "ur-IN"
+    },
+    {
+        "name": "Urdu (Pakistan)",
+        "code": "ur-PK"
+    },
+    {
+        "name": "Uzbek (Uzbekistan)",
+        "code": "uz-UZ"
+    },
+    {
+        "name": "Vietnamita (Vietnam)",
+        "code": "vi-VN"
+    },
+    {
+        "name": "Zulu (Sudafrica)",
+        "code": "zu-ZA"
+    }
+]

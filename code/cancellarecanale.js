@@ -2,27 +2,18 @@ module.exports = {
     name: "Cancellare canale",
     aliases: ["cancellarecanale", "deletecanale", "deletechannel"],
     description: "**Cancellare** un canale",
-    category: "utility",
+    category: "manage",
     id: "1639466121",
+    link: "https://www.toptal.com/developers/hastebin/dufivarepa.go",
     info: "",
     video: "",
-    v12: `
-client.on("message", message => {
-    if (message.content == "!comando") {
-        //Cancellare il canale del comando
-        message.channel.delete();
-        //Cancellare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
-        canale.delete();
-    }
-})`,
-    v13: `
+    code: `
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
         //Cancellare il canale del comando
         message.channel.delete();
         //Cancellare un canale specifico
-        var canale = client.channels.cache.get("idCanale"); //Settare id canale
+        const canale = client.channels.cache.get("idCanale"); //Settare id canale
         canale.delete();
     }
 })`

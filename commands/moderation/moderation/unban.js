@@ -1,115 +1,120 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const ms = require("ms")
+const log = require("../../../config/general/log.json")
+const colors = require("../../../config/general/colors.json")
+const illustrations = require("../../../config/general/illustrations.json")
+const settings = require("../../../config/general/settings.json")
+const { replyMessage } = require("../../../functions/general/replyMessage")
+const { getUser } = require("../../../functions/database/getUser")
+const { addUser } = require("../../../functions/database/addUser");
+const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
+const { updateUser } = require("../../../functions/database/updateUser");
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { getTaggedUser } = require("../../../functions/general/getTaggedUser")
+
 module.exports = {
     name: "unban",
-    aliases: [],
-    onlyStaff: true,
-    availableOnDM: false,
     description: "Sbannare un utente",
-    syntax: "!unban [user]",
+    permissionLevel: 1,
+    requiredLevel: 0,
+    syntax: "/unban [user]",
     category: "moderation",
+    client: "moderation",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente da sbannare",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var utente = message.mentions.members?.first()
-        if (!utente) {
-            var utente = await getUser(args[0])
-        }
+    async execute(client, interaction, comando) {
+        let utente = await getTaggedUser(client, interaction.options.getString("user"))
 
         if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
         if (utente.bot) {
-            return botCommandMessage(message, "Warning", "Non a un bot", "Non puoi sbannare un bot")
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi sbannare un bot", comando)
         }
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
-
-        if (userstats.moderation.type == "") {
-            return botCommandMessage(message, "Warning", "Utente non bannato", "Questo utente non è bannato", property)
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi sbannare questo utente", comando)
         }
 
-        if (userstats.moderation.type == "Muted") {
-            return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
-                name: ":sound: MUTED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}])
-        }
-        if (userstats.moderation.type == "Tempmuted") {
-            return botCommandMessage(message, "Warning", "Utente tempmutato", "", null, [{
-                name: ":sound: TEMPMUTED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`}])
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+
+        if (userstats.moderation.type != "Banned" && userstats.moderation.type != "Tempbanned" && userstats.moderation.type != "Forcebanned") {
+            return replyMessage(client, interaction, "Warning", "Utente non bannato", "Questo utente non è bannato", comando)
         }
 
-        if (message.guild.members.cache.find(x => x.id == utente.id)) {
-            message.guild.members.unban(utente.id).catch(() => { })
-
-            utente.roles.remove(settings.ruoliModeration.banned)
-            utente.roles.remove(settings.ruoliModeration.tempbanned)
+        if (interaction.guild.members.cache.get(utente.id)) {
+            interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.banned)
+            interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.tempbanned)
         }
         else {
             userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.banned)
             userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempbanned)
         }
 
-        if (utente.user) utente = utente.user
+        interaction.guild.members.unban(utente.id)
+            .catch(() => { })
 
-        var embed = new Discord.MessageEmbed()
-            .setAuthor("[UNBAN] " + utente.tag, utente.displayAvatarURL({ dynamic: true }))
-            .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")
-            .setColor("#6143CB")
-            .addField("Moderator", message.author.toString())
-            .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
-            .setFooter("User ID: " + utente.id)
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[UNBAN] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
+            .setThumbnail(illustrations.ban)
+            .setColor(colors.purple)
+            .addField(":shield: Moderator", interaction.user.toString())
+            .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
+            .addField(":hourglass: Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
+            .setFooter({ text: "User ID: " + utente.id })
 
-        await message.channel.send({ embeds: [embed] })
-            .then(msg => {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":name_badge: Unban :name_badge:")
-                    .setColor("#8227cc")
-                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
-                    .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                    .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Duration", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", userstats.moderation.reason || "_Null_", false)
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
-            })
+        embed = new Discord.MessageEmbed()
+            .setTitle(":name_badge: Unban :name_badge:")
+            .setColor(colors.purple)
+            .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+            .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+            .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
+            .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-        var embed = new Discord.MessageEmbed()
+        if (!isMaintenance())
+            client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
+
+        embed = new Discord.MessageEmbed()
             .setTitle("Sei stato sbannato")
-            .setColor("#6143CB")
-            .setThumbnail("https://i.postimg.cc/j56K5XKC/Ban.png")
-            .addField("Moderator", message.author.toString())
-            .addField("Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.ban)
+            .addField(":shield: Moderator", interaction.user.toString())
+            .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
+            .addField(":hourglass: Time banned", ms(new Date().getTime() - userstats.moderation.since, { long: true }))
 
         utente.send({ embeds: [embed] })
             .catch(() => { })
 
         userstats.moderation = {
-            "type": "",
-            "since": "",
-            "until": "",
-            "reason": "",
-            "moderator": "",
-            "ticketOpened": false
+            type: "",
+            since: null,
+            until: null,
+            reason: null,
+            moderator: null,
+            ticketOpened: false
         }
 
-        userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
+        userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
+        userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = interaction.user.id
+
+        updateUser(userstats)
     },
 };

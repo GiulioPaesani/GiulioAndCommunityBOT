@@ -1,47 +1,53 @@
+const Discord = require("discord.js")
+const colors = require("../../config/general/colors.json")
+const { replyMessage } = require("../../functions/general/replyMessage")
+
 module.exports = {
     name: "bugreport",
-    aliases: ["bug", "report"],
-    onlyStaff: false,
-    availableOnDM: false,
-    description: "Segnalare un problema sul server, bot o canale",
-    syntax: "!bugreport [report]",
+    description: "Segnalare un problema riguardante il server, il bot, canali o altro",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/bugreport [text]",
     category: "general",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "text",
+                description: "Testo del report",
+                type: "STRING",
+                required: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var report = args.join(" ");
+    async execute(client, interaction, comando) {
+        let text = interaction.options.getString("text")
 
-        if (!report && !Array.from(message.attachments)[0]) {
-            return botCommandMessage(message, "Error", "Inserire un report", "Scrivi il testo del tuo report", property)
+        if (text.length > 1000) {
+            return replyMessage(client, interaction, "Warning", "Testo troppo lungo", "Puoi scrivere un messaggio solo fino a 1000 caratteri", comando)
         }
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle(":beetle: Bug reportato :beetle:")
-            .setColor("#77B256")
-            .setDescription(`**Grazie** per aver segnalato questo problema. È già stato **consegnato** allo staff che lo **risolverà** a breve`)
-            .addField(":page_facing_up: Text", report ? report : "None")
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Confermi il tuo report?")
+            .setColor(colors.yellow)
+            .setDescription(`**Confermi** il tuo bug report? Una volta accettato verrà **inviato** allo staff che cercherà di **risolvere** il problema il prima possibile\nSpiega in modo esaustivo e chiaro il problema`)
+            .addField(":page_facing_up: Text", text)
 
-        var attachments = "";
-        message.attachments.forEach(attachment => {
-            console.log(attachment)
-            attachments += `[File link](${attachment.url}), `
-        })
-        if (attachments)
-            attachments = attachments.slice(0, -2);
+        let button1 = new Discord.MessageButton()
+            .setLabel("Annulla")
+            .setStyle("DANGER")
+            .setCustomId(`annullaReport,${interaction.user.id}`)
 
-        embed
-            .addField(":paperclip: Attachments", attachments ? attachments : "None")
+        let button2 = new Discord.MessageButton()
+            .setLabel("Conferma")
+            .setStyle("SUCCESS")
+            .setCustomId(`confermaReport,${interaction.user.id}`)
 
-        message.channel.send({ embeds: [embed] })
+        let row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle(":beetle: Bug report :beetle:")
-            .setColor("#6DA54C")
-            .addField(":alarm_clock: Time", moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss"), true)
-            .addField(":bust_in_silhouette: User", `${message.author.toString()} (ID: ${message.author.id})`, false)
-            .addField("Text", report ? report : "None")
-            .addField("Attachments", attachments ? attachments : "None")
-
-        if (!isMaintenance())
-            client.channels.cache.get(log.general.bugReport).send({ embeds: [embed] });
+        interaction.reply({ embeds: [embed], components: [row] })
     },
 };

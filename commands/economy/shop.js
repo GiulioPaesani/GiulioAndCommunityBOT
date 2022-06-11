@@ -1,41 +1,139 @@
-const { createCanvas, loadImage, registerFont } = require('canvas')
+const Discord = require("discord.js")
+const settings = require("../../config/general/settings.json")
+const items = require("../../config/ranking/items.json")
+const { getUser } = require("../../functions/database/getUser")
+const { addUser } = require("../../functions/database/addUser")
+const { replyMessage } = require("../../functions/general/replyMessage")
+const { humanize } = require("../../functions/general/humanize")
+const { hasSufficientLevels } = require("../../functions/leveling/hasSufficientLevels")
+const { getEmoji } = require("../../functions/general/getEmoji")
 
 module.exports = {
     name: "shop",
-    aliases: ["negozio"],
-    onlyStaff: false,
-    availableOnDM: true,
     description: "Shop completo con tutti gli oggetti da comprare o vendere",
-    syntax: "!shop (item)",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/shop (category)",
     category: "ranking",
+    client: "ranking",
+    data: {
+        options: [
+            {
+                name: "category",
+                description: "Categoria degli oggetti da visualizzare",
+                type: "STRING",
+                required: false,
+                choices: [
+                    {
+                        name: "💾 Technology",
+                        value: "technology"
+                    },
+                    {
+                        name: "🍗 Food",
+                        value: "food"
+                    },
+                    {
+                        name: "🏠 Home",
+                        value: "home"
+                    },
+                    {
+                        name: "🚚 Mezzo di trasporto",
+                        value: "mezziTrasporto"
+                    },
+                    {
+                        name: "👕 Abbigliamento",
+                        value: "abbigliamento"
+                    }
+                ]
+            },
+            {
+                name: "item",
+                description: "Oggetto specifico del quale si vogliono sapere le informazioni",
+                type: "STRING",
+                required: false,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        if (!args[0]) {
-            var embed = new Discord.MessageEmbed()
-                .setTitle(":shopping_cart: SHOP :shopping_cart:")
-                .setDescription(`Tutti gli oggetti che puoi comprare o vendere attraverso i tuoi Coins`)
-                .addField("Categorie", `
+    async execute(client, interaction, comando) {
+        let category = interaction.options.getString("category")
+        let item = interaction.options.getString("item")
+
+        if (category || !item) {
+            let embed = new Discord.MessageEmbed()
+
+            switch (category) {
+                case "technology": {
+                    embed
+                        .setTitle("💾 TECHNOLOGY items 💾")
+                        .setDescription(`Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto`)
+                        .setColor("#3ec2fa")
+                } break
+                case "food": {
+                    embed
+                        .setTitle("🍗 FOOD items 🍗")
+                        .setDescription(`Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto`)
+                        .setColor("#db8616")
+                } break
+                case "home": {
+                    embed
+                        .setTitle("🏠 HOME items 🏠")
+                        .setDescription(`Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto`)
+                        .setColor("#1dbfaa")
+                } break
+                case "mezziTrasporto": {
+                    embed
+                        .setTitle("🚚 TRANSPORT items 🚚")
+                        .setDescription(`Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto`)
+                        .setColor("#c43812")
+                } break
+                case "abbigliamento": {
+                    embed
+                        .setTitle("👕 CLOTHING items 👕")
+                        .setDescription(`Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto`)
+                        .setColor("#2683c9")
+                } break
+                default: {
+                    embed
+                        .setTitle(":shopping_cart: SHOP :shopping_cart:")
+                        .setDescription(`Tutti gli oggetti che puoi comprare o vendere attraverso le tue monete`)
+                        .addField("Categorie", `
 I comandi sono divisi nelle seguenti categorie:
-:desktop: Tecnology
+:floppy_disk: Tecnology
 :poultry_leg: Food
 :house: Home
-:pickup_truck: Mezzi di trasporto
+:truck: Mezzi di trasporto
 :shirt: Abbigliamento
 
-_Seleziona la categoria dal menù qua sotto_`)
-                .addField("More info", `
-Con \`!shop [item]\` puoi avere più **informazioni** riguardo un oggetto, quando costa **comprarlo**, **venderlo**, il suo **id** e altro
-Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vendere più velocemente
-`)
+_Seleziona la categoria dal menù qua sotto_
 
-            var select = new Discord.MessageSelectMenu()
-                .setCustomId(`shopMenu,${message.author.id}`)
+Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto
+`)
+                } break
+            }
+
+            let userstats = getUser(interaction.user.id)
+            if (!userstats) userstats = addUser(interaction.member)[0]
+
+            if (category) {
+                items.filter(x => x.category == category).forEach(item => {
+                    embed
+                        .addField(`${!item.priviled || (item.priviled && hasSufficientLevels(client, userstats, item.priviled)) ? getEmoji(client, item.name.toLowerCase()) : getEmoji(client, `${item.name.toLowerCase()}Unlocked`)} ${item.name}`, !item.priviled || (item.priviled && hasSufficientLevels(client, userstats, item.priviled)) ? `
+Price: ${humanize(item.price)}$
+ID: \`#${item.id}\`` : `
+_Sblocca con \n${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${item.priviled}`).toString()}_`, true)
+                })
+            }
+
+            let select = new Discord.MessageSelectMenu()
+                .setCustomId(`shopMenu,${interaction.user.id}`)
                 .setPlaceholder('Select category...')
                 .setMaxValues(1)
                 .setMinValues(1)
                 .addOptions({
                     label: "Technology",
-                    emoji: "🖥️",
+                    emoji: "💾",
                     value: "shopTechnology",
                 })
                 .addOptions({
@@ -50,7 +148,7 @@ Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vend
                 })
                 .addOptions({
                     label: "Mezzi di trasporto",
-                    emoji: "🛻",
+                    emoji: "🚚",
                     value: "shopMezziTrasporto",
                 })
                 .addOptions({
@@ -59,121 +157,50 @@ Utilizza invece i comandi \`!buy [item]\` e \`!sell [item]\` per comprare o vend
                     value: "shopAbbigliamento",
                 })
 
-            var row = new Discord.MessageActionRow()
+            let row = new Discord.MessageActionRow()
                 .addComponents(select)
 
-            message.channel.send({ embeds: [embed], components: [row] })
-                .catch(() => { })
+            interaction.reply({ embeds: [embed], components: [row] })
         }
         else {
-            var oggetto = args.join(" ").toLowerCase()
-
-            var item = require("../../config/items.json").find(x => x.name.toLowerCase() == oggetto || x.id == oggetto || x.id == oggetto.slice(1) || x.alias.includes(oggetto))
+            item = items.find(x => x.name.toLowerCase() == item.toLowerCase() || x.id == item.toLowerCase() || x.id == item.toLowerCase().slice(1) || x.alias.includes(item.toLowerCase()))
 
             if (!item) {
-                return botCommandMessage(message, "Error", "Oggetto non trovato", "Hai inserito un oggetto non valido o non esistente", property)
+                return replyMessage(client, interaction, "Error", "Oggetto non trovato", "Inserisci un oggetto valido", comando)
             }
 
-            var userstats = userstatsList.find(x => x.id == message.author.id);
-            if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
+            let userstats = getUser(interaction.user.id)
+            if (!userstats) userstats = addUser(interaction.member)[0]
 
-            if (!item.priviled || (item.priviled && userstats.level >= item.priviled)) {
-                var button1 = new Discord.MessageButton()
-                    .setLabel("Sell")
-                    .setCustomId(`sell,${message.author.id},${item.id}`)
-                    .setStyle("PRIMARY")
-
-                var button2 = new Discord.MessageButton()
-                    .setLabel("Buy")
-                    .setCustomId(`buy,${message.author.id},${item.id}`)
-                    .setStyle("SUCCESS")
-
-                if (!userstats.inventory[item.id] || userstats.inventory[item.id] == 0) {
-                    button1
-                        .setDisabled()
-                        .setLabel("Sell (No items in inventory)")
-                }
-                if (userstats.money < item.price) {
-                    button2
-                        .setDisabled()
-                        .setLabel("Buy (No money)")
-                }
-
-                var row = new Discord.MessageActionRow()
-                    .addComponents(button1)
-                    .addComponents(button2)
-
-                var canvas = await createCanvas(400, 400)
-                var ctx = await canvas.getContext('2d')
-
-                ctx.fillStyle = item.category == "technology" ? "#999999" : item.category == "food" ? "#db8616" : item.category == "home" ? "#1dbfaa" : item.category == "mezziTrasporto" ? "#c43812" : "#2683c9";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                var img = await loadImage(`https://cdn.discordapp.com/emojis/${item.icon.split(":")[2].slice(0, -1)}.png?size=128`)
-                ctx.drawImage(img, canvas.width / 2 - 250 / 2, canvas.height / 2 - 250 / 2, 250, 250)
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(`${item.name.toUpperCase()}`)
-                    .setDescription("Informazioni di compra-vendita per questo oggetto")
-                    .setThumbnail("attachment://canvas.png")
-                    .setColor(item.category == "technology" ? "#999999" : item.category == "food" ? "#db8616" : item.category == "home" ? "#1dbfaa" : item.category == "mezziTrasporto" ? "#c43812" : "#2683c9")
-                    .addField(`Price: ${item.price}$`, `
-ID: \`#${item.id}\`
-Selling price: ${item.sellPrice}$
-Category: ${item.category == "technology" ? "Technology" : item.category == "food" ? "Food" : item.category == "home" ? "Home" : item.category == "mezziTrasporto" ? "Mezzi di trasporto" : "Abbigliamento"}`)
-                    .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
-
-                message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: [row] })
-                    .catch(() => { })
-            }
-            else {
-                var button1 = new Discord.MessageButton()
-                    .setLabel("Sell")
-                    .setCustomId(`sell,${message.author.id.id},${item.id}`)
-                    .setStyle("PRIMARY")
-
-                var button2 = new Discord.MessageButton()
-                    .setLabel("Buy (Not unlocked)")
-                    .setCustomId(`buy,${message.author.id.id},${item.id}`)
-                    .setStyle("SUCCESS")
-                    .setDisabled()
-
-                if (!userstats.inventory[item.id] || userstats.inventory[item.id] == 0) {
-                    button1
-                        .setDisabled()
-                        .setLabel("Sell (No items in inventory)")
-                }
-
-                var row = new Discord.MessageActionRow()
-                    .addComponents(button1)
-                    .addComponents(button2)
-
-                var canvas = await createCanvas(400, 400)
-                var ctx = await canvas.getContext('2d')
-
-                ctx.fillStyle = "#757575";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                var img = await loadImage(`https://cdn.discordapp.com/emojis/${item.iconUnlocked.split(":")[2].slice(0, -1)}.png?size=128`)
-                ctx.drawImage(img, canvas.width / 2 - 250 / 2, canvas.height / 2 - 250 / 2, 250, 250)
-
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(`${item.name.toUpperCase()} - Not unlocked`)
-                    .setDescription(`
-_Sblocca questo oggetto con <@&${settings.ruoliLeveling["level" + item.priviled]}>_
+            let embed = new Discord.MessageEmbed()
+                .setTitle(`${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? getEmoji(client, `${item.name.toLowerCase()}Unlocked`) : getEmoji(client, item.name.toLowerCase())} ${item.name.toUpperCase()} ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? " - Not unlocked" : ""}`)
+                .setColor(item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "#757575" : item.category == "technology" ? "#3ec2fa" : item.category == "food" ? "#db8616" : item.category == "home" ? "#1dbfaa" : item.category == "mezziTrasporto" ? "#c43812" : "#2683c9")
+                .setDescription(`
+${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? `_Sblocca questo oggetto con ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${item.priviled}`).toString()}_` : ""}
 Informazioni di compra-vendita per questo oggetto`)
-                    .setThumbnail("attachment://canvas.png")
-                    .setColor("#757575")
-                    .addField(`Price: ${item.price}$`, `
+                .addField(`Price: ${humanize(item.price)}$`, `
+Selling price: ${humanize(item.sellPrice)}$
 ID: \`#${item.id}\`
-Selling price: ${item.sellPrice}$
-Category: ${item.category == "technology" ? "Technology" : item.category == "food" ? "Food" : item.category == "home" ? "Home" : item.category == "mezziTrasporto" ? "Mezzi di trasporto" : "Abbigliamento"}`)
-                    .setFooter(`Nell'inventario: ${userstats.inventory[item.id] ? userstats.inventory[item.id] : "0"}`)
+`)
+                .setFooter({ text: `Nell'inventario ne hai ${userstats.economy.inventory[item.id] ? userstats.economy.inventory[item.id] : "0"}` })
 
-                message.channel.send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')], components: [row] })
-                    .catch(() => { })
-            }
+            let button1 = new Discord.MessageButton()
+                .setLabel(`Sell ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "(Not unlocked)" : !userstats.economy.inventory[item.id] || userstats.economy.inventory[item.id] == 0 ? "(No items in inventory)" : ""}`)
+                .setCustomId(`sell,${interaction.user.id},${item.id}`)
+                .setStyle("PRIMARY")
+                .setDisabled(item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? true : !userstats.economy.inventory[item.id] || userstats.economy.inventory[item.id] == 0 ? true : false)
 
+            let button2 = new Discord.MessageButton()
+                .setLabel(`Buy ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "(Not unlocked)" : userstats.economy.money < item.price ? "(No money)" : ""}`)
+                .setCustomId(`buy,${interaction.user.id},${item.id}`)
+                .setStyle("SUCCESS")
+                .setDisabled(item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? true : userstats.economy.money < item.price ? true : false)
+
+            let row = new Discord.MessageActionRow()
+                .addComponents(button1)
+                .addComponents(button2)
+
+            interaction.reply({ embeds: [embed], components: [row] })
         }
     },
 };

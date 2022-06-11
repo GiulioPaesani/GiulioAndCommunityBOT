@@ -1,22 +1,33 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const settings = require("../../../config/general/settings.json")
+const { getAllUsers } = require("../../../functions/database/getAllUsers")
+const { getServer } = require("../../../functions/database/getServer")
+const { getEmoji } = require("../../../functions/general/getEmoji")
+const { isMaintenance } = require("../../../functions/general/isMaintenance")
+
 module.exports = {
     name: `interactionCreate`,
-    async execute(button) {
-        if (!button.isButton()) return
-        if (!button.customId.startsWith("indietro2Clb")) return
+    client: "fun",
+    async execute(client, interaction) {
+        if (!interaction.isButton()) return
+        if (!interaction.customId.startsWith("indietro2Clb")) return
 
-        button.deferUpdate().catch(() => { })
+        interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.user.id)) return
+        if (isMaintenance(interaction.user.id)) return
 
-        if (button.customId.split(",")[1] != button.user.id) return
+        if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        var leaderboardListCorrect = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.correct < b.correct) ? 1 : ((b.correct < a.correct) ? -1 : 0))
-        var leaderboardCorrect = ""
+        let userstatsList = getAllUsers(client)
 
-        var totPage = Math.ceil(leaderboardListCorrect.length / 10)
-        var page = 1
+        let leaderboardListCorrect = userstatsList.sort((a, b) => (a.counting.correct < b.counting.correct) ? 1 : ((b.counting.correct < a.counting.correct) ? -1 : 0))
+        let leaderboardCorrect = ""
 
-        for (var i = 10 * (page - 1); i < 10 * page; i++) {
+        let totPage = Math.ceil(leaderboardListCorrect.length / 10)
+        let page = 1
+
+        for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListCorrect[i]) {
 
                 switch (i) {
@@ -33,15 +44,15 @@ module.exports = {
                         leaderboardCorrect += `**#${i + 1}** `
                 }
 
-                var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListCorrect[i].id)
-                leaderboardCorrect += `${utente.nickname ? utente.nickname : utente.user.username} - **${leaderboardListCorrect[i].correct}**\r`
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListCorrect[i].id)
+                leaderboardCorrect += `${utente.toString()} - **${leaderboardListCorrect[i].counting.correct}**\n`
             }
         }
 
-        var leaderboardListScore = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
-        var leaderboardScore = ""
+        let leaderboardListScore = userstatsList.sort((a, b) => (a.bestScore < b.bestScore) ? 1 : ((b.bestScore < a.bestScore) ? -1 : 0))
+        let leaderboardScore = ""
 
-        for (var i = 10 * (page - 1); i < 10 * page; i++) {
+        for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListScore[i]) {
                 switch (i) {
                     case 0:
@@ -57,58 +68,64 @@ module.exports = {
                         leaderboardScore += `**#${i + 1}** `
                 }
 
-                var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListScore[i].id)
-                leaderboardScore += `${utente.nickname ? utente.nickname : utente.user.username} - **${leaderboardListScore[i].bestScore}**\r`
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListScore[i].id)
+                leaderboardScore += `${utente.toString()} - **${leaderboardListScore[i].counting.bestScore}**\n`
             }
         }
 
-        var embed = new Discord.MessageEmbed()
+        let serverstats = getServer()
+
+        let embed = new Discord.MessageEmbed()
             .setTitle("COUNTING - GiulioAndCommunity")
-            .setThumbnail(client.guilds.cache.get(settings.idServer).iconURL({ dynamic: true }))
-            .setDescription("Classifiche counting di tutti gli utenti nel server")
-            .addField(":1234: Current Number", "```" + serverstats.numero + "```")
-            .addField(":medal: Last user", serverstats.ultimoUtente != "NessunUtente" ? (client.users.cache.find(u => u.id == serverstats.ultimoUtente) ? `\`\`\`${client.users.cache.find(u => u.id == serverstats.ultimoUtente).username} (${moment(parseInt(leaderboardListScore[leaderboardListScore.findIndex(u => u.id == serverstats.ultimoUtente)].timeLastScore)).fromNow()})\`\`\`` : "\`\`\`User undefined\`\`\`") : "```None```")
-            .addField(":trophy: Best score", "```" + serverstats.bestScore + " - " + leaderboardListScore[0].username + " (" + moment(parseInt(serverstats.timeBestScore)).fromNow() + ")```", false)
-            .addField(":blue_circle: Score Leaderboard", leaderboardScore)
-            .addField(":green_circle: Correct Leaderboard", leaderboardCorrect, false)
-            .setFooter(`Page ${page}/${totPage}`)
+            .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
+            .setDescription("Statistiche counting di tutti gli utenti nel server")
+            .addField(":1234: Last score", `${serverstats.counting.lastScore} (${moment(serverstats.counting.timeLastScore).fromNow()})`, true)
+            .addField(":trophy: Best score", `${serverstats.counting.bestScore} (${moment(serverstats.counting.timeBestScore).fromNow()})`, true)
+            .addField(":medal: Last user", client.users.cache.get(serverstats.counting.lastUser).toString(), true)
+            .addField(":white_check_mark: Total corrects", serverstats.counting.correct.toString(), true)
+            .addField(":x: Total incorrects", serverstats.counting.incorrect.toString(), true)
+            .addField(":pencil2: Total updated", serverstats.counting.updated.toString())
+            .addField(":wastebasket: Total deleted", serverstats.counting.deleted.toString())
+            .addField(":blue_circle: Score leaderboard", leaderboardScore, true)
+            .addField(":green_circle: Corrects leaderboard", leaderboardCorrect, true)
+            .setFooter({ text: `Page ${page}/${totPage}` })
 
-        var button1 = new Discord.MessageButton()
-            .setCustomId(`indietro2Clb,${button.user.id},${page}`)
+        let button1 = new Discord.MessageButton()
+            .setCustomId(`indietro2Clb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("⏮️")
+            .setEmoji(getEmoji(client, "Previous2"))
 
-        var button2 = new Discord.MessageButton()
-            .setCustomId(`indietroClb,${button.user.id},${page}`)
+        let button2 = new Discord.MessageButton()
+            .setCustomId(`indietroClb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("◀️")
+            .setEmoji(getEmoji(client, "Previous"))
 
         if (page == 1) {
             button1.setDisabled()
             button2.setDisabled()
         }
 
-        var button3 = new Discord.MessageButton()
-            .setCustomId(`avantiClb,${button.user.id},${page}`)
+        let button3 = new Discord.MessageButton()
+            .setCustomId(`avantiClb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("▶️")
+            .setEmoji(getEmoji(client, "Next"))
 
-        var button4 = new Discord.MessageButton()
-            .setCustomId(`avanti2Clb,${button.user.id},${page}`)
+        let button4 = new Discord.MessageButton()
+            .setCustomId(`avanti2Clb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("⏭️")
+            .setEmoji(getEmoji(client, "Next2"))
 
         if (page == totPage) {
             button3.setDisabled()
             button4.setDisabled()
         }
 
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
             .addComponents(button3)
             .addComponents(button4)
 
-        button.message.edit({ embeds: [embed], components: [row] })
+        interaction.message.edit({ embeds: [embed], components: [row] })
     },
 };

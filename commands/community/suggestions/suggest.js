@@ -1,55 +1,54 @@
+const Discord = require("discord.js")
+const colors = require("../../../config/general/colors.json")
+const settings = require("../../../config/general/settings.json")
+const { replyMessage } = require("../../../functions/general/replyMessage")
+
 module.exports = {
     name: "suggest",
-    aliases: ["suggestion", "suggerimento"],
-    onlyStaff: false,
-    availableOnDM: false,
-    description: "Fare un suggerimento per il bot, server o canale",
-    syntax: "!suggest [suggerimento]",
+    description: "Proporre un suggerimento riguardante il server, i canali, il bot, i video o altro",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/suggest [text]",
     category: "community",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "text",
+                description: "Testo del suggerimento",
+                type: "STRING",
+                required: true
+            }
+        ]
+    },
     channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        var contenuto = args.join(" ")
+    async execute(client, interaction, comando) {
+        let text = interaction.options.getString("text")
 
-        if (!contenuto) {
-            return botCommandMessage(message, "Error", "Inserire un suggerimento", "Scrivi il testo della tua suggestion", property)
+        if (text.length > 1000) {
+            return replyMessage(client, interaction, "Warning", "Testo troppo lungo", "Puoi scrivere un suggerimento solo fino a 1000 caratteri", comando)
         }
 
-        if (contenuto.length > 500) {
-            return botCommandMessage(message, "Error", "Suggerimento troppo lungo", "Scrivi una suggestion non più lunga di 500 caratteri", property)
-        }
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Confermi il tuo suggerimento?")
+            .setColor(colors.yellow)
+            .setDescription(`**Confermi** il tuo suggest? Una volta creato verrà **inviato** allo staff che dovrà accettarlo, e nel caso verrà pubblicato nel canale <#${settings.idCanaliServer.suggestions}>`)
+            .addField(":page_facing_up: Text", text)
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle("💡 New suggestion 💡")
-            .setColor("#fcba03")
-            .setThumbnail(message.member.user.displayAvatarURL({ dynamic: true }))
-            .setDescription("Attendi che lo staff approvi il tuo suggerimento")
-            .addField(":bookmark_tabs: Suggestion", contenuto)
+        let button1 = new Discord.MessageButton()
+            .setLabel("Annulla")
+            .setStyle("DANGER")
+            .setCustomId(`annullaSuggestion,${interaction.user.id}`)
 
-        message.channel.send({ embeds: [embed] })
+        let button2 = new Discord.MessageButton()
+            .setLabel("Conferma")
+            .setStyle("SUCCESS")
+            .setCustomId(`confermaSuggestion,${interaction.user.id}`)
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle("💡 New suggestion 💡")
-            .setColor("#fcba03")
-            .setThumbnail(message.member.user.displayAvatarURL({ dynamic: true }))
-            .addField(":bust_in_silhouette: User", `${message.author.username} (ID: ${message.author.id})`)
-            .addField("Status", "Pending")
-            .addField("Text", contenuto)
-
-        var button1 = new Discord.MessageButton()
-            .setStyle('DANGER')
-            .setLabel('Rifiuta')
-            .setCustomId(`rifiutaSuggestion`)
-        var button2 = new Discord.MessageButton()
-            .setStyle('SUCCESS')
-            .setLabel('Approva')
-            .setCustomId(`approvaSuggestion`)
-
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
 
-        var canale = client.channels.cache.find(channel => channel.id == log.community.suggestions);
-
-        canale.send({ embeds: [embed], components: [row] })
+        interaction.reply({ embeds: [embed], components: [row] })
     },
 };

@@ -1,154 +1,241 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const ms = require("ms")
+const log = require("../../../config/general/log.json")
+const colors = require("../../../config/general/colors.json")
+const illustrations = require("../../../config/general/illustrations.json")
+const settings = require("../../../config/general/settings.json")
+const { replyMessage } = require("../../../functions/general/replyMessage")
+const { getUser } = require("../../../functions/database/getUser")
+const { addUser } = require("../../../functions/database/addUser");
+const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
+const { updateUser } = require("../../../functions/database/updateUser");
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { getTaggedUser } = require("../../../functions/general/getTaggedUser")
+
 module.exports = {
     name: "tempmute",
-    aliases: [],
-    onlyStaff: true,
-    availableOnDM: false,
     description: "Mutare temporaneamente un utente",
-    syntax: "!tempmute [user] [time] (reason)",
+    permissionLevel: 1,
+    requiredLevel: 0,
+    syntax: "/tempmute [user] [time] [reason]",
     category: "moderation",
+    client: "moderation",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente da mutare temporaneamente",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            },
+            {
+                name: "time",
+                description: "Tempo del mute temporaneo",
+                type: "STRING",
+                required: true,
+            },
+            {
+                name: "reason",
+                description: "Motivazione del mute temporaneo",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var utente = message.mentions.members?.first()
-        if (!utente) {
-            var utente = await getUser(args[0])
-        }
+    async execute(client, interaction, comando) {
+        let utente = await getTaggedUser(client, interaction.options.getString("user"))
+        let reason = interaction.options.getString("reason")
+        let time = interaction.options.getString("time")
 
         if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
-        }
-
-        if (utenteMod(utente)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non puoi mutare questo utente")
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
         if (utente.bot) {
-            return botCommandMessage(message, "Warning", "Non a un bot", "Non puoi mutare un bot")
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi mutare temporaneamente un bot", comando)
         }
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) {
-            var userstats = {
-                id: utente.id,
-                username: utente.username || utente.user.username,
-                roles: [],
-                warn: [],
-                moderation: {
-                    "type": "",
-                    "since": "",
-                    "until": "",
-                    "reason": "",
-                    "moderator": " ",
-                    "ticketOpened": false
-                }
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi mutare temporaneamente questo utente", comando)
+        }
+
+        time = ms(time)
+        if (!time || time < 0) {
+            return replyMessage(client, interaction, "Error", "Tempo non valido", "Hai inserito un tempo non valido", comando)
+        }
+
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+
+        if (userstats.moderation.type) {
+            if (userstats.moderation.type == "Tempmuted") {
+                return replyMessage(client, interaction, "Warning", "Utente già tempmutato", "Questo utente è già mutato temporaneamente", comando)
             }
 
-            database.collection("userstats").insertOne(userstats);
-            userstatsList.push(userstats)
-        }
+            let embed = new Discord.MessageEmbed()
+                .setTitle(userstats.moderation.type == "Muted" ? "Utente mutato" : userstats.moderation.type == "Tempmuted" ? "Utente tempmutato" : userstats.moderation.type == "Banned" ? "Utente bannato" : userstats.moderation.type == "Tempbanned" ? "Utente tempbannato" : userstats.moderation.type == "Forcebanned" ? "Utente forzatamente bannato" : "")
+                .setColor(colors.gray)
+                .setDescription(`Questo utente è ${userstats.moderation.type == "Muted" ? "mutato" : userstats.moderation.type == "Tempmuted" ? "tempmutato" : userstats.moderation.type == "Banned" ? "bannato" : userstats.moderation.type == "Tempbanned" ? "tempbannato" : userstats.moderation.type == "Forcebanned" ? "forzatamente bannato" : ""}. Vuoi **sovrascrivere** il suo stato di moderazione?`)
 
-        var reason = args.slice(2).join(" ");
-        if (!reason) {
-            reason = "Nessun motivo";
-        }
+            let button1 = new Discord.MessageButton()
+                .setLabel("Sovrascrivi moderazione")
+                .setStyle("DANGER")
+                .setCustomId(`sovrascriviModerazione`)
 
-        var time = args[1];
-        if (!time) {
-            return botCommandMessage(message, "Error", "Inserire un tempo", "Scrivi il tempo del tempmute", property)
-        }
-        time = ms(time)
-        if (!time) {
-            return botCommandMessage(message, "Error", "Tempo non valido", "Hai inserito un tempo non valido", property)
-        }
+            let row = new Discord.MessageActionRow()
+                .addComponents(button1)
 
-        var button1 = new Discord.MessageButton()
-            .setLabel("Sovrascrivi moderazione (Tempmute)")
-            .setStyle("DANGER")
-            .setCustomId(`tmute,${message.author.id},${utente.id},${reason.replace(eval(`/,/g`), "").slice(0, 42)},${time}`)
+            interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
+                .then(msg => {
+                    const collector = msg.createMessageComponentCollector();
 
-        var row = new Discord.MessageActionRow()
-            .addComponents(button1)
+                    collector.on('collect', i => {
+                        if (!i.isButton()) return
+                        if (isMaintenance(i.user.id)) return
 
-        if (userstats.moderation.type == "Muted") {
-            return botCommandMessage(message, "Warning", "Utente mutato", "", null, [{
-                name: ":sound: MUTED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "Tempmuted") {
-            return botCommandMessage(message, "Warning", "Utente già tempmutato", "", null, [{
-                name: ":sound: TEMPMUTED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`}])
-        }
-        if (userstats.moderation.type == "Banned") {
-            return botCommandMessage(message, "Warning", "Utente bannato", "", null, [{
-                name: ":speaker: BANNED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "Tempbanned") {
-            return botCommandMessage(message, "Warning", "Utente tempbannato", "", null, [{
-                name: ":speaker: TEMPBANNED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Until**
-${moment(userstats.moderation.until).format("ddd DD MMM, HH:mm")} (in ${moment(userstats.moderation.until).toNow(true)})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
-        if (userstats.moderation.type == "ForceBanned") {
-            return botCommandMessage(message, "Warning", "Utente bannato forzatamente", "", null, [{
-                name: ":mute: FORCEBANNED", value: `
-**Reason**
-${userstats.moderation.reason}
-**Since**
-${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})
-**Moderator**
-${userstats.moderation.moderator}           
-`}], row)
-        }
+                        i.deferUpdate().catch(() => { })
 
-        if (message.guild.members.cache.find(x => x.id == utente.id)) {
-            var ruoloTempmuted = message.guild.roles.cache.find(role => role.id == settings.ruoliModeration.tempmuted);
-            message.guild.channels.cache.forEach((canale) => {
-                if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
-                    canale.permissionOverwrites.edit(ruoloTempmuted, {
-                        SEND_MESSAGES: false,
-                        ADD_REACTIONS: false,
-                        SPEAK: false
+                        if (!i.customId.startsWith("sovrascriviModerazione")) return
+
+                        if (i.user.id != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
+
+                        interaction.guild.channels.cache.forEach((canale) => {
+                            if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
+                                canale.permissionOverwrites?.edit(settings.ruoliModeration.tempmuted, {
+                                    SEND_MESSAGES: false,
+                                    SEND_MESSAGES_IN_THREADS: false,
+                                    ADD_REACTIONS: false,
+                                    SPEAK: false,
+                                    STREAM: false,
+                                })
+                            }
+                        })
+
+                        interaction.guild.members.unban(utente.id)
+                            .then(() => {
+                                embed = new Discord.MessageEmbed()
+                                    .setTitle(":name_badge: Unban :name_badge:")
+                                    .setColor(colors.purple)
+                                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                                    .setThumbnail(interaction.guild.members.cache.get(utente.id).displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+                                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                                    .addField(":brain: Executor", `${client.user.toString()} - ${client.user.tag}\nID: ${client.user.id}`)
+                                    .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+                                    .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
+                                    .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
+
+                                if (!isMaintenance())
+                                    client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
+
+                                userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
+                                userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = interaction.user.id
+                            })
+                            .catch(() => { })
+
+                        if (interaction.guild.members.cache.get(utente.id)) {
+                            interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.banned)
+                            interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.muted)
+                            interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.tempbanned)
+                            interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
+                                .then(() => {
+                                    if (interaction.guild.members.cache.get(utente.id).voice?.channelId) {
+                                        let canale = interaction.guild.members.cache.get(utente.id).voice.channelId
+                                        if (canale == settings.idCanaliServer.general1)
+                                            interaction.guild.members.cache.get(utente.id).voice.setChannel(settings.idCanaliServer.general2)
+                                        else
+                                            interaction.guild.members.cache.get(utente.id).voice.setChannel(settings.idCanaliServer.general1)
+                                        interaction.guild.members.cache.get(utente.id).voice.setChannel(canale)
+                                    }
+                                })
+                        }
+                        else {
+                            userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.muted)
+                            userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.tempbanned)
+                            userstats.roles = userstats.roles.filter(x => x != settings.ruoliModeration.banned)
+                            userstats.roles.push(settings.ruoliModeration.tempmuted)
+                        }
+
+                        userstats.moderation = {
+                            type: "Tempmuted",
+                            since: new Date().getTime(),
+                            until: moment().add(time, "ms").valueOf(),
+                            reason: reason,
+                            moderator: interaction.user.id,
+                            ticketOpened: false
+                        }
+                        userstats.warns.push({
+                            type: "tempmute",
+                            reason: reason,
+                            time: new Date().getTime(),
+                            moderator: interaction.user.id,
+                            unTime: null,
+                            unModerator: null
+                        })
+                        updateUser(userstats)
+
+                        let embed = new Discord.MessageEmbed()
+                            .setAuthor({ name: `[TEMPMUTE] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
+                            .setThumbnail(illustrations.mute)
+                            .setColor(colors.purple)
+                            .addField(":page_facing_up: Reason", reason)
+                            .addField(":shield: Moderator", interaction.user.toString())
+                            .setFooter({ text: "User ID: " + utente.id })
+
+                        msg.edit({ embeds: [embed], components: [] })
+
+                        embed = new Discord.MessageEmbed()
+                            .setTitle(":speaker: Tempmute :speaker:")
+                            .setColor(colors.purple)
+                            .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                            .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+                            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                            .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                            .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+                            .addField(":page_facing_up: Reason", reason)
+
+                        if (!isMaintenance())
+                            client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
+
+                        embed = new Discord.MessageEmbed()
+                            .setTitle("Sei stato mutato temporaneamente")
+                            .setColor(colors.purple)
+                            .setThumbnail(illustrations.mute)
+                            .addField(":page_facing_up: Reason", reason)
+                            .addField(":shield: Moderator", interaction.user.toString())
+
+                        utente.send({ embeds: [embed] })
+                            .catch(() => { })
                     })
-                }
-            })
+                })
+            return
+        }
 
-            utente.roles.add(ruoloTempmuted)
+        interaction.guild.channels.cache.forEach((canale) => {
+            if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
+                canale.permissionOverwrites?.edit(settings.ruoliModeration.tempmuted, {
+                    SEND_MESSAGES: false,
+                    SEND_MESSAGES_IN_THREADS: false,
+                    ADD_REACTIONS: false,
+                    SPEAK: false,
+                    STREAM: false,
+                })
+            }
+        })
+
+        if (interaction.guild.members.cache.get(utente.id)) {
+            interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
                 .then(() => {
-                    if (utente.voice?.channel) {
-                        var canale = utente.voice.channelId
+                    if (interaction.guild.members.cache.get(utente.id).voice?.channelId) {
+                        let canale = interaction.guild.members.cache.get(utente.id).voice.channelId
                         if (canale == settings.idCanaliServer.general1)
-                            utente.voice.setChannel(settings.idCanaliServer.general2)
+                            interaction.guild.members.cache.get(utente.id).voice.setChannel(settings.idCanaliServer.general2)
                         else
-                            utente.voice.setChannel(settings.idCanaliServer.general1)
-                        utente.voice.setChannel(canale)
+                            interaction.guild.members.cache.get(utente.id).voice.setChannel(settings.idCanaliServer.general1)
+                        interaction.guild.members.cache.get(utente.id).voice.setChannel(canale)
                     }
                 })
         }
@@ -157,51 +244,55 @@ ${userstats.moderation.moderator}
         }
 
         userstats.moderation = {
-            "type": "Tempmuted",
-            "since": new Date().getTime(),
-            "until": moment(new Date().getTime()).add(time, "ms").valueOf(),
-            "reason": reason,
-            "moderator": message.author.username,
-            "ticketOpened": false
+            type: "Tempmuted",
+            since: new Date().getTime(),
+            until: moment().add(time, "ms").valueOf(),
+            reason: reason,
+            moderator: interaction.user.id,
+            ticketOpened: false
         }
+        userstats.warns.push({
+            type: "tempmute",
+            reason: reason,
+            time: new Date().getTime(),
+            moderator: interaction.user.id,
+            unTime: null,
+            unModerator: null
+        })
+        updateUser(userstats)
 
-        userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[TEMPMUTE] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
+            .setThumbnail(illustrations.mute)
+            .setColor(colors.purple)
+            .addField(":page_facing_up: Reason", reason)
+            .addField(":hourglass: Time", ms(time, { long: true }))
+            .addField(":shield: Moderator", interaction.user.toString())
+            .setFooter({ text: "User ID: " + utente.id })
 
-        if (utente.user) utente = utente.user
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
-        var embed = new Discord.MessageEmbed()
-            .setAuthor("[TEMPMUTE] " + utente.tag, utente.displayAvatarURL({ dynamic: true }))
-            .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
-            .setColor("#6143CB")
-            .addField("Reason", reason)
-            .addField("Time", ms(time, { long: true }))
-            .addField("Moderator", message.author.toString())
-            .setFooter("User ID: " + utente.id)
+        embed = new Discord.MessageEmbed()
+            .setTitle(":speaker: Tempmute :speaker:")
+            .setColor(colors.purple)
+            .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+            .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+            .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
+            .addField(":page_facing_up: Reason", reason)
 
-        message.channel.send({ embeds: [embed] })
-            .then(msg => {
-                var embed = new Discord.MessageEmbed()
-                    .setTitle(":speaker: Tempmute :speaker:")
-                    .setColor("#8227cc")
-                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
-                    .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                    .addField(":brain: Executor", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                    .addField(":bust_in_silhouette: Member", `${utente.toString()} - ID: ${utente.id}`, false)
-                    .addField("Duration", `${ms(time, { long: true })} (Until: ${moment(new Date().getTime()).add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`, false)
-                    .addField("Reason", reason, false)
+        if (!isMaintenance())
+            client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
-            })
-
-        var embed = new Discord.MessageEmbed()
+        embed = new Discord.MessageEmbed()
             .setTitle("Sei stato mutato temporaneamente")
-            .setColor("#6143CB")
-            .setThumbnail("https://i.postimg.cc/gjYp6Zks/Mute.png")
-            .addField("Reason", reason)
-            .addField("Time", ms(time, { long: true }))
-            .addField("Moderator", message.author.toString())
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.mute)
+            .addField(":page_facing_up: Reason", reason)
+            .addField(":hourglass: Time", ms(time, { long: true }))
+            .addField(":shield: Moderator", interaction.user.toString())
 
         utente.send({ embeds: [embed] })
             .catch(() => { })

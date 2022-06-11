@@ -1,104 +1,95 @@
+const Discord = require("discord.js")
+const settings = require("../../config/general/settings.json")
+const items = require("../../config/ranking/items.json")
+const colors = require("../../config/general/colors.json")
+const { replyMessage } = require("../../functions/general/replyMessage")
+const { humanize } = require("../../functions/general/humanize")
+const { addUser } = require("../../functions/database/addUser")
+const { getUser } = require("../../functions/database/getUser")
+const { getEmoji } = require("../../functions/general/getEmoji")
+const { getTaggedUser } = require("../../functions/general/getTaggedUser")
+
 module.exports = {
     name: "inventory",
-    aliases: ["inventario", "inv"],
-    onlyStaff: false,
-    availableOnDM: true,
     description: "Tutta la lista degli oggetti che possiede un utente",
-    syntax: "!inventory (user)",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/inventory (user)",
     category: "ranking",
-    channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        if (!args[0]) {
-            var utente = message.author;
-        }
-        else {
-            var utente = message.mentions.users?.first()
-            if (!utente) {
-                var utente = await getUser(args.join(" "))
+    client: "ranking",
+    data: {
+        options: [
+            {
+                name: "user",
+                description: "Utente di cui vedere l'inventario",
+                type: "STRING",
+                required: false,
+                autocomplete: true
             }
-        }
-
-        if (!utente) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
-        }
-
-        if (utente.user) utente = utente.user
+        ]
+    },
+    channelsGranted: [settings.idCanaliServer.commands],
+    async execute(client, interaction, comando) {
+        let utente = await getTaggedUser(client, interaction.options.getString("user")) || interaction.user
 
         if (utente.bot) {
-            return botCommandMessage(message, "Warning", "Non un bot", "Non puoi avere l'inventario di un bot")
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi vedere l'inventario di un bot", comando)
         }
 
-        var userstats = userstatsList.find(x => x.id == utente.id);
-        if (!userstats) return botCommandMessage(message, "Error", "Utente non in memoria", "Questo utente non è presente nei dati del bot", property)
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
 
-        var totItems = 0
-        var items = []
+        let totItems = 0
+        let userItems = []
 
-        if (userstats.inventory) {
-            for (var index in userstats.inventory) {
-                if (userstats.inventory[index] && userstats.inventory[index] > 0) {
-                    totItems++
-                    items.push({ item: require("../../config/items.json").find(x => x.id == index), amount: userstats.inventory[index] })
-                }
+        for (let index in userstats.economy.inventory) {
+            if (userstats.economy.inventory[index] && userstats.economy.inventory[index] > 0) {
+                totItems += userstats.economy.inventory[index]
+                userItems.push({ item: items.find(x => x.id == index), quantity: userstats.economy.inventory[index] })
             }
         }
 
-        if (totItems == 0) {
-            var embed = new Discord.MessageEmbed()
-                .setTitle(":handbag: Inventory :handbag:")
-                .setDescription(`Tutto l'inventario di ${utente.toString()} con gli oggetti che possiede
+        let totPage = Math.ceil(userItems.length / 9)
+        let page = 1;
 
-_Oggetti totali: ${totItems}_`)
-                .setFooter(`Coins: ${userstats.money}$`)
-
-            message.channel.send({ embeds: [embed] })
-                .catch(() => { })
-            return
-        }
-
-        var totPage = Math.ceil(totItems / 20)
-        var page = 1;
-
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(":handbag: Inventory :handbag:")
-            .setThumbnail(utente.displayAvatarURL({ dynamic: true }))
+            .setColor(colors.purple)
             .setDescription(`Tutto l'inventario di ${utente.toString()} con gli oggetti che possiede
-
 _Oggetti totali: ${totItems}_`)
-            .setFooter(totPage > 1 ? `Coins: ${userstats.money}$ - Page ${page}/${totPage}` : `Coins: ${userstats.money}$`)
+            .setFooter({ text: totPage > 1 ? `Coins: ${humanize(userstats.economy.money)}$ - Page ${page}/${totPage}` : `Coins: ${humanize(userstats.economy.money)}$` })
 
-        for (var i = 20 * (page - 1); i < 20 * page; i++) {
-            if (items[i]) {
+        for (let i = 9 * (page - 1); i < 9 * page; i++) {
+            if (userItems[i]) {
                 embed
-                    .addField(`${items[i].item.icon} ${items[i].item.name}`, `ID: \`#${items[i].item.id}\`\rQuantity: ${items[i].amount}`, true)
+                    .addField(`${getEmoji(client, userItems[i].item.name.toLowerCase())} ${userItems[i].item.name}`, `ID: \`#${userItems[i].item.id}\`\nQuantity: ${userItems[i].quantity}`, true)
             }
         }
 
-        var button1 = new Discord.MessageButton()
-            .setEmoji("◀️")
-            .setCustomId(`indietroInv,${message.author.id},${utente.id},${page}`)
+        let button1 = new Discord.MessageButton()
+            .setCustomId(`indietroInv,${interaction.user.id},${utente.id},${page}`)
             .setStyle("PRIMARY")
+            .setEmoji(getEmoji(client, "Previous"))
 
-        if (page == 1)
+        if (page == 1) {
             button1.setDisabled()
+        }
 
-        var button2 = new Discord.MessageButton()
-            .setEmoji("▶️")
-            .setCustomId(`avantiInv,${message.author.id},${utente.id},${page}`)
+        let button2 = new Discord.MessageButton()
+            .setCustomId(`avantiInv,${interaction.user.id},${utente.id},${page}`)
             .setStyle("PRIMARY")
+            .setEmoji(getEmoji(client, "Next"))
 
-        if (page + 1 > totPage)
+        if (page == totPage) {
             button2.setDisabled()
+        }
 
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
 
-        if (totPage > 1)
-            message.channel.send({ embeds: [embed], components: [row] })
-                .catch(() => { })
-        else
-            message.channel.send({ embeds: [embed] })
-                .catch(() => { })
+        interaction.reply({ embeds: [embed], components: totPage > 1 ? [row] : [] })
+
+
     },
 };

@@ -1,20 +1,28 @@
+const Discord = require("discord.js")
+const settings = require("../../config/general/settings.json")
+const { humanize } = require("../../functions/general/humanize")
+const { getAllUsers } = require("../../functions/database/getAllUsers")
+const { getEmoji } = require("../../functions/general/getEmoji")
+
 module.exports = {
     name: "leaderboard",
-    aliases: ["lb"],
-    onlyStaff: false,
-    availableOnDM: true,
     description: "Visualizzare statistiche ranking del server",
-    syntax: "!leaderboard",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/leaderboard",
     category: "ranking",
+    client: "ranking",
     channelsGranted: [settings.idCanaliServer.commands],
-    async execute(message, args, client, property) {
-        var leaderboardListLeveling = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
-        var leaderboardLeveling = ""
+    async execute(client, interaction, comando) {
+        let userstatsList = getAllUsers(client)
 
-        var totPage = Math.ceil(leaderboardListLeveling.length / 10)
-        var page = 1;
+        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0))
+        let leaderboardLeveling = ""
 
-        for (var i = 10 * (page - 1); i < 10 * page; i++) {
+        let totPage = Math.ceil(leaderboardListLeveling.length / 10)
+        let page = 1;
+
+        for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListLeveling[i]) {
 
                 switch (i) {
@@ -31,16 +39,15 @@ module.exports = {
                         leaderboardLeveling += `**#${i + 1}** `
                 }
 
-                var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id);
-
-                leaderboardLeveling += `${utente.nickname ? utente.nickname : utente.user.username} - **Lvl. ${leaderboardListLeveling[i].level ? leaderboardListLeveling[i].level : 0}** (XP: ${humanize(parseInt(leaderboardListLeveling[i].xp ? leaderboardListLeveling[i].xp : 0), { delimiter: '.', separator: ',' })})\r`
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id);
+                leaderboardLeveling += `${utente.toString()} - **Lvl. ${leaderboardListLeveling[i].leveling.level}** (XP: ${humanize(leaderboardListLeveling[i].leveling.xp)})\n`
             }
         }
 
-        var leaderboardListEconomy = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.money < b.money) ? 1 : ((b.money < a.money) ? -1 : 0))
-        var leaderboardEconomy = ""
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0))
+        let leaderboardEconomy = ""
 
-        for (var i = 10 * (page - 1); i < 10 * page; i++) {
+        for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListEconomy[i]) {
                 switch (i) {
                     case 0:
@@ -56,58 +63,56 @@ module.exports = {
                         leaderboardEconomy += `**#${i + 1}** `
                 }
 
-                var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
-                leaderboardEconomy += `${utente.nickname ? utente.nickname : utente.user.username} - **${humanize((leaderboardListEconomy[i].money ? leaderboardListEconomy[i].money : 0), { delimiter: '.', separator: ',' })}$**\r`
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
+                leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].money)}$**\n`
             }
         }
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(":trophy: Leaderboard :trophy:")
             .setColor("#ffc400")
-            .setDescription("Classifiche ranking di tutti gli utenti nel server")
-            .setThumbnail(client.guilds.cache.get(settings.idServer).iconURL({ dynamic: true }))
+            .setDescription("Statistiche ranking di tutti gli utenti nel server")
+            .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
             .addField(":beginner: Leveling", leaderboardLeveling)
             .addField(":coin: Economy", leaderboardEconomy)
-            .setFooter(`Page ${page}/${totPage}`)
+            .setFooter({ text: `Page ${page}/${totPage}` })
 
-
-        var button1 = new Discord.MessageButton()
-            .setCustomId(`indietro2Lb,${message.author.id},${page}`)
+        let button1 = new Discord.MessageButton()
+            .setCustomId(`indietro2Lb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("⏮️")
+            .setEmoji(getEmoji(client, "Previous2"))
 
-        var button2 = new Discord.MessageButton()
-            .setCustomId(`indietroLb,${message.author.id},${page}`)
+        let button2 = new Discord.MessageButton()
+            .setCustomId(`indietroLb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("◀️")
+            .setEmoji(getEmoji(client, "Previous"))
 
         if (page == 1) {
             button1.setDisabled()
             button2.setDisabled()
         }
 
-        var button3 = new Discord.MessageButton()
-            .setCustomId(`avantiLb,${message.author.id},${page}`)
+        let button3 = new Discord.MessageButton()
+            .setCustomId(`avantiLb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("▶️")
+            .setEmoji(getEmoji(client, "Next"))
 
-        var button4 = new Discord.MessageButton()
-            .setCustomId(`avanti2Lb,${message.author.id},${page}`)
+        let button4 = new Discord.MessageButton()
+            .setCustomId(`avanti2Lb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("⏭️")
+            .setEmoji(getEmoji(client, "Next2"))
 
         if (page == totPage) {
             button3.setDisabled()
             button4.setDisabled()
         }
 
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
             .addComponents(button3)
             .addComponents(button4)
 
-        message.channel.send({ embeds: [embed], components: [row] })
-            .catch(() => { })
+        interaction.reply({ embeds: [embed], components: [row] })
     },
 };

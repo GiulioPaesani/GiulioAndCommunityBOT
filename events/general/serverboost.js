@@ -1,32 +1,39 @@
+const Discord = require("discord.js")
+const moment = require("moment")
+const colors = require("../../config/general/colors.json")
+const settings = require("../../config/general/settings.json")
+const items = require("../../config/ranking/items.json")
+const illustrations = require("../../config/general/illustrations.json")
+const { isMaintenance } = require("../../functions/general/isMaintenance");
+const { getEmoji } = require("../../functions/general/getEmoji")
+
 module.exports = {
     name: "messageCreate",
-    async execute(message) {
+    client: "general",
+    async execute(client, message) {
         if (isMaintenance(message.author.id)) return
+        if (message.guild?.id != settings.idServer) return
 
         if (message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION" && message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1" && message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2" && message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3") return
 
-        if (message.author.bot) return
-
-        message.delete()
-            .catch(() => { })
-
-        var numeroBoost;
+        let numeroBoost;
         if (message.content == "")
             numeroBoost = 1;
         else
             numeroBoost = parseInt(message.content)
 
-        var livelloVecchio;
-        var nuovoLivello;
-        if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3" || 14 - message.guild.premiumSubscriptionCount <= 0) {
+        let livelloVecchio;
+        let nuovoLivello;
+        if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3") {
             nuovoLivello = `:crystal_ball: **LIVELLO 3 sbloccato**
 +100 emoji
 +30 sticker
 Qualità audio 384 Kpms
 Vanity URL
-100 MB limite di caricamenti in chat`
+100 MB limite di caricamenti in chat
+Banner del server animato`
         }
-        else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2" || 7 - message.guild.premiumSubscriptionCount <= 0) {
+        else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2") {
             nuovoLivello = `:crystal_ball: **LIVELLO 2 sbloccato**
 +50 emoji
 +15 sticker
@@ -37,7 +44,7 @@ Streaming fino a 1080p 60fps
 Icone ruoli personalizzate
 `
         }
-        else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1" || 2 - message.guild.premiumSubscriptionCount <= 0) {
+        else if (message.type == "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1") {
             nuovoLivello = `:crystal_ball: **LIVELLO 1 sbloccato**
 +50 emoji
 +15 sticker
@@ -60,107 +67,62 @@ Streaming fino a 720p`
             livelloVecchio = 3
         }
 
-        var embed = new Discord.MessageEmbed()
+        let livelloNuovo
+        switch (message.guild.premiumTier) {
+            case "NONE": livelloNuovo = 0; break;
+            case "TIER_1": livelloNuovo = 1; break;
+            case "TIER_2": livelloNuovo = 2; break;
+            case "TIER_3": livelloNuovo = 3; break;
+        }
+
+        let embed = new Discord.MessageEmbed()
             .setTitle(":tada: Serverboost :tada:")
-            .setColor("#FF73FA")
+            .setColor(colors.serverboost)
             .setDescription(`Grazie tantissime a <@${message.author.id}> per aver boostato il server!`)
-            .addField(`Ha potenziato il server con ${numeroBoost} boost`, `\`Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscriptionCount}\`
+            .addField(`Ha potenziato il server con ${numeroBoost} boost`, `\`Lvl. ${livelloNuovo} Boost ${message.guild.premiumSubscriptionCount}\`
 
 ${nuovoLivello ? nuovoLivello : ""}
 `)
 
-        var canale = client.channels.cache.get(settings.idCanaliServer.general);
+        let canale = client.channels.cache.get(settings.idCanaliServer.general);
         canale.send({ embeds: [embed] });
 
-        var embed = new Discord.MessageEmbed()
-            .setTitle("Serverboost")
-            .setColor("#22c90c")
-            .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-            .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-            .addField("Count", `${numeroBoost} boost`)
-            .addField("Server level", `
+        embed = new Discord.MessageEmbed()
+            .setTitle(":fleur_de_lis: Serverboost :fleur_de_lis:")
+            .setColor(colors.purple)
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ${message.author.tag}\nID: ${message.author.id}`)
+            .addField(":ballot_box: Count", `${numeroBoost} boost`)
+            .addField(":beginner: Server level", `
 Old: Lvl. ${livelloVecchio} Boost ${message.guild.premiumSubscriptionCount - numeroBoost}
-New: Lvl. ${message.guild.premiumTier} Boost ${message.guild.premiumSubscriptionCount}`)
+New: Lvl. ${livelloNuovo} Boost ${message.guild.premiumSubscriptionCount}`)
 
         if (!isMaintenance())
             client.channels.cache.get(log.server.serverBoostes).send({ embeds: [embed] })
 
-        const privilegiLevel = {
-            "5": [
-                `Streaming nelle chat vocali`,
-                `Aggiungere **reazioni** ai messaggi`,
-                `Allegare **file** nelle chat`,
-                `Creare **stanze private testuali** in <#${settings.idCanaliServer.privateRooms}>`,
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "Giulio")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioBacio")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioOK")}`
-            ],
-            "10": [
-                `Mandare **emoji** esterne`,
-                `Creare **stanze private vocali** in <#${settings.idCanaliServer.privateRooms}>`,
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioGG")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioHappy")}`
-            ],
-            "15": [
-                `Scrivere in chat <#${settings.idCanaliServer.noMicChat}> per utilizzare **KDBot**`,
-                `Creare **stanze private vocali** in <#${settings.idCanaliServer.privateRooms}>`,
-                `Cambiare il proprio **nickname**`,
-                `Utilizzare il comando \`!say\``,
-            ],
-            "20": [
-                `Creare **stanze private testuali+vocali** in <#${settings.idCanaliServer.privateRooms}>`,
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioPiangere")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioBuonanotte")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioLove")}`
-            ],
-            "25": [
-                `10% di **boost** di esperienza nel livellamento`,
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioBan")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCool")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioRip")}`
-            ],
-            "30": [
-                `Scrivere nella chat <#${settings.idCanaliServer.selfAdv}>`,
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioLOL")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioHi")}`
-            ],
-            "35": [
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioWow")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioLive")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSad")}`
-            ],
-            "40": [
-                `Nuove **emoji**: ${client.emojis.cache.find(emoji => emoji.name === "GiulioPopCorn")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioPaura")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioDomandoso")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")}`
-            ],
-            "50": [
-                `20% di **boost** di esperienza nel livellamento`,
-            ],
-            "100": [
-                `**Priorità di parola** nella chat vocali`,
-            ],
-        }
-
-        var textPrivilegi = `Ruolo @Server Booster\r`
-
-        for (var index in privilegiLevel) {
-            if (parseInt(index) <= 30) {
-                privilegiLevel[index].forEach(privilegio => {
-                    if (!privilegio.startsWith("Nuove **emoji**") && !privilegio.startsWith("Creare"))
-                        textPrivilegi += `${privilegio}\r`
-                })
-            }
-        }
-
-        textPrivilegi += `Tutte le **emoji** del server: ${client.emojis.cache.find(emoji => emoji.name === "GiulioBan")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioAngry")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioSus")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCringe")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioF")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioFesta")} ${client.emojis.cache.find(emoji => emoji.name === "GiulioCattivo")} e molte altre...\r`
-        textPrivilegi += `Creare **stanze private testuali+vocali** in <#${settings.idCanaliServer.privateRooms}>\r`
-
-        var items = require("../../config/items.json")
-        var textItems = ""
-        items.forEach(item => {
-            if (item.priviled && item.priviled <= 30) {
-                textItems += `${item.icon} `
-            }
+        let textItems = ""
+        items.filter(x => x.priviled && x.priviled <= 30 && getEmoji(client, x.name.toLowerCase()) != "").slice(0, 6).forEach(item => {
+            textItems += `${getEmoji(client, item.name.toLowerCase())} `
         })
 
-        if (textItems != "")
-            textPrivilegi += `Nuovi oggetti nello **shop**: ${textItems.split(" ").slice(0, 7).join(" ")} e molti altri...\r`
+        let textPrivilegi = `
+Ruolo @Server Booster
+Creare **sondaggi** con \`/poll\`
+Creare **stanze private testuali** e **vocali** in <#${settings.idCanaliServer.privateRooms}>
+Giocare a <#${settings.idCanaliServer.countingplus}> e <#${settings.idCanaliServer.onewordstory}> per divertirsi con gli utenti
+Ideare **meme** super divertenti con \`/image\`
+Pubblicare un tuo progetto in <#${settings.idCanaliServer.ourProjects}> con \`/post\` (e comparire se vuoi nella serie "I vostri super progetti")
+Emoji **eslusiva**: ${getEmoji(client, "GiulioBoost")}
+Nuove **emoji** tra cui ${getEmoji(client, "GiulioCool")} ${getEmoji(client, "GiulioImbarazzato")} ${getEmoji(client, "GiulioAngry")} ${getEmoji(client, "GiulioSus")} ${getEmoji(client, "GiulioCringe")} ${getEmoji(client, "GiulioGG")} e molte altre...
+Nuovi oggetti nello **shop** tra cui ${textItems} e molti altri...
+_E tantissimi altri privilegi..._`
 
-        var embed = new Discord.MessageEmbed()
+        embed = new Discord.MessageEmbed()
             .setTitle(":tada: Grazie per il boost!")
-            .setColor("#FF73FA")
-            .setThumbnail("https://i.postimg.cc/bwYTBwzX/Serverboost.png")
-            .setDescription("Grazie mille per aver boostato il server\rPer tutto il periodo di boost avrai accesso a tutti i **privilegi** che trovi di seguito:")
-            .addField(":beginner: Privilegi", textPrivilegi)
+            .setColor(colors.serverboost)
+            .setThumbnail(illustrations.serverboost)
+            .setDescription("Grazie mille per aver boostato il server\nPer tutto il periodo di boost avrai accesso a tutti i **privilegi** che trovi di seguito:")
+            .addField(":gem: Privilegi", textPrivilegi)
 
         message.author.send({ embeds: [embed] })
     },

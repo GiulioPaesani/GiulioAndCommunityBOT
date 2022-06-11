@@ -4,12 +4,10 @@ module.exports = {
     description: "Ottenere un **canale testuale/vocale/altro**",
     category: "manage",
     id: "1642321287",
+    link: "https://www.toptal.com/developers/hastebin/ibayesakox.kotlin",
     info: "",
     video: "",
-    v12: `
-var canale = client.channels.cache.get("idCanale");
-canale.send("Messaggio");`,
-    v13: `
-var canale = client.channels.cache.get("idCanale");
+    code: `
+const canale = client.channels.cache.get("idCanale");
 canale.send("Messaggio");`
 };

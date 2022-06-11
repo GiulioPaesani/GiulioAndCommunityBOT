@@ -1,23 +1,30 @@
+const { isMaintenance } = require("../../../functions/general/isMaintenance")
+const { humanize } = require("../../../functions/general/humanize")
+const { getEmoji } = require("../../../functions/general/getEmoji")
+
 module.exports = {
     name: `interactionCreate`,
-    async execute(button) {
-        if (!button.isButton()) return
-        if (!button.customId.startsWith("avantiLb")) return
+    client: "ranking",
+    async execute(client, interaction) {
+        if (!interaction.isButton()) return
+        if (!interaction.customId.startsWith("avantiLb")) return
 
-        button.deferUpdate().catch(() => { })
+        interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(button.user.id)) return
+        if (isMaintenance(interaction.user.id)) return
 
-        if (button.customId.split(",")[1] != button.user.id) return
+        if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        var leaderboardListLeveling = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.xp < b.xp) ? 1 : ((b.xp < a.xp) ? -1 : 0))
-        var leaderboardLeveling = ""
+        let userstatsList = getAllUsers(client)
 
-        var totPage = Math.ceil(leaderboardListLeveling.length / 10)
-        var page = parseInt(button.customId.split(",")[2]) + 1;
+        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0))
+        let leaderboardLeveling = ""
+
+        let totPage = Math.ceil(leaderboardListLeveling.length / 10)
+        let page = parseInt(interaction.customId.split(",")[2]) + 1;
         if (page > totPage) return
 
-        for (var i = 10 * (page - 1); i < 10 * page; i++) {
+        for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListLeveling[i]) {
 
                 switch (i) {
@@ -34,15 +41,15 @@ module.exports = {
                         leaderboardLeveling += `**#${i + 1}** `
                 }
 
-                var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id)
-                leaderboardLeveling += `${utente.nickname ? utente.nickname : utente.user.username} - **Lev. ${leaderboardListLeveling[i].level ? leaderboardListLeveling[i].level : 0}** (XP: ${humanize(leaderboardListLeveling[i].xp)})\r`
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id);
+                leaderboardLeveling += `${utente.toString()} - **Lvl. ${leaderboardListLeveling[i].leveling.level}** (XP: ${humanize(leaderboardListLeveling[i].leveling.xp)})\n`
             }
         }
 
-        var leaderboardListEconomy = userstatsList.filter(x => client.guilds.cache.get(settings.idServer).members.cache.find(y => y.id == x.id)).sort((a, b) => (a.money < b.money) ? 1 : ((b.money < a.money) ? -1 : 0))
-        var leaderboardEconomy = ""
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0))
+        let leaderboardEconomy = ""
 
-        for (var i = 10 * (page - 1); i < 10 * page; i++) {
+        for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListEconomy[i]) {
                 switch (i) {
                     case 0:
@@ -58,56 +65,56 @@ module.exports = {
                         leaderboardEconomy += `**#${i + 1}** `
                 }
 
-                var utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
-                leaderboardEconomy += `${utente.nickname ? utente.nickname : utente.user.username} - **${humanize(leaderboardListEconomy[i].money)}$**\r`
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
+                leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].money)}$**\n`
             }
         }
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(":trophy: Leaderboard :trophy:")
             .setColor("#ffc400")
-            .setDescription("Classifiche ranking di tutti gli utenti nel server")
+            .setDescription("Statistiche ranking di tutti gli utenti nel server")
             .setThumbnail(client.guilds.cache.get(settings.idServer).iconURL({ dynamic: true }))
             .addField(":beginner: Leveling", leaderboardLeveling)
             .addField(":coin: Economy", leaderboardEconomy)
             .setFooter(`Page ${page}/${totPage}`)
 
-        var button1 = new Discord.MessageButton()
-            .setCustomId(`indietro2Lb,${button.user.id},${page}`)
+        let button1 = new Discord.MessageButton()
+            .setCustomId(`indietro2Lb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("⏮️")
+            .setEmoji(getEmoji(client, "Previous2"))
 
-        var button2 = new Discord.MessageButton()
-            .setCustomId(`indietroLb,${button.user.id},${page}`)
+        let button2 = new Discord.MessageButton()
+            .setCustomId(`indietroLb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("◀️")
+            .setEmoji(getEmoji(client, "Previous"))
 
         if (page == 1) {
             button1.setDisabled()
             button2.setDisabled()
         }
 
-        var button3 = new Discord.MessageButton()
-            .setCustomId(`avantiLb,${button.user.id},${page}`)
+        let button3 = new Discord.MessageButton()
+            .setCustomId(`avantiLb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("▶️")
+            .setEmoji(getEmoji(client, "Next"))
 
-        var button4 = new Discord.MessageButton()
-            .setCustomId(`avanti2Lb,${button.user.id},${page}`)
+        let button4 = new Discord.MessageButton()
+            .setCustomId(`avanti2Lb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
-            .setEmoji("⏭️")
+            .setEmoji(getEmoji(client, "Next2"))
 
         if (page == totPage) {
             button3.setDisabled()
             button4.setDisabled()
         }
 
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
             .addComponents(button3)
             .addComponents(button4)
 
-        button.message.edit({ embeds: [embed], components: [row] })
+        interaction.message.edit({ embeds: [embed], components: [row] })
     },
 };

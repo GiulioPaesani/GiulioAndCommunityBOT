@@ -1,266 +1,1012 @@
-require('events').EventEmitter.prototype._maxListeners = 200;
+const Discord = require("discord.js");
+const fs = require("fs")
+const moment = require("moment")
+const { DisTube } = require("distube")
+const { SpotifyPlugin } = require("@distube/spotify")
+const { SoundCloudPlugin } = require("@distube/soundcloud")
+const googleTTS = require('google-tts-api');
+const settings = require("./config/general/settings.json")
+const colors = require("./config/general/colors.json")
+const log = require("./config/general/log.json")
+const illustrations = require("./config/general/illustrations.json")
+const { codeError } = require('./functions/general/codeError');
+const { replyMessage } = require('./functions/general/replyMessage');
+const { isMaintenance } = require('./functions/general/isMaintenance');
+const { getUserPermissionLevel } = require('./functions/general/getUserPermissionLevel');
+const { getUser } = require('./functions/database/getUser');
+const { addUser } = require('./functions/database/addUser');
+const { registerFont } = require('canvas');
+const { checkBadwords } = require('./functions/moderaction/checkBadwords');
+const { getServer } = require('./functions/database/getServer');
+const { ttsQueue, ttsPlay } = require('./functions/music/tts/ttsQueue');
+const { joinVoiceChannel } = require("@discordjs/voice");
+const { blockedChannels } = require("./functions/general/blockedChannels");
+const { hasSufficientLevels } = require("./functions/leveling/hasSufficientLevels");
+const { checkLevelUp } = require("./functions/leveling/checkLevelUp");
+const { updateUser } = require("./functions/database/updateUser");
+registerFont("./assets/font/roboto.ttf", { family: "roboto" })
+registerFont("./assets/font/robotoBold.ttf", { family: "robotoBold" })
 
-global.Discord = require("discord.js");
-global.client = new Discord.Client({
+require('events').EventEmitter.prototype._maxListeners = 100;
+
+const client = new Discord.Client({
     intents: 32767,
-    partials: ["MESSAGE", "CHANNEL", "REACTION"]
+    partials: ["MESSAGE", "CHANNEL", "REACTION"],
+    allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
 });
 
-const fs = require("fs");
-global.ytch = require('yt-channel-info');
-global.moment = require("moment");
-global.ms = require("ms");
-global.Parser = require('expr-eval').Parser;
-global.MongoClient = require('mongodb').MongoClient;
-
-global.settings = require("./config/settings.json");
+const clientModeration = new Discord.Client({
+    intents: 32767,
+    allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
+})
+const clientFun = new Discord.Client({
+    intents: 32767,
+    allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
+})
+const clientRanking = new Discord.Client({
+    intents: 32767,
+    allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
+})
 
 try {
     require("dotenv").config()
-} catch { }
+} catch {
 
-client.login(process.env.token);
+}
 
-//COMMANDS
+client.login(process.env.token)
+clientModeration.login(process.env.tokenModeration)
+clientFun.login(process.env.tokenFun)
+clientRanking.login(process.env.tokenRanking)
+
+let musicBots = []
+let countMusicBots = 3
+
+for (let i = 1; i <= countMusicBots; i++) {
+    const clientMusic = new Discord.Client({
+        intents: 32767,
+        allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
+    })
+    let bot = {
+        client: clientMusic,
+        distube: new DisTube(clientMusic, {
+            youtubeDL: false,
+            plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+            leaveOnEmpty: true,
+            leaveOnStop: true,
+            emptyCooldown: 20,
+        })
+    }
+
+    clientMusic.login(process.env["tokenMusic" + i])
+
+    clientMusic.on("ready", () => {
+        clientMusic.user.setActivity('/play', { type: 'LISTENING' });
+
+        console.log(`-- ${clientMusic.user.username} è ONLINE! --`)
+
+        let utente = client.guilds.cache.get(settings.idServer)?.members.cache.get(clientMusic.user.id)
+        utente?.voice?.disconnect()
+    })
+
+    musicBots.push(bot)
+}
+
+module.exports = { musicBots, client, clientModeration, clientFun, clientRanking }
+
+//Commands Handler
 client.commands = new Discord.Collection();
+clientModeration.commands = new Discord.Collection();
+clientFun.commands = new Discord.Collection();
+clientRanking.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync("./commands");
 for (const folder of commandsFolder) {
     const commandsFiles = fs.readdirSync(`./commands/${folder}`);
     for (const file of commandsFiles) {
         if (file.endsWith(".js")) {
             const command = require(`./commands/${folder}/${file}`);
-            client.commands.set(command.name, command);
+            switch (command.client) {
+                case "general": {
+                    client.commands.set(command.name, command);
+                } break;
+                case "moderation": {
+                    clientModeration.commands.set(command.name, command);
+                } break;
+                case "fun": {
+                    clientFun.commands.set(command.name, command);
+                } break;
+                case "ranking": {
+                    clientRanking.commands.set(command.name, command);
+                } break;
+            }
         }
         else {
             const commandsFiles2 = fs.readdirSync(`./commands/${folder}/${file}`)
             for (const file2 of commandsFiles2) {
                 const command = require(`./commands/${folder}/${file}/${file2}`);
-                client.commands.set(command.name, command);
+                switch (command.client) {
+                    case "general": {
+                        client.commands.set(command.name, command);
+                    } break;
+                    case "moderation": {
+                        clientModeration.commands.set(command.name, command);
+                    } break;
+                    case "fun": {
+                        clientFun.commands.set(command.name, command);
+                    } break;
+                    case "ranking": {
+                        clientRanking.commands.set(command.name, command);
+                    } break;
+                }
             }
         }
     }
 }
-//EVENTS
-const eventsFolders = fs.readdirSync('./events');
+
+//Autocomplete Handler
+let i = 0
+client.autocomplete = new Discord.Collection();
+clientModeration.autocomplete = new Discord.Collection();
+clientFun.autocomplete = new Discord.Collection();
+clientRanking.autocomplete = new Discord.Collection();
+const autocompleteFolder = fs.readdirSync("./autocomplete");
+for (const folder of autocompleteFolder) {
+    const autocompleteFiles = fs.readdirSync(`./autocomplete/${folder}`);
+    for (const file of autocompleteFiles) {
+        if (file.endsWith(".js")) {
+            const autocomplete = require(`./autocomplete/${folder}/${file}`);
+            switch (autocomplete.client) {
+                case "general": {
+                    client.autocomplete.set(i, autocomplete);
+                } break;
+                case "moderation": {
+                    clientModeration.autocomplete.set(i, autocomplete);
+                } break;
+                case "fun": {
+                    clientFun.autocomplete.set(i, autocomplete);
+                } break;
+                case "ranking": {
+                    clientRanking.autocomplete.set(i, autocomplete);
+                } break;
+            }
+            i++
+        }
+        else {
+            const autocompleteFiles2 = fs.readdirSync(`./autocomplete/${folder}/${file}`)
+            for (const file2 of autocompleteFiles2) {
+                const autocomplete = require(`./autocomplete/${folder}/${file}/${file2}`);
+                switch (autocomplete.client) {
+                    case "general": {
+                        client.autocomplete.set(i, autocomplete);
+                    } break;
+                    case "moderation": {
+                        clientModeration.autocomplete.set(i, autocomplete);
+                    } break;
+                    case "fun": {
+                        clientFun.autocomplete.set(i, autocomplete);
+                    } break;
+                    case "ranking": {
+                        clientRanking.autocomplete.set(i, autocomplete);
+                    } break;
+                }
+                i++
+            }
+        }
+    }
+}
+
+//Events Handler
+client.events = 0;
+clientModeration.events = 0;
+clientFun.events = 0;
+clientRanking.events = 0;
+const eventsFolders = fs.readdirSync('./events').filter(x => x != "music");
 for (const folder of eventsFolders) {
     const eventsFiles = fs.readdirSync(`./events/${folder}`)
 
     for (const file of eventsFiles) {
         if (file.endsWith(".js")) {
-            const event = require(`./events/${folder}/${file}`);
-            client.on(event.name, (...args) => event.execute(...args));
+            const event = require(`./events/${folder}/${file}`)
+            switch (event.client) {
+                case "general": {
+                    client.on(event.name, (...args) => event.execute(client, ...args));
+                    client.events++
+                } break;
+                case "moderation": {
+                    clientModeration.on(event.name, (...args) => event.execute(clientModeration, ...args));
+                    clientModeration.events++
+                } break;
+                case "fun": {
+                    clientFun.on(event.name, (...args) => event.execute(clientFun, ...args));
+                    clientFun.events++
+                } break;
+                case "ranking": {
+                    clientRanking.on(event.name, (...args) => event.execute(clientRanking, ...args));
+                    clientRanking.events++
+                } break;
+            }
         }
         else {
             const eventsFiles2 = fs.readdirSync(`./events/${folder}/${file}`)
             for (const file2 of eventsFiles2) {
                 const event = require(`./events/${folder}/${file}/${file2}`);
-                client.on(event.name, (...args) => event.execute(...args));
+                switch (event.client) {
+                    case "general": {
+                        client.on(event.name, (...args) => event.execute(client, ...args));
+                        client.events++
+                    } break;
+                    case "moderation": {
+                        clientModeration.on(event.name, (...args) => event.execute(clientModeration, ...args));
+                        clientModeration.events++
+                    } break;
+                    case "fun": {
+                        clientFun.on(event.name, (...args) => event.execute(clientFun, ...args));
+                        clientFun.events++
+                    } break;
+                    case "ranking": {
+                        clientRanking.on(event.name, (...args) => event.execute(clientRanking, ...args));
+                        clientRanking.events++
+                    } break;
+                }
             }
         }
     }
 }
-//FUNCTIONS
-const functionFiles = fs.readdirSync('./functions').filter(file => file.endsWith('.js'));
-for (const file of functionFiles) {
-    require(`./functions/${file}`);
+
+//Music events handler
+const eventsFiles = fs.readdirSync(`./events/music`)
+for (const file of eventsFiles) {
+    if (file.endsWith(".js")) {
+        const event = require(`./events/music/${file}`)
+        musicBots.forEach(bot => {
+            bot.distube.on(event.name, (...args) => event.execute(bot.client, bot.distube, ...args));
+            bot.client.events = (bot.client.events || 0) + 1
+        })
+    }
+    else {
+        const eventsFiles2 = fs.readdirSync(`./events/music/${file}`)
+        for (const file2 of eventsFiles2) {
+            const event = require(`./events/music/${file}/${file2}`);
+            musicBots.forEach(bot => {
+                bot.distube.on(event.name, (...args) => event.execute(bot.client, bot.distube, ...args));
+                bot.client.events = (bot.client.events || 0) + 1
+            })
+        }
+    }
 }
 
-global.log = require("./config/log.json");
-
-global.database = "";
-global.url = settings.db
-
-global.serverstats = ""
-global.userstatsList = ""
-
-global.usersIndividualSpam = new Map()
-global.usersGroupSpam = new Map();
-
-global.invites = new Map();
-
-//CODES comando !code
-global.client.codes = new Discord.Collection();
+//Codes handler
+client.codes = new Discord.Collection();
 const codesFolder = fs.readdirSync("./code");
 for (const file of codesFolder) {
     const code = require(`./code/${file}`);
-    client.codes.set(code.name, code);
+    client.codes.set(code.id, code);
 }
 
-global.pressButtons = {}
-global.joinVocalChat = {}
+process.on("uncaughtException", err => {
+    codeError(client, err);
+})
+process.on("unhandledRejection", err => {
+    codeError(client, err);
+})
 
-global.prefix = "!"
-client.on("messageCreate", async message => {
-    if (message.author.bot) return
-    if (!message.content.startsWith(prefix)) return;
-    if (!message.channel.type == "DM" && (message.guild.id != settings.idServer && message.guild.id != log.idServer)) return
-    if (!userstatsList) return
+client.on("interactionCreate", async interaction => {
+    if (!interaction.isCommand()) return
 
-    if (message.channel.id == log.general.thingsToDo) return
+    if (isMaintenance(interaction.user.id)) return
 
-    if (isMaintenance(message.author.id)) return
+    let userstats = getUser(interaction.user.id)
+    if (!userstats) userstats = addUser(interaction.member)[0]
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase()
+    const comando = client.commands.get(interaction.commandName)
+    if (!comando) return
 
-    if (!command[0]?.replace(/[^a-z]/g, "")) return
+    if (comando.client != "general") return
 
-    trovata = getParolaccia(message.content)[0];
-    if (trovata && !utenteMod(message.author)) return
+    if (comando.permissionLevel > getUserPermissionLevel(client, interaction.user.id)) {
+        return replyMessage(client, interaction, "NonPermesso", "", "", comando)
+    }
 
-    //Verifica esistenza comando
-    if (!client.commands.has(command) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command))) {
-        if (message.author.id != settings.idGiulio) {
-            var embed = new Discord.MessageEmbed()
-                .setTitle(":warning: Command not found :warning:")
-                .setColor("#FF931E")
-                .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-                .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                .addField("Channel", `#${message.channel.name}`, false)
-                .addField("Command", `!${command}`, false)
-            if (`!${command}` != message.content)
-                embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
+    if (comando.otherGuild && interaction.guild.id != settings.idServer && getUserPermissionLevel(client, interaction.user.id) <= 2) {
+        return replyMessage(client, interaction, "NonPermesso", "", "I comandi in questo server sono accessibili sono dagli utenti Owner", comando)
+    }
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+    if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
+        return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+    }
 
-            botCommandMessage(message, "ComandoNonEsistente")
+    let serverstats = getServer()
+    if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(client.channels.cache.get(interaction.channelId).parentId)) {
+        if (getUserPermissionLevel(client, interaction.user.id) >= 2) {
+
         }
+        else if (getUserPermissionLevel(client, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
+
+        }
+        else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
+
+        }
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(client, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+
+        }
+        else {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+    }
+
+    if (interaction.channelId == settings.idCanaliServer.onewordstory && (!getUserPermissionLevel(client, interaction.user.id) || comando.name == "say")) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Canale non concesso")
+            .setColor(colors.yellow)
+            .setDescription(`In questo canale non è possibile eseguire nessun comando`)
+
+        interaction.reply({ embeds: [embed], ephemeral: true })
+
+        let embed2 = new Discord.MessageEmbed()
+            .setTitle(":construction: Channel not granted :construction:")
+            .setColor(colors.yellow)
+            .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+
+        if (comando) {
+            let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+            interaction.options?._hoistedOptions?.forEach(option => {
+                testoCommand += ` ${option.name}: \`${option.value}\``
+            })
+            embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+        }
+
+        if (!isMaintenance()) {
+            client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        }
+
         return
     }
 
-    var comando = client.commands.get(command) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
+    if (serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id))?.channel == interaction.channelId && !getUserPermissionLevel(client, interaction.user.id)) {
+        if (!serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id)).mode.messages) {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Messaggi bloccati")
+                .setColor(colors.yellow)
+                .setDescription("In questa stanza privata non sono concessi i messaggi, quindi non puoi eseguire comandi qui")
 
-    //Verifica permesso
-    if (comando.onlyStaff && !utenteMod(message.author)) {
-        botCommandMessage(message, "NonPermesso")
+            interaction.reply({ embeds: [embed], ephemeral: true })
+
+            let embed2 = new Discord.MessageEmbed()
+                .setTitle(":construction: No messages in Private Rooms :construction:")
+                .setColor(colors.yellow)
+                .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
+                .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+                .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+
+            let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+            interaction.options?._hoistedOptions?.forEach(option => {
+                testoCommand += ` ${option.name}: \`${option.value}\``
+            })
+            embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+
+            if (!isMaintenance()) {
+                client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+            }
+            return
+        }
+    }
+
+    if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
+        return replyMessage(client, interaction, "InsufficientLevel", "", "", comando)
+    }
+
+    let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+    interaction.options._hoistedOptions.forEach(option => {
+        testoCommand += ` ${option.name}: \`${option.value}\``
+    })
+
+    let [trovata, nonCensurato, censurato] = checkBadwords(testoCommand);
+
+    if (trovata && !getUserPermissionLevel(client, interaction.user.id) && !interaction.member.roles.cache.has(settings.idRuoloFeatureActivator)) {
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[BAD WORDS] ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+            .setDescription("L'utilizzo di certe parole in questo server non è consentito")
+            .setThumbnail(illustrations.badWords)
+            .setColor(colors.purple)
+            .addField(":envelope: Message command", censurato.slice(0, 1024))
+            .setFooter({ text: "User ID: " + interaction.user.id })
+
+        interaction.reply({ content: "Comando non valido" })
+        interaction.deleteReply()
+
+        clientModeration.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
+            .then(msg => {
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(":sweat_drops: Badwords :sweat_drops:")
+                    .setColor(colors.purple)
+                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                    .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                    .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
+                    .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
+
+                if (!isMaintenance())
+                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+            })
+
+        embed = new Discord.MessageEmbed()
+            .setTitle("Hai detto una parolaccia")
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.badWords)
+            .addField(":envelope: Message", censurato.slice(0, 1024))
+            .addField(":anchor: Channel", client.channels.cache.get(interaction.channelId).toString())
+
+        clientModeration.users.cache.get(interaction.user.id).send({ embeds: [embed] })
+            .catch(() => { })
         return
     }
 
-    if (message.channel.type == "DM") {
-        if (!comando.availableOnDM) {
-            var embed = new Discord.MessageEmbed()
-                .setTitle(":construction: DM not granted :construction:")
-                .setColor("#e3b009")
-                .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-                .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-                .addField("Command", `!${command}`, false)
-            if (`!${command}` != message.content)
-                embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
+    let musicClient, distube
+    if (comando.musicMode) {
+        const voiceChannel = interaction.member.voice.channel
+        if (!voiceChannel) {
+            return replyMessage(client, interaction, "Warning", "Non sei in un canale vocale", "Per eseguire questo comando devi essere connesso a un canale vocale", comando)
+        }
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+        musicBots.forEach(bot => {
+            if (interaction.guild.channels.cache.find(x => x.id == voiceChannel.id && x.members.has(bot.client.user.id))) {
+                musicClient = bot.client
+                distube = bot.distube
+            }
+        })
 
-            botCommandMessage(message, "DMNonAbilitati", "", "", comando)
-            return
+        if (!musicClient) {
+            settings.botMusicali.forEach(bot => {
+                if (!interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members?.has(bot.id)) && !musicClient) {
+                    musicClient = musicBots.find(x => x.client.user.id == bot.id).client
+                    distube = musicBots.find(x => x.client.user.id == bot.id).distube
+                }
+            })
+
+            if (!musicClient) {
+                return replyMessage(client, interaction, "Warning", "Nessun bot disponibile", "Tutti i bot musicali sono occupati e utilizzati da altri utenti", comando)
+            }
         }
     }
-    //Verifica canale concesso
-    else if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(message.channel.id) && !utenteMod(message.author)) {
-        if ((comando.name == "code" && (message.member.roles.cache.has(settings.idRuoloAiutante) || message.member.roles.cache.has(settings.idRuoloAiutanteInProva))) || (serverstats.privateRooms.find(x => x.owner == message.author.id) && serverstats.privateRooms.find(x => x.owner == message.author.id).text && serverstats.privateRooms.find(x => x.owner == message.author.id).text == message.channel.id) || (serverstats.ticket.find(x => x.owner == message.author.id) && serverstats.ticket.find(x => x.owner == message.author.id).channel == message.channel.id)) {
 
-        } else {
-            botCommandMessage(message, "CanaleNonConcesso", "", "", comando)
-            return
-        }
-    }
+    if (musicClient)
+        interaction.applicationId = musicClient.user.id
 
-    //Poter utilizzare solo !clear in #tutorial
-    if (message.channel == settings.idCanaliServer.tutorial && comando.name != "clear") return
-
-    var result = await comando.execute(message, args, client, comando)
+    let result = await comando.execute(client, interaction, comando, distube, musicClient)
     if (!result) {
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(":bookmark: Command executed :bookmark:")
-            .setColor("#13afe8")
-            .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-            .addField(":alarm_clock: Time", `${moment(new Date().getTime()).format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-            .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`, false)
-            .addField("Channel", `#${message.channel.name}`, false)
-            .addField("Command", `!${command}`, false)
-        if (`!${command}` != message.content)
-            embed.addField("Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`, false)
+            .setColor(colors.blue)
+            .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+            .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
         if (!isMaintenance())
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
+})
+clientModeration.on("interactionCreate", async interaction => {
+    if (!interaction.isCommand()) return
 
-    var userstats = userstatsList.find(x => x.id == message.author.id);
-    if (!userstats) return
+    if (isMaintenance(interaction.user.id)) return
 
-    userstats.statistics.commands++;
+    let userstats = getUser(interaction.user.id)
+    if (!userstats) userstats = addUser(interaction.member)[0]
 
-    userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
+    const comando = clientModeration.commands.get(interaction.commandName)
+    if (!comando) return
 
-    //Wrapped
-    var date = new Date();
-    if (date.getFullYear() != 2022) return
+    if (comando.client != "moderation") return
 
-    if (isMaintenance()) return
+    if (comando.permissionLevel > getUserPermissionLevel(clientModeration, interaction.user.id)) {
+        return replyMessage(clientModeration, interaction, "NonPermesso", "", "", comando)
+    }
 
-    if (!userstats.wrapped) {
-        userstats.wrapped = {
-            "startTime": date.getTime(),
-            "messages": {},
-            "channels": {},
-            "reactions": {},
-            "words": {},
-            "emojis": {},
-            "commands": {},
-            "vocalChannelsSeconds": 0,
-            "startLevel": userstats.level,
-            "startMoney": userstats.money ? userstats.money : 0,
+    if (comando.otherGuild && interaction.guild.id != settings.idServer && getUserPermissionLevel(clientModeration, interaction.user.id) <= 2) {
+        return replyMessage(clientModeration, interaction, "NonPermesso", "", "I comandi in questo server sono accessibili sono dagli utenti Owner", comando)
+    }
+
+    if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(clientModeration.channels.cache.get(interaction.channelId).parentId)) {
+        let serverstats = getServer()
+        if (getUserPermissionLevel(clientModeration, interaction.user.id) >= 2) {
+
+        }
+        else if (getUserPermissionLevel(clientModeration, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
+
+        }
+        else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
+
+        }
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(clientModeration, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+
+        }
+        else {
+            return replyMessage(clientModeration, interaction, "CanaleNonConcesso", "", "", comando)
         }
     }
 
-    if (!userstats.wrapped.commands[comando.name])
-        userstats.wrapped.commands[comando.name] = 0
+    if (interaction.channelId == settings.idCanaliServer.onewordstory && (!getUserPermissionLevel(clientModeration, interaction.user.id) || comando.name == "say")) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Canale non concesso")
+            .setColor(colors.yellow)
+            .setDescription(`In questo canale non è possibile eseguire nessun comando`)
 
-    userstats.wrapped.commands[comando.name] = userstats.wrapped.commands[comando.name] + 1
+        interaction.reply({ embeds: [embed], ephemeral: true })
 
-    userstatsList[userstatsList.findIndex(x => x.id == userstats.id)] = userstats
-})
+        let embed2 = new Discord.MessageEmbed()
+            .setTitle(":construction: Channel not granted :construction:")
+            .setColor(colors.yellow)
+            .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${clientModeration.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
 
-//Subscriber counter
-setInterval(function () {
-    ytch.getChannelInfo("UCK6QwAdGWOWN9AT1_UQFGtA").then((response) => {
-        var canale = client.channels.cache.get(settings.idCanaliServer.codeSubscriberCounter)
-        if (canale.name != `📱│GiulioAndCode: ${Math.floor(response.subscriberCount)}`)
-            canale.setName(`📱│GiulioAndCode: ${Math.floor(response.subscriberCount)}`)
+        if (comando) {
+            let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+            interaction.options?._hoistedOptions?.forEach(option => {
+                testoCommand += ` ${option.name}: \`${option.value}\``
+            })
+            embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+        }
+
+        if (!isMaintenance()) {
+            clientModeration.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        }
+
+        return
+    }
+
+    if (getUserPermissionLevel(clientModeration, interaction.user.id) <= 1 && !hasSufficientLevels(clientModeration, userstats, comando.requiredLevel)) {
+        return replyMessage(clientModeration, interaction, "InsufficientLevel", "", "", comando)
+    }
+
+    let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+    interaction.options._hoistedOptions.forEach(option => {
+        testoCommand += ` ${option.name}: \`${option.value}\``
     })
-}, 1000 * 60 * 5)
-setInterval(function () {
-    ytch.getChannelInfo("UCvIafNR8ZvZyE5jVGVqgVfA").then((response) => {
-        var canale = client.channels.cache.get(settings.idCanaliServer.giulioSubscriberCounter)
-        if (canale.name != `✌│Giulio: ${Math.floor(response.subscriberCount)}`)
-            canale.setName(`✌│Giulio: ${Math.floor(response.subscriberCount)}`)
+
+    let [trovata, nonCensurato, censurato] = checkBadwords(testoCommand);
+
+    if (trovata && !getUserPermissionLevel(clientModeration, interaction.user.id) && !interaction.member.roles.cache.has(settings.idRuoloFeatureActivator)) {
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[BAD WORDS] ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+            .setDescription("L'utilizzo di certe parole in questo server non è consentito")
+            .setThumbnail(illustrations.badWords)
+            .setColor(colors.purple)
+            .addField(":envelope: Message command", censurato.slice(0, 1024))
+            .setFooter({ text: "User ID: " + interaction.user.id })
+
+        interaction.reply({ content: "Comando non valido" })
+        interaction.deleteReply()
+
+        clientModeration.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
+            .then(msg => {
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(":sweat_drops: Badwords :sweat_drops:")
+                    .setColor(colors.purple)
+                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                    .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                    .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
+                    .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
+
+                if (!isMaintenance())
+                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+            })
+
+        embed = new Discord.MessageEmbed()
+            .setTitle("Hai detto una parolaccia")
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.badWords)
+            .addField(":envelope: Message", censurato.slice(0, 1024))
+            .addField(":anchor: Channel", clientModeration.channels.cache.get(interaction.channelId).toString())
+
+        clientModeration.users.cache.get(interaction.user.id).send({ embeds: [embed] })
+            .catch(() => { })
+        return
+    }
+
+    let result = await comando.execute(clientModeration, interaction, comando)
+    if (!result) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle(":bookmark: Command executed :bookmark:")
+            .setColor(colors.blue)
+            .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${clientModeration.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+            .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+
+        if (!isMaintenance())
+            clientModeration.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+    }
+})
+clientFun.on("interactionCreate", async interaction => {
+    if (!interaction.isCommand()) return
+
+    if (isMaintenance(interaction.user.id)) return
+
+    let userstats = getUser(interaction.user.id)
+    if (!userstats) userstats = addUser(interaction.member)[0]
+
+    const comando = clientFun.commands.get(interaction.commandName)
+    if (!comando) return
+
+    if (comando.client != "fun") return
+
+    if (comando.permissionLevel > getUserPermissionLevel(clientFun, interaction.user.id)) {
+        return replyMessage(clientFun, interaction, "NonPermesso", "", "", comando)
+    }
+
+    if (comando.otherGuild && interaction.guild.id != settings.idServer && getUserPermissionLevel(clientFun, interaction.user.id) <= 2) {
+        return replyMessage(clientFun, interaction, "NonPermesso", "", "I comandi in questo server sono accessibili sono dagli utenti Owner", comando)
+    }
+
+    if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(clientFun.channels.cache.get(interaction.channelId).parentId)) {
+        let serverstats = getServer()
+        if (getUserPermissionLevel(clientFun, interaction.user.id) >= 2) {
+
+        }
+        else if (getUserPermissionLevel(clientFun, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
+
+        }
+        else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
+
+        }
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(clientFun, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+
+        }
+        else {
+            return replyMessage(clientFun, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+    }
+
+    if (interaction.channelId == settings.idCanaliServer.onewordstory && (!getUserPermissionLevel(client, interaction.user.id) || comando.name == "say")) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Canale non concesso")
+            .setColor(colors.yellow)
+            .setDescription(`In questo canale non è possibile eseguire nessun comando`)
+
+        interaction.reply({ embeds: [embed], ephemeral: true })
+
+        let embed2 = new Discord.MessageEmbed()
+            .setTitle(":construction: Channel not granted :construction:")
+            .setColor(colors.yellow)
+            .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${clientFun.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+
+        if (comando) {
+            let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+            interaction.options?._hoistedOptions?.forEach(option => {
+                testoCommand += ` ${option.name}: \`${option.value}\``
+            })
+            embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+        }
+
+        if (!isMaintenance()) {
+            client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        }
+
+        return
+    }
+
+    if (getUserPermissionLevel(clientFun, interaction.user.id) <= 1 && !hasSufficientLevels(clientFun, userstats, comando.requiredLevel)) {
+        return replyMessage(clientFun, interaction, "InsufficientLevel", "", "", comando)
+    }
+
+    let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+    interaction.options._hoistedOptions.forEach(option => {
+        testoCommand += ` ${option.name}: \`${option.value}\``
     })
-}, 1000 * 60 * 5)
 
-//Member counter
-setInterval(function () {
-    var server = client.guilds.cache.get(settings.idServer)
-    var botCount = server.members.cache.filter(member => member.user.bot).size;
-    var unverifiedCount = server.members.cache.filter(member => member.roles.cache.has(settings.idRuoloNonVerificato)).size;
+    let [trovata, nonCensurato, censurato] = checkBadwords(testoCommand);
 
-    var utentiCount = server.memberCount - botCount - unverifiedCount;
+    if (trovata && !getUserPermissionLevel(clientModeration, interaction.user.id) && !interaction.member.roles.cache.has(settings.idRuoloFeatureActivator)) {
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[BAD WORDS] ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+            .setDescription("L'utilizzo di certe parole in questo server non è consentito")
+            .setThumbnail(illustrations.badWords)
+            .setColor(colors.purple)
+            .addField(":envelope: Message command", censurato.slice(0, 1024))
+            .setFooter({ text: "User ID: " + interaction.user.id })
 
-    var canale = client.channels.cache.get(settings.idCanaliServer.memberCounter)
-    if (canale.name != `👾│members: ${utentiCount}`)
-        canale.setName(`👾│members: ${utentiCount}`)
-}, 1000 * 60 * 5)
+        interaction.reply({ content: "Comando non valido" })
+        interaction.deleteReply()
 
-process.on("uncaughtException", err => {
-    codeError(err);
+        clientModeration.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
+            .then(msg => {
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(":sweat_drops: Badwords :sweat_drops:")
+                    .setColor(colors.purple)
+                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                    .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                    .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
+                    .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
+
+                if (!isMaintenance())
+                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+            })
+
+        embed = new Discord.MessageEmbed()
+            .setTitle("Hai detto una parolaccia")
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.badWords)
+            .addField(":envelope: Message", censurato.slice(0, 1024))
+            .addField(":anchor: Channel", clientModeration.channels.cache.get(interaction.channelId).toString())
+
+        clientModeration.users.cache.get(interaction.user.id).send({ embeds: [embed] })
+            .catch(() => { })
+        return
+    }
+
+    let result = await comando.execute(clientFun, interaction, comando)
+    if (!result) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle(":bookmark: Command executed :bookmark:")
+            .setColor(colors.blue)
+            .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${clientFun.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+            .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+
+        if (!isMaintenance())
+            clientFun.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+    }
 })
-process.on("unhandledRejection", err => {
-    codeError(err);
+clientRanking.on("interactionCreate", async interaction => {
+    if (!interaction.isCommand()) return
+
+    if (isMaintenance(interaction.user.id)) return
+
+    let userstats = getUser(interaction.user.id)
+    if (!userstats) userstats = addUser(interaction.member)[0]
+
+    const comando = clientRanking.commands.get(interaction.commandName)
+    if (!comando) return
+
+    if (comando.client != "ranking") return
+
+    if (comando.permissionLevel > getUserPermissionLevel(clientRanking, interaction.user.id)) {
+        return replyMessage(clientRanking, interaction, "NonPermesso", "", "", comando)
+    }
+
+    if (comando.otherGuild && interaction.guild.id != settings.idServer && getUserPermissionLevel(clientRanking, interaction.user.id) <= 2) {
+        return replyMessage(clientRanking, interaction, "NonPermesso", "", "I comandi in questo server sono accessibili sono dagli utenti Owner", comando)
+    }
+
+    if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(clientRanking.channels.cache.get(interaction.channelId).parentId)) {
+        let serverstats = getServer()
+        if (getUserPermissionLevel(clientRanking, interaction.user.id) >= 2) {
+
+        }
+        else if (getUserPermissionLevel(clientRanking, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
+
+        }
+        else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
+
+        }
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(clientRanking, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+
+        }
+        else {
+            return replyMessage(clientRanking, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+    }
+
+    if (interaction.channelId == settings.idCanaliServer.onewordstory && (!getUserPermissionLevel(client, interaction.user.id) || comando.name == "say")) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Canale non concesso")
+            .setColor(colors.yellow)
+            .setDescription(`In questo canale non è possibile eseguire nessun comando`)
+
+        interaction.reply({ embeds: [embed], ephemeral: true })
+
+        let embed2 = new Discord.MessageEmbed()
+            .setTitle(":construction: Channel not granted :construction:")
+            .setColor(colors.yellow)
+            .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${clientRanking.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+
+        if (comando) {
+            let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+            interaction.options?._hoistedOptions?.forEach(option => {
+                testoCommand += ` ${option.name}: \`${option.value}\``
+            })
+            embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+        }
+
+        if (!isMaintenance()) {
+            clientRanking.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        }
+        return
+    }
+
+    if (getUserPermissionLevel(clientRanking, interaction.user.id) <= 1 && !hasSufficientLevels(clientRanking, userstats, comando.requiredLevel)) {
+        return replyMessage(clientRanking, interaction, "InsufficientLevel", "", "", comando)
+    }
+
+    let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+    interaction.options._hoistedOptions.forEach(option => {
+        testoCommand += ` ${option.name}: \`${option.value}\``
+    })
+
+    let [trovata, nonCensurato, censurato] = checkBadwords(testoCommand);
+
+    if (trovata && !getUserPermissionLevel(clientModeration, interaction.user.id) && !interaction.member.roles.cache.has(settings.idRuoloFeatureActivator)) {
+        let embed = new Discord.MessageEmbed()
+            .setAuthor({ name: `[BAD WORDS] ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
+            .setDescription("L'utilizzo di certe parole in questo server non è consentito")
+            .setThumbnail(illustrations.badWords)
+            .setColor(colors.purple)
+            .addField(":envelope: Message command", censurato.slice(0, 1024))
+            .setFooter({ text: "User ID: " + interaction.user.id })
+
+        interaction.reply({ content: "Comando non valido" })
+        interaction.deleteReply()
+
+        clientModeration.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
+            .then(msg => {
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(":sweat_drops: Badwords :sweat_drops:")
+                    .setColor(colors.purple)
+                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
+                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                    .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                    .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
+                    .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
+
+                if (!isMaintenance())
+                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+            })
+
+        embed = new Discord.MessageEmbed()
+            .setTitle("Hai detto una parolaccia")
+            .setColor(colors.purple)
+            .setThumbnail(illustrations.badWords)
+            .addField(":envelope: Message", censurato.slice(0, 1024))
+            .addField(":anchor: Channel", clientModeration.channels.cache.get(interaction.channelId).toString())
+
+        clientModeration.users.cache.get(interaction.user.id).send({ embeds: [embed] })
+            .catch(() => { })
+        return
+    }
+
+    let result = await comando.execute(clientRanking, interaction, comando)
+    if (!result) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle(":bookmark: Command executed :bookmark:")
+            .setColor(colors.blue)
+            .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+            .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":anchor: Channel", `#${clientRanking.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+            .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+
+        if (!isMaintenance())
+            clientRanking.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+    }
 })
 
-//.setColor("#8227cc")
-//.setColor("#ababab")
-//.setColor("#22c90c")
-//.setColor("#fcba03")
-//.setColor("#e31705")
+client.on("interactionCreate", async interaction => {
+    if (!interaction.isAutocomplete()) return
+
+    const autocomplete = client.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+    if (!autocomplete) return
+
+    let response = await autocomplete.getResponse(client, interaction.options.getFocused(true), interaction)
+    if (!response) return
+
+    interaction.respond(response.slice(0, 25))
+})
+clientModeration.on("interactionCreate", async interaction => {
+    if (!interaction.isAutocomplete()) return
+
+    const autocomplete = clientModeration.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+    if (!autocomplete) return
+
+    let response = await autocomplete.getResponse(clientModeration, interaction.options.getFocused(true), interaction)
+    if (!response) return
+
+    interaction.respond(response.slice(0, 25))
+})
+clientFun.on("interactionCreate", async interaction => {
+    if (!interaction.isAutocomplete()) return
+
+    const autocomplete = clientFun.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+    if (!autocomplete) return
+
+    let response = await autocomplete.getResponse(clientFun, interaction.options.getFocused(true), interaction)
+    if (!response) return
+
+    interaction.respond(response.slice(0, 25))
+})
+clientRanking.on("interactionCreate", async interaction => {
+    if (!interaction.isAutocomplete()) return
+
+    const autocomplete = clientRanking.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+    if (!autocomplete) return
+
+    let response = await autocomplete.getResponse(clientRanking, interaction.options.getFocused(true), interaction)
+    if (!response) return
+
+    interaction.respond(response.slice(0, 25))
+})
+
+client.on("messageCreate", message => {
+    if (message.author.bot) return
+
+    if (isMaintenance(message.author.id)) return
+
+    if (message.channel.id != settings.idCanaliServer.noMicChat) return
+
+    if (!message.content.startsWith("'")) return
+
+    let userstats = getUser(message.author.id)
+    if (!userstats) userstats = addUser(message.member)[0]
+
+    if (!hasSufficientLevels(client, userstats, 15)) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Livello insufficiente")
+            .setColor(colors.pink)
+            .setDescription(`Per utilizzare il comando \`'[testo]\` è necessario almeno il ${message.guild.roles.cache.find(x => x.name == "Level 15").toString()} o **boostare** il server`)
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    let text = message.content.slice(1).trim()
+    if (!text) return
+
+    const voiceChannel = message.member.voice.channel
+    if (!voiceChannel) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Non sei in un canale vocale")
+            .setColor(colors.gray)
+            .setDescription("Per eseguire questo comando devi essere connesso a un canale vocale")
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Bot occupato")
+            .setColor(colors.gray)
+            .setDescription("Il bot è già occupato in un'altra stanza e non puoi utilizzarlo al momento")
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    const connection = joinVoiceChannel({
+        channelId: message.member.voice.channel.id,
+        guildId: message.guild.id,
+        adapterCreator: message.guild.voiceAdapterCreator
+    })
+
+    let serverstats = getServer()
+
+    const url = googleTTS.getAudioUrl(text, {
+        lang: serverstats.ttsDefaultLanguage,
+        slow: false,
+        host: 'https://translate.google.com',
+    });
+
+    ttsQueue.push(url)
+
+    ttsPlay(connection)
+})

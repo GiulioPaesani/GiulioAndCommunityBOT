@@ -1,68 +1,80 @@
+const Discord = require("discord.js")
+const items = require("../../../config/ranking/items.json")
+const colors = require("../../../config/general/colors.json")
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { getUser } = require("../../../functions/database/getUser");
+const { addUser } = require("../../../functions/database/addUser");
+const { getEmoji } = require("../../../functions/general/getEmoji");
+const { humanize } = require("../../../functions/general/humanize");
+
 module.exports = {
     name: `interactionCreate`,
-    async execute(button) {
-        if (!button.isButton()) return
-        if (!button.customId.startsWith("avantiInv")) return
+    client: "ranking",
+    async execute(client, interaction) {
+        if (!interaction.isButton()) return
+        if (isMaintenance(interaction.user.id)) return
 
-        button.deferUpdate().catch(() => { })
+        if (!interaction.customId.startsWith("avantiInv")) return
 
-        if (isMaintenance(button.user.id)) return
+        interaction.deferUpdate().catch(() => { })
 
-        if (button.customId.split(",")[1] != button.user.id) return
+        if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        var userstats = userstatsList.find(x => x.id == button.customId.split(",")[2]);
-        if (!userstats) return
+        let utente = client.users.cache.get(interaction.customId.split(",")[2])
+        let userstats = getUser(utente.id)
+        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
 
-        var totItems = 0
-        var items = []
+        let totItems = 0
+        let userItems = []
 
-        if (userstats.inventory) {
-            for (var index in userstats.inventory) {
-                if (userstats.inventory[index] && userstats.inventory[index] > 0) {
-                    totItems++
-                    items.push({ item: require("../../../config/items.json").find(x => x.id == index), amount: userstats.inventory[index] })
-                }
+        for (let index in userstats.economy.inventory) {
+            if (userstats.economy.inventory[index] && userstats.economy.inventory[index] > 0) {
+                totItems += userstats.economy.inventory[index]
+                userItems.push({ item: items.find(x => x.id == index), quantity: userstats.economy.inventory[index] })
             }
         }
 
-        var totPage = Math.ceil(totItems / 20)
-        var page = parseInt(button.customId.split(",")[3]) + 1;
-        if (page > totPage) return
+        let totPage = Math.ceil(userItems.length / 9)
+        let page = parseInt(interaction.customId.split(",")[3])
+        page++
+        if (page > totPage) page = totPage
 
-        var embed = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(":handbag: Inventory :handbag:")
-            .setDescription(`Tutto l'inventario di <@${button.customId.split(",")[2]}> con gli oggetti che possiedi
-
+            .setColor(colors.purple)
+            .setDescription(`Tutto l'inventario di ${utente.toString()} con gli oggetti che possiede
 _Oggetti totali: ${totItems}_`)
-            .setFooter(totPage > 1 ? `Coins: ${userstats.money}$ - Page ${page}/${totPage}` : `Coins: ${userstats.money}$`)
+            .setFooter({ text: totPage > 1 ? `Coins: ${humanize(userstats.economy.money)}$ - Page ${page}/${totPage}` : `Coins: ${humanize(userstats.economy.money)}$` })
 
-        for (var i = 20 * (page - 1); i < 20 * page; i++) {
-            if (items[i]) {
+        for (let i = 9 * (page - 1); i < 9 * page; i++) {
+            if (userItems[i]) {
                 embed
-                    .addField(`${items[i].item.icon} ${items[i].item.name}`, `ID: \`#${items[i].item.id}\`\rQuantity: ${items[i].amount}`, true)
+                    .addField(`${getEmoji(client, userItems[i].item.name.toLowerCase())} ${userItems[i].item.name}`, `ID: \`#${userItems[i].item.id}\`\nQuantity: ${userItems[i].quantity}`, true)
             }
         }
 
-        var button1 = new Discord.MessageButton()
-            .setEmoji("◀️")
-            .setCustomId(`indietroInv,${button.user.id},${button.customId.split(",")[2]},${page}`)
+        let button1 = new Discord.MessageButton()
+            .setCustomId(`indietroInv,${interaction.user.id},${utente.id},${page}`)
             .setStyle("PRIMARY")
+            .setEmoji(getEmoji(client, "Previous"))
 
-        if (page == 1)
+        if (page == 1) {
             button1.setDisabled()
+        }
 
-        var button2 = new Discord.MessageButton()
-            .setEmoji("▶️")
-            .setCustomId(`avantiInv,${button.user.id},${button.customId.split(",")[2]},${page}`)
+        let button2 = new Discord.MessageButton()
+            .setCustomId(`avantiInv,${interaction.user.id},${utente.id},${page}`)
             .setStyle("PRIMARY")
+            .setEmoji(getEmoji(client, "Next"))
 
-        if (page + 1 > totPage)
+        if (page == totPage) {
             button2.setDisabled()
+        }
 
-        var row = new Discord.MessageActionRow()
+        let row = new Discord.MessageActionRow()
             .addComponents(button1)
             .addComponents(button2)
 
-        button.message.edit({ embeds: [embed], components: [row] })
+        interaction.message.edit({ embeds: [embed], components: totPage > 1 ? [row] : [] })
     },
 };

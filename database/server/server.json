@@ -1,0 +1,276 @@
+{
+    "counting": {
+        "number": 7,
+        "user": "601308178482855956",
+        "lastUser": "601308178482855956",
+        "lastScore": 9,
+        "bestScore": 2003,
+        "timeLastScore": 1647163732037,
+        "timeBestScore": 1629231680923,
+        "lastMessage": "985116453520949290",
+        "correct": 0,
+        "incorrect": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "countingplus": {
+        "number": 1,
+        "operator": "+",
+        "gap": 1,
+        "user": null,
+        "lastUser": "793768313934577664",
+        "lastScore": 0,
+        "timeLastScore": 1654870183709,
+        "lastMessage": "984821673163386940",
+        "correct": 0,
+        "incorrect": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "onewordstory": {
+        "words": [],
+        "totWords": 0,
+        "totWordsToday": 0,
+        "totStories": 0,
+        "lastMessage": ""
+    },
+    "maintenance": {
+        "host": 0,
+        "local": 1
+    },
+    "tickets": [
+        {
+            "type": "Normal",
+            "channel": "980875761022029826",
+            "owner": "923900383535976469",
+            "message": "980875766797570078",
+            "daEliminare": false
+        },
+        {
+            "type": "Normal",
+            "channel": "981522074797494312",
+            "owner": "688665259535499300",
+            "message": "981522076655583252",
+            "daEliminare": false
+        },
+        {
+            "type": "Normal",
+            "channel": "983729514200850453",
+            "owner": "821350715745370154",
+            "message": "983729515559800832",
+            "daEliminare": false
+        }
+    ],
+    "privateRooms": [
+        {
+            "channel": "984460919117602977",
+            "owners": [
+                "967119802357391391"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654785090012",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984461254783533068",
+            "owners": [
+                "716215774326423662"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654784387486",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984474165266505778",
+            "owners": [
+                "812313402848051251"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654852518486",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984535204418973736",
+            "owners": [
+                "870270710277341195"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654848860375",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984727077318180905",
+            "owners": [
+                "770613024129417256"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654847630929",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984828493357535242",
+            "owners": [
+                "699550277249794078"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654889994255",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984973859356827660",
+            "owners": [
+                "815696657613586453"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654906468237",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984730494434418708",
+            "owners": [
+                "966067103813742643"
+            ],
+            "type": "voice",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654848445391",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984794409109422111",
+            "owners": [
+                "797112738009841694"
+            ],
+            "type": "voice",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654863688410",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984461033500446733",
+            "owners": [
+                "601308178482855956"
+            ],
+            "type": "text",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654939468544",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        },
+        {
+            "channel": "984461035278848101",
+            "owners": [
+                "601308178482855956"
+            ],
+            "type": "voice",
+            "mode": {
+                "messages": true,
+                "emoji": true,
+                "sticker": true,
+                "gif": true,
+                "image": true,
+                "video": true,
+                "file": true
+            },
+            "lastActivity": "1654939468544",
+            "lastActivityCount": 0,
+            "daEliminare": false
+        }
+    ],
+    "ttsDefaultLanguage": "it-IT"
+}

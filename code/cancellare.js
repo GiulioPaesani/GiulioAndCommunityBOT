@@ -4,24 +4,10 @@ module.exports = {
     description: "**Cancellare** il comando o il messaggio del bot",
     category: "manage",
     id: "1639466365",
+    link: "https://www.toptal.com/developers/hastebin/ehirequqex.js",
     info: "",
     video: "",
-    v12: `
-client.on("message", message => {
-    if (message.content == "!comando") {
-        //Cancellare il comando dell'utente
-        message.delete(); //Immediatamente
-        message.delete({ timeout: 3000 }) //Dopo tre secondi (personalizzabile)
-        
-        //Cancellare il messaggio del bot
-        message.channel.send("Ciao")
-            .then(msg => {
-                msg.delete(); //Immediatamente
-                msg.delete({ timeout: 3000 }) //Dopo tre secondi (personalizzabile)
-            })
-    }
-})`,
-    v13: `
+    code: `
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
         //Cancellare il comando dell'utente

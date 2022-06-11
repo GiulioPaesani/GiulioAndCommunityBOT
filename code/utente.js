@@ -1,15 +1,14 @@
 module.exports = {
     name: "Utente",
-    aliases: ["user"],
+    aliases: ["user", "messaggio privato", "dm message"],
     description: "Ottenere un **utente**",
     category: "manage",
     id: "1639466278",
+    link: "https://www.toptal.com/developers/hastebin/xakutusovo.csharp",
     info: "",
     video: "",
-    v12: `
-var utente = client.users.cache.get("idUtente");
-utente.send("messaggio");`,
-    v13: `
-var utente = client.users.cache.get("idUtente");
-utente.send("messaggio");`
+    code: `
+let utente = client.users.cache.get("idUtente");
+utente.send("messaggio")
+    .catch(() =>{ /*L'utente ha i DM chiusi*/})`
 };

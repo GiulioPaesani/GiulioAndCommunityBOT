@@ -1,60 +1,75 @@
+const settings = require("../../config/general/settings.json");
+const { getServer } = require("../../functions/database/getServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "pkick",
-    aliases: [],
-    onlyStaff: false,
-    availableOnDM: false,
     description: "Espellere un utente da una stanza vocale privata",
-    syntax: "!pkick [user]",
-    category: "privateRooms",
+    permissionLevel: 0,
+    requiredLevel: 0,
+    syntax: "/pkick [room] [user]",
+    category: "rooms",
+    client: "general",
+    data: {
+        options: [
+            {
+                name: "room",
+                description: "Scegli la stanza da cui vuoi espellere un utente",
+                type: "CHANNEL",
+                required: true,
+                channelTypes: ["GUILD_VOICE"]
+            },
+            {
+                name: "user",
+                description: "Utente che si vuole espellere dalla stanza privata",
+                type: "STRING",
+                required: true,
+                autocomplete: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var privaterooms = serverstats.privateRooms
+    async execute(client, interaction, comando) {
+        let serverstats = getServer()
 
-        var room
-        if (privaterooms.find(x => x.text == message.channel.id)) {
-            if (message.author.id == privaterooms.find(x => x.text == message.channel.id).owner || utenteMod(message.author)) {
-                room = privaterooms.find(x => x.text == message.channel.id)
-            }
-            else {
-                return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di eseguire questo comando in questa stanza")
-            }
+        if (getUserPermissionLevel(client, interaction.user.id) <= 1 && interaction.channelId != settings.idCanaliServer.commands && !serverstats.privateRooms.find(x => x.channel == interaction.channelId)) {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+
+        let room
+        if (!serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)) {
+            return replyMessage(client, interaction, "Error", "Stanza non trovata", "Il canale che hai scelto non è una stanza privata", comando)
         }
         else {
-            if (!privaterooms.find(x => x.owner == message.author.id)) {
-                return botCommandMessage(message, "Warning", "Non hai una stanza privata", "Per usare questo comando devi essere owner di una stanza privata")
+            room = serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)
+            if (!room.owners.includes(interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) == 0) {
+                return replyMessage(client, interaction, "NonPermesso", "", "Non puoi espellere utenti da questa stanza privata", comando)
             }
-            room = privaterooms.find(x => x.owner == message.author.id)
         }
 
-        if (room.type == "onlyText") {
-            return botCommandMessage(message, "Error", "Non hai una stanza vocale", "Puoi kickare un utente solo da una stanza privata vocale", property)
-        }
+        let utente = await getTaggedUser(client, interaction.options.getString("user"), true)
 
-        var canale = client.channels.cache.get(room.voice)
-
-        var utente = message.mentions.users?.first()
         if (!utente) {
-            var utente = await getUser(args.join(" "))
+            return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
-        if (!utente || !message.guild.members.cache.find(x => x.id == utente.id)) {
-            return botCommandMessage(message, "Error", "Utente non trovato o non valido", "Hai inserito un utente non disponibile o non valido", property)
+        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi espellere questo utente dal ticket", comando)
         }
 
-        if (!utente.voice || utente.voice.channelId != canale.id) {
-            return botCommandMessage(message, "Error", "Utente non valido", "Questo utente non è presente nel tuo canale vocale", property)
+        if (room.owners.includes(utente.id)) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi espellere l'owner dalla sua stanza privata", comando)
         }
 
-        if (utente.id == message.author.id) {
-            return botCommandMessage(message, "Warning", "Non te stesso", "Non puoi kickare te stesso dal canale")
+        utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == utente.id)
+        if (!utente.voice) {
+            return replyMessage(client, interaction, "Warning", "Utente non in vocale", "L'utente non è collegato alla stanza vocale", comando)
         }
 
-        if (utenteMod(utente)) {
-            return botCommandMessage(message, "NonPermesso", "", "Non hai il permesso di kickare questo utente")
-        }
+        utente.voice.disconnect()
 
-        utente.voice.kick()
-
-        botCommandMessage(message, "Correct", "Utente kickato", `${utente.toString()} è stato kickato dalla tua stanza vocale, ma può rientrare quando vuole`)
+        replyMessage(client, interaction, "Correct", "Utente espulso", `${utente.toString()} è stato espulso dalla stanza <#${room.channel}>, ma potrà rientrare quando vuole`, comando)
     },
 };

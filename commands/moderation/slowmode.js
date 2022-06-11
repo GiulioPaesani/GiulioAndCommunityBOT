@@ -1,30 +1,43 @@
+const ms = require("ms")
+const { replyMessage } = require("../../functions/general/replyMessage")
+
 module.exports = {
     name: "slowmode",
-    aliases: [],
-    onlyStaff: true,
-    availableOnDM: false,
-    description: "Impostare il cooldown di scrittura di ogni utente",
-    syntax: "!slowmode [time]",
+    description: "Impostare il tempo di scrittura di un utente in un canale",
+    permissionLevel: 1,
+    requiredLevel: 0,
+    syntax: "/slowmode [time]",
     category: "moderation",
+    client: "moderation",
+    data: {
+        options: [
+            {
+                name: "time",
+                description: "Tempo di slowmode",
+                type: "STRING",
+                required: true
+            }
+        ]
+    },
     channelsGranted: [],
-    async execute(message, args, client, property) {
-        var time = message.content.split(/\s+/)[1];
-        if (!time) {
-            return botCommandMessage(message, "Error", "Inserire un tempo", "Scrivi il tempo dello slowmode", property)
-        }
+    async execute(client, interaction, comando) {
+        let time = interaction.options.getString("time")
 
-        if (time != "off" && time != "no" && time != 0) {
+        let tempo;
+        if (time == "off" || time == "no" || ms(time) == 0)
+            time = 0
+        else {
             time = ms(time)
 
-            if (!time) {
-                return botCommandMessage(message, "Error", "Inserire un tempo", "Scrivi il tempo dello slowmode", property)
+            if (!time || time < 1000) {
+                return replyMessage(client, interaction, "Error", "Tempo non valido", "Scrivi un tempo di slowmode valido", comando)
             }
 
             if (time > 21600000) {
-                return botCommandMessage(message, "Error", "Troppa slowmode", "Inserisci un tempo non superiore a 6 ore", property)
+                return replyMessage(client, interaction, "Error", "Troppa slowmode", "Inserisci un tempo non superiore a 6 ore", comando)
             }
 
-            var tempo = ms(time, { long: true });
+            tempo = ms(time, { long: true });
             tempo = tempo + " "
             tempo = tempo.replace("second ", "secondo")
             tempo = tempo.replace("seconds", "secondi")
@@ -34,11 +47,8 @@ module.exports = {
             tempo = tempo.replace("hours", "ore")
         }
 
-        if (time == "off" || time == "no" || time == 0)
-            time = 0
+        client.channels.cache.get(interaction.channelId).setRateLimitPerUser(time / 1000)
 
-        message.channel.setRateLimitPerUser(parseInt(time) / 1000)
-
-        botCommandMessage(message, "Correct", "Slowmode impostata", time == 0 ? "Slowmode disattivata" : `Slowmode impostata a ${tempo}`)
+        replyMessage(client, interaction, "Correct", "Slowmode impostata", time == 0 ? "Slowmode disattivata" : `Slowmode impostata a **${tempo}**`)
     },
 };
