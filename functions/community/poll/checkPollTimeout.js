@@ -10,7 +10,7 @@ const checkPollTimeout = async (client) => {
         .then(async messages => {
             for (let msg of messages) {
                 let pollDate = moment(msg.embeds[0]?.footer?.text.split(" ").slice(3).join(" "), "DD MMM HH:mm")
-                if (pollDate.valueOf() - 1658339340000 < 0) {
+                if (pollDate.valueOf() - new Date().getTime() < 0) {
                     if (msg.embeds[0]?.footer?.text.startsWith("Poll close")) {
                         msg.reactions.removeAll()
                         msg.embeds[0].title = `[CLOSED] ${msg.embeds[0].title}`

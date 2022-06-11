@@ -6,6 +6,7 @@ const colors = require("../../../config/general/colors.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { getUser } = require('../../../functions/database/getUser');
 const { addUser } = require('../../../functions/database/addUser');
+const { updateUser } = require('../../../functions/database/updateUser');
 
 module.exports = {
     name: `guildMemberRemove`,

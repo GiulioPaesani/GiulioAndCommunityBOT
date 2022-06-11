@@ -16,9 +16,14 @@ module.exports = {
         let server = interaction.guild;
 
         let textEmojis = `Total: ${server.emojis.cache.size} | Static: ${server.emojis.cache.filter(x => !x.animated).size} | Animated: ${server.emojis.cache.filter(x => x.animated).size}\n`
-        server.emojis.cache.forEach(emoji => {
-            textEmojis += `${emoji.toString()} `
-        })
+
+        let index = 0
+        while ((textEmojis.length + server.emojis.cache.map(x => x)[index].toString().length) < 1000) {
+            textEmojis += `${server.emojis.cache.map(x => x)[index].toString()} `
+            index++
+        }
+        if (index < server.emojis.cache.size)
+            textEmojis += `Altre ${server.emojis.cache.size - index}...`
 
         let textStickers = `Total: ${server.stickers.cache.size} | Static: ${server.stickers.cache.filter(x => x.format != "APNG").size} | Animated: ${server.stickers.cache.filter(x => x.format == "APNG").size}\n`
         server.stickers.cache.forEach(sticker => {

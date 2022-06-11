@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const moment = require("moment")
+const log = require("../../config/general/log.json")
 const settings = require("../../config/general/settings.json")
 const colors = require("../../config/general/colors.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance")
@@ -38,7 +39,7 @@ module.exports = {
             .setColor(colors.red)
             .setThumbnail(member.displayAvatarURL({ dynamic: true }))
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-            .addField(":bust_in_silhouette: Member", `${member.toString()} - ${member.user.tag}\rID: ${member.id}`)
+            .addField(":bust_in_silhouette: Member", `${member.toString()} - ${member.user.tag}\nID: ${member.id}`)
             .addField(":red_car: Joined server", `${moment(member.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.joinedTimestamp).fromNow()})`)
             .addField(":shirt: Roles", roles || "_No roles_")
 

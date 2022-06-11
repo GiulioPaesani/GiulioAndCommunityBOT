@@ -25,14 +25,14 @@ module.exports = {
                 .setTitle(":pencil: Channel updated :pencil:")
                 .setColor(colors.yellow)
                 .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`)
+                .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`)
                 .addField(":anchor: Channel", `${newChannel.toString()} - #${newChannel.name}\nID: ${newChannel.id}`)
 
             let permissionsText = ""
             Array.from(oldChannel.permissionOverwrites.cache.values()).forEach(permission => {
                 if (!Array.from(newChannel.permissionOverwrites.cache.values()).find(x => x.id == permission.id)) {
-                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\r` : `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\r`
-                    permissionsText += permission.type == "member" ? `_User removed_\r` : `_Role removed_\r`
+                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\n`
+                    permissionsText += permission.type == "member" ? `_User removed_\n` : `_Role removed_\n`
 
                     let permissionsAllow = permission.allow.serialize() || {}
                     let permissionsDeny = permission.deny.serialize() || {}
@@ -49,13 +49,13 @@ module.exports = {
 
                     for (let permission3 in permissions) {
                         if (permissions[permission3] != 0)
-                            permissionsText += `${permission3} - ${permissions[permission3] == -1 ? ":red_circle:" : ":green_circle:"}\r`
+                            permissionsText += `${permission3} - ${permissions[permission3] == -1 ? ":red_circle:" : ":green_circle:"}\n`
                     }
                 }
             })
 
             if (permissionsText != "") {
-                embed.addField(":gem: Permissions", permissionsText.length > 1024 ? `${permissionsText.slice(0, 1019)}...\r` : permissionsText)
+                embed.addField(":gem: Permissions", permissionsText.length > 1024 ? `${permissionsText.slice(0, 1019)}...\n` : permissionsText)
 
                 client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
                 return
@@ -63,7 +63,7 @@ module.exports = {
 
             Array.from(oldChannel.permissionOverwrites.cache.values()).forEach(permission => {
                 if (JSON.stringify(Array.from(newChannel.permissionOverwrites.cache.values()).find(x => x.id == permission.id)) != JSON.stringify(permission)) {
-                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\r` : `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\r`
+                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\n`
 
                     let oldPermissionsAllow = permission.allow.serialize() || {}
                     let oldPermissionsDeny = permission.deny.serialize() || {}
@@ -98,14 +98,14 @@ module.exports = {
                     }
 
                     for (let permission2 in changedPermissions) {
-                        permissionsText += `${permission2} - ${changedPermissions[permission2][0] == -1 ? ":red_circle:" : changedPermissions[permission2][0] == 0 ? ":white_circle:" : ":green_circle:"} > ${changedPermissions[permission2][1] == -1 ? ":red_circle:" : changedPermissions[permission2][1] == 0 ? ":white_circle:" : ":green_circle:"}\r`
+                        permissionsText += `${permission2} - ${changedPermissions[permission2][0] == -1 ? ":red_circle:" : changedPermissions[permission2][0] == 0 ? ":white_circle:" : ":green_circle:"} > ${changedPermissions[permission2][1] == -1 ? ":red_circle:" : changedPermissions[permission2][1] == 0 ? ":white_circle:" : ":green_circle:"}\n`
                     }
 
                 }
             })
 
             if (permissionsText != "") {
-                embed.addField(":gem: Permissions", permissionsText.length > 1024 ? `${permissionsText.slice(0, 1019)}...\r` : permissionsText)
+                embed.addField(":gem: Permissions", permissionsText.length > 1024 ? `${permissionsText.slice(0, 1019)}...\n` : permissionsText)
 
                 client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
                 return
@@ -125,7 +125,7 @@ module.exports = {
                 .setTitle(":pencil: Channel updated :pencil:")
                 .setColor(colors.yellow)
                 .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-                .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`)
+                .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`)
                 .addField(":anchor: Channel", `${oldChannel.toString()} - #${oldChannel.name}\nID: ${oldChannel.id}`)
 
             logs.changes.forEach(change => {

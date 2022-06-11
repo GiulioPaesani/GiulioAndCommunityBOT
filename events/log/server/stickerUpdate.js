@@ -24,7 +24,7 @@ module.exports = {
             .setColor(colors.yellow)
             .setThumbnail(newSticker.url)
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`, false)
+            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`, false)
             .addField(":label: Sticker", `${oldSticker.name} - [Image](${newSticker.url})`)
 
         logs.changes.forEach(change => {

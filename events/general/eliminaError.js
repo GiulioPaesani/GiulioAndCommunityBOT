@@ -8,7 +8,7 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "eliminaError") return
 
-        if (getUserPermissionLevel(client, message.author.id) <= 2) return
+        if (getUserPermissionLevel(client, interaction.user.id) <= 2) return
 
         interaction.deferUpdate().catch(() => { })
 

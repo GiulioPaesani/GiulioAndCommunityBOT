@@ -13,7 +13,7 @@ module.exports = {
         if (!room) serverstats.privateRooms.find(x => x.channel == oldMember.channelId)
         if (!room) return
 
-        if (!room.owners.includes(message.author.id)) return
+        if (!room.owners.includes(newMember.user.id)) return
 
         room.lastActivityCount = 0
         room.lastActivity = new Date().getTime()

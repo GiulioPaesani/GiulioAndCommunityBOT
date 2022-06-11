@@ -24,7 +24,7 @@ module.exports = {
             .setColor(colors.red)
             .setThumbnail(emoji.url)
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`, false)
+            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`, false)
             .addField(":smiley: Emoji", `<${emoji.animated ? "a" : ""}:${emoji.name}:${emoji.id}> - [Image](https://cdn.discordapp.com/emojis/${emoji.id}.webp?size=512)`)
             .addField(":page_with_curl: Name", emoji.name)
             .addField(":receipt: ID", emoji.id)

@@ -26,7 +26,7 @@ module.exports = {
             .setTitle(":circus_tent: Guild update :circus_tent:")
             .setColor(colors.purple)
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`)
+            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`)
 
         logs.changes.forEach(change => {
             switch (change.key) {

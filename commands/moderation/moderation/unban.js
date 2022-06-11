@@ -112,8 +112,10 @@ module.exports = {
             ticketOpened: false
         }
 
-        userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
-        userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = interaction.user.id
+        if (userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")]) {
+            userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
+            userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = interaction.user.id
+        }
 
         updateUser(userstats)
     },

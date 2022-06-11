@@ -129,11 +129,11 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
                     },
                     {
                         id: interaction.user.id,
-                        allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS']
+                        allow: ['VIEW_CHANNEL', "SEND_MESSAGES", 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS']
                     },
                     {
                         id: settings.ruoliStaff.moderatore,
-                        allow: ['VIEW_CHANNEL', 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS']
+                        allow: ['VIEW_CHANNEL', "SEND_MESSAGES", 'EMBED_LINKS', 'ATTACH_FILES', 'USE_EXTERNAL_EMOJIS']
                     }
                 ],
                 parent: client.channels.cache.get(interaction.channelId).parentId
@@ -149,7 +149,7 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
 
                     if (userstats.moderation.type) {
                         embed
-                            .setDescription('Segnala o richiedi supporto allo staff per il tuo stato di moderazione' + (userstats.moderation.type == "Muted" ? ":mute: User **muted**" : userstats.moderation.type == "Tempmuted" ? ":mute: User **tempmuted**" : userstats.moderation.type == "Banned" ? ":no_entry: User **banned**" : userstats.moderation.type == "Tempbanned" ? ":no_entry: User **tempbanned**" : userstats.moderation.type == "Forcebanned" ? ":name_badge: User **Forcebanned**" : ""))
+                            .setDescription('Segnala o richiedi supporto allo staff per il tuo stato di moderazione\n' + (userstats.moderation.type == "Muted" ? ":mute: User **muted**" : userstats.moderation.type == "Tempmuted" ? ":mute: User **tempmuted**" : userstats.moderation.type == "Banned" ? ":no_entry: User **banned**" : userstats.moderation.type == "Tempbanned" ? ":no_entry: User **tempbanned**" : userstats.moderation.type == "Forcebanned" ? ":name_badge: User **Forcebanned**" : ""))
                             .addField(":page_facing_up: Reason", userstats.moderation.reason, true)
                             .addField(":shield: Moderator", userstats.moderation.moderator ? client.users.cache.get(userstats.moderation.moderator).toString() : client.user.toString(), true)
                             .addField(":alarm_clock: Since", `${moment(userstats.moderation.since).format("ddd DD MMM, HH:mm")} (${moment(userstats.moderation.since).fromNow()})`)

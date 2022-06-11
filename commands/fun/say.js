@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const moment = require("moment");
 const settings = require("../../config/general/settings.json");
 const colors = require("../../config/general/colors.json");
+const log = require("../../config/general/log.json");
 const { addUser } = require("../../functions/database/addUser");
 const { getUser } = require("../../functions/database/getUser");
 const { getUserPermissionLevel } = require('../../functions/general/getUserPermissionLevel');

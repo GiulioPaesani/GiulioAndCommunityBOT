@@ -40,7 +40,7 @@ const checkModeraction = (client) => {
                 .setColor(colors.purple)
                 .setThumbnail(server.members.cache.get(utente.id).displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-                .addField(":brain: Executor", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
+                .addField(":brain: Executor", `${client.user.toString()} - ${client.user.tag}\nID: ${client.user.id}`)
                 .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                 .addField(":page_facing_up: Mute reason", userstats.moderation.reason)
                 .addField(":hourglass: Time muted", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)

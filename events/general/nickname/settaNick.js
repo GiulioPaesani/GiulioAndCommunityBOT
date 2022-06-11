@@ -27,7 +27,7 @@ module.exports = {
                 .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`, false)
-                .addField(":placard: Nickname", `Old: _Null_\rNew: ${nickname}`)
+                .addField(":placard: Nickname", `Old: _Null_\nNew: ${nickname}`)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
@@ -39,7 +39,7 @@ module.exports = {
                 .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
                 .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`, false)
-                .addField(":placard: Nickname", `Old: ${interaction.member.nickname}\rNew: ${nickname}`)
+                .addField(":placard: Nickname", `Old: ${interaction.member.nickname}\nNew: ${nickname}`)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })

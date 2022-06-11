@@ -45,7 +45,7 @@ module.exports = {
         }
 
         let reason = interaction.options.getString("reason")
-        if (reason.length > 1024) {
+        if (reason && reason.length > 1024) {
             return replyMessage(client, interaction, "Warning", "Motivo troppo lungo", "Puoi inserire una motivazione solo fino a 1024 caratteri", comando)
         }
 
@@ -86,6 +86,7 @@ module.exports = {
                     if (ticket?.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
                         msg.edit({ embeds: [embed] })
+                            .catch(() => { })
 
                         setTimeout(async function () {
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
@@ -119,6 +120,7 @@ module.exports = {
 
                                 embed.setDescription("Questo ticket si sta per chiudere")
                                 msg.edit({ embeds: [embed], components: [] })
+                                    .catch(() => { })
 
                                 channel.delete()
                                     .catch(() => { });

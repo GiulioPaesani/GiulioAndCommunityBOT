@@ -7,6 +7,7 @@ const { version } = require("../../package.json")
 const { getServer } = require("../../functions/database/getServer")
 const { musicBots, clientModeration, clientFun, clientRanking } = require("../../index");
 const { getEmoji } = require("../../functions/general/getEmoji")
+const { replyMessage } = require("../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

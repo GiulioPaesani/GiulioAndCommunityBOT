@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
-const { isMaintenance } = require("../../../functions/general/isMaintenance")
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,
@@ -52,7 +53,7 @@ module.exports = {
             .addComponents(interaction2)
 
         let codeText = ""
-        let codeSplit = codice["v" + version].trim().split("\n")
+        let codeSplit = codice.code.trim().split("\n")
         let tooLong = false
 
         codeSplit.forEach(row => {

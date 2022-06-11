@@ -1,6 +1,7 @@
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { humanize } = require("../../../functions/general/humanize")
-const { getEmoji } = require("../../../functions/general/getEmoji")
+const { getEmoji } = require("../../../functions/general/getEmoji");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,

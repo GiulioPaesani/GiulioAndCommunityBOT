@@ -11,6 +11,7 @@ const { getAllUsers } = require("../../../functions/database/getAllUsers")
 const { createCanvas, loadImage } = require('canvas')
 const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
 const { clientFun } = require("../../../index.js")
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

@@ -992,6 +992,15 @@ client.on("messageCreate", message => {
         return message.channel.send({ embeds: [embed] })
     }
 
+    if (text.length > 200) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Testo troppo lungo")
+            .setColor(colors.gray)
+            .setDescription("Puoi scrivere un testo solo fino a 200 caratteri")
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
     const connection = joinVoiceChannel({
         channelId: message.member.voice.channel.id,
         guildId: message.guild.id,

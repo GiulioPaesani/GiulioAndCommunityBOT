@@ -47,5 +47,6 @@ module.exports = {
         }
 
         interaction.message.edit({ embeds: [interaction.message.embeds[0]] })
+            .catch(() => { })
     },
 };

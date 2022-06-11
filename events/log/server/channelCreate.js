@@ -27,14 +27,14 @@ module.exports = {
             .setTitle(":mouse_three_button: Channel created :mouse_three_button:")
             .setColor(colors.green)
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`)
+            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`)
             .addField(":anchor: Channel", `${channel.toString()} - #${channel.name}\nID: ${channel.id}`)
             .addField(":bricks: Category", channel.parentId ? `${channel.parent.toString()} - ID: ${channel.parent.id}` : "_Null_")
             .addField(":thought_balloon: Type", channel.type == "GUILD_TEXT" ? "Text" : channel.type == "GUILD_VOICE" ? "GUILD_VOICE" : channel.type)
 
         let permissionsText = ""
         Array.from(channel.permissionOverwrites.cache.values()).forEach(permission => {
-            permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\r` : `Role: @${channel.guild.roles.cache.find(y => y.id == permission.id).name}\r`
+            permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : `Role: @${channel.guild.roles.cache.find(y => y.id == permission.id).name}\n`
 
             let permissionsAllow = permission.allow.serialize() || {}
             let permissionsDeny = permission.deny.serialize() || {}
@@ -51,7 +51,7 @@ module.exports = {
 
             for (let permission3 in permissions) {
                 if (permissions[permission3] != 0)
-                    permissionsText += `${permission3} - ${permissions[permission3] == -1 ? ":red_circle:" : ":green_circle:"}\r`
+                    permissionsText += `${permission3} - ${permissions[permission3] == -1 ? ":red_circle:" : ":green_circle:"}\n`
             }
         })
 

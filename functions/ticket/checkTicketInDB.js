@@ -5,14 +5,12 @@ const checkTicketInDB = async (client) => {
     let serverstats = getServer()
     let changed = false
 
-    for (let index in serverstats.tickets) {
-        let ticket = serverstats.tickets[index]
-
+    serverstats.tickets.forEach(async ticket => {
         if (!client.channels.cache.get(ticket.channel)) {
             serverstats.tickets = serverstats.tickets.filter(x => x.channel != ticket.channel);
             changed = true
         }
-    }
+    })
 
     if (changed) updateServer(serverstats)
 }

@@ -66,7 +66,7 @@ module.exports = {
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Confermi la creazione dell'annuncio?")
                     .setColor(colors.yellow)
-                    .setDescription(`${title}\n${msg.content.length > 200 ? `${msg.content.slice(197)}...` : msg.content}\n<@&${role}>`)
+                    .setDescription(`${title}\n${msg.content.length > 200 ? `${msg.content.slice(0, 197)}...` : msg.content}\n<@&${role}>`)
 
                 let button1 = new Discord.MessageButton()
                     .setLabel("Annulla")
@@ -83,8 +83,8 @@ module.exports = {
                     .addComponents(button2)
 
                 interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-                    .then(msg => {
-                        const collector = msg.createMessageComponentCollector();
+                    .then(msg2 => {
+                        const collector = msg2.createMessageComponentCollector();
 
                         collector.on('collect', i => {
                             if (!i.isButton()) return
@@ -98,17 +98,17 @@ module.exports = {
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle("Annuncio annullato")
                                     .setColor(colors.red)
-                                    .setDescription(msg.embeds[0].description)
+                                    .setDescription(msg2.embeds[0].description)
 
-                                msg.edit({ embeds: [embed], components: [] })
+                                msg2.edit({ embeds: [embed], components: [] })
                             }
                             else if (i.customId == "confermaAnnuncio") {
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle("Annuncio creato")
                                     .setColor(colors.green)
-                                    .setDescription(msg.embeds[0].description)
+                                    .setDescription(msg2.embeds[0].description)
 
-                                msg.edit({ embeds: [embed], components: [] })
+                                msg2.edit({ embeds: [embed], components: [] })
 
                                 client.channels.cache.get(channel).send({ content: `${title}\n${msg.content}\n<@&${role}>`, files: Array.from(msg.attachments.values()).reverse() })
                                     .then(msg => {

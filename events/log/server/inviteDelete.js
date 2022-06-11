@@ -29,7 +29,7 @@ module.exports = {
             .setThumbnail(invite.guild.members.cache.get(logs.changes.find(x => x.key == "inviter_id").old).displayAvatarURL({ dynamic: true }))
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
             .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`, false)
-            .addField(":bust_in_silhouette: Inviter", `${client.users.cache.get(logs.changes.find(x => x.key == "inviter_id").old).toString()} - ${invite.guild.members.cache.get(logs.changes.find(x => x.key == "inviter_id").old).user.tag}\rID: ${logs.changes.find(x => x.key == "inviter_id").old}`, false)
+            .addField(":bust_in_silhouette: Inviter", `${client.users.cache.get(logs.changes.find(x => x.key == "inviter_id").old).toString()} - ${invite.guild.members.cache.get(logs.changes.find(x => x.key == "inviter_id").old).user.tag}\nID: ${logs.changes.find(x => x.key == "inviter_id").old}`, false)
             .addField(":link: Code", logs.changes.find(x => x.key == "code").old, false)
             .addField(":razor: Max uses", logs.changes.find(x => x.key == "max_uses").old == 0 ? "∞" : logs.changes.find(x => x.key == "max_uses").old, false)
             .addField(":hourglass_flowing_sand: Expire time", logs.changes.find(x => x.key == "max_age").old == 0 ? "Never" : ms(logs.changes.find(x => x.key == "max_age").old * 1000, { long: true }), false)

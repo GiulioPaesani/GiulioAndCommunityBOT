@@ -33,11 +33,13 @@ module.exports = {
         let pollText = ""
         let i = 0
         messageReaction.message.embeds[0].fields[0].value.split("\n").forEach(x => {
-            let perc = 100 * reactionVotes[i].length / reactionVotes.reduce((acc, y) => acc + y.length, 0)
-            if (!perc) perc = 0
+            if (reactionVotes[i]) {
+                let perc = 100 * reactionVotes[i].length / reactionVotes.reduce((acc, y) => acc + y.length, 0)
+                if (!perc) perc = 0
 
-            pollText += `${x.split(" ").slice(0, -3).join(" ")} **${reactionVotes[i].length}** - ${perc % 1 == 0 ? perc : perc.toFixed(2)}%\n`
-            i++
+                pollText += `${x.split(" ").slice(0, -3).join(" ")} **${reactionVotes[i].length}** - ${perc % 1 == 0 ? perc : perc.toFixed(2)}%\n`
+                i++
+            }
         })
 
         messageReaction.message.embeds[0].fields[0].value = pollText

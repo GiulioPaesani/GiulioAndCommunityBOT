@@ -5,6 +5,7 @@ const colors = require("../../../config/general/colors.json")
 const changelogs = require("../../../config/general/changelogs.json")
 const { getEmoji } = require("../../../functions/general/getEmoji.js")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

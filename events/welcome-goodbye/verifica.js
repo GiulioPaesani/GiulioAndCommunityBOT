@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const moment = require("moment")
+const log = require("../../config/general/log.json")
 const settings = require("../../config/general/settings.json")
 const colors = require("../../config/general/colors.json")
 const illustrations = require("../../config/general/illustrations.json")
@@ -74,7 +75,7 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
                 .setColor(colors.green)
                 .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
                 .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-                .addField(":bust_in_silhouette: Member", `${interaction.member.toString()} - ${interaction.user.tag}\rID: ${interaction.member.id}`)
+                .addField(":bust_in_silhouette: Member", `${interaction.member.toString()} - ${interaction.user.tag}\nID: ${interaction.member.id}`)
                 .addField(":pencil: Account created", `${moment(interaction.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(interaction.user.createdAt).fromNow()})`)
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
 

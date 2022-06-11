@@ -24,7 +24,7 @@ module.exports = {
             .setColor(colors.yellow)
             .setThumbnail(emoji.url)
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`, false)
-            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\rID: ${logs.executor.id}`, false)
+            .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`, false)
             .addField(":smiley: Emoji", `<${newEmoji.animated ? "a" : ""}:${oldEmoji.name}:${newEmoji.id}> - [Image](https://cdn.discordapp.com/emojis/${newEmoji.id}.webp?size=512)`)
 
         logs.changes.forEach(change => {

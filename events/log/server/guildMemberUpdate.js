@@ -35,7 +35,7 @@ module.exports = {
 
             embed
                 .addField(":bust_in_silhouette: Member", `${newMember.user.toString()} - ${newMember.user.tag}\nID: ${newMember.id}`, false)
-                .addField(":placard: Nickname", `Old: _Null_\rNew: ${newMember.nickname}`)
+                .addField(":placard: Nickname", `Old: _Null_\nNew: ${newMember.nickname}`)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
@@ -74,7 +74,7 @@ module.exports = {
 
             embed
                 .addField(":bust_in_silhouette: Member", `${newMember.user.toString()} - ${newMember.user.tag}\nID: ${newMember.id}`, false)
-                .addField(":placard: Nickname", `Old: ${oldMember.nickname}\rNew: _Null_`)
+                .addField(":placard: Nickname", `Old: ${oldMember.nickname}\nNew: _Null_`)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
@@ -113,7 +113,7 @@ module.exports = {
 
             embed
                 .addField(":bust_in_silhouette: Member", `${newMember.user.toString()} - ${newMember.user.tag}\nID: ${newMember.id}`, false)
-                .addField(":placard: Nickname", `Old: ${oldMember.nickname}\rNew: ${newMember.nickname}`)
+                .addField(":placard: Nickname", `Old: ${oldMember.nickname}\nNew: ${newMember.nickname}`)
 
             if (!isMaintenance())
                 client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
