@@ -69,10 +69,10 @@ const checkModRoles = async (client) => {
     await client.guilds.cache.get(settings.idServer).bans.fetch()
         .then(async banned => {
             banned.forEach(ban => {
-                if (!userstatsList.find(x => x.id == ban.user.id && x.moderation.type == "Forcebanned")) {
-                    let userstats = getUser(ban.user.id);
-                    if (!userstats) userstats = addUser(ban.user)[0];
+                let userstats = getUser(ban.user.id);
+                if (!userstats) userstats = addUser(ban.user)[0];
 
+                if (userstats.moderation.type != "Forcebanned") {
                     userstats.moderation = {
                         type: "Forcebanned",
                         since: new Date().getTime(),
@@ -91,6 +91,8 @@ const checkModRoles = async (client) => {
                     })
                     updateUser(userstats)
                 }
+
+
             })
         })
 }
