@@ -49,6 +49,14 @@ module.exports = {
                 return replyMessage(client, interaction, "Warning", "Nickname troppo lungo", "Puoi scrivere un nickname solo fino a 32 caratteri", comando)
             }
 
+            if (nickname == interaction.member.nickname) {
+                return replyMessage(client, interaction, "Warning", "Nickname già inserito", "Hai già questo nickname", comando)
+            }
+
+            if (!interaction.member.nickname && nickname == interaction.member.user.username) {
+                return replyMessage(client, interaction, "Warning", "Nickname già inserito", "Hai già questo nickname come username", comando)
+            }
+
             if (interaction.guild.members.cache.find(x => x.user.id != interaction.user.id && (x.user.username == nickname || (x.nickname && x.nickname == nickname)))) {
                 let button1 = new Discord.MessageButton()
                     .setLabel("Setta comunque")
@@ -88,7 +96,7 @@ module.exports = {
 
             await interaction.member.setNickname(nickname)
 
-            replyMessage(client, interaction, "Correct", "Nickname settato", `Hai settato il tuo nickname in **${interaction.member.nickname}**`, comando)
+            replyMessage(client, interaction, "Correct", "Nickname settato", `Hai settato il tuo nickname in **${interaction.member.nickname || interaction.member.user.username}**`, comando)
         }
         else if (interaction.options.getSubcommand() == "reset") {
             if (!interaction.member.nickname) {

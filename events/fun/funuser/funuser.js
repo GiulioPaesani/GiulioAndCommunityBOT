@@ -59,12 +59,12 @@ module.exports = {
                 .addField(":wastebasket: Total deleted", userstats.countingplus.deleted.toString(), true)
         }
         else if (game == "onewordstory") {
-            console.log(serverstats.onewordstory.words.reverse().find(x => x.user == utente.id))
+            let reverseWords = [...serverstats.onewordstory.words].reverse()
             embed = new Discord.MessageEmbed()
                 .setTitle(`ONE WORD STORY - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
                 .setDescription("Tutte le statistiche di one word story su questo utente")
                 .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
-                .addField(":pencil2: Last word", !serverstats.onewordstory.words.reverse().find(x => x.user == utente.id) ? "_No words today_" : `"${serverstats.onewordstory.words.reverse().find(x => x.user == utente.id).word}" (${moment(serverstats.onewordstory.words.reverse().find(x => x.user == utente.id).time).fromNow()})`)
+                .addField(":pencil2: Last word", !reverseWords.find(x => x.user == utente.id) ? "_No words today_" : `"${reverseWords.find(x => x.user == utente.id).word}" (${moment(reverseWords.find(x => x.user == utente.id).time).fromNow()})`)
                 .addField(":orange_book: Stories created", userstats.onewordstory.totStories.toString(), true)
                 .addField(":thought_balloon: Total words today", userstats.onewordstory.totWordsToday.toString(), true)
                 .addField(":speech_balloon: Total words", userstats.onewordstory.totWords.toString(), true)

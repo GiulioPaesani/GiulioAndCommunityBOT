@@ -1,7 +1,5 @@
 const fetch = require("node-fetch");
 const settings = require("../../../config/general/settings.json");
-const colors = require("../../../config/general/colors.json");
-const { isMaintenance } = require("../../../functions/general/isMaintenance")
 
 module.exports = {
     name: `messageReactionRemoveAll`,
@@ -16,7 +14,7 @@ module.exports = {
 
         let emoji = message.embeds[0].fields[0].value.split("\n").map(x => x.split(" ")[0]).map(x => discordEmoji[x] ? discordEmoji[x] : x)
 
-        emoji.forEach(x => message.react(x))
+        emoji.forEach(x => message.react(x).catch(() => { }))
 
         let reactionVotes = []
         for (let index in emoji) {

@@ -12,11 +12,10 @@ module.exports = {
 
         if (message.channel.id != log.general.thingsToDo) return
 
-        message.delete()
-
         if (getUserPermissionLevel(client, message.author.id) <= 2) return
 
         if (!message.content) return
+        if (!message.reference) return
 
         client.channels.cache.get(log.general.thingsToDo).messages.fetch(message.reference.messageId)
             .then(msg => {

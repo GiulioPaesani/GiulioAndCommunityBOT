@@ -320,6 +320,9 @@ client.on("interactionCreate", async interaction => {
         if (getUserPermissionLevel(client, interaction.user.id) >= 2) {
 
         }
+        else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
+
+        }
         else if (getUserPermissionLevel(client, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
 
         }
@@ -518,6 +521,9 @@ clientModeration.on("interactionCreate", async interaction => {
         if (getUserPermissionLevel(clientModeration, interaction.user.id) >= 2) {
 
         }
+        else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
+
+        }
         else if (getUserPermissionLevel(clientModeration, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
 
         }
@@ -655,6 +661,9 @@ clientFun.on("interactionCreate", async interaction => {
         if (getUserPermissionLevel(clientFun, interaction.user.id) >= 2) {
 
         }
+        else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
+
+        }
         else if (getUserPermissionLevel(clientFun, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
 
         }
@@ -790,6 +799,9 @@ clientRanking.on("interactionCreate", async interaction => {
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(clientRanking.channels.cache.get(interaction.channelId).parentId)) {
         let serverstats = getServer()
         if (getUserPermissionLevel(clientRanking, interaction.user.id) >= 2) {
+
+        }
+        else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
 
         }
         else if (getUserPermissionLevel(clientRanking, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {

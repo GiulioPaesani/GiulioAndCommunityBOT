@@ -26,6 +26,8 @@ module.exports = {
 
         if (new Date().getTime() - logs.createdAt.getTime() > 10000) return
 
+        if (logs.executor.bot) return
+
         let embed = new Discord.MessageEmbed()
             .setTitle(":ping_pong: Kick :ping_pong:")
             .setColor(colors.purple)

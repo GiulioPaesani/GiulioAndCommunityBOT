@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

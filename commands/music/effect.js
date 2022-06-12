@@ -89,7 +89,7 @@ module.exports = {
     },
     channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.noMicChat, settings.idCanaliServer.general1, settings.idCanaliServer.general2],
     async execute(client, interaction, comando, distube, musicClient) {
-        let effect = interaction.options.getString("effect")
+        let effect = interaction.options.getString("type")
 
         if (effect != "off" && distube.getQueue(interaction.guild.id)?.filters.includes(effect)) {
             return replyMessage(client, interaction, "Warning", "Effetto già attivo", `L'effetto ${effect} è già attivo nella riproduzione`, comando)
@@ -99,7 +99,7 @@ module.exports = {
         }
 
         try {
-            distube.setFilter(interaction.guild.id)
+            distube.setFilter(interaction.guild.id, false)
 
             if (effect != "off")
                 distube.setFilter(interaction.guild.id, effect)

@@ -13,7 +13,11 @@ module.exports = {
 
         if (message.channel.id != log.general.thingsToDo) return
 
+        if (message.author.bot) return
+
         message.delete()
+
+        if (message.reference) return
 
         if (getUserPermissionLevel(client, message.author.id) <= 2) return
 

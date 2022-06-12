@@ -23,7 +23,7 @@ module.exports = {
             },
             {
                 name: "user",
-                description: "Utente a cui mandare il codice in privato",
+                description: "[Only MOD] Utente a cui mandare il codice in privato",
                 type: "STRING",
                 required: false,
                 autocomplete: true

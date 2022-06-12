@@ -21,7 +21,7 @@ module.exports = {
 
         let emoji = messageReaction.message.embeds[0].fields[0].value.split("\n").map(x => x.split(" ")[0]).map(x => discordEmoji[x] ? discordEmoji[x] : x)
 
-        if (!emoji.includes(messageReaction._emoji.name) && !emoji.includes(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`)) return messageReaction.users.remove(user)
+        if (!emoji.includes(messageReaction._emoji.name) && !emoji.includes(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`)) return messageReaction.users.remove(user).then(() => console.log("rimossa1"))
 
         let reactionVotes = []
         let reactions = emoji

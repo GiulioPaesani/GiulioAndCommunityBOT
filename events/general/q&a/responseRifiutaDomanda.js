@@ -18,7 +18,7 @@ module.exports = {
         message.delete()
             .catch(() => { })
 
-        if (getUserPermissionLevel(client, interaction.user.id) < 3) return
+        if (getUserPermissionLevel(client, message.author.id) < 3) return
 
         if (!message.reference) return
         if (!message.content) return

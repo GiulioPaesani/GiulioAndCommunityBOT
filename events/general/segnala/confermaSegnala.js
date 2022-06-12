@@ -3,6 +3,7 @@ const moment = require("moment")
 const colors = require("../../../config/general/colors.json")
 const log = require("../../../config/general/log.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

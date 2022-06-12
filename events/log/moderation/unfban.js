@@ -52,8 +52,9 @@ module.exports = {
                 ticketOpened: false
             }
 
-            userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
-            userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = logs.executor.id
+            let reverseWarns = [...userstats.warns].reverse()
+            userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
+            userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = logs.executor.id
 
             updateUser(userstats)
         }

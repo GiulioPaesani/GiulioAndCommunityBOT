@@ -3,6 +3,7 @@ const settings = require("../../../config/general/settings.json")
 const colors = require("../../../config/general/colors.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel")
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

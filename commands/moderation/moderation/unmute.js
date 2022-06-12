@@ -119,8 +119,9 @@ module.exports = {
             ticketOpened: false
         }
 
-        userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "mute" || x.type == "tempmute")].unTime = new Date().getTime()
-        userstats.warns[userstats.warns.reverse().findIndex(x => x.type == "mute" || x.type == "tempmute")].unModerator = interaction.user.id
+        let reverseWarns = [...userstats.warns].reverse()
+        userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "mute" || x.type == "tempmute")].unTime = new Date().getTime()
+        userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "mute" || x.type == "tempmute")].unModerator = interaction.user.id
 
         updateUser(userstats)
     },
