@@ -7,6 +7,7 @@ const { getEmoji } = require("../../functions/general/getEmoji");
 const { getTaggedUser } = require("../../functions/general/getTaggedUser");
 const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
 const { replyMessage } = require("../../functions/general/replyMessage");
+const { isMaintenance } = require("../../functions/general/isMaintenance");
 
 module.exports = {
     name: "clearuser",

@@ -49,6 +49,6 @@ module.exports = {
             VIEW_CHANNEL: false
         })
 
-        replyMessage(client, interaction, "Correct", "Ti sei rimosso", `${utente.toString()} ha lasciato la stanza <#${room.channel}>`, comando)
+        replyMessage(client, interaction, "Correct", "Ti sei rimosso", `${interaction.user.toString()} ha lasciato la stanza <#${room.channel}>`, comando)
     },
 };

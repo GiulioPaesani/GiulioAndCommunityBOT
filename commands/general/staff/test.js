@@ -6,6 +6,7 @@ const items = require("../../../config/ranking/items.json")
 const illustrations = require("../../../config/general/illustrations.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { getEmoji } = require("../../../functions/general/getEmoji")
+const { getUser } = require("../../../functions/database/getUser")
 
 module.exports = {
     name: "test",

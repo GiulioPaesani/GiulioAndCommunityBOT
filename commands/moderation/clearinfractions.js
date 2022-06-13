@@ -9,6 +9,7 @@ const { replyMessage } = require("../../functions/general/replyMessage")
 const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
 const { updateUser } = require("../../functions/database/updateUser");
 const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+const { isMaintenance } = require("../../functions/general/isMaintenance");
 
 module.exports = {
     name: "clearinfractions",

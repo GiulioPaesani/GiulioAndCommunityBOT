@@ -60,7 +60,7 @@ module.exports = {
             if (!isMaintenance()) {
                 client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
             }
-
+            return
         }
 
         let text = interaction.options.getString("text")

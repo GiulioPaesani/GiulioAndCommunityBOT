@@ -176,7 +176,7 @@ const autoBackup = async (client) => {
     await fetchAllMessages(client.channels.cache.get(log.general.thingsToDo))
         .then(messages => {
             for (let msg of messages) {
-                let content = msg.embeds[0].fields[1].value
+                let content = msg.embeds[0].fields[1]?.value || msg.embeds[0].fields[0]?.value
 
                 server.channels.cache.forEach(x => content = content.replace(eval(`/<#${x.id}>/g`), `#${x.name}`))
                 server.roles.cache.forEach(x => content = content.replace(eval(`/<@&${x.id}>/g`), `@${x.name}`))

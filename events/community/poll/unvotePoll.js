@@ -21,7 +21,7 @@ module.exports = {
 
         if (!emoji.includes(messageReaction._emoji.name) && !emoji.includes(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`)) return
 
-        if (user.id == client.user.id) messageReaction.message.react(messageReaction._emoji.name).catch(() => message.react(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`).catch(() => { }))
+        if (user.id == client.user.id) messageReaction.message.react(messageReaction._emoji.name).catch(() => messageReaction.message.react(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`).catch(() => { }))
 
         let reactionVotes = []
         let reactions = emoji

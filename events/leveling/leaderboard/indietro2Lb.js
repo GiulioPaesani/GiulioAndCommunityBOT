@@ -1,3 +1,5 @@
+const Discord = require("discord.js")
+const settings = require("../../../config/general/settings.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { humanize } = require("../../../functions/general/humanize")
 const { getEmoji } = require("../../../functions/general/getEmoji")
@@ -67,7 +69,7 @@ module.exports = {
                 }
 
                 let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
-                leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].money)}$**\n`
+                leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].economy.money)}$**\n`
             }
         }
 
@@ -78,7 +80,7 @@ module.exports = {
             .setThumbnail(client.guilds.cache.get(settings.idServer).iconURL({ dynamic: true }))
             .addField(":beginner: Leveling", leaderboardLeveling)
             .addField(":coin: Economy", leaderboardEconomy)
-            .setFooter(`Page ${page}/${totPage}`)
+            .setFooter({ text: `Page ${page}/${totPage}` })
 
         let button1 = new Discord.MessageButton()
             .setCustomId(`indietro2Lb,${interaction.user.id},${page}`)

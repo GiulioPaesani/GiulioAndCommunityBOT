@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const settings = require("../../config/general/settings.json")
 const { replyMessage } = require("../../functions/general/replyMessage")
 
 module.exports = {
@@ -32,7 +31,7 @@ module.exports = {
         let max = interaction.options.getInteger("max")
 
         if (max < min) {
-            return replyMessage(client, interaction, "Warning", "Minimo e massimo non validi", "Il numero massimo non può essere più piccole del numero minimo", comando)
+            return replyMessage(client, interaction, "Warning", "Minimo e massimo non validi", "Il numero massimo non può essere più piccolo del numero minimo", comando)
         }
 
         let embed = new Discord.MessageEmbed()

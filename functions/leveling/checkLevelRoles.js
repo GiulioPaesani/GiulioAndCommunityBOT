@@ -11,7 +11,7 @@ const checkLevelRoles = async (client) => {
 
 const checkUserLevelRole = async (client, userstats) => {
     let ruoloDaAvere
-    for (let i = userstats.leveling.level; !ruoloDaAvere; i++) {
+    for (let i = userstats.leveling.level; !ruoloDaAvere; i--) {
         if (client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${i}`)) ruoloDaAvere = i
     }
 

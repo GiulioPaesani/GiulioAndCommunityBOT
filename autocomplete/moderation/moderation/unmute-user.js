@@ -28,8 +28,6 @@ module.exports = {
                 if (!choices.find(y => y.id == x.id)) choices.push(x)
             });
 
-        if (userstatsList.find(x => x.id == focused.value && (x.moderation.type == "Muted" || x.moderation.type == "Tempmuted")) && !choices.find(y => y.id == userstatsList.find(x => x.id == focused.value && (x.moderation.type == "Muted" || x.moderation.type == "Tempmuted").id))) choices.push(userstatsList.find(x => x.id == focused.value && (x.moderation.type == "Banned" || x.moderation.type == "Tempbanned" || x.moderation.type == "Forcebanned")))
-
         return choices.map(x => ({ name: `${x.nickname ? `${x.nickname}#${x.user.discriminator}` : (x.user?.tag || x.tag)} (ID: ${x.id})`, value: x.id }))
     }
 }

@@ -1,12 +1,30 @@
 [
     {
+        "version": "V0622",
+        "title": "Ora ci sono troppi BOT... ma con tante novità FIGHISSIME",
+        "description": "È arrivato il giorno di un nuovo Changelog, ma questo è un changelog super super ricco di novità. Tantissime nuove funzioni, nuovi comandi e tanti nuovi canali. Guarda il video e entra subito nel server per scoprirli!",
+        "date": "2022-06-11",
+        "documento": "https://bit.ly/3ML77b0",
+        "idVideo": "l38UZD37Bnw",
+        "bestNovita": [
+            "Nuovo sistema di **musica**",
+            "Bot separati: GiulioAndModeration, GiulioAndFun e GiulioAndRanking",
+            "Text to Speech",
+            "**Slash** command",
+            "Nuova disposizione ruoli staff (Owner, Admin e Moderator)",
+            "Tanto nuovo divertimento con i nuovi canali <#977590416264294462> e <#977601321546956910>",
+            "Altre funzioni nei canali <#976847592472318012>, <#978537002456715274>, <#978536291497021440> e <#978536471000662076>",
+            "**Basta ticket!**, ora si potrà richiedere aiuto solo nel canale <#978536821183111178>"
+        ]
+    },
+    {
         "version": "V0122",
         "title": "ANNIVERSARIO del server, le NOVITÀ più grosse di sempre",
         "description": "È un anno che il mio server Discord esiste e per festeggiare oggi esce il Changelog più figo e più grande di sempre, funzioni e novità fantastiche. Tanti auguri al server!",
-        "date":"2022-01-15",
-        "documento":"https://bit.ly/36xkUmq",
-        "idVideo":"JLMPDaFlNaI",
-        "bestNovita":[
+        "date": "2022-01-15",
+        "documento": "https://bit.ly/36xkUmq",
+        "idVideo": "JLMPDaFlNaI",
+        "bestNovita": [
             "Nuovo sistema di **economia**",
             "Nuovo sistema di **compleanni** e regali",
             "Server super controllato dai **log** di ogni tipo",
@@ -20,10 +38,10 @@
         "version": "V1021",
         "title": "Molta più SICUREZZA e BUG risolti, spero...",
         "description": "Nuovo Changelog, sicuramente più spoglio rispetto al solito ma con importanti novità",
-        "date":"2021-10-15",
-        "documento":"https://bit.ly/3K420Bs",
-        "idVideo":"7OCYe5Rnpb0",
-        "bestNovita":[
+        "date": "2021-10-15",
+        "documento": "https://bit.ly/3K420Bs",
+        "idVideo": "7OCYe5Rnpb0",
+        "bestNovita": [
             "**Sicurezza** molto migliorata, tramite `!lockdown`, sistemi di verifica e controllo spam",
             "Aggiunti finalmente alcuni **sticker**",
             "Niente più stanza **pubbliche**, ma solo private"
@@ -33,40 +51,40 @@
         "version": "V0921",
         "title": "Nuovo canale, GiulioAndLogs e Stanze PRIVATE",
         "description": "Che bello è arrivato il momento di un nuovo changelog con tantissime novità assurde aggiunte al bot e al server",
-        "date":"2021-09-15",
-        "documento":"https://bit.ly/3Mnu18m",
-        "idVideo":"_PD2SEVH_l4",
-        "bestNovita":[
-           "Nuovo sistema di **stanze private**",
-           "**GiulioAndLogs**: un server con decine di canali utili allo staff",
-           "**Notifiche** YouTube migliorate, ora anche il nuovo canale, nuovo ruolo notifica"
+        "date": "2021-09-15",
+        "documento": "https://bit.ly/3Mnu18m",
+        "idVideo": "_PD2SEVH_l4",
+        "bestNovita": [
+            "Nuovo sistema di **stanze private**",
+            "**GiulioAndLogs**: un server con decine di canali utili allo staff",
+            "**Notifiche** YouTube migliorate, ora anche il nuovo canale, nuovo ruolo notifica"
         ]
     },
     {
         "version": "V0721",
         "title": "Addio Bot e Nuovo ruolo: gli Aiutanti",
         "description": "Secondo episodio di questa serie di update mensili nel mio server Discord, oggi ci sono tante cose interessanti e piccole chicche qua e la, buona visione",
-        "date":"2021-07-15",
-        "documento":"https://bit.ly/3L28gLh",
-        "idVideo":"0sbvaipS5Wg",
-        "bestNovita":[
-           "Eliminati GiulioAndModeration, GiulioAndLeveling e GiulioAndFun, sostituiti con un **unico bot**",
-           "Tutto il codice in **module.export**",
-           "Addio MySql, ora abbiamo **MongoDB** come database",
-           "Arrivati gli **aiutanti**, che avranno lo scopo di aiutare gli utenti nel server",
-           "Aggiunte **notifiche** YouTube",
-           "**Bottoni** nei ticket: Apri ticket, Chiudi ticket e Tagga staff",
-           "Messaggio quando il server viene **boostato**"
+        "date": "2021-07-15",
+        "documento": "https://bit.ly/3L28gLh",
+        "idVideo": "0sbvaipS5Wg",
+        "bestNovita": [
+            "Eliminati GiulioAndModeration, GiulioAndLeveling e GiulioAndFun, sostituiti con un **unico bot**",
+            "Tutto il codice in **module.export**",
+            "Addio MySql, ora abbiamo **MongoDB** come database",
+            "Arrivati gli **aiutanti**, che avranno lo scopo di aiutare gli utenti nel server",
+            "Aggiunte **notifiche** YouTube",
+            "**Bottoni** nei ticket: Apri ticket, Chiudi ticket e Tagga staff",
+            "Messaggio quando il server viene **boostato**"
         ]
     },
     {
         "version": "V0621",
         "title": "Niente più BAN, Nuovi COMANDI, TICKET e molto altro",
         "description": "Nuova serie per annunciare tutte le novità nel server: tantissimi nuovi comandi, nuove funzioni",
-        "date":"2021-06-15",
-        "documento":"https://bit.ly/3jZV4e4",
-        "idVideo":"bPK4AiCdo4A",
-        "bestNovita":[
+        "date": "2021-06-15",
+        "documento": "https://bit.ly/3jZV4e4",
+        "idVideo": "bPK4AiCdo4A",
+        "bestNovita": [
             "**Messaggi di benvenuto** anche in privato, e riassegnamento ruoli se un utente rientra",
             "Sistema di **lockdown**: solo gli utenti con almeno il livello 5 vedranno i canali",
             "Sistama di **ticket**",

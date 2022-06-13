@@ -67,8 +67,9 @@ const checkModeraction = (client) => {
                 ticketOpened: false
             }
 
-            userstats.warns[userstats.warns.lastIndexOf(x => x.type == "mute" || x.type == "tempmute")].unTime = new Date().getTime()
-            userstats.warns[userstats.warns.lastIndexOf(x => x.type == "mute" || x.type == "tempmute")].unModerator = client.user.id
+            let reverseWarns = [...userstats.warns].reverse()
+            userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "mute" || x.type == "tempmute")].unTime = new Date().getTime()
+            userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "mute" || x.type == "tempmute")].unModerator = client.user.id
 
             updateUser(userstats)
         }
@@ -122,8 +123,10 @@ const checkModeraction = (client) => {
                 moderator: null,
                 ticketOpened: false
             }
-            userstats.warns[userstats.warns.lastIndexOf(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
-            userstats.warns[userstats.warns.lastIndexOf(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = client.user.id
+
+            let reverseWarns = [...userstats.warns].reverse()
+            userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
+            userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unModerator = client.user.id
 
             updateUser(userstats)
         }

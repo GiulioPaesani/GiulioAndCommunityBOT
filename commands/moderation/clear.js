@@ -3,6 +3,7 @@ const moment = require("moment")
 const colors = require("../../config/general/colors.json");
 const log = require("../../config/general/log.json");
 const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
+const { isMaintenance } = require("../../functions/general/isMaintenance");
 
 module.exports = {
     name: "clear",

@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
-const { isMaintenance } = require("../../functions/general/isMaintenance")
+const { isMaintenance } = require("../../functions/general/isMaintenance");
+const { replyMessage } = require("../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,

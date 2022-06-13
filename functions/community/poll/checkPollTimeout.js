@@ -12,10 +12,10 @@ const checkPollTimeout = async (client) => {
                 let pollDate = moment(msg.embeds[0]?.footer?.text.split(" ").slice(3).join(" "), "DD MMM HH:mm")
                 if (pollDate.valueOf() - new Date().getTime() < 0) {
                     if (msg.embeds[0]?.footer?.text.startsWith("Poll close")) {
+                        msg.embeds[0].footer.text = `Poll delete on ${moment().add(86400000, "ms").format("DD MMM HH:mm")}`
                         msg.reactions.removeAll()
                         msg.embeds[0].title = `[CLOSED] ${msg.embeds[0].title}`
                         msg.embeds[0].color = colors.red
-                        msg.embeds[0].footer.text = `Poll delete on ${moment().add(86400000, "ms").format("DD MMM HH:mm")}`
                         msg.edit({ embeds: [msg.embeds[0]] })
                     }
                     else if (msg.embeds[0]?.footer?.text.startsWith("Poll delete")) {

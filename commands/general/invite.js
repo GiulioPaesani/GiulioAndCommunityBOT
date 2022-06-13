@@ -14,7 +14,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(":woman_raising_hand: Invito del server :man_raising_hand:")
             .setDescription(`Ecco a te l'invito da poter **condividere** con amici o chiunque tu voglia per **entrare** nel server
-https://discord.gg/ypTCaveew2`)
+https://dsc.gg/giulioandcommunity`)
             .setColor("#5865F2")
 
         interaction.reply({ embeds: [embed] })

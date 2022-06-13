@@ -28,7 +28,12 @@ module.exports = {
                 if (!choices.find(y => y.id == x.id)) choices.push(x)
             });
 
-        if (userstatsList.find(x => x.id == focused.value && (x.moderation.type == "Banned" || x.moderation.type == "Tempbanned" || x.moderation.type == "Forcebanned")) && !choices.find(y => y.id == userstatsList.find(x => x.id == focused.value && (x.moderation.type == "Banned" || x.moderation.type == "Tempbanned" || x.moderation.type == "Forcebanned")).id)) choices.push(userstatsList.find(x => x.id == focused.value && (x.moderation.type == "Banned" || x.moderation.type == "Tempbanned" || x.moderation.type == "Forcebanned")))
+        await client.guilds.cache.get(settings.idServer).bans.fetch()
+            .then(async banned => {
+                banned.forEach(ban => {
+                    if (!choices.find(y => y.id == ban.user.id)) choices.push(ban.user)
+                })
+            })
 
         return choices.map(x => ({ name: `${x.nickname ? `${x.nickname}#${x.user.discriminator}` : (x.user?.tag || x.tag)} (ID: ${x.id})`, value: x.id }))
     }

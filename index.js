@@ -18,12 +18,10 @@ const { addUser } = require('./functions/database/addUser');
 const { registerFont } = require('canvas');
 const { checkBadwords } = require('./functions/moderaction/checkBadwords');
 const { getServer } = require('./functions/database/getServer');
-const { ttsQueue, ttsPlay } = require('./functions/music/tts/ttsQueue');
+let { ttsQueue, ttsPlay, resetQueue, addQueue } = require('./functions/music/tts/ttsQueue');
 const { joinVoiceChannel } = require("@discordjs/voice");
 const { blockedChannels } = require("./functions/general/blockedChannels");
 const { hasSufficientLevels } = require("./functions/leveling/hasSufficientLevels");
-const { checkLevelUp } = require("./functions/leveling/checkLevelUp");
-const { updateUser } = require("./functions/database/updateUser");
 registerFont("./assets/font/roboto.ttf", { family: "roboto" })
 registerFont("./assets/font/robotoBold.ttf", { family: "robotoBold" })
 
@@ -312,7 +310,12 @@ client.on("interactionCreate", async interaction => {
     }
 
     if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
-        return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        if (comando.name == "poll" && interaction.user.id == settings.idCanaliServer.staffPolls) {
+
+        }
+        else {
+            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+        }
     }
 
     let serverstats = getServer()
@@ -1027,7 +1030,5 @@ client.on("messageCreate", message => {
         host: 'https://translate.google.com',
     });
 
-    ttsQueue.push(url)
-
-    ttsPlay(connection)
+    addQueue(client, url, connection)
 })

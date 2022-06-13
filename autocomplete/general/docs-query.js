@@ -38,6 +38,7 @@ module.exports = {
 
             const doc = await Docs.fetch(source)
             const results = await doc.resolveEmbed(focused.value.toLowerCase())
+            if (!results) return []
 
             let choices = []
 

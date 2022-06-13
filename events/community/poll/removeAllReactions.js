@@ -9,6 +9,8 @@ module.exports = {
 
         if (message.channel.id != settings.idCanaliServer.polls && message.channel.id != settings.idCanaliServer.staffPolls) return
 
+        if (message.embeds[0].footer.text.startsWith("Poll delete")) return
+
         let discordEmoji = await fetch("https://gist.githubusercontent.com/rigwild/1b509bf69e2a2391f44aa5de3f05b006/raw/e4b5bfa81ea3e7e51af1f5585964666115934631/discord_emojis.json")
         discordEmoji = await discordEmoji.json();
 

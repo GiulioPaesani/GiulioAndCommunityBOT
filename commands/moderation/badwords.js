@@ -6,7 +6,7 @@ const { getEmoji } = require('../../functions/general/getEmoji');
 module.exports = {
     name: "badwords",
     description: "Lista completa di tutte le parole, espressioni o frasi proibite",
-    permissionLevel: 1,
+    permissionLevel: 0,
     requiredLevel: 0,
     syntax: "/badwords",
     category: "moderation",

@@ -1,9 +1,10 @@
 const settings = require("../../../config/general/settings.json")
-const ttsQueue = []
+let ttsQueue = []
 let countdown = -1;
 const { createAudioPlayer, createAudioResource, AudioPlayerStatus } = require("@discordjs/voice");
+const { isMaintenance } = require("../../general/isMaintenance");
 
-const ttsPlay = (connection) => {
+const ttsPlay = (client, connection) => {
     if (ttsQueue.length == 0) return
 
     const url = ttsQueue[0]
@@ -24,9 +25,22 @@ const ttsPlay = (connection) => {
         if (newOne.status == "idle") {
             ttsQueue.shift()
             countdown = 20
-            ttsPlay(connection)
+            ttsPlay(client, connection)
         }
     });
+
+    client.once("voiceStateUpdate", (oldState, newState) => {
+        if (isMaintenance(newState.id)) return
+
+        if (newState.guild.id != settings.idServer) return
+
+        if (newState.id != client.user.id) return
+
+        if (oldState.channelId && !newState.channelId) {
+            audioPlayer.stop()
+            ttsQueue = []
+        }
+    })
 }
 
 const ttsInactivity = (client) => {
@@ -41,4 +55,11 @@ const ttsInactivity = (client) => {
     }
 }
 
-module.exports = { ttsQueue, ttsPlay, ttsInactivity }
+const addQueue = (client, url, connection) => {
+    ttsQueue.push(url)
+
+    if (ttsQueue.length == 1)
+        ttsPlay(client, connection)
+}
+
+module.exports = { ttsQueue, ttsPlay, ttsInactivity, addQueue }

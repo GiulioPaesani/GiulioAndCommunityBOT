@@ -2,8 +2,10 @@ const Discord = require("discord.js")
 const moment = require("moment")
 const colors = require("../../config/general/colors.json")
 const settings = require("../../config/general/settings.json")
+const { getAllUsers } = require("../database/getAllUsers")
 const { getServer } = require("../database/getServer")
 const { updateServer } = require("../database/updateServer")
+const { updateUser } = require("../database/updateUser")
 
 const newStory = async (client) => {
     let date = new Date()
@@ -31,6 +33,14 @@ Utente unici partecipanti: ${serverstats.onewordstory.words.filter((v, i, a) => 
         serverstats.onewordstory.totStories++
 
         updateServer(serverstats)
+
+        let userstatsList = getAllUsers(client)
+        userstatsList.forEach(userstats => {
+            if (userstats.onewordstory.totWordsToday != 0) {
+                userstats.onewordstory.totWordsToday = 0;
+                updateUser(userstats)
+            }
+        })
     }
 }
 

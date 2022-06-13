@@ -64,7 +64,7 @@ module.exports = {
                 }
 
                 let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
-                leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].money)}$**\n`
+                leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].economy.money)}$**\n`
             }
         }
 

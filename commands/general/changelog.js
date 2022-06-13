@@ -22,7 +22,11 @@ module.exports = {
                 required: false,
                 choices: [
                     {
-                        name: "[Defaut] V0122 - Gennaio 2022", //!Cambiare il default
+                        name: "[Defaut] V0622 - Giugno 2022",
+                        value: "V0622"
+                    },
+                    {
+                        name: "V0122 - Gennaio 2022",
                         value: "V0122"
                     },
                     {
