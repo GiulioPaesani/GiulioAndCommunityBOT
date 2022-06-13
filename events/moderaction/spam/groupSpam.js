@@ -63,8 +63,8 @@ Tutti gli utenti con inferiori al ${client.guilds.cache.get(settings.idServer).r
                                 .addField(":anchor: Channel", `${message.channel.toString()} - #${message.channel.name}\nID: ${message.channel.id}`)
                                 .addField(":bust_in_silhouette: Members", memberList)
 
-                            if (!isMaintenance())
-                                client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
+                            // if (!isMaintenance())
+                            //     client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
                         })
 
                     let everyone = interaction.guild.roles.everyone

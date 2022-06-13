@@ -137,7 +137,7 @@ const checkBirthday = async (client) => {
                 .addField(":alarm_clock: Day", `${moment(data.getTime()).format("ddd DD MMM YYYY")}`)
                 .addField(":balloon: Birthdays", birthdaysList)
 
-            client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
+            // client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
         }
 
     }

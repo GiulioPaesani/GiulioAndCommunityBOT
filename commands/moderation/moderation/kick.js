@@ -78,8 +78,8 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
             .addField(":page_facing_up: Reason", reason)
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()
             .setTitle("Sei stato espulso")

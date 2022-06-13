@@ -87,8 +87,8 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
             .addField(":page_facing_up: Reason", reason)
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.moderation.warn).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.moderation.warn).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()
             .setTitle("Sei stato warnato")
@@ -172,8 +172,8 @@ module.exports = {
                 .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
                 .addField(":page_facing_up: Reason", reason)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
             embed = new Discord.MessageEmbed()
                 .setTitle("Sei stato mutato temporaneamente")

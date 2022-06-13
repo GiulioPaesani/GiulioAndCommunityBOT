@@ -163,6 +163,6 @@ module.exports = {
         let row = new Discord.MessageActionRow()
             .addComponents(select)
 
-        client.channels.cache.get(log.general.thingsToDo).send({ embeds: [embed2], components: [row] })
+        // client.channels.cache.get(log.general.thingsToDo).send({ embeds: [embed2], components: [row] })
     },
 };

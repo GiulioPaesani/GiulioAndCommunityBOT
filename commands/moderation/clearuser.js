@@ -177,8 +177,8 @@ module.exports = {
                                     .addField(":anchor: Channel", interaction.options.getString("mode") == "allchannels" ? "All channels" : `${interaction.channel.toString()} - #${interaction.channel.name}\nID: ${interaction.channelId}`)
                                     .addField(":incoming_envelope: Messages deleted", totDeletedMessages.size.toString())
 
-                                if (!isMaintenance())
-                                    client.channels.cache.get(log.moderation.clearuser).send({ embeds: [embed], files: attachment1 ? [attachment1] : [] })
+                                // if (!isMaintenance())
+                                //     client.channels.cache.get(log.moderation.clearuser).send({ embeds: [embed], files: attachment1 ? [attachment1] : [] })
                             }
                         }
                     })

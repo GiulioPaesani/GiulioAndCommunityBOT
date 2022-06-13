@@ -63,6 +63,6 @@ module.exports = {
                 .addField(":page_facing_up: Ban reason", ban.reason || "No reason", false)
         }
 
-        client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
+        // client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
     },
 };

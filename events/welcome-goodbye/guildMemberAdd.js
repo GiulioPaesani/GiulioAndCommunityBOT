@@ -58,8 +58,8 @@ module.exports = {
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
                 .addField(":shirt: Roles", roles || "_No roles_")
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
             if (invite) {
                 let userstatsInviter = getUser(invite.inviter.id)

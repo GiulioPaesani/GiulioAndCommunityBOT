@@ -104,8 +104,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                 .addField(":wastebasket: Warns deleted", warnsDeletedList)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
         }
         else {
             warnsList += `**#${code}**${warns[code - 1].type == "mute" ? " **[Mute]**" : warns[code - 1].type == "tempmute" ? " **[Tempmute]**" : warns[code - 1].type == "ban" ? " **[Ban]**" : warns[code - 1].type == "tempban" ? " **[Tempban]**" : warns[code - 1].type == "fban" ? " **[Forceban]**" : warns[code - 1].type == "kick" ? " **[Kick]**" : ""} ${warns[code - 1].reason}\n`
@@ -135,8 +135,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                 .addField(":wastebasket: Warns deleted", warnsList)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
         }
     },
 };

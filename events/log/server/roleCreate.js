@@ -26,6 +26,6 @@ module.exports = {
             .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`, false)
             .addField(":shirt: Role", `@${role.name} - ID: ${role.id}`)
 
-        client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
     },
 };

@@ -54,8 +54,8 @@ try {
 
 client.login(process.env.token)
 clientModeration.login(process.env.tokenModeration)
-clientFun.login(process.env.tokenFun)
-clientRanking.login(process.env.tokenRanking)
+// clientFun.login(process.env.tokenFun)
+// clientRanking.login(process.env.tokenRanking)
 
 let musicBots = []
 let countMusicBots = 3
@@ -65,6 +65,7 @@ for (let i = 1; i <= countMusicBots; i++) {
         intents: 32767,
         allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
     })
+
     let bot = {
         client: clientMusic,
         distube: new DisTube(clientMusic, {
@@ -76,7 +77,7 @@ for (let i = 1; i <= countMusicBots; i++) {
         })
     }
 
-    clientMusic.login(process.env["tokenMusic" + i])
+    // clientMusic.login(process.env["tokenMusic" + i])
 
     clientMusic.on("ready", () => {
         clientMusic.user.setActivity('/play', { type: 'LISTENING' });
@@ -364,9 +365,9 @@ client.on("interactionCreate", async interaction => {
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
         }
 
-        if (!isMaintenance()) {
-            client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-        }
+        // if (!isMaintenance()) {
+        //     client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        // }
 
         return
     }
@@ -394,9 +395,9 @@ client.on("interactionCreate", async interaction => {
             })
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-            if (!isMaintenance()) {
-                client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-            }
+            // if (!isMaintenance()) {
+            //     client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+            // }
             return
         }
     }
@@ -436,8 +437,8 @@ client.on("interactionCreate", async interaction => {
                     .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
                     .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
-                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         embed = new Discord.MessageEmbed()
@@ -494,8 +495,8 @@ client.on("interactionCreate", async interaction => {
             .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
             .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
 clientModeration.on("interactionCreate", async interaction => {
@@ -565,9 +566,9 @@ clientModeration.on("interactionCreate", async interaction => {
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
         }
 
-        if (!isMaintenance()) {
-            clientModeration.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-        }
+        // if (!isMaintenance()) {
+        //     clientModeration.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        // }
 
         return
     }
@@ -607,8 +608,8 @@ clientModeration.on("interactionCreate", async interaction => {
                     .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
                     .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
-                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         embed = new Discord.MessageEmbed()
@@ -634,8 +635,8 @@ clientModeration.on("interactionCreate", async interaction => {
             .addField(":anchor: Channel", `#${clientModeration.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
             .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-        if (!isMaintenance())
-            clientModeration.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+        //     if (!isMaintenance())
+        //         clientModeration.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
 clientFun.on("interactionCreate", async interaction => {
@@ -705,9 +706,9 @@ clientFun.on("interactionCreate", async interaction => {
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
         }
 
-        if (!isMaintenance()) {
-            client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-        }
+        // if (!isMaintenance()) {
+        //     client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        // }
 
         return
     }
@@ -747,8 +748,8 @@ clientFun.on("interactionCreate", async interaction => {
                     .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
                     .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
-                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         embed = new Discord.MessageEmbed()
@@ -774,8 +775,8 @@ clientFun.on("interactionCreate", async interaction => {
             .addField(":anchor: Channel", `#${clientFun.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
             .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-        if (!isMaintenance())
-            clientFun.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     clientFun.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
 clientRanking.on("interactionCreate", async interaction => {
@@ -845,9 +846,9 @@ clientRanking.on("interactionCreate", async interaction => {
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
         }
 
-        if (!isMaintenance()) {
-            clientRanking.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-        }
+        // if (!isMaintenance()) {
+        //     clientRanking.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        // }
         return
     }
 
@@ -886,8 +887,8 @@ clientRanking.on("interactionCreate", async interaction => {
                     .addField(":anchor: Channel", `${clientModeration.channels.cache.get(interaction.channelId).toString()} - #${clientModeration.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
                     .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
-                    clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     clientModeration.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         embed = new Discord.MessageEmbed()
@@ -913,55 +914,55 @@ clientRanking.on("interactionCreate", async interaction => {
             .addField(":anchor: Channel", `#${clientRanking.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
             .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-        if (!isMaintenance())
-            clientRanking.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     clientRanking.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
 
-client.on("interactionCreate", async interaction => {
-    if (!interaction.isAutocomplete()) return
+// client.on("interactionCreate", async interaction => {
+//     if (!interaction.isAutocomplete()) return
 
-    const autocomplete = client.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
-    if (!autocomplete) return
+//     const autocomplete = client.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+//     if (!autocomplete) return
 
-    let response = await autocomplete.getResponse(client, interaction.options.getFocused(true), interaction)
-    if (!response) return
+//     let response = await autocomplete.getResponse(client, interaction.options.getFocused(true), interaction)
+//     if (!response) return
 
-    interaction.respond(response.slice(0, 25))
-})
-clientModeration.on("interactionCreate", async interaction => {
-    if (!interaction.isAutocomplete()) return
+//     interaction.respond(response.slice(0, 25))
+// })
+// clientModeration.on("interactionCreate", async interaction => {
+//     if (!interaction.isAutocomplete()) return
 
-    const autocomplete = clientModeration.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
-    if (!autocomplete) return
+//     const autocomplete = clientModeration.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+//     if (!autocomplete) return
 
-    let response = await autocomplete.getResponse(clientModeration, interaction.options.getFocused(true), interaction)
-    if (!response) return
+//     let response = await autocomplete.getResponse(clientModeration, interaction.options.getFocused(true), interaction)
+//     if (!response) return
 
-    interaction.respond(response.slice(0, 25))
-})
-clientFun.on("interactionCreate", async interaction => {
-    if (!interaction.isAutocomplete()) return
+//     interaction.respond(response.slice(0, 25))
+// })
+// clientFun.on("interactionCreate", async interaction => {
+//     if (!interaction.isAutocomplete()) return
 
-    const autocomplete = clientFun.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
-    if (!autocomplete) return
+//     const autocomplete = clientFun.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+//     if (!autocomplete) return
 
-    let response = await autocomplete.getResponse(clientFun, interaction.options.getFocused(true), interaction)
-    if (!response) return
+//     let response = await autocomplete.getResponse(clientFun, interaction.options.getFocused(true), interaction)
+//     if (!response) return
 
-    interaction.respond(response.slice(0, 25))
-})
-clientRanking.on("interactionCreate", async interaction => {
-    if (!interaction.isAutocomplete()) return
+//     interaction.respond(response.slice(0, 25))
+// })
+// clientRanking.on("interactionCreate", async interaction => {
+//     if (!interaction.isAutocomplete()) return
 
-    const autocomplete = clientRanking.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
-    if (!autocomplete) return
+//     const autocomplete = clientRanking.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
+//     if (!autocomplete) return
 
-    let response = await autocomplete.getResponse(clientRanking, interaction.options.getFocused(true), interaction)
-    if (!response) return
+//     let response = await autocomplete.getResponse(clientRanking, interaction.options.getFocused(true), interaction)
+//     if (!response) return
 
-    interaction.respond(response.slice(0, 25))
-})
+//     interaction.respond(response.slice(0, 25))
+// })
 
 client.on("messageCreate", message => {
     if (message.author.bot) return

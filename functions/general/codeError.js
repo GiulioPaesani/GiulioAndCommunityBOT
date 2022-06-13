@@ -55,7 +55,7 @@ const codeError = async (client, err) => {
                     let row = new Discord.MessageActionRow()
                         .addComponents(button1)
 
-                    client.channels.cache.get(log.general.codeErrors).send({ embeds: [embed], components: [row] });
+                    // client.channels.cache.get(log.general.codeErrors).send({ embeds: [embed], components: [row] });
                 }
             })
     }

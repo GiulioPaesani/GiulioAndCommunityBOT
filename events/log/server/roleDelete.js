@@ -31,6 +31,6 @@ module.exports = {
         if (role.permissions.toArray().length > 0)
             embed.addField(":gem: Permissions", role.permissions.toArray().join("\n"))
 
-        client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
     },
 };

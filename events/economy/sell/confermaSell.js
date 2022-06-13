@@ -58,8 +58,8 @@ Old: ${humanize(userstats.economy.money)}$
 
         embed.fields[5].value += `New: ${humanize(userstats.economy.money)}$`
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.ranking.purchaseItems).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.ranking.purchaseItems).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()
             .setTitle(`${getEmoji(client, item.name.toLowerCase())} ${item.name.toUpperCase()} venduto/a`)

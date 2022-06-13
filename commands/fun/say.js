@@ -57,9 +57,9 @@ module.exports = {
                 embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
             }
 
-            if (!isMaintenance()) {
-                client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-            }
+            // if (!isMaintenance()) {
+            //     client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+            // }
             return
         }
 

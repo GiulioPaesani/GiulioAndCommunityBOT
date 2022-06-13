@@ -21,8 +21,8 @@ const checkUnverifedUser = (client) => {
                     .addField(":bust_in_silhouette: Member", `${user.user.toString()} - ${user.user.tag}\nID: ${user.id}`)
                     .addField(":red_car: Joined server", `${moment(user.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(user.joinedTimestamp).fromNow()})`)
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.server.unverifiedUser).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                // client.channels.cache.get(log.server.unverifiedUser).send({ embeds: [embed] })
 
                 embed = new Discord.MessageEmbed()
                     .setTitle(":ping_pong: Kick :ping_pong:")
@@ -33,8 +33,8 @@ const checkUnverifedUser = (client) => {
                     .addField(":bust_in_silhouette: Member", `${user.user.toString()} - ${user.user.tag}\nID: ${user.id}`)
                     .addField(":page_facing_up: Reason", "Tempo di verifica scaduto")
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
 
                 embed = new Discord.MessageEmbed()
                     .setTitle("Non ti sei VERIFICATO")

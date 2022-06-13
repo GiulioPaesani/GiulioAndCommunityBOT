@@ -41,7 +41,7 @@ module.exports = {
             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
             .addField(":construction: Maintenance", maintenanceStates == 0 ? `Off - Everyone can use bot` : maintenanceStates == 1 ? `Mode 1 - Only tester can use bot` : maintenanceStates == 2 ? `Mode 2 - Nobody can use bot` : maintenanceStates == 3 ? `Mode 3 - Everyone, except testers, can use bot` : "", true)
 
-        client.channels.cache.get(log.general.ready).send({ embeds: [embed] })
+        // client.channels.cache.get(log.general.ready).send({ embeds: [embed] })
 
         if (!isMaintenance()) {
             setInterval(counterChannels, 1000 * 60 * 5, client)
@@ -50,7 +50,7 @@ module.exports = {
             setInterval(autoBackup, 1000, client)
             setInterval(checkBirthday, 1000, client)
             setInterval(checkModRoles, 1000 * 10, clientModeration)
-            setInterval(checkLevelRoles, 1000 * 10, clientRanking)
+            //  !!!! setInterval(checkLevelRoles, 1000 * 10, clientRanking)
             setInterval(ttsInactivity, 1000, client)
             setInterval(checkActivityPrivateRooms, 1000 * 10, client)
             setInterval(checkPollTimeout, 1000 * 10, client)
@@ -59,7 +59,7 @@ module.exports = {
             setInterval(checkRoomInDB, 1000 * 10, client)
             setInterval(checkTicketInDB, 1000 * 10, client)
             setInterval(ttdCounter, 1000 * 60 * 5, client)
-            setInterval(newStory, 1000, clientFun)
+            //  !!!! setInterval(newStory, 1000, clientFun)
         }
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(client.user.id)

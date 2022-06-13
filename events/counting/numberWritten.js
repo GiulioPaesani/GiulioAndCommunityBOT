@@ -67,8 +67,8 @@ module.exports = {
                     if (message.content != numero.toString())
                         embed.addField(":envelope: Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`)
 
-                    if (!isMaintenance())
-                        client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
+                    // if (!isMaintenance())
+                    //     client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
                 })
 
             message.channel.send("0")
@@ -110,8 +110,8 @@ module.exports = {
                     if (message.content != numero.toString())
                         embed.addField(":envelope: Message", `${message.content.length > 1000 ? `${message.content.slice(0, 993)}...` : message.content}`)
 
-                    if (!isMaintenance())
-                        client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
+                    // if (!isMaintenance())
+                    //     client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
                 })
 
             message.channel.send("0")
@@ -143,8 +143,8 @@ module.exports = {
 User best score: ${numero > userstats.counting.bestScore ? "Yes" : "No"}
 Server best score: ${numero > serverstats.counting.bestScore ? "Yes" : "No"}`)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.counting.numbers).send({ embeds: [embed] })
 
             serverstats.counting.number = numero
             serverstats.counting.lastScore = numero

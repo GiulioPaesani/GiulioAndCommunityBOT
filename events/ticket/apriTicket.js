@@ -96,8 +96,8 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
                         .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                         .addField(":placard: Type", `Normal`)
 
-                    if (!isMaintenance())
-                        client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
+                    // if (!isMaintenance())
+                    //     client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
                 })
         }
 
@@ -192,8 +192,8 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
                         .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                         .addField(":placard: Type", `Moderation - ${interaction.channelId == settings.idCanaliServer.mutedTicket ? "Mute" : interaction.channelId == settings.idCanaliServer.tempmutedTicket ? "Tempmute" : interaction.channelId == settings.idCanaliServer.bannedTicket ? "Ban" : interaction.channelId == settings.idCanaliServer.tempbannedTicket ? "Tempban" : ""}`)
 
-                    if (!isMaintenance())
-                        client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
+                    // if (!isMaintenance())
+                    //     client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
                 });
         }
     },

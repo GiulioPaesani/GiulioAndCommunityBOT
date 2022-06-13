@@ -59,6 +59,6 @@ module.exports = {
         if (permissionsText != "")
             embed.addField(":gem: Permissions", permissionsText.length > 1024 ? `${permissionsText.slice(0, 1021)}...` : permissionsText)
 
-        client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.channels).send({ embeds: [embed] })
     },
 };

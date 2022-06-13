@@ -22,7 +22,7 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ${client.users.cache.get(newState.id).tag}\nID: ${newState.id}`, false)
                 .addField(":anchor: Channel", `${client.channels.cache.get(newState.channelId).toString()} - #${client.channels.cache.get(newState.channelId).name}\nID: ${newState.channelId}`)
 
-            client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
+            // client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
         }
         else if (oldState.channelId && !newState.channelId) {
             const fetchedLogs = await oldState.guild.fetchAuditLogs({
@@ -45,7 +45,7 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${client.users.cache.get(newState.id).toString()} - ${client.users.cache.get(newState.id).tag}\nID: ${newState.id}`, false)
                 .addField(":anchor: Channel", `${client.channels.cache.get(oldState.channelId).toString()} - #${client.channels.cache.get(oldState.channelId).name}\nID: ${oldState.channelId}`)
 
-            client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
+            // client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
         }
         else {
             if (oldState.channelId != newState.channelId) {
@@ -70,7 +70,7 @@ module.exports = {
                     .addField(":ledger: From channel", `${client.channels.cache.get(oldState.channelId).toString()} - #${client.channels.cache.get(oldState.channelId).name}\nID: ${oldState.channelId}`)
                     .addField(":ledger: To channel", `${client.channels.cache.get(newState.channelId).toString()} - #${client.channels.cache.get(newState.channelId).name}\nID: ${newState.channelId}`)
 
-                client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
+                // client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
             }
             else {
                 const fetchedLogs = await newState.guild.fetchAuditLogs({
@@ -110,8 +110,8 @@ module.exports = {
                 if (oldState.serverMute != newState.serverMute)
                     embed.addField(":microphone2: Mic server", !oldState.serverMute ? ":green_circle: > :red_circle:" : ":red_circle: > :green_circle:")
 
-                if (embed.fields[3])
-                    client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
+                // if (embed.fields[3])
+                //     client.channels.cache.get(log.server.voiceChannels).send({ embeds: [embed] })
             }
         }
     },

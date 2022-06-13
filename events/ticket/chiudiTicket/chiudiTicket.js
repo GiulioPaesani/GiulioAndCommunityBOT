@@ -92,8 +92,8 @@ module.exports = {
                                         if (chatLog != "")
                                             attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `ticket-${ticket.channel}-${new Date().getTime()}.txt`);
 
-                                        if (!isMaintenance())
-                                            client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] || [] })
+                                        // if (!isMaintenance())
+                                        //     client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] || [] })
 
                                         embed.setDescription("Questo ticket si sta per chiudere")
                                         msg.edit({ embeds: [embed] })

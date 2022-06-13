@@ -57,8 +57,8 @@ module.exports = {
 Old: ${oldMessage.content}
 New: ${newMessage.content}`)
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
             })
 
         oldMessage.channel.send(numero.toString())

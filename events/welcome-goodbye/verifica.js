@@ -79,8 +79,8 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
                 .addField(":pencil: Account created", `${moment(interaction.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(interaction.user.createdAt).fromNow()})`)
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
             let userstats = getUser(interaction.user.id)
             if (!userstats) userstats = addUser(interaction.member)[0]

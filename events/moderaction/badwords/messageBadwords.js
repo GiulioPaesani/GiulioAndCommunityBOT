@@ -45,8 +45,8 @@ module.exports = {
                     .addField(":anchor: Channel", `${message.channel.toString()} - #${message.channel.name}\nID: ${message.channel.id}`)
                     .addField(":envelope: Message", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
         embed = new Discord.MessageEmbed()

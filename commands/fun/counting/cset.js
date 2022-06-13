@@ -66,7 +66,7 @@ module.exports = {
     Old: ${oldNumber}
     New: ${serverstats.counting.number}`)
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.counting.setNumber).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.counting.setNumber).send({ embeds: [embed] })
     },
 };

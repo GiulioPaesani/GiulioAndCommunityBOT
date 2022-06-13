@@ -95,8 +95,8 @@ module.exports = {
                         .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ${message.author.tag}\nID: ${message.author.id}`)
                         .addField(":anchor: Channel", `${message.channel.toString()} - #${message.channel.name}\nID: ${message.channel.id}`)
 
-                    if (!isMaintenance())
-                        client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
+                    // if (!isMaintenance())
+                    //     client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
 
                     embed = new Discord.MessageEmbed()
                         .setTitle(":speaker: Tempmute :speaker:")
@@ -109,8 +109,8 @@ module.exports = {
                         .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
                         .addField(":page_facing_up: Reason", reason)
 
-                    if (!isMaintenance())
-                        client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
+                    // if (!isMaintenance())
+                    //     client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
                     embed = new Discord.MessageEmbed()
                         .setTitle("Sei stato mutato temporaneamente")

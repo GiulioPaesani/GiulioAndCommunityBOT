@@ -38,9 +38,9 @@ module.exports = {
                 .addField(":placard: Nickname", `Old: _Null_\nNew: ${newMember.nickname}`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
+                // client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
 
-            if (logs.executor.id == newMember.id) return
+                if (logs.executor.id == newMember.id) return
 
             embed = new Discord.MessageEmbed()
                 .setTitle(":green_circle: Nickname inserito :green_circle:")
@@ -77,9 +77,9 @@ module.exports = {
                 .addField(":placard: Nickname", `Old: ${oldMember.nickname}\nNew: _Null_`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
+                // client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
 
-            if (logs.executor.id == newMember.id) return
+                if (logs.executor.id == newMember.id) return
 
             embed = new Discord.MessageEmbed()
                 .setTitle(":red_circle: Nickname resettato :red_circle:")
@@ -116,9 +116,9 @@ module.exports = {
                 .addField(":placard: Nickname", `Old: ${oldMember.nickname}\nNew: ${newMember.nickname}`)
 
             if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
+                // client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
 
-            if (logs.executor.id == newMember.id) return
+                if (logs.executor.id == newMember.id) return
 
             embed = new Discord.MessageEmbed()
                 .setTitle(":yellow_circle: Nickname cambiato :yellow_circle:")

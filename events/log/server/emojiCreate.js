@@ -29,6 +29,6 @@ module.exports = {
             .addField(":page_with_curl: Name", emoji.name)
             .addField(":receipt: ID", emoji.id)
 
-        client.channels.cache.get(log.server.emojiSticker).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.emojiSticker).send({ embeds: [embed] })
     },
 };

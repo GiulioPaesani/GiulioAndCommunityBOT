@@ -50,8 +50,8 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ID: ${message.author.id}`)
             .addField(":1234: Number", numero.toString())
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.counting.editDeleteNumbers).send({ embeds: [embed] })
 
         let userstats = getUser(message.author.id)
         userstats.counting.deleted++

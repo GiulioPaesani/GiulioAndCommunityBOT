@@ -37,7 +37,7 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${logs.target.toString()} - ${logs.target.tag}\nID: ${logs.target.id}`, false)
             .addField(":page_facing_up: Reason", logs.reason || "No reason", false)
 
-        client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
+        // client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
 
         let userstats = getUser(logs.target.id)
         if (!userstats) userstats = addUser(member.guild.members.cache.get(logs.target.id) || logs.target)[0]

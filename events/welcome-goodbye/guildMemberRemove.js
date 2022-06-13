@@ -43,8 +43,8 @@ module.exports = {
             .addField(":red_car: Joined server", `${moment(member.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.joinedTimestamp).fromNow()})`)
             .addField(":shirt: Roles", roles || "_No roles_")
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
         let userstatsList = getAllUsers(client)
         userstatsList.filter(x => x.invites[member.user.id]).forEach(userstats2 => {

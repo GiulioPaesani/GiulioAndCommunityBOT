@@ -30,6 +30,6 @@ module.exports = {
             .addField(":receipt: ID", sticker.id)
             .addField(":clipboard: Tag", `:${sticker.tags[0]}:`)
 
-        client.channels.cache.get(log.server.emojiSticker).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.emojiSticker).send({ embeds: [embed] })
     },
 };

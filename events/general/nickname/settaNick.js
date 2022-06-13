@@ -29,8 +29,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`, false)
                 .addField(":placard: Nickname", `Old: _Null_\nNew: ${nickname}`)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
         }
         else {
             let embed = new Discord.MessageEmbed()
@@ -41,8 +41,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`, false)
                 .addField(":placard: Nickname", `Old: ${interaction.member.nickname}\nNew: ${nickname}`)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.server.membersPresence).send({ embeds: [embed] })
         }
 
         await interaction.member.setNickname(nickname)

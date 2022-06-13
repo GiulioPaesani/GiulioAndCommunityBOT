@@ -40,6 +40,6 @@ module.exports = {
         if (message.stickers.size > 0)
             embed.addField(":label: Stickers", message.stickers.map(x => `[${x.name}](${x.url})`).join(", "))
 
-        client.channels.cache.get(log.server.messages).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.messages).send({ embeds: [embed] })
     },
 };

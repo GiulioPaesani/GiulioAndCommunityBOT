@@ -86,7 +86,7 @@ New: ${change.new}
 
         }
         else if (embed.fields[3]) {
-            client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
+            // client.channels.cache.get(log.server.roles).send({ embeds: [embed] })
         }
     },
 };

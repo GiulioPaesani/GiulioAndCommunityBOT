@@ -97,8 +97,8 @@ ${nuovoLivello ? nuovoLivello : ""}
 Old: Lvl. ${livelloVecchio} Boost ${message.guild.premiumSubscriptionCount - numeroBoost}
 New: Lvl. ${livelloNuovo} Boost ${message.guild.premiumSubscriptionCount}`)
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.server.serverBoostes).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.server.serverBoostes).send({ embeds: [embed] })
 
         let textItems = ""
         items.filter(x => x.priviled && x.priviled <= 30 && getEmoji(client, x.name.toLowerCase()) != "").slice(0, 6).forEach(item => {

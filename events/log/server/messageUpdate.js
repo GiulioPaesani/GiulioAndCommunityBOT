@@ -54,6 +54,6 @@ Old: ${oldMessage.stickers.size > 0 ? oldMessage.stickers.map(x => `[${x.name}](
 New: ${newMessage.stickers.size > 0 ? newMessage.stickers.map(x => `[${x.name}](${x.url})`).join(", ") : "_Null_"}
 `)
 
-        client.channels.cache.get(log.server.messages).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.messages).send({ embeds: [embed] })
     },
 };

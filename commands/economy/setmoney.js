@@ -131,8 +131,8 @@ Old: ${humanize(userstats.economy.money)}$
 
             embed.fields[4].value += `New: ${humanize(userstats.economy.money)}$`
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.ranking.editMoney).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.ranking.editMoney).send({ embeds: [embed] })
         }
         else if (interaction.options.getSubcommand() == "add") {
             let embed = new Discord.MessageEmbed()
@@ -154,8 +154,8 @@ Old: ${humanize(userstats.economy.money)}$
 
             embed.fields[4].value += `New: ${humanize(userstats.economy.money)}$`
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.ranking.editMoney).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.ranking.editMoney).send({ embeds: [embed] })
         }
         else if (interaction.options.getSubcommand() == "set") {
             let embed = new Discord.MessageEmbed()
@@ -177,8 +177,8 @@ Old: ${humanize(userstats.economy.money)}$
 
             embed.fields[4].value += `New: ${humanize(userstats.economy.money)}$`
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.ranking.editMoney).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.ranking.editMoney).send({ embeds: [embed] })
         }
     },
 };

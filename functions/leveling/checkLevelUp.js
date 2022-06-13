@@ -196,8 +196,8 @@ const checkLevelUp = async (client, userstats) => {
             .addField(":beginner: Level", level.toString())
             .addField(":gem: Privilegi", textPrivilegi)
 
-        if (!isMaintenance() && level > 0)
-            client.channels.cache.get(log.ranking.levelUp).send({ embeds: [embed] })
+        // if (!isMaintenance() && level > 0)
+        //     client.channels.cache.get(log.ranking.levelUp).send({ embeds: [embed] })
 
         if (!userstats.leveling.livelliSuperati[level])
             userstats.economy.money += level * 10

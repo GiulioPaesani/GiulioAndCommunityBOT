@@ -45,8 +45,8 @@ const checkModeraction = (client) => {
                 .addField(":page_facing_up: Mute reason", userstats.moderation.reason)
                 .addField(":hourglass: Time muted", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.moderation.unmute).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.moderation.unmute).send({ embeds: [embed] })
 
             embed = new Discord.MessageEmbed()
                 .setTitle("Sei stato smutato")
@@ -102,8 +102,8 @@ const checkModeraction = (client) => {
                 .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
                 .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
 
             embed = new Discord.MessageEmbed()
                 .setTitle("Sei stato sbannato")

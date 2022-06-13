@@ -114,8 +114,8 @@ module.exports = {
                                 if (chatLog != "")
                                     attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `room-${room.channel}-${new Date().getTime()}.txt`);
 
-                                if (!isMaintenance())
-                                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed2], files: attachment1 ? [attachment1] : [] })
+                                // if (!isMaintenance())
+                                //     client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed2], files: attachment1 ? [attachment1] : [] })
 
                                 embed
                                     .setTitle("Stanza eliminata")

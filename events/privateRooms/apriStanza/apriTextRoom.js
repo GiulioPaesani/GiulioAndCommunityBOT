@@ -111,8 +111,8 @@ Per ogni comando è necessario specificare a quali stanza si vuole applicare
                     .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                     .addField(":placard: Type", `Text`)
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
+                // if (!isMaintenance())
+                //     client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
             })
             .catch(() => {
                 return replyMessage(client, interaction, "Warning", "Troppe stanze", "Sono state create più di **50 stanze** in questa categoria. Discord non permette al bot di crearne di più, riprova più tardi")

@@ -68,8 +68,8 @@ module.exports = {
                     .addField(":anchor: Channel", `${interaction.channel.toString()} - #${interaction.channel.name}\nID: ${interaction.channelId}`)
                     .addField(":incoming_envelope: Messages deleted", deletedMessages.size.toString())
 
-                if (!isMaintenance())
-                    client.channels.cache.get(log.moderation.clear).send({ embeds: [embed], files: attachment1 ? [attachment1] : [] })
+                // if (!isMaintenance())
+                //     client.channels.cache.get(log.moderation.clear).send({ embeds: [embed], files: attachment1 ? [attachment1] : [] })
             }
         }
     },

@@ -135,8 +135,8 @@ Old: Lvl. ${userstats.leveling.level} (XP: ${humanize(userstats.leveling.xp)})
 
             embed.fields[4].value += `New: Lvl. ${userstats.leveling.level} (XP: ${humanize(userstats.leveling.xp)})`
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
         }
         else if (interaction.options.getSubcommand() == "add") {
             let embed = new Discord.MessageEmbed()
@@ -159,8 +159,8 @@ Old: Lvl. ${userstats.leveling.level} (XP: ${humanize(userstats.leveling.xp)})
 
             embed.fields[4].value += `New: Lvl. ${userstats.leveling.level} (XP: ${humanize(userstats.leveling.xp)})`
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
         }
         else if (interaction.options.getSubcommand() == "set") {
             let embed = new Discord.MessageEmbed()
@@ -183,8 +183,8 @@ Old: Lvl. ${userstats.leveling.level} (XP: ${humanize(userstats.leveling.xp)})
 
             embed.fields[4].value += `New: Lvl. ${userstats.leveling.level} (XP: ${humanize(userstats.leveling.xp)})`
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.ranking.editLevel).send({ embeds: [embed] })
         }
     },
 };

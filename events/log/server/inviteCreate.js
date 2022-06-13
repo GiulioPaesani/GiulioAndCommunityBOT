@@ -26,6 +26,6 @@ module.exports = {
             .addField(":link: Code", invite.code, false)
             .addField(":anchor: Channel", `${invite.channel.toString()} - #${invite.channel.name}\nID: ${invite.channel.id}`)
 
-        client.channels.cache.get(log.server.invites).send({ embeds: [embed] })
+        // client.channels.cache.get(log.server.invites).send({ embeds: [embed] })
     },
 };

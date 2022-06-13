@@ -114,8 +114,8 @@ module.exports = {
                                     .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
                                     .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-                                if (!isMaintenance())
-                                    client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
+                                // if (!isMaintenance())
+                                //     client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
 
                                 let reverseWarns = [...userstats.warns].reverse()
                                 userstats.warns[userstats.warns.length - 1 - reverseWarns.findIndex(x => x.type == "ban" || x.type == "fban" || x.type == "tempban")].unTime = new Date().getTime()
@@ -179,8 +179,8 @@ module.exports = {
                             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                             .addField(":page_facing_up: Reason", reason)
 
-                        if (!isMaintenance())
-                            client.channels.cache.get(log.moderation.ban).send({ embeds: [embed] })
+                        // if (!isMaintenance())
+                        //     client.channels.cache.get(log.moderation.ban).send({ embeds: [embed] })
 
                         embed = new Discord.MessageEmbed()
                             .setTitle("Sei stato bannato")
@@ -256,8 +256,8 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
             .addField(":page_facing_up: Reason", reason)
 
-        if (!isMaintenance())
-            client.channels.cache.get(log.moderation.ban).send({ embeds: [embed] })
+        // if (!isMaintenance())
+        //     client.channels.cache.get(log.moderation.ban).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()
             .setTitle("Sei stato bannato")

@@ -75,8 +75,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                 .addField(":calendar_spiral: Date", `${day} ${moment().set("month", month - 1).format("MMMM")}`)
 
-            if (!isMaintenance())
-                client.channels.cache.get(log.birthday.setBirthday).send({ embeds: [embed] })
+            // if (!isMaintenance())
+            //     client.channels.cache.get(log.birthday.setBirthday).send({ embeds: [embed] })
 
             if (data.getHours() < 8) return
 
@@ -169,7 +169,7 @@ module.exports = {
                                         .addField(":alarm_clock: Day", `${moment(data.getTime()).format("ddd DD MMM YYYY")}`)
                                         .addField(":balloon: Birthdays", `- ${interaction.user.toString()} - ID: ${interaction.user.id}`)
 
-                                    client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
+                                    // client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
                                 }
                             }
                         })
