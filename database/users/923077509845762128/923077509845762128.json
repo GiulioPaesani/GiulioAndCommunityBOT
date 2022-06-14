@@ -1,0 +1,68 @@
+{
+    "id": "923077509845762128",
+    "username": "Ale308",
+    "roles": [],
+    "joinedAt": 1647052404310,
+    "leavedAt": 1654198933443,
+    "birthday": [
+        null,
+        null
+    ],
+    "counting": {
+        "lastScore": 0,
+        "bestScore": 0,
+        "timeLastScore": null,
+        "timeBestScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "countingplus": {
+        "lastScore": 0,
+        "timeLastScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "onewordstory": {
+        "totWords": 0,
+        "totWordsToday": 0,
+        "totStories": 0
+    },
+    "leveling": {
+        "level": 3,
+        "xp": 474,
+        "livelliSuperati": {
+            "1": true,
+            "2": true,
+            "3": true
+        }
+    },
+    "economy": {
+        "money": 60,
+        "inventory": {}
+    },
+    "moderation": {
+        "type": "Forcebanned",
+        "since": 1654977374108,
+        "until": null,
+        "reason": "insulti ad utenti in dm nonostante il mute nel server",
+        "moderator": "968226752893710457",
+        "ticketOpened": false
+    },
+    "warns": [
+        {
+            "type": "fban",
+            "reason": "insulti ad utenti in dm nonostante il mute nel server",
+            "time": 1654955026187,
+            "moderator": "968226752893710457",
+            "unTime": null,
+            "unModerator": null
+        }
+    ],
+    "invites": {}
+}

@@ -1,0 +1,68 @@
+{
+    "id": "451666961357864970",
+    "username": "!     Natan",
+    "roles": [
+        "834364447823888384"
+    ],
+    "joinedAt": 1653923953329,
+    "leavedAt": 1653927318857,
+    "birthday": [
+        null,
+        null
+    ],
+    "counting": {
+        "lastScore": 0,
+        "bestScore": 0,
+        "timeLastScore": null,
+        "timeBestScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "countingplus": {
+        "lastScore": 0,
+        "timeLastScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "onewordstory": {
+        "totWords": 0,
+        "totWordsToday": 0,
+        "totStories": 0
+    },
+    "leveling": {
+        "level": 1,
+        "xp": 122,
+        "livelliSuperati": {
+            "1": true
+        }
+    },
+    "economy": {
+        "money": 10,
+        "inventory": {}
+    },
+    "moderation": {
+        "type": "Forcebanned",
+        "since": 1654977367986,
+        "until": null,
+        "reason": "Nessun motivo",
+        "moderator": "968226752893710457",
+        "ticketOpened": false
+    },
+    "warns": [
+        {
+            "type": "fban",
+            "reason": "Nessun motivo",
+            "time": 1654955026170,
+            "moderator": "968226752893710457",
+            "unTime": null,
+            "unModerator": null
+        }
+    ],
+    "invites": {}
+}
