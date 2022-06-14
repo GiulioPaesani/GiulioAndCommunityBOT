@@ -1,3 +1,9 @@
-node_modules/
-.env
+giulioandcommunitybot/node_modules/
+giulioandcommunitybot/.env
+giulioandfun/node_modules/
+giulioandfun/.env
+giulioandranking/node_modules/
+giulioandranking/.env
+giulioandmoderation/node_modules/
+giulioandmoderation/.env
 database/
