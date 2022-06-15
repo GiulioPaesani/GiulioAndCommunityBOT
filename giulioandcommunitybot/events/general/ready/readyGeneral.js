@@ -22,10 +22,6 @@ module.exports = {
 
         client.user.setActivity('/help', { type: 'WATCHING' });
 
-        client.app.listen(1000, () => {
-            console.log(`-- ${client.user.username} in ascolto sulla porta 1000 --`)
-        })
-
         if (!isMaintenance()) {
             setInterval(counterChannels, 1000 * 60 * 5, client)
             setInterval(youtubeNotifications, 1000 * 60 * 2, client)
