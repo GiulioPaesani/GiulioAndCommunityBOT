@@ -14,9 +14,9 @@ module.exports = {
         if (member.guild.id != settings.idServer) return
 
         let serverstats = getServer()
-        if (!serverstats.tickets.find(x => x.owners.includes(member.user.id) && type == "text")) return
+        if (!serverstats.tickets.find(x => x.owner == member.user.id)) return
 
-        let room = serverstats.tickets.find(x => x.owners.includes(member.user.id) && type == "text")
+        let room = serverstats.tickets.find(x => x.owner == member.user.id)
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":outbox_tray: Owner uscito :outbox_tray:")

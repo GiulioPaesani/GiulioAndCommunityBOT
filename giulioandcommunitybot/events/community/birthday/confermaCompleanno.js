@@ -125,51 +125,6 @@ module.exports = {
                         "authorization": String(process.env.apiKey)
                     }
                 }).catch(() => { })
-
-                if (!isMaintenance()) {
-                    client.channels.cache.get(log.birthday.birthdaysToday).messages.fetch({ limit: 1 })
-                        .then(messages => {
-                            for (let msg of Array.from(messages.values())) {
-                                if (msg.embeds[0]?.fields[0]?.value == moment(data.getTime()).format("ddd DD MMM YYYY")) {
-                                    let birthdayToday = []
-
-                                    getAllUsers(client).forEach(userstats => {
-                                        if (userstats.birthday && ((userstats.birthday[0] == data.getMonth() + 1 && userstats.birthday[1] == data.getDate()) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && data.getMonth() == 2 && data.getDate() == 1 && !isAnnoBisestile(new Date().getFullYear())))) {
-                                            birthdayToday.push(userstats)
-                                        }
-                                    })
-
-                                    let birthdaysList = ""
-                                    let i = 0
-                                    while (birthdayToday[i] && birthdaysList.length + `- ${client.users.cache.get(birthdayToday[i].id).toString()} - ID: ${birthdayToday[i].id}\n`.length < 900) {
-                                        birthdaysList += `- ${client.users.cache.get(birthdayToday[i].id).toString()} - ID: ${birthdayToday[i].id}\n`
-                                        i++
-                                    }
-
-                                    if (birthdayToday.length > i)
-                                        birthdaysList += `Altri ${birthdayToday.length - i}...`
-
-
-                                    let embed = new Discord.MessageEmbed()
-                                        .setTitle(":gift: Birthdays today :gift:")
-                                        .setColor(colors.purple)
-                                        .addField(":alarm_clock: Day", `${moment(data.getTime()).format("ddd DD MMM YYYY")}`)
-                                        .addField(":balloon: Birthdays", birthdaysList)
-
-                                    msg.edit({ embeds: [embed] })
-                                }
-                                else {
-                                    let embed = new Discord.MessageEmbed()
-                                        .setTitle(":gift: Birthdays today :gift:")
-                                        .setColor(colors.purple)
-                                        .addField(":alarm_clock: Day", `${moment(data.getTime()).format("ddd DD MMM YYYY")}`)
-                                        .addField(":balloon: Birthdays", `- ${interaction.user.toString()} - ID: ${interaction.user.id}`)
-
-                                    // client.channels.cache.get(log.birthday.birthdaysToday).send({ embeds: [embed] })
-                                }
-                            }
-                        })
-                }
             }
         }
     },

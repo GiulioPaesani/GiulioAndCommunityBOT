@@ -233,7 +233,7 @@ clientRanking.on("interactionCreate", async interaction => {
 clientRanking.app.get("/client", (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     res.send({
         user: clientRanking.user,
@@ -249,7 +249,7 @@ clientRanking.app.get("/client", (req, res) => {
 clientRanking.app.get("/reload/:command", async (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     let { command } = req.params
 
@@ -280,7 +280,7 @@ clientRanking.app.get("/reload/:command", async (req, res) => {
 clientRanking.app.get("/checklevelup/:userid", (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     let { userid } = req.params
 

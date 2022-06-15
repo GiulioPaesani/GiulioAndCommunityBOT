@@ -12,14 +12,9 @@
     "server": "866325646288748545",
     "messages": "867813787511291904",
     "channels": "866327690399055902",
-    "voiceChannels": "867814201824772116",
     "roles": "866328174967521301",
-    "membersPresence": "921014732218040350",
-    "welcomeGoodbye": "866332616625881088",
-    "invites": "866325084641951785",
-    "serverBoostes": "866324446889771009",
-    "emojiSticker": "866325669318623242",
-    "unverifiedUser": "910451058722078730"
+    "welcomeGoodbye": "986533989051432960",
+    "serverBoostes": "866324446889771009"
   },
   "moderation": {
     "kick": "859012424727527424",
@@ -40,26 +35,11 @@
   "commands": {
     "allCommands": "859430138232307784"
   },
-  "counting": {
-    "numbers": "870899106766290965",
-    "editDeleteNumbers": "866323505154359296",
-    "setNumber": "859013264377380904"
-  },
-  "ranking": {
-    "levelUp": "859431618389475348",
-    "editLevel": "859057954778513428",
-    "editMoney": "923649133963804742",
-    "purchaseItems": "925779550900731915"
-  },
   "community": {
     "suggestions": "859431896832016405",
     "qna": "978899582291415110",
     "projects": "978562829990899802",
     "ticket": "867814366006083594",
     "privateRooms": "923863394245812305"
-  },
-  "birthday": {
-    "birthdaysToday": "923654863223656448",
-    "setBirthday": "923655087346286684"
   }
 }

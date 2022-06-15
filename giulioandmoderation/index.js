@@ -292,7 +292,7 @@ clientModeration.on("interactionCreate", async interaction => {
 clientModeration.app.post("/badwords", (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     const { userId, channelId, nonCensurato, censurato } = req.body
 
@@ -338,7 +338,7 @@ clientModeration.app.post("/badwords", (req, res) => {
 clientModeration.app.get("/client", (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     res.send({
         user: clientModeration.user,
@@ -354,7 +354,7 @@ clientModeration.app.get("/client", (req, res) => {
 clientModeration.app.get("/reload/:command", async (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     let { command } = req.params
 

@@ -233,7 +233,7 @@ clientFun.on("interactionCreate", async interaction => {
 clientFun.app.get("/client", (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     res.send({
         user: clientFun.user,
@@ -249,7 +249,7 @@ clientFun.app.get("/client", (req, res) => {
 clientFun.app.get("/reload/:command", async (req, res) => {
     const { authorization } = req.headers
 
-    if (authorization != process.env.apikey) return res.sendStatus(401)
+    if (authorization != process.env.apiKey) return res.sendStatus(401)
 
     let { command } = req.params
 
