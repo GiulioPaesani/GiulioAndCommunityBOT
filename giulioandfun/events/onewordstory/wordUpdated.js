@@ -16,7 +16,7 @@ module.exports = {
 
         let serverstats = getServer()
 
-        if (!serverstats.onewordstory.words.findIndex(x => x.message == newMessage.id)) return
+        if (!serverstats.onewordstory.words[serverstats.onewordstory.words.findIndex(x => x.message == newMessage.id)]) return
 
         serverstats.onewordstory.words[serverstats.onewordstory.words.findIndex(x => x.message == newMessage.id)].word = newMessage.content
 

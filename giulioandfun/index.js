@@ -126,8 +126,8 @@ clientFun.on("interactionCreate", async interaction => {
         return replyMessage(clientFun, interaction, "NonPermesso", "", "I comandi in questo server sono accessibili sono dagli utenti Owner", comando)
     }
 
-    if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
-        return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+    if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(clientFun, interaction.user.id) <= 2) {
+        return replyMessage(clientFun, interaction, "CanaleNonConcesso", "", "", comando)
     }
 
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(clientFun.channels.cache.get(interaction.channelId).parentId)) {
@@ -135,7 +135,7 @@ clientFun.on("interactionCreate", async interaction => {
         if (getUserPermissionLevel(clientFun, interaction.user.id) >= 2) {
 
         }
-        else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
+        else if (clientFun.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
 
         }
         else if (getUserPermissionLevel(clientFun, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {

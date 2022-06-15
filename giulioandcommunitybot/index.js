@@ -297,6 +297,8 @@ client.on("interactionCreate", async interaction => {
 
     let musicClient, distube
     if (comando.musicMode) {
+        return replyMessage(client, interaction, "Warning", "Musica non disponibile", "I comandi di musica sono temporaneamente non disponibili, tra qualche giorno saranno di nuovo utilizzabili", comando)
+
         const voiceChannel = interaction.member.voice.channel
         if (!voiceChannel) {
             return replyMessage(client, interaction, "Warning", "Non sei in un canale vocale", "Per eseguire questo comando devi essere connesso a un canale vocale", comando)

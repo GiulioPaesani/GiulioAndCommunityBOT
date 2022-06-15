@@ -127,8 +127,8 @@ clientRanking.on("interactionCreate", async interaction => {
         return replyMessage(clientRanking, interaction, "NonPermesso", "", "I comandi in questo server sono accessibili sono dagli utenti Owner", comando)
     }
 
-    if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
-        return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
+    if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(clientRanking, interaction.user.id) <= 2) {
+        return replyMessage(clientRanking, interaction, "CanaleNonConcesso", "", "", comando)
     }
 
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(clientRanking.channels.cache.get(interaction.channelId).parentId)) {

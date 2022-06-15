@@ -188,7 +188,7 @@ const autoBackup = async (client) => {
             }
         })
 
-    await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
+    await zipper.sync.zip("../database").compress().save(`./database${time}.zip`);
 
     const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup${time}.json`);
 
