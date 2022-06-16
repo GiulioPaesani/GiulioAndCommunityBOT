@@ -9,6 +9,7 @@ module.exports = {
     description: "Visualizzare statistiche ranking del server",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/leaderboard",
     category: "ranking",
     client: "ranking",

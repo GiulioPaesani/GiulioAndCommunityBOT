@@ -15,6 +15,7 @@ module.exports = {
     description: "Visualizzare stastiche ranking di un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/rank (user)",
     category: "ranking",
     client: "ranking",
