@@ -40,8 +40,8 @@ module.exports = {
             updateUser(userstats)
 
             cooldownXp.set(message.author.id, 60)
-        }
 
-        checkUserLevelRole(client, userstats)
+            checkUserLevelRole(client, userstats)
+        }
     },
 };
