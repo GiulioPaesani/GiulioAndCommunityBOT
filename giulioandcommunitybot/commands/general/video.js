@@ -9,6 +9,7 @@ module.exports = {
     description: "Cercare un video su youtube",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/video [query]",
     category: "general",
     client: "general",

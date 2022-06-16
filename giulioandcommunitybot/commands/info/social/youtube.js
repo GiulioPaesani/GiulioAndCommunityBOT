@@ -6,6 +6,7 @@ module.exports = {
     description: "Link ai canali YouTube di Giulio",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/youtube",
     category: "info",
     client: "general",

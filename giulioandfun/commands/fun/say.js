@@ -15,6 +15,7 @@ module.exports = {
     description: "Far scrivere al bot un qualsiasi messaggio personalizzato",
     permissionLevel: 0,
     requiredLevel: 15,
+    cooldown: 10,
     syntax: "/say [text]",
     category: "fun",
     client: "fun",

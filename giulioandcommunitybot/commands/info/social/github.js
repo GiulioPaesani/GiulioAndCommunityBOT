@@ -8,6 +8,7 @@ module.exports = {
     description: "Link alle repository pubbliche di Giulio",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/github",
     category: "info",
     client: "general",

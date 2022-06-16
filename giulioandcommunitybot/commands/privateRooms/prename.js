@@ -8,6 +8,7 @@ module.exports = {
     description: "Rinominare il canale di una stanza privata",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/prename [room] [name]",
     category: "rooms",
     client: "general",

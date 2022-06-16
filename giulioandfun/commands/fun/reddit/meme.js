@@ -7,6 +7,7 @@ module.exports = {
     description: "Ottenere un meme random",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/meme",
     category: "fun",
     client: "fun",

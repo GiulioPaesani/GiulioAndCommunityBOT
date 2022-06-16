@@ -13,6 +13,7 @@ module.exports = {
     description: "Visualizzare tutte le infrazioni e le info di moderazione di un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/infractions (user) (code)",
     category: "moderation",
     client: "moderation",

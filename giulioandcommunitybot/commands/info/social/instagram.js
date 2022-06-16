@@ -7,6 +7,7 @@ module.exports = {
     description: "Link al profilo Instagram di Giulio",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/instagram",
     category: "info",
     client: "general",

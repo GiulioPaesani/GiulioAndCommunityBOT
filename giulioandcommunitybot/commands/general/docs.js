@@ -9,6 +9,7 @@ module.exports = {
     name: "docs",
     description: "Ricercare nella documentazione Discord.js",
     permissionLevel: 0,
+    cooldown: 5,
     requiredLevel: 0,
     syntax: "/docs [query] (source)",
     category: "general",

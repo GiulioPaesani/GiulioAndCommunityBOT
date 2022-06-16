@@ -13,6 +13,7 @@ module.exports = {
     description: "Creare un sondaggio dove i membri possono votare",
     permissionLevel: 0,
     requiredLevel: 10,
+    cooldown: 30,
     syntax: "/poll [domanda] (description) [opzioni] (emoji) (timeout)",
     category: "community",
     client: "general",

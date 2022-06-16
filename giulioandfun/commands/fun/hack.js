@@ -9,6 +9,7 @@ module.exports = {
     description: "Effetua una attacco hacker verso un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/hack [user]",
     category: "fun",
     client: "fun",

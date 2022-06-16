@@ -11,6 +11,7 @@ module.exports = {
     description: "Ottenere il testo completo del brano in riproduzione",
     permissionLevel: 0,
     requiredLevel: 50,
+    cooldown: 10,
     syntax: "/lyrics",
     category: "music",
     client: "general",

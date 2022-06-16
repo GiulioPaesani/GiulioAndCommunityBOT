@@ -8,6 +8,7 @@ module.exports = {
     description: "Visualizzare informazioni sul server",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/serverinfo",
     category: "info",
     client: "general",

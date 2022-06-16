@@ -8,6 +8,7 @@ module.exports = {
     description: "Postare una domande e risposta nel canale FAQ",
     permissionLevel: 2,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/faq [category] [domanda] [risposta]",
     category: "general",
     client: "general",

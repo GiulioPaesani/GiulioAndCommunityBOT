@@ -13,6 +13,7 @@ module.exports = {
     description: "Shop completo con tutti gli oggetti da comprare o vendere",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 15,
     syntax: "/shop (category)",
     category: "ranking",
     client: "ranking",

@@ -14,6 +14,7 @@ module.exports = {
     description: "Tutta la lista degli oggetti che possiede un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/inventory (user)",
     category: "ranking",
     client: "ranking",

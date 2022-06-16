@@ -6,6 +6,7 @@ module.exports = {
     description: "Estrai un numero random tra il minimo e il massimo inseriti",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/randomnum [min] [max]",
     category: "fun",
     client: "fun",

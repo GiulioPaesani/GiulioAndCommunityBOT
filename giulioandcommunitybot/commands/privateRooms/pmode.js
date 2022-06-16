@@ -10,6 +10,7 @@ module.exports = {
     description: "Scegliere cosa si può inviare in una stanza privata",
     permissionLevel: 0,
     requiredLevel: 15,
+    cooldown: 20,
     syntax: "/pmode [room]",
     category: "rooms",
     client: "general",

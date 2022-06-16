@@ -9,6 +9,7 @@ module.exports = {
     description: "Visualizzare informazioni di un canale",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/channelinfo (channel)",
     category: "info",
     client: "general",

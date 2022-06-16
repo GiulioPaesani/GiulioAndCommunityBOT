@@ -1,13 +1,4 @@
 const settings = require("../../config/general/settings.json")
-const { getAllUsers } = require('../../functions/database/getAllUsers.js')
-
-const checkLevelRoles = async (client) => {
-    let userstatsList = await getAllUsers(client, true)
-
-    userstatsList.forEach(async userstats => {
-        await checkUserLevelRole(client, userstats)
-    })
-}
 
 const checkUserLevelRole = async (client, userstats) => {
     let ruoloDaAvere

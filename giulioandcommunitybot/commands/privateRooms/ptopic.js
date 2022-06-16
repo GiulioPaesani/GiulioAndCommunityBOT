@@ -8,6 +8,7 @@ module.exports = {
     description: "Cambiare il topic di una stanza privata",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/ptopic [room] [topic]",
     category: "rooms",
     client: "general",

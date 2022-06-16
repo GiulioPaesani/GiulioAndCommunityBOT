@@ -15,6 +15,7 @@ module.exports = {
     name: "debug",
     description: "Comando con diverse opzioni di debug",
     permissionLevel: 3,
+    cooldown: 30,
     requiredLevel: 0,
     syntax: "/debug [reload/maintenance/tester/restart/stop]",
     category: "general",

@@ -2,7 +2,7 @@ const settings = require("../../../config/general/settings.json");
 const log = require("../../../config/general/log.json");
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { subtractCooldown } = require("../../../functions/leveling/cooldownXp");
-const { checkLevelRoles } = require("../../../functions/leveling/checkLevelRoles");
+const { subtractCommandCooldown } = require("../../../index");
 
 module.exports = {
     name: "ready",
@@ -18,7 +18,7 @@ module.exports = {
 
         if (!isMaintenance()) {
             setInterval(subtractCooldown, 1000 * 5)
-            setInterval(checkLevelRoles, 1000 * 10, client)
+            setInterval(subtractCommandCooldown, 1000)
         }
 
         let server = client.guilds.cache.get(settings.idServer)

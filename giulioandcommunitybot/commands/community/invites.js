@@ -10,6 +10,7 @@ module.exports = {
     description: "Visualizzare quanti utenti ha invitato un utente nel server",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/invites (user)",
     category: "community",
     client: "general",

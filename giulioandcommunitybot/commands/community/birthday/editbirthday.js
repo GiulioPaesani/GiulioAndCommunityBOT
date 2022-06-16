@@ -10,6 +10,7 @@ module.exports = {
     description: "Modificare il compleanno di un utente",
     permissionLevel: 2,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/editbirthday [set/reset] [user] [month] [day]",
     category: "community",
     client: "general",

@@ -7,6 +7,7 @@ module.exports = {
     description: "Personalizzare le notifiche nel server",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/notification",
     category: "general",
     client: "general",

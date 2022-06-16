@@ -35,6 +35,16 @@ clientModeration.login(process.env.tokenModeration)
 clientModeration.app = express();
 clientModeration.app.use(express.json());
 
+let cooldownCommands = []
+const subtractCommandCooldown = () => {
+    for (let index in cooldownCommands) {
+        cooldownCommands[index].cooldown = cooldownCommands[index].cooldown - 1
+    }
+
+    cooldownCommands = cooldownCommands.filter(x => x.cooldown > 0)
+}
+module.exports = { subtractCommandCooldown }
+
 //Commands Handler
 clientModeration.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync("./commands");
@@ -176,6 +186,22 @@ clientModeration.on("interactionCreate", async interaction => {
         }
         else {
             return replyMessage(clientModeration, interaction, "CanaleNonConcesso", "", "", comando)
+        }
+    }
+
+    let cooldown = cooldownCommands.find(x => x.user == interaction.user.id && x.command == comando.name)
+    if (cooldown && cooldown.cooldown > 0) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Sei in cooldown")
+            .setColor(colors.orange)
+            .setDescription(`Puoi utilizzare il comando \`/${comando.name}\` tra **${cooldown.cooldown} secondi**`)
+
+        interaction.reply({ embeds: [embed], ephemeral: true })
+        return
+    }
+    else {
+        if (comando.cooldown) {
+            cooldownCommands.push({ user: interaction.user.id, command: comando.name, cooldown: comando.cooldown })
         }
     }
 

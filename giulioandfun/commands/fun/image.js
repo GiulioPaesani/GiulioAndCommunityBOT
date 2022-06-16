@@ -9,6 +9,7 @@ module.exports = {
     description: "Creare un immagine meme con del testo personalizzato",
     permissionLevel: 0,
     requiredLevel: 20,
+    cooldown: 20,
     syntax: "/image [type] [texts]",
     category: "fun",
     client: "fun",

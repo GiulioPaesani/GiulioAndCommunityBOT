@@ -11,6 +11,7 @@ module.exports = {
     description: "Visualizzare tutti i compleanni degli utenti",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/birthdayslist (month) (day)",
     category: "community",
     client: "general",

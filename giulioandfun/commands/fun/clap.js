@@ -5,6 +5,7 @@ module.exports = {
     description: "Far scrivere al bot un qualsiasi messaggio con tantissimi clap in mezzo",
     permissionLevel: 0,
     requiredLevel: 30,
+    cooldown: 15,
     syntax: "/clap [text]",
     category: "fun",
     client: "fun",

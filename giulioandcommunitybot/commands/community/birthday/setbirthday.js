@@ -13,6 +13,7 @@ module.exports = {
     description: "Settare il proprio compleanno",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/setbirthday [month] [day]",
     category: "community",
     client: "general",

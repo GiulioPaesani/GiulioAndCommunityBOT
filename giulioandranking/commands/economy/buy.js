@@ -13,6 +13,7 @@ module.exports = {
     description: "Compra un qualsiasi oggetto dal negozio",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/buy [item] (quantity)",
     category: "ranking",
     client: "ranking",

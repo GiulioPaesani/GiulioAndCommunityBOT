@@ -6,6 +6,7 @@ module.exports = {
     description: "Scropri quanto è bravo a programmare un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/codingrank (user)",
     category: "fun",
     client: "fun",

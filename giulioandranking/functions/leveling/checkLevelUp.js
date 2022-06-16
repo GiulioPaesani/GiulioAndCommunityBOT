@@ -1,14 +1,10 @@
-const moment = require("moment")
 const Discord = require("discord.js")
-const colors = require("../../config/general/colors.json")
-const log = require("../../config/general/log.json")
+const { createCanvas, loadImage } = require('canvas')
 const settings = require("../../config/general/settings.json")
 const items = require("../../config/ranking/items.json")
 const levelColor = require("../../config/ranking/levelColor.json")
 const illustrations = require("../../config/general/illustrations.json")
-const { isMaintenance } = require("../../functions/general/isMaintenance")
 const { getXpNecessari } = require("../../functions/leveling/getXpNecessari")
-const { createCanvas, loadImage } = require('canvas')
 const { getEmoji } = require("../../functions/general/getEmoji")
 const { checkUserLevelRole } = require("../../functions/leveling/checkLevelRoles")
 
@@ -148,9 +144,9 @@ const checkLevelUp = async (client, userstats) => {
         userstats.leveling.level = level
 
         userstats.leveling.livelliSuperati[level] = true
-    }
 
-    checkUserLevelRole(client, userstats)
+        checkUserLevelRole(client, userstats)
+    }
 
     return userstats
 }

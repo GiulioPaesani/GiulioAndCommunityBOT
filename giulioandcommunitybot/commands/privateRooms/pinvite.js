@@ -9,6 +9,7 @@ module.exports = {
     description: "Creare un invito per la propria stanza privata",
     permissionLevel: 0,
     requiredLevel: 25,
+    cooldown: 20,
     syntax: "/pinvite [room] [description]",
     category: "rooms",
     client: "general",

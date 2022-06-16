@@ -7,6 +7,7 @@ module.exports = {
     description: "Come ho realizzato il mio avatar e le mie illustrazioni",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/illustrations",
     category: "info",
     client: "general",

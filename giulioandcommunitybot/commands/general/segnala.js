@@ -9,6 +9,7 @@ module.exports = {
     description: "Reportare un utente allo staff per un comportamento scorretto o contro le regole",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/segnala [user] [reason]",
     category: "general",
     client: "general",

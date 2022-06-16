@@ -11,6 +11,7 @@ module.exports = {
     description: "Imposta il tuo nickname nel server",
     permissionLevel: 0,
     requiredLevel: 15,
+    cooldown: 30,
     syntax: "/nickname [set/reset] [nickname]",
     category: "general",
     client: "general",

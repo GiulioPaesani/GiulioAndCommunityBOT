@@ -7,6 +7,7 @@ module.exports = {
     description: "Ottenere un immagine di una paperella random",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/duck",
     category: "fun",
     client: "fun",

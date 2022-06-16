@@ -6,6 +6,7 @@ module.exports = {
     description: "Link di invito del server",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/invite",
     category: "general",
     client: "general",

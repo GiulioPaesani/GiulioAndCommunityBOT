@@ -7,6 +7,7 @@ module.exports = {
     description: "Visuallizzare l'immagine profilo di un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/avatar (user)",
     category: "info",
     client: "general",

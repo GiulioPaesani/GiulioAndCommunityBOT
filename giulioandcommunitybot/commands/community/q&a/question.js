@@ -7,6 +7,7 @@ module.exports = {
     description: "Fare una domanda a Giulio a cui risponderà in un video",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/question [domanda]",
     category: "community",
     client: "general",

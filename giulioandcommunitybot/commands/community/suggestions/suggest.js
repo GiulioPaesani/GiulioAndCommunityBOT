@@ -8,6 +8,7 @@ module.exports = {
     description: "Proporre un suggerimento riguardante il server, i canali, il bot, i video o altro",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/suggest [text]",
     category: "community",
     client: "general",

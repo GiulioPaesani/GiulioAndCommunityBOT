@@ -16,6 +16,7 @@ module.exports = {
     description: "Visualizzare il compleanno di un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/birthday (user)",
     category: "community",
     client: "general",

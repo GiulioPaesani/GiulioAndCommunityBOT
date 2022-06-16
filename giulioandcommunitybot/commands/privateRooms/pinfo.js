@@ -11,6 +11,7 @@ module.exports = {
     description: "Ottenere le informazioni di una stanza privata",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/pinfo [room]",
     category: "rooms",
     client: "general",

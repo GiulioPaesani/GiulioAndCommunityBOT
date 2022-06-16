@@ -7,6 +7,7 @@ module.exports = {
     description: "Link al profilo TikTok di Giulio",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/tiktok",
     category: "info",
     client: "general",

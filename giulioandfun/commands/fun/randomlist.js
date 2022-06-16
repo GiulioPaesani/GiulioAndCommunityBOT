@@ -9,6 +9,7 @@ module.exports = {
     description: "Estrai un valore random tra quelli inseriti in lista",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/randomlist [values] (num)",
     category: "fun",
     client: "fun",

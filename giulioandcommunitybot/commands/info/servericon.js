@@ -6,6 +6,7 @@ module.exports = {
     description: "Visuallizzare l'icona del server",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/servericon",
     category: "info",
     client: "general",

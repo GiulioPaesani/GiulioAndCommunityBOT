@@ -9,6 +9,7 @@ module.exports = {
     description: "Cercare una brano da aggiungere alla coda di riproduzione",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/search [query]",
     category: "music",
     client: "general",

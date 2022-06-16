@@ -7,6 +7,7 @@ module.exports = {
     description: "Ottenere un immagine di un meme random sulla programmazione",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/codingmeme",
     category: "fun",
     client: "fun",

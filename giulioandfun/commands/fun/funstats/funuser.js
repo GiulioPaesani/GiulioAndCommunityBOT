@@ -11,6 +11,7 @@ module.exports = {
     description: "Visualizzare statistiche di un utente di counting, counting plus e one word story",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/funuser (user)",
     category: "fun",
     client: "fun",

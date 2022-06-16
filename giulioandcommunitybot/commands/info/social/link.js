@@ -7,6 +7,7 @@ module.exports = {
     description: "Tutti i social e contatti di Giulio",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/link",
     category: "info",
     client: "general",

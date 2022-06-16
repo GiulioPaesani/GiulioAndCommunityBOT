@@ -13,6 +13,7 @@ module.exports = {
     description: "Eseguire un salvataggio manuale del server e del database",
     permissionLevel: 1,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/backup",
     category: "general",
     client: "general",

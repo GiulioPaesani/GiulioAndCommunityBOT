@@ -10,6 +10,7 @@ module.exports = {
     description: "Aggiungere o rimuovere un utente come admin di una stanza privata",
     permissionLevel: 0,
     requiredLevel: 40,
+    cooldown: 10,
     syntax: "/padmin [add/remove] [room] [user]",
     category: "rooms",
     client: "general",

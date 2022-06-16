@@ -7,6 +7,7 @@ module.exports = {
     description: "Ottenere un immagine di un gattino random",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/cat",
     category: "fun",
     client: "fun",

@@ -8,6 +8,7 @@ module.exports = {
     description: "Lista completa di tutte le parole, espressioni o frasi proibite",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 30,
     syntax: "/badwords",
     category: "moderation",
     client: "moderation",

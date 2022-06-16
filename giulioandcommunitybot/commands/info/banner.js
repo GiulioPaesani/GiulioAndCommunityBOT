@@ -8,6 +8,7 @@ module.exports = {
     description: "Visuallizzare il banner di un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/banner (user)",
     category: "info",
     client: "general",

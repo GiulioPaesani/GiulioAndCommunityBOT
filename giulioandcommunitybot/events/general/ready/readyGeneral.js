@@ -13,6 +13,7 @@ const { checkUnverifedUser } = require("../../../functions/general/checkUnverife
 const { checkRoomInDB } = require("../../../functions/privateRooms/checkRoomInDB");
 const { checkTicketInDB } = require("../../../functions/ticket/checkTicketInDB");
 const { ttdCounter } = require("../../../functions/log/ttdCounter");
+const { subtractCommandCooldown } = require("../../../index");
 
 module.exports = {
     name: "ready",
@@ -30,6 +31,7 @@ module.exports = {
             setInterval(counterChannels, 1000 * 60 * 5, client)
             setInterval(youtubeNotifications, 1000 * 60 * 2, client)
             setInterval(autoBackup, 1000, client)
+            setInterval(subtractCommandCooldown, 1000)
             setInterval(checkBirthday, 1000, client)
             setInterval(ttsInactivity, 1000, client)
             setInterval(checkActivityPrivateRooms, 1000 * 10, client)

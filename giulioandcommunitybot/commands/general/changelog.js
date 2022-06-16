@@ -9,6 +9,7 @@ module.exports = {
     name: "changelog",
     description: "Lista completa dei cambiamenti del bot nel corso delle versioni",
     permissionLevel: 0,
+    cooldown: 5,
     requiredLevel: 0,
     syntax: "/changelog (version)",
     category: "general",

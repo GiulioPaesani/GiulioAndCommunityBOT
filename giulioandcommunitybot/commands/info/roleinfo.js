@@ -8,6 +8,7 @@ module.exports = {
     description: "Visualizzare informazioni di un ruolo",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/roleinfo [role]",
     category: "info",
     client: "general",

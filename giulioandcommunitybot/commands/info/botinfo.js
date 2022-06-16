@@ -13,6 +13,7 @@ module.exports = {
     description: "Visualizzare informazioni sul bot",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/botinfo",
     category: "info",
     client: "general",

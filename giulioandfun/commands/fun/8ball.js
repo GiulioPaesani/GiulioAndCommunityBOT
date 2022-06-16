@@ -7,6 +7,7 @@ module.exports = {
     description: "Fai una domanda e il destino saprà risponderti",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 5,
     syntax: "/8ball",
     category: "fun",
     client: "fun",

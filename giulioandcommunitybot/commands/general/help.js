@@ -9,6 +9,7 @@ module.exports = {
     description: "Lista completa dei comandi del bot",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/help (category) (command)",
     category: "general",
     client: "general",
@@ -136,6 +137,7 @@ module.exports = {
                 .addField(":beginner: Level required", command.requiredLevel == 0 ? "No level required" : `${interaction.guild.roles.cache.find(x => x.name == `Level ${command.requiredLevel}`).toString()} required`, true)
                 .addField(":bricks: Category", command.category == "general" ? "General" : command.category == "community" ? "Community" : command.category == "info" ? "Informations" : command.category == "music" ? "Music" : command.category == "fun" ? "Fun and Games" : command.category == "ranking" ? "Ranking" : command.category == "moderation" ? "Moderation" : "Private rooms and Tickets", true)
                 .addField(":anchor: Channels granted", channelsGranted)
+                .addField(":stopwatch: Cooldown", command.cooldown ? `${command.cooldown} seconds` : "No cooldown")
 
             interaction.reply({ embeds: [embed] })
         }

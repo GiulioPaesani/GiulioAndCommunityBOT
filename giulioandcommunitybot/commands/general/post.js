@@ -9,6 +9,7 @@ module.exports = {
     description: "Posta un tuo progetto inserendo titolo, descrizione, immagine e molto altro",
     permissionLevel: 0,
     requiredLevel: 30,
+    cooldown: 30,
     syntax: "/post [title] [description] (image) (textbutton1) (linkbutton1) (textbutton2) (linkbutton2)",
     category: "general",
     client: "general",

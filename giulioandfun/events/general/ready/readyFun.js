@@ -2,6 +2,7 @@ const settings = require("../../../config/general/settings.json");
 const log = require("../../../config/general/log.json");
 const { newStory } = require("../../../functions/onewordstory/newStory");
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { subtractCommandCooldown } = require("../../../index");
 
 module.exports = {
     name: "ready",
@@ -17,6 +18,7 @@ module.exports = {
 
         if (!isMaintenance()) {
             setInterval(newStory, 1000, client)
+            setInterval(subtractCommandCooldown, 1000)
         }
 
         let server = client.guilds.cache.get(settings.idServer)

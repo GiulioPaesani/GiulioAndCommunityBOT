@@ -7,6 +7,7 @@ module.exports = {
     description: "Segnalare un problema riguardante il server, il bot, canali o altro",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/bugreport [text]",
     category: "general",
     client: "general",

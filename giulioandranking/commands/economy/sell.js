@@ -13,6 +13,7 @@ module.exports = {
     description: "Vendi un qualsiasi oggetto dal tuo inventarios",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 10,
     syntax: "/sell [item] (quantity)",
     category: "ranking",
     client: "ranking",

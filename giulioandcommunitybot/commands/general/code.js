@@ -8,6 +8,7 @@ module.exports = {
     name: "code",
     description: "Ottenere codici o info per bot discord.js",
     permissionLevel: 0,
+    cooldown: 5,
     requiredLevel: 0,
     syntax: "/code (codice) (user) (here)",
     category: "general",

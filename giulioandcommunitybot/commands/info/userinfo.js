@@ -10,6 +10,7 @@ module.exports = {
     description: "Visualizzare informazioni di un utente",
     permissionLevel: 0,
     requiredLevel: 0,
+    cooldown: 20,
     syntax: "/userinfo (user)",
     category: "info",
     client: "general",
