@@ -43,8 +43,8 @@ try {
 
 client.login(process.env.token)
 
-clientRanking.app = express();
-clientRanking.app.use(express.json());
+client.app = express();
+client.app.use(express.json());
 //Commands Handler
 client.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync("./commands");
