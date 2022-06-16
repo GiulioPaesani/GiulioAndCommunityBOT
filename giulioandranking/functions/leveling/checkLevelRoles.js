@@ -17,4 +17,4 @@ const checkUserLevelRole = async (client, userstats) => {
     if (!utente.roles.cache.has(role.id)) await utente.roles.add(role.id)
 }
 
-module.exports = { checkLevelRoles, checkUserLevelRole }
+module.exports = { checkUserLevelRole }
