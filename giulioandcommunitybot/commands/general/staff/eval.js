@@ -24,7 +24,7 @@ module.exports = {
     async execute(client, interaction, comando) {
         let text = interaction.options.getString("text")
 
-        let funToken = await fetch("http://localhost:2000/client", {
+        let funToken = await fetch("http://localhost:5001/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -37,7 +37,7 @@ module.exports = {
             funToken = JSON.parse(funToken).token
         }
 
-        let moderactionToken = await fetch("http://localhost:3000/client", {
+        let moderactionToken = await fetch("http://localhost:5002/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -50,7 +50,7 @@ module.exports = {
             moderactionToken = JSON.parse(moderactionToken).token
         }
 
-        let rankingToken = await fetch("http://localhost:4000/client", {
+        let rankingToken = await fetch("http://localhost:5003/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

@@ -12,8 +12,8 @@ module.exports = {
 
         client.user.setActivity('/infractions', { type: "WATCHING" });
 
-        client.app.listen(3000, () => {
-            console.log(`-- ${client.user.username} in ascolto sulla porta 3000 --`)
+        client.app.listen(5002, () => {
+            console.log(`-- ${client.user.username} in ascolto sulla porta 5002 --`)
         })
 
         if (!isMaintenance()) {

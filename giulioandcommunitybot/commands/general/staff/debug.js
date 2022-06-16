@@ -185,7 +185,7 @@ module.exports = {
     channelsGranted: [],
     async execute(client, interaction, comando) {
         if (interaction.options.getSubcommand() == "reload") {
-            let funCommands = await fetch("http://localhost:2000/client", {
+            let funCommands = await fetch("http://localhost:5001/client", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -199,7 +199,7 @@ module.exports = {
             }
             else funCommands = []
 
-            let moderactionCommands = await fetch("http://localhost:3000/client", {
+            let moderactionCommands = await fetch("http://localhost:5002/client", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -213,7 +213,7 @@ module.exports = {
             }
             else moderactionCommands = []
 
-            let rankingCommands = await fetch("http://localhost:4000/client", {
+            let rankingCommands = await fetch("http://localhost:5003/client", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -235,7 +235,7 @@ module.exports = {
 
             replyMessage(client, interaction, "Correct", "Comando in aggiornamento...", `Il comando \`${command.name}\` si sta eliminando e ricreando...`, comando)
 
-            let port = command.client == "general" ? "1000" : command.client == "moderation" ? "3000" : command.client == "fun" ? "2000" : "4000"
+            let port = command.client == "general" ? "5000" : command.client == "moderation" ? "5002" : command.client == "fun" ? "5001" : "5003"
 
             await fetch(`http://localhost:${port}/reload/${command.name}`, {
                 method: "GET",

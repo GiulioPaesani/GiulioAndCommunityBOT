@@ -118,7 +118,7 @@ module.exports = {
 
                 updateUser(userstats)
 
-                await fetch(`http://localhost:4000/checklevelup/${userstats.id}`, {
+                await fetch(`http://localhost:5003/checklevelup/${userstats.id}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

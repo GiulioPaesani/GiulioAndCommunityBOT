@@ -43,6 +43,8 @@ try {
 
 client.login(process.env.token)
 
+clientRanking.app = express();
+clientRanking.app.use(express.json());
 //Commands Handler
 client.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync("./commands");
@@ -276,7 +278,7 @@ client.on("interactionCreate", async interaction => {
         interaction.reply({ content: "Comando non valido" })
         interaction.deleteReply()
 
-        await fetch("http://localhost:3000/badwords", {
+        await fetch("http://localhost:5002/badwords", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -421,22 +423,6 @@ client.on("messageCreate", message => {
     });
 
     addQueue(client, url, connection)
-})
-
-client.app.get("/client", (req, res) => {
-    const { authorization } = req.headers
-
-    if (authorization != process.env.apiKey) return res.sendStatus(401)
-
-    res.send({
-        user: client.user,
-        ping: client.ws.ping,
-        uptime: client.uptime,
-        avatar: client.user.avatarURL({ size: 1024 }),
-        createdAt: client.user.createdAt,
-        commands: client.commands,
-        token: client.token,
-    })
 })
 
 client.app.get("/reload/:command", async (req, res) => {

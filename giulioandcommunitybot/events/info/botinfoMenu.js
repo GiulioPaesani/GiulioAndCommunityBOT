@@ -22,7 +22,7 @@ module.exports = {
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        let fun = await fetch("http://localhost:2000/client", {
+        let fun = await fetch("http://localhost:5001/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,7 +35,7 @@ module.exports = {
             fun = JSON.parse(fun)
         }
 
-        let moderaction = await fetch("http://localhost:3000/client", {
+        let moderaction = await fetch("http://localhost:5002/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ module.exports = {
             moderaction = JSON.parse(moderaction)
         }
 
-        let ranking = await fetch("http://localhost:4000/client", {
+        let ranking = await fetch("http://localhost:5003/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

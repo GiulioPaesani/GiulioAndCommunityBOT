@@ -11,8 +11,8 @@ module.exports = {
 
         client.user.setActivity('/funserver', { type: "PLAYING" });
 
-        client.app.listen(2000, () => {
-            console.log(`-- ${client.user.username} in ascolto sulla porta 2000 --`)
+        client.app.listen(5001, () => {
+            console.log(`-- ${client.user.username} in ascolto sulla porta 5001 --`)
         })
 
         if (!isMaintenance()) {

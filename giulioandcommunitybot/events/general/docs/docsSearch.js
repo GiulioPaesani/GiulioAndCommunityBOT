@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 const Docs = require("discord.js-docs")
 const illustrations = require("../../../config/general/illustrations.json");
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,

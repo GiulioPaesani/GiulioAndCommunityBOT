@@ -32,6 +32,8 @@ module.exports = {
             if (message.createdTimestamp - user.lastMessage <= 2000) {
                 user.msgCount++
                 if (user.msgCount >= 7) {
+                    individualSpam.delete(message.author.id);
+
                     message.guild.channels.cache.forEach((canale) => {
                         if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
                             canale.permissionOverwrites?.edit(settings.ruoliModeration.tempmuted, {
@@ -105,7 +107,7 @@ module.exports = {
                         .setThumbnail(message.member.displayAvatarURL({ dynamic: true }))
                         .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
                         .addField(":brain: Executor", `${client.user.toString()} - ${client.user.tag}\nID: ${client.user.id}`)
-                        .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
+                        .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ${message.author.tag}\nID: ${message.author.id}`)
                         .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
                         .addField(":page_facing_up: Reason", reason)
 
@@ -121,8 +123,6 @@ module.exports = {
 
                     message.member.send({ embeds: [embed] })
                         .catch(() => { })
-
-                    individualSpam.delete(message.author.id);
                     return
                 }
 

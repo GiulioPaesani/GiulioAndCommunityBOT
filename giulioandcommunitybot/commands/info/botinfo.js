@@ -33,7 +33,7 @@ module.exports = {
             .addField(":clipboard: Version", `${changelogs.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[changelogs.length - 1].version}\n([Last changelog](https://youtu.be/${changelogs.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[changelogs.length - 1].idVideo}))`, true)
             .addField(":construction: Maintenance", maintenanceStates == 0 ? `Off - Everyone can use bot` : maintenanceStates == 1 ? `Mode 1 - Only tester can use bot` : maintenanceStates == 2 ? `Mode 2 - Nobody can use bot` : maintenanceStates == 3 ? `Mode 3 - Everyone, except testers, can use bot` : "", true)
 
-        let funUser = await fetch("http://localhost:2000/client", {
+        let funUser = await fetch("http://localhost:5001/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -46,7 +46,7 @@ module.exports = {
             funUser = JSON.parse(funUser).user
         }
 
-        let moderactionUser = await fetch("http://localhost:3000/client", {
+        let moderactionUser = await fetch("http://localhost:5002/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -59,7 +59,7 @@ module.exports = {
             moderactionUser = JSON.parse(moderactionUser).user
         }
 
-        let rankingUser = await fetch("http://localhost:4000/client", {
+        let rankingUser = await fetch("http://localhost:5003/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

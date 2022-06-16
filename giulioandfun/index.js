@@ -198,7 +198,7 @@ clientFun.on("interactionCreate", async interaction => {
         interaction.reply({ content: "Comando non valido" })
         interaction.deleteReply()
 
-        await fetch("http://localhost:3000/badwords", {
+        await fetch("http://localhost:5002/badwords", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

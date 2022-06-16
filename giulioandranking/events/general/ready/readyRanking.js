@@ -12,8 +12,8 @@ module.exports = {
 
         client.user.setActivity('/rank', { type: "WATCHING" });
 
-        client.app.listen(4000, () => {
-            console.log(`-- ${client.user.username} in ascolto sulla porta 4000 --`)
+        client.app.listen(5003, () => {
+            console.log(`-- ${client.user.username} in ascolto sulla porta 5003 --`)
         })
 
         if (!isMaintenance()) {

@@ -7,7 +7,7 @@ module.exports = {
     async getResponse(client, focused) {
         let choices = []
 
-        let funCommands = await fetch("http://localhost:2000/client", {
+        let funCommands = await fetch("http://localhost:5001/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -21,7 +21,7 @@ module.exports = {
         }
         else funCommands = []
 
-        let moderactionCommands = await fetch("http://localhost:3000/client", {
+        let moderactionCommands = await fetch("http://localhost:5002/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,7 +35,7 @@ module.exports = {
         }
         else moderactionCommands = []
 
-        let rankingCommands = await fetch("http://localhost:4000/client", {
+        let rankingCommands = await fetch("http://localhost:5003/client", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
