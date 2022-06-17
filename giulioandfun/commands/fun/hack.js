@@ -84,7 +84,7 @@ module.exports = {
                         interaction.editReply({ embeds: [embed] })
                         setTimeout(() => {
                             embed = new Discord.MessageEmbed()
-                                .setTitle("Attacco hanking completato")
+                                .setTitle("Attacco hacking completato")
                                 .setColor(colors.purple)
                                 .setDescription(`_Attacco hacker a ${utente.toString()} terminato con successo_`)
 

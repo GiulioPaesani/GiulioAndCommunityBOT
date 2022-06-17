@@ -62,7 +62,7 @@ const checkLevelUp = async (client, userstats) => {
     if (userstats.leveling.level != level) {
         let textPrivilegi = `+${level * 10} Coins\n`
 
-        if (client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${level}`)) {
+        if (settings.ruoliLeveling[level]) {
             textPrivilegi += `Ruolo @Level ${level}\n`
         }
 

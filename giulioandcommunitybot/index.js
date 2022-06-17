@@ -482,3 +482,24 @@ client.app.get("/reload/:command", async (req, res) => {
 
     res.sendStatus(200)
 })
+
+//? DEBUG
+const { getAllUsers } = require("./functions/database/getAllUsers")
+let userstatsList = getAllUsers()
+userstatsList.forEach(userstats => {
+    let ruoloDaAvere
+    for (let i = userstats.leveling.level; !ruoloDaAvere; i--) {
+        if (settings.ruoliLeveling[i]) ruoloDaAvere = settings.ruoliLeveling[i]
+    }
+
+    let utente = client.guilds.cache.get(settings.idServer).members.cache.get(userstats.id)
+
+    for (let index in settings.ruoliLeveling) {
+        if (utente.roles.cache.has(settings.ruoliLeveling[index]) && settings.ruoliLeveling[index] != ruoloDaAvere) {
+            utente.roles.remove(settings.ruoliLeveling[index])
+            console.log(`${userstats.user.tag} ha il ruolo ${settings.ruoliLeveling[index]} ma non dovrebbe`)
+        }
+    }
+
+    if (!utente.roles.cache.has(ruoloDaAvere)) await utente.roles.add(ruoloDaAvere)
+})

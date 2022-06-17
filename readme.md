@@ -1,9 +1,9 @@
 
 # **GiulioAndCommunity BOT**
 
-Questo BOT è il cervello centrale di tutte le funzioni e di tutti i comandi all'interno del **server Discord** [**GiulioAndCommunity**](https://discord.gg/ypTCaveew2) di [GiulioAndCode](https://www.youtube.com/giulioandcode)
+Questo BOT è il cervello centrale di tutte le funzioni e di tutti i comandi all'interno del **server Discord** [**GiulioAndCommunity**](https://dsc.gg/giulioandcommunity) di [GiulioAndCode](https://www.youtube.com/giulioandcode)
 
-[![Entra nel server](https://img.shields.io/discord/793776260350083113?color=%20%20black&label=%20&logo=discord&logoColor=%20informational%20%20&style=for-the-badge)](https://discord.gg/ypTCaveew2)  
+[![Entra nel server](https://img.shields.io/discord/793776260350083113?color=%20%20black&label=%20&logo=discord&logoColor=%20informational%20%20&style=for-the-badge)](https://dsc.gg/giulioandcommunity)  
 Entra subito nel server per scoprire tutte le funzionalità del bot e divertirsi con gli utenti
 
 ## 🚨 INFO sul server 🚨

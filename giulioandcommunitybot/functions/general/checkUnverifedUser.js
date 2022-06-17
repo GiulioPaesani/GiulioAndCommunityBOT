@@ -17,7 +17,7 @@ const checkUnverifedUser = (client) => {
                     .setTitle("Non ti sei VERIFICATO")
                     .setColor(colors.gray)
                     .setImage(illustrations.banner)
-                    .setDescription("Sono passati più di **2 giorni** da quanto hai provato ad entrare nel server, ma non ti sei verificato e sei stato **espulso**.\n[Rientra nel server](https://discord.gg/ypTCaveew2) per poter **accedere** di nuovo e iniziare a parlare con tutti gli utenti")
+                    .setDescription("Sono passati più di **2 giorni** da quanto hai provato ad entrare nel server, ma non ti sei verificato e sei stato **espulso**.\n[Rientra nel server](https://dsc.gg/giulioandcommunity) per poter **accedere** di nuovo e iniziare a parlare con tutti gli utenti")
 
                 await user.send({ embeds: [embed] })
                     .catch(() => { })
