@@ -18,7 +18,7 @@ const getAllUsers = (client, onlyInGuild = true) => {
         }
         return data
     }
-    catch { }
+    catch (e) { console.log(e) }
 }
 
 module.exports = { getAllUsers }
