@@ -485,7 +485,7 @@ client.app.get("/reload/:command", async (req, res) => {
 
 //? DEBUG
 const { getAllUsers } = require("./functions/database/getAllUsers")
-let userstatsList = getAllUsers()
+let userstatsList = getAllUsers(client)
 console.log(userstatsList ? userstatsList.length : "undefined")
 userstatsList.forEach(userstats => {
     let ruoloDaAvere
