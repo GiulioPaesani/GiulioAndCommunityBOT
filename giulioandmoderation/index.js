@@ -38,7 +38,7 @@ clientModeration.login(process.env.tokenModeration)
 clientModeration.app = express();
 clientModeration.app.use(express.json());
 
-const distube = new DisTube(clientMusic, {
+const distube = new DisTube(client, {
     youtubeDL: false,
     plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
     leaveOnEmpty: true,

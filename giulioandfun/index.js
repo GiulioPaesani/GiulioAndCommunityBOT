@@ -41,7 +41,7 @@ clientFun.login(process.env.tokenFun)
 clientFun.app = express();
 clientFun.app.use(express.json());
 
-const distube = new DisTube(clientMusic, {
+const distube = new DisTube(client, {
     youtubeDL: false,
     plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
     leaveOnEmpty: true,
