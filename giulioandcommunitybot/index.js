@@ -486,6 +486,7 @@ client.app.get("/reload/:command", async (req, res) => {
 //? DEBUG
 const { getAllUsers } = require("./functions/database/getAllUsers")
 let userstatsList = getAllUsers()
+console.log(userstatsList ? userstatsList.length : "undefined")
 userstatsList.forEach(userstats => {
     let ruoloDaAvere
     for (let i = userstats.leveling.level; !ruoloDaAvere; i--) {
