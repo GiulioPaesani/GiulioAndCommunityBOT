@@ -484,16 +484,16 @@ client.app.get("/reload/:command", async (req, res) => {
 })
 
 //? DEBUG
-const { getAllUsers } = require("./functions/database/getAllUsers")
-let userstatsList = getAllUsers(client)
-console.log(userstatsList ? userstatsList.length : "undefined")
-userstatsList.forEach(userstats => {
+// const { getAllUsers } = require("./functions/database/getAllUsers")
+// let userstatsList = getAllUsers(client)
+
+client.guilds.cache.get(settings.idServer).members.cache.forEach(utente => {
+    let userstats = getUser(utente.id)
+
     let ruoloDaAvere
     for (let i = userstats.leveling.level; !ruoloDaAvere; i--) {
         if (settings.ruoliLeveling[i]) ruoloDaAvere = settings.ruoliLeveling[i]
     }
-
-    let utente = client.guilds.cache.get(settings.idServer).members.cache.get(userstats.id)
 
     for (let index in settings.ruoliLeveling) {
         if (utente.roles.cache.has(settings.ruoliLeveling[index]) && settings.ruoliLeveling[index] != ruoloDaAvere) {
@@ -503,4 +503,5 @@ userstatsList.forEach(userstats => {
     }
 
     if (!utente.roles.cache.has(ruoloDaAvere)) utente.roles.add(ruoloDaAvere)
+
 })
