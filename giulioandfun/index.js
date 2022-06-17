@@ -3,10 +3,12 @@ const fs = require("fs")
 const moment = require("moment")
 const express = require("express")
 const fetch = require("node-fetch")
+const { DisTube } = require("distube")
+const { SpotifyPlugin } = require("@distube/spotify")
+const { SoundCloudPlugin } = require("@distube/soundcloud")
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
 const log = require("./config/general/log.json")
-const illustrations = require("./config/general/illustrations.json")
 const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
 const { isMaintenance } = require('./functions/general/isMaintenance');
@@ -39,6 +41,14 @@ clientFun.login(process.env.tokenFun)
 clientFun.app = express();
 clientFun.app.use(express.json());
 
+const distube = new DisTube(clientMusic, {
+    youtubeDL: false,
+    plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+    leaveOnEmpty: true,
+    leaveOnStop: true,
+    emptyCooldown: 20,
+})
+
 let cooldownCommands = []
 const subtractCommandCooldown = () => {
     for (let index in cooldownCommands) {
@@ -47,7 +57,7 @@ const subtractCommandCooldown = () => {
 
     cooldownCommands = cooldownCommands.filter(x => x.cooldown > 0)
 }
-module.exports = { subtractCommandCooldown }
+module.exports = { subtractCommandCooldown, distube }
 
 //Commands Handler
 clientFun.commands = new Discord.Collection();

@@ -6,11 +6,9 @@ const express = require("express")
 const { DisTube } = require("distube")
 const { SpotifyPlugin } = require("@distube/spotify")
 const { SoundCloudPlugin } = require("@distube/soundcloud")
-const googleTTS = require('google-tts-api');
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
 const log = require("./config/general/log.json")
-const illustrations = require("./config/general/illustrations.json")
 const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
 const { isMaintenance } = require('./functions/general/isMaintenance');
@@ -40,6 +38,14 @@ clientRanking.login(process.env.tokenRanking)
 clientRanking.app = express();
 clientRanking.app.use(express.json());
 
+const distube = new DisTube(clientMusic, {
+    youtubeDL: false,
+    plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+    leaveOnEmpty: true,
+    leaveOnStop: true,
+    emptyCooldown: 20,
+})
+
 let cooldownCommands = []
 const subtractCommandCooldown = () => {
     for (let index in cooldownCommands) {
@@ -48,7 +54,8 @@ const subtractCommandCooldown = () => {
 
     cooldownCommands = cooldownCommands.filter(x => x.cooldown > 0)
 }
-module.exports = { subtractCommandCooldown }
+
+module.exports = { subtractCommandCooldown, distube }
 
 //Commands Handler
 clientRanking.commands = new Discord.Collection();

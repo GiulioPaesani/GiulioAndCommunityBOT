@@ -21,6 +21,9 @@ module.exports = {
             setInterval(subtractCommandCooldown, 1000)
         }
 
+        let utente = client.guilds.cache.get(settings.idServer).members.cache.get(client.user.id)
+        utente?.voice?.disconnect()
+
         let server = client.guilds.cache.get(settings.idServer)
         let serverLog = client.guilds.cache.get(log.idServer)
         let guildCommands = []

@@ -13,7 +13,7 @@ module.exports = {
     client: "general",
     musicMode: true,
     channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.noMicChat, settings.idCanaliServer.general1, settings.idCanaliServer.general2],
-    async execute(client, interaction, comando, distube, musicClient) {
+    async execute(client, interaction, comando, musicClient) {
         let utente = interaction.guild.members.cache.get(musicClient.user.id)
 
         if (!utente.voice?.channel) {

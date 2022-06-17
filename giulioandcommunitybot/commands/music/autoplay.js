@@ -32,7 +32,7 @@ module.exports = {
         ]
     },
     channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.noMicChat, settings.idCanaliServer.general1, settings.idCanaliServer.general2],
-    async execute(client, interaction, comando, distube, musicClient) {
+    async execute(client, interaction, comando, musicClient) {
         let mode = interaction.options.getString("mode") == "on" ? true : false
 
         if (distube.getQueue(interaction.guild.id)?.autoplay == mode) {

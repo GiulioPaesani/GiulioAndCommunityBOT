@@ -10,7 +10,6 @@ const googleTTS = require('google-tts-api');
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
 const log = require("./config/general/log.json")
-const illustrations = require("./config/general/illustrations.json")
 const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
 const { isMaintenance } = require('./functions/general/isMaintenance');
@@ -20,7 +19,7 @@ const { addUser } = require('./functions/database/addUser');
 const { registerFont } = require('canvas');
 const { checkBadwords } = require('./functions/moderation/checkBadwords');
 const { getServer } = require('./functions/database/getServer');
-let { ttsQueue, ttsPlay, resetQueue, addQueue } = require('./functions/music/tts/ttsQueue');
+let { addQueue } = require('./functions/music/tts/ttsQueue');
 const { joinVoiceChannel } = require("@discordjs/voice");
 const { blockedChannels } = require("./functions/general/blockedChannels");
 const { hasSufficientLevels } = require("./functions/leveling/hasSufficientLevels");
@@ -54,6 +53,44 @@ const subtractCommandCooldown = () => {
 
     cooldownCommands = cooldownCommands.filter(x => x.cooldown > 0)
 }
+
+
+// let musicBots = []
+// let countMusicBots = 3
+
+// for (let i = 1; i <= countMusicBots; i++) {
+//     const clientMusic = new Discord.Client({
+//         intents: 32767,
+//         allowedMentions: { parse: ['users', 'roles'], repliedUser: true }
+//     })
+//     let bot = {
+//         client: clientMusic,
+//         distube: new DisTube(clientMusic, {
+//             youtubeDL: false,
+//             plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+//             leaveOnEmpty: true,
+//             leaveOnStop: true,
+//             emptyCooldown: 20,
+//         })
+//     }
+
+//     musicBots.push(bot)
+// }
+const musicBots = [
+    {
+        name: "GiulioAndFun",
+        id: "821364707617013771"
+    },
+    {
+        name: "GiulioAndModeration",
+        id: "968226752893710457"
+    },
+    {
+        name: "GiulioAndRanking",
+        id: "987370871112990860"
+    }
+]
+
 module.exports = { subtractCommandCooldown }
 
 //Commands Handler
@@ -331,17 +368,15 @@ client.on("interactionCreate", async interaction => {
         }
 
         musicBots.forEach(bot => {
-            if (interaction.guild.channels.cache.find(x => x.id == voiceChannel.id && x.members.has(bot.client.user.id))) {
-                musicClient = bot.client
-                distube = bot.distube
+            if (interaction.guild.channels.cache.find(x => x.id == voiceChannel.id && x.members.has(bot.id))) {
+                musicClient = bot
             }
         })
 
         if (!musicClient) {
-            settings.botMusicali.forEach(bot => {
+            musicBots.forEach(bot => {
                 if (!interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members?.has(bot.id)) && !musicClient) {
-                    musicClient = musicBots.find(x => x.client.user.id == bot.id).client
-                    distube = musicBots.find(x => x.client.user.id == bot.id).distube
+                    musicClient = musicBots.find(x => x.id == bot.id)
                 }
             })
 
@@ -351,10 +386,10 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
-    if (musicClient)
-        interaction.applicationId = musicClient.user.id
+    // if (musicClient)
+    //     interaction.applicationId = musicClient.user.id
 
-    let result = await comando.execute(client, interaction, comando, distube, musicClient)
+    let result = await comando.execute(client, interaction, comando, musicClient)
     if (!result) {
         let embed = new Discord.MessageEmbed()
             .setTitle(":bookmark: Command executed :bookmark:")

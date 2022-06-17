@@ -31,7 +31,7 @@ module.exports = {
         ]
     },
     channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.noMicChat, settings.idCanaliServer.general1, settings.idCanaliServer.general2],
-    async execute(client, interaction, comando, distube, musicClient) {
+    async execute(client, interaction, comando, musicClient) {
         let queue = distube.getQueue(interaction.guild.id)
         let from = interaction.options.getInteger("from")
         let to = interaction.options.getInteger("to")

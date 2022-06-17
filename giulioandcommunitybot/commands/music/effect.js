@@ -88,7 +88,7 @@ module.exports = {
         ]
     },
     channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.noMicChat, settings.idCanaliServer.general1, settings.idCanaliServer.general2],
-    async execute(client, interaction, comando, distube, musicClient) {
+    async execute(client, interaction, comando, musicClient) {
         let effect = interaction.options.getString("type")
 
         if (effect != "off" && distube.getQueue(interaction.guild.id)?.filters.includes(effect)) {

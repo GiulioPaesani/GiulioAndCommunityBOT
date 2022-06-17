@@ -12,7 +12,7 @@ module.exports = {
     client: "general",
     musicMode: true,
     channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.noMicChat, settings.idCanaliServer.general1, settings.idCanaliServer.general2],
-    async execute(client, interaction, comando, distube, musicClient) {
+    async execute(client, interaction, comando, musicClient) {
         try {
             distube.resume(client.channels.cache.get(interaction.member.voice.channel.id))
         }
