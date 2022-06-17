@@ -38,7 +38,7 @@ clientRanking.login(process.env.tokenRanking)
 clientRanking.app = express();
 clientRanking.app.use(express.json());
 
-const distube = new DisTube(client, {
+const distube = new DisTube(clientRanking, {
     youtubeDL: false,
     plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
     leaveOnEmpty: true,
