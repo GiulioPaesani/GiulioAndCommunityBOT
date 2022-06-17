@@ -500,7 +500,7 @@ client.on("ready", () => {
         for (let index in settings.ruoliLeveling) {
             if (utente.roles.cache.has(settings.ruoliLeveling[index]) && settings.ruoliLeveling[index] != ruoloDaAvere) {
                 utente.roles.remove(settings.ruoliLeveling[index])
-                console.log(`${userstats.user.tag} ha il ruolo ${settings.ruoliLeveling[index]} ma non dovrebbe`)
+                console.log(`${userstats.id} ha il ruolo ${settings.ruoliLeveling[index]} ma non dovrebbe`)
             }
         }
 
