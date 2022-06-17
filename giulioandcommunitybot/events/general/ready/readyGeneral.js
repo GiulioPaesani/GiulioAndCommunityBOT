@@ -60,7 +60,7 @@ module.exports = {
                         command.delete()
                     }
                 })
-            })
+            }).catch(() => { })
         await serverLog.commands.fetch()
             .then(commands => {
                 commands.forEach(command => {
@@ -69,7 +69,7 @@ module.exports = {
                         command.delete()
                     }
                 })
-            })
+            }).catch(() => { })
 
         await client.commands
             .forEach(async command => {
