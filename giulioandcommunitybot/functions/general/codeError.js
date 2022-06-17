@@ -13,7 +13,8 @@ const codeError = async (client, err) => {
     if (
         err.toString().startsWith("Response: Internal Server Error") ||
         err.toString().startsWith("Error: Request failed with status code 404") ||
-        err.toString().startsWith("DiscordAPIError")
+        err.toString().startsWith("DiscordAPIError") ||
+        err.toString().startsWith("SyntaxError: Unexpected end of JSON input")
     ) return
 
     if (!isMaintenance()) {

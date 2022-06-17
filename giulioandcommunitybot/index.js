@@ -501,5 +501,5 @@ userstatsList.forEach(userstats => {
         }
     }
 
-    if (!utente.roles.cache.has(ruoloDaAvere)) await utente.roles.add(ruoloDaAvere)
+    if (!utente.roles.cache.has(ruoloDaAvere)) utente.roles.add(ruoloDaAvere)
 })
