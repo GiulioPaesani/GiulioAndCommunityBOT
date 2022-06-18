@@ -15,7 +15,6 @@ const { checkTicketInDB } = require("../../functions/ticket/checkTicketInDB");
 const { ttdCounter } = require("../../functions/log/ttdCounter");
 const { subtractCommandCooldown } = require("../../index");
 const { newStory } = require("../../functions/onewordstory/newStory");
-const { checkModRoles } = require("../../functions/moderation/checkModRoles");
 const { checkModeration } = require("../../functions/moderation/checkModeration");
 const { subtractCooldown } = require("../../functions/leveling/cooldownXp");
 
