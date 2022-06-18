@@ -9,7 +9,7 @@ Entra subito nel server per scoprire tutte le funzionalità del bot e divertirsi
 ## 🚨 INFO sul server 🚨
 Ecco tutte le **informazioni** riguardanti comandi, funzioni, canali e molto altro sul server GiulioAndCommunity
 
-Nel server sono presenti diversi bot, oltre a GiulioAndCommunity BOT, come **GiulioAndModeration**, **GiulioAndFun** e **GiulioAndRanking**. Tutti e quattro sono dei bot personali scritti eslusivamente per il server, che danno a disposizione a tutti gli utenti decine di **comandi** e funzioni **fighissime**. Guarda con `/help` tutti i comandi disponibili, e di seguito trovi le **funzioni** più importanti 
+Questo è un bot personale, scritto eslusivamente per il server, che da a disposizione a tutti gli utenti decine di **comandi** e funzioni **fighissime**. Guarda con `/help` tutti i comandi disponibili, e di seguito trovi le **funzioni** più importanti 
 
 ### 🔰 LIVELLAMENTO 🔰 
 Il server ha un super sistema di **livellamento**, ogni utente può superare il proprio livello guadagnando **esperienza**. Puoi vedere il tuo livello con `/rank`
@@ -40,20 +40,13 @@ Ecco quello che puoi abilitare o disabilitare:
 📋 Announcements - 
 Annunci grossi e importanti relativi al canale e al server
 📰 News - Notizie piccole e leggere sul canale e sul server  
-📝 Changelog - Tutte le novità, funzioni, comandi che vengono aggiunte ai bot del server (Scopri tutti i cambiamenti passati con `/changelog`)  
+📝 Changelog - Tutte le novità, funzioni, comandi che vengono aggiunte al bot nel server (Scopri tutti i cambiamenti passati con `/changelog`)  
 📱 YouTube GiulioAndCode - Nuovi video pubblicati sul canale GiulioAndCode (<https://www.youtube.com/giulioandcode>)  
 ✌ YouTube Giulio - Nuovi video pubblicati sul canale Giulio (<https://www.youtube.com/channel/UCvIafNR8ZvZyE5jVGVqgVfA>)  
 
 I messaggi verranno inviati nei canali #📢│announcements o #🎥│youtube-videos
 
-### 🎶 MUSICA e TEXT TO SPEECH 🎙
-Nel server sono presente **tre bot** dedicati eslusivamente alla musica: GiulioAndMusic, BillAndMusic e HarryAndMusic  
-Questo vuol dire che è possibile ascoltare la musica contemporaneamente in 3 canali diversi
-
-Ci sono tantissimi **comandi** per gestire la musica, ovviamente quelli principali come `/play`, `/pause`, `/skip`, `/queue` e tantissimi altri, ma alcuni anche più complessi come `/effect` e `/lyrics` (Guardali tutti con `/help`)
-
-Voi non dovrete pensare con quale dei tre bot utilizzare i comandi, ma basterà scriverli nel bot principale. Sarà infatti GiulioAndCommunity BOT a gestire tutto quanto, non dovrete proccuparvi di nulla, sceglierà lui quale bot potrete usare in base a quello con cui siete in **vocale** o quello più **libero**
-
+### 📻 TEXT TO SPEECH 🎙
 Se non avete voglia di parlare in chat vocale o semplicemente non avete un microfono potete utilizzare la funzione di **text to speech**. Se infatti in #🔇│no-mic-chat scriverete un qualsiasi testo con prima un apostrofo (Es: 'ciao a tutti) il bot entrerà in vocale per **dire** ciò che avete **scritto**  
 Utilizzando poi il comando `/ttslanguage` potrete scegliere la **lingua** in cui volete che il bot parli, sono disponibili centinaia di lingue diverse, potete scegliere quella che più vi piace  
 Il TTS è disponibile dal livello 15
