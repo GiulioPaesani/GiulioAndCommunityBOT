@@ -27,20 +27,19 @@ module.exports = {
         client.user.setActivity('/help', { type: 'WATCHING' });
 
         if (!isMaintenance()) {
-            setInterval(counterChannels, 1000 * 60 * 5, client)
-            setInterval(youtubeNotifications, 1000 * 60 * 2, client)
+            setInterval(counterChannels, 1000 * 60 * 10, client)
+            setInterval(youtubeNotifications, 1000 * 60 * 5, client)
             setInterval(autoBackup, 1000, client)
             setInterval(subtractCommandCooldown, 1000)
             setInterval(checkBirthday, 1000, client)
             setInterval(ttsInactivity, 1000, client)
             setInterval(checkActivityPrivateRooms, 1000 * 10, client)
-            setInterval(checkPollTimeout, 1000 * 10, client)
-            setInterval(checkUnverifedUser, 1000 * 60, client)
-            setInterval(checkRoomInDB, 1000 * 10, client)
-            setInterval(checkTicketInDB, 1000 * 10, client)
-            setInterval(ttdCounter, 1000 * 60 * 5, client)
+            setInterval(checkPollTimeout, 1000 * 60, client)
+            // setInterval(checkUnverifedUser, 1000 * 60, client)
+            setInterval(checkRoomInDB, 1000 * 60 * 10, client)
+            setInterval(checkTicketInDB, 1000 * 60 * 10, client)
+            setInterval(ttdCounter, 1000 * 60 * 20, client)
             setInterval(newStory, 1000, client)
-            setInterval(checkModRoles, 1000 * 10, client)
             setInterval(checkModeration, 1000 * 60, client)
             setInterval(subtractCooldown, 1000 * 5)
         }

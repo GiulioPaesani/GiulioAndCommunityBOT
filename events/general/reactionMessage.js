@@ -12,9 +12,6 @@ module.exports = {
 
         if (message.channel.id == settings.idCanaliServer.onewordstory) return
 
-        let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
-        if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
-
         let content = message.content.toLowerCase().trim()
 
         if (["giulio", "giulioandcode", "giulio paesani"].includes(content))

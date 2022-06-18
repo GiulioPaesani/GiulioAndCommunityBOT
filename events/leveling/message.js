@@ -20,9 +20,6 @@ module.exports = {
 
         if (message.channel.parentId == settings.idCanaliServer.categoriaAdmin || message.channel.parent?.parentId == settings.idCanaliServer.categoriaAdmin) return
 
-        let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
-        if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
-
         let userstats = getUser(message.author.id)
         if (!userstats) userstats = addUser(message.member)[0]
 

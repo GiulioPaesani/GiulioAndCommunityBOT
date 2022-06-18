@@ -11,6 +11,11 @@ const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
 
 const checkBirthday = async (client) => {
     let data = new Date()
+
+    if (data.getMinutes() != 0) return
+    if (data.getSeconds() != 0) return
+    if (data.getHours() != 0 && data.getHours() != 8) return
+
     let birthdayToday = []
 
     getAllUsers(client).forEach(userstats => {
