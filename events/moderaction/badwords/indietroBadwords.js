@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const badwords = require('../../../config/moderation/badwords.json');
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getEmoji } = require("../../../functions/general/getEmoji");
-const { replyMessage } = require('../../../../giulioandcommunitybot/functions/general/replyMessage');
+const { replyMessage } = require('../../../functions/general/replyMessage');
 
 module.exports = {
     name: `interactionCreate`,
