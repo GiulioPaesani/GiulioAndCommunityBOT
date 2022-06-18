@@ -1,9 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs")
 const moment = require("moment")
-const { DisTube } = require("distube")
-const { SpotifyPlugin } = require("@distube/spotify")
-const { SoundCloudPlugin } = require("@distube/soundcloud")
 const googleTTS = require('google-tts-api');
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
