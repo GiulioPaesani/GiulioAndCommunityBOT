@@ -1,0 +1,64 @@
+{
+    "id": "852980539350581258",
+    "username": "NotGiulio",
+    "roles": [],
+    "joinedAt": 1653937009988,
+    "leavedAt": 1653938073734,
+    "birthday": [
+        null,
+        null
+    ],
+    "counting": {
+        "lastScore": 0,
+        "bestScore": 0,
+        "timeLastScore": null,
+        "timeBestScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "countingplus": {
+        "lastScore": 0,
+        "timeLastScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "onewordstory": {
+        "totWords": 0,
+        "totWordsToday": 0,
+        "totStories": 0
+    },
+    "leveling": {
+        "level": 0,
+        "xp": 15,
+        "livelliSuperati": {}
+    },
+    "economy": {
+        "money": 0,
+        "inventory": {}
+    },
+    "moderation": {
+        "type": "Forcebanned",
+        "since": 1654977372135,
+        "until": null,
+        "reason": "insulti al server, probabilmente amico di usbo",
+        "moderator": "968226752893710457",
+        "ticketOpened": false
+    },
+    "warns": [
+        {
+            "type": "fban",
+            "reason": "insulti al server, probabilmente amico di usbo",
+            "time": 1654955026182,
+            "moderator": "968226752893710457",
+            "unTime": null,
+            "unModerator": null
+        }
+    ],
+    "invites": {}
+}

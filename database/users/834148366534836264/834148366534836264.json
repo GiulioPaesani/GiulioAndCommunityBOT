@@ -1,0 +1,93 @@
+{
+    "id": "834148366534836264",
+    "username": "𝓍𝒮𝓉𝒶𝓆𝑒𝒹_",
+    "roles": [
+        "915875221502828586",
+        "799990260393443338"
+    ],
+    "joinedAt": 1620501381401,
+    "leavedAt": 1653927858824,
+    "birthday": [],
+    "counting": {
+        "lastScore": 2,
+        "bestScore": 7,
+        "timeLastScore": "1624602306407",
+        "timeBestScore": "1623751650969",
+        "correct": 2,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "countingplus": {
+        "lastScore": 0,
+        "timeLastScore": null,
+        "correct": 0,
+        "incorrect": 0,
+        "streak": 0,
+        "updated": 0,
+        "deleted": 0
+    },
+    "onewordstory": {
+        "totWords": 0,
+        "totWordsToday": 0,
+        "totStories": 0
+    },
+    "leveling": {
+        "level": 11,
+        "xp": 3319,
+        "livelliSuperati": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": true,
+            "11": true
+        }
+    },
+    "economy": {
+        "money": 110,
+        "inventory": {}
+    },
+    "moderation": {
+        "type": "Forcebanned",
+        "since": 1654977370766,
+        "until": null,
+        "reason": "alt di usbo",
+        "moderator": "968226752893710457",
+        "ticketOpened": false
+    },
+    "warns": [
+        {
+            "type": "warn",
+            "reason": "ai mods",
+            "time": 1630057422135,
+            "moderator": "802184359120863272"
+        },
+        {
+            "type": "warn",
+            "reason": "content",
+            "time": 1632241268131,
+            "moderator": "802184359120863272"
+        },
+        {
+            "type": "warn",
+            "reason": "contenuti sessualmente espliciti",
+            "time": 1632241411210,
+            "moderator": "802184359120863272"
+        },
+        {
+            "type": "fban",
+            "reason": "alt di usbo",
+            "time": 1654955026178,
+            "moderator": "968226752893710457",
+            "unTime": null,
+            "unModerator": null
+        }
+    ],
+    "invites": {}
+}
