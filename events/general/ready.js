@@ -14,6 +14,10 @@ const { checkRoomInDB } = require("../../functions/privateRooms/checkRoomInDB");
 const { checkTicketInDB } = require("../../functions/ticket/checkTicketInDB");
 const { ttdCounter } = require("../../functions/log/ttdCounter");
 const { subtractCommandCooldown } = require("../../index");
+const { newStory } = require("../../functions/onewordstory/newStory");
+const { checkModRoles } = require("../../functions/moderation/checkModRoles");
+const { checkModeration } = require("../../functions/moderation/checkModeration");
+const { subtractCooldown } = require("../../functions/leveling/cooldownXp");
 
 module.exports = {
     name: "ready",
@@ -35,6 +39,10 @@ module.exports = {
             setInterval(checkRoomInDB, 1000 * 10, client)
             setInterval(checkTicketInDB, 1000 * 10, client)
             setInterval(ttdCounter, 1000 * 60 * 5, client)
+            setInterval(newStory, 1000, client)
+            setInterval(checkModRoles, 1000 * 10, client)
+            setInterval(checkModeration, 1000 * 60, client)
+            setInterval(subtractCooldown, 1000 * 5)
         }
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(client.user.id)
@@ -43,39 +51,40 @@ module.exports = {
         const firstInvites = await client.guilds.cache.get(settings.idServer).invites.fetch()
         invites.set(settings.idServer, new Map(firstInvites.map((invite) => [invite.code, invite.uses])));
 
-        let server = client.guilds.cache.get(settings.idServer)
-        let serverLog = client.guilds.cache.get(log.idServer)
-        let guildCommands = []
-        let guildLogCommands = []
-        await server.commands.fetch()
-            .then(commands => {
-                commands.forEach(command => {
-                    guildCommands.push(command)
-                    if (!client.commands.get(command.name)) {
-                        command.delete()
-                    }
-                })
-            })
-        await serverLog.commands.fetch()
-            .then(commands => {
-                commands.forEach(command => {
-                    guildLogCommands.push(command)
-                    if (!client.commands.get(command.name)) {
-                        command.delete()
-                    }
-                })
-            })
+        //? Abilitare solo quando si crea un nuovo comando
+        // let server = client.guilds.cache.get(settings.idServer)
+        // let serverLog = client.guilds.cache.get(log.idServer)
+        // let guildCommands = []
+        // let guildLogCommands = []
+        // await server.commands.fetch()
+        //     .then(commands => {
+        //         commands.forEach(command => {
+        //             guildCommands.push(command)
+        //             if (!client.commands.get(command.name)) {
+        //                 command.delete()
+        //             }
+        //         })
+        //     })
+        // await serverLog.commands.fetch()
+        //     .then(commands => {
+        //         commands.forEach(command => {
+        //             guildLogCommands.push(command)
+        //             if (!client.commands.get(command.name)) {
+        //                 command.delete()
+        //             }
+        //         })
+        //     })
 
-        await client.commands
-            .forEach(async command => {
-                let data = command.data || {}
-                data.name = command.name
-                data.description = command.description
+        // await client.commands
+        //     .forEach(async command => {
+        //         let data = command.data || {}
+        //         data.name = command.name
+        //         data.description = command.description
 
-                if (!guildCommands.find(x => x.name == command.name))
-                    await server.commands.create(data)
-                if (!guildLogCommands.find(x => x.name == command.name) && command.otherGuild)
-                    await serverLog.commands.create(data)
-            })
+        //         if (!guildCommands.find(x => x.name == command.name))
+        //             await server.commands.create(data)
+        //         if (!guildLogCommands.find(x => x.name == command.name) && command.otherGuild)
+        //             await serverLog.commands.create(data)
+        //     })
     }
 }
