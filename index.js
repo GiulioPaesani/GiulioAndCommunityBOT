@@ -401,3 +401,19 @@ client.on("messageCreate", message => {
 
     addQueue(client, url, connection)
 })
+
+
+client.on("ready", () => {
+    console.log("Bot online")
+    const { getAllUsers } = require("./functions/database/getAllUsers")
+    const { updateUser } = require("./functions/database/updateUser")
+    let userstatsList = getAllUsers(client)
+
+    userstatsList.forEach(async userstats => {
+        userstats.leveling.xp += 2000
+
+        userstats = await checkLevelUp(client, userstats)
+
+        updateUser(userstats)
+    })
+})
