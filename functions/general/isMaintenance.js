@@ -1,7 +1,4 @@
-const { getServer } = require("../../functions/database/getServer.js")
-
 const isMaintenance = (userId) => {
-    let serverstats = getServer()
 
     const testers = serverstats.testers
     const maintenanceStates = process.env.isHost == "false" ? serverstats.maintenance.local : serverstats.maintenance.host

@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs")
 const moment = require("moment")
-const googleTTS = require('google-tts-api');
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
 const log = require("./config/general/log.json")
@@ -9,17 +8,10 @@ const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
 const { isMaintenance } = require('./functions/general/isMaintenance');
 const { getUserPermissionLevel } = require('./functions/general/getUserPermissionLevel');
-const { getUser } = require('./functions/database/getUser');
-const { addUser } = require('./functions/database/addUser');
-const { registerFont } = require('canvas');
 const { checkBadwords } = require('./functions/moderation/checkBadwords');
 const { getServer } = require('./functions/database/getServer');
-let { addQueue } = require('./functions/music/tts/ttsQueue');
-const { joinVoiceChannel } = require("@discordjs/voice");
 const { blockedChannels } = require("./functions/general/blockedChannels");
 const { hasSufficientLevels } = require("./functions/leveling/hasSufficientLevels");
-registerFont("./assets/font/roboto.ttf", { family: "roboto" })
-registerFont("./assets/font/robotoBold.ttf", { family: "robotoBold" })
 
 require('events').EventEmitter.prototype._maxListeners = 100;
 
@@ -32,7 +24,7 @@ const client = new Discord.Client({
 try {
     require("dotenv").config()
 } catch {
-
+    
 }
 
 client.login(process.env.token)
@@ -318,86 +310,4 @@ client.on("interactionCreate", async interaction => {
         if (!isMaintenance())
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
-})
-
-client.on("interactionCreate", async interaction => {
-    if (!interaction.isAutocomplete()) return
-
-    const autocomplete = client.autocomplete.find(x => x.commandName == interaction.commandName && x.optionName == interaction.options.getFocused(true).name)
-    if (!autocomplete) return
-
-    let response = await autocomplete.getResponse(client, interaction.options.getFocused(true), interaction)
-    if (!response) return
-
-    interaction.respond(response.slice(0, 25))
-})
-
-client.on("messageCreate", message => {
-    if (message.author.bot) return
-
-    if (isMaintenance(message.author.id)) return
-
-    if (message.channel.id != settings.idCanaliServer.noMicChat) return
-
-    if (!message.content.startsWith("'")) return
-
-    let userstats = getUser(message.author.id)
-    if (!userstats) userstats = addUser(message.member)[0]
-
-    if (!hasSufficientLevels(client, userstats, 15)) {
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Livello insufficiente")
-            .setColor(colors.pink)
-            .setDescription(`Per utilizzare il comando \`'[testo]\` è necessario almeno il ${message.guild.roles.cache.find(x => x.name == "Level 15").toString()} o **boostare** il server`)
-
-        return message.channel.send({ embeds: [embed] })
-    }
-
-    let text = message.content.slice(1).trim()
-    if (!text) return
-
-    const voiceChannel = message.member.voice.channel
-    if (!voiceChannel) {
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Non sei in un canale vocale")
-            .setColor(colors.gray)
-            .setDescription("Per eseguire questo comando devi essere connesso a un canale vocale")
-
-        return message.channel.send({ embeds: [embed] })
-    }
-
-    const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Bot occupato")
-            .setColor(colors.gray)
-            .setDescription("Il bot è già occupato in un'altra stanza e non puoi utilizzarlo al momento")
-
-        return message.channel.send({ embeds: [embed] })
-    }
-
-    if (text.length > 200) {
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Testo troppo lungo")
-            .setColor(colors.gray)
-            .setDescription("Puoi scrivere un testo solo fino a 200 caratteri")
-
-        return message.channel.send({ embeds: [embed] })
-    }
-
-    const connection = joinVoiceChannel({
-        channelId: message.member.voice.channel.id,
-        guildId: message.guild.id,
-        adapterCreator: message.guild.voiceAdapterCreator
-    })
-
-    let serverstats = getServer()
-
-    const url = googleTTS.getAudioUrl(text, {
-        lang: serverstats.ttsDefaultLanguage,
-        slow: false,
-        host: 'https://translate.google.com',
-    });
-
-    addQueue(client, url, connection)
 })
