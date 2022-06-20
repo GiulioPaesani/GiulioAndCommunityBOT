@@ -1,15 +1,8 @@
 const Discord = require("discord.js")
-const fetch = require("node-fetch")
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
-const { getServer } = require("../../../functions/database/getServer");
 const { replyMessage } = require("../../../functions/general/replyMessage")
-const { updateServer } = require("../../../functions/database/updateServer");
 const { getTaggedUser } = require("../../../functions/general/getTaggedUser");
-const { getServerStats } = require("../../../functions/database/getServerStats");
-const { getUser } = require("../../../functions/database/getUser");
-const { getUserStats } = require("../../../functions/database/getUserStats");
-const { deleteUser } = require("../../../functions/database/deleteUser");
 
 module.exports = {
     name: "debug",

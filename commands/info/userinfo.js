@@ -2,7 +2,6 @@ const Discord = require("discord.js")
 const moment = require("moment")
 const settings = require("../../config/general/settings.json")
 const { getEmoji } = require("../../functions/general/getEmoji")
-const { getUser } = require("../../functions/database/getUser")
 const { getTaggedUser } = require("../../functions/general/getTaggedUser")
 
 module.exports = {
@@ -88,7 +87,7 @@ module.exports = {
             .addField(":ok_hand: Status", utente.user ? textStatus : "_User not into server_", true)
             .addField(":star2: Accent color", user.accent_color ? `#${user.accent_color.toString(16).toUpperCase()}` : "_Not set_", true)
             .addField(":pencil: Account created", `${moment(utente.user?.createdAt || utente.createdAt).format("ddd DD MMM YYYY, HH:mm")} (${moment(utente.user?.createdAt || utente.createdAt).fromNow()})`)
-            .addField(":red_car: Joined this server", utente.user ? `${moment(getUser(utente.id)?.joinedAt || utente.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm")} (${moment(getUser(utente.id)?.joinedAt || utente.joinedTimestamp).fromNow()})` : "_User never joined the server_")
+            // .addField(":red_car: Joined this server", utente.user ? `${moment(getUser(utente.id)?.joinedAt || utente.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm")} (${moment(getUser(utente.id)?.joinedAt || utente.joinedTimestamp).fromNow()})` : "_User never joined the server_")
             .addField(":shirt: Roles", textRoles || "_No roles_")
             .addField(":beginner: Badge", textBadge || "_No badges_")
 
