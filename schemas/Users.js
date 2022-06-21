@@ -4,24 +4,46 @@ const UserSchema = new Schema({
     id: String,
     username: String,
     roles: Array,
-    statistics: Object,
-    lastScore: Number,
-    bestScore: Number,
-    timeLastScore: String,
-    timeBestScore: String,
-    correct: Number,
-    incorrect: Number,
-    level: Number,
-    xp: Number,
-    cooldownXp: String,
-    warn: Array,
-    moderation: Object,
-    inventory: Object,
     joinedAt: String,
     leavedAt: String,
-    money: Number,
     birthday: Array,
-    wrapped: Object
+    counting: {
+        lastScore: Number,
+        bestScore: Number,
+        timeLastScore: String,
+        timeBestScore: String,
+        correct: Number,
+        incorrect: Number,
+        streak: Number,
+        updated: Number,
+        deleted: Number
+    },
+    countingplus: {
+        lastScore: Number,
+        timeLastScore: String,
+        correct: Number,
+        incorrect: Number,
+        streak: Number,
+        updated: Number,
+        deleted: Number
+    },
+    onewordstory: {
+        totWords: Number,
+        totWordsToday: Number,
+        totStories: Number
+    },
+    leveling: {
+        level: Number,
+        xp: Number,
+        livelliSuperati: Object
+    },
+    economy: {
+        money: Number,
+        inventory: Object
+    },
+    moderation: Object,
+    warns: Array,
+    invites: Object
 })
 
-module.exports = model('userstats', UserSchema);
+module.exports = model('users', UserSchema);

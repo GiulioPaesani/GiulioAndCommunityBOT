@@ -4,6 +4,9 @@ const moment = require("moment")
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
 const log = require("./config/general/log.json")
+const { addUser } = require("./functions/database/addUser")
+const { getUser } = require("./functions/database/getUser")
+const { getServer } = require("./functions/database/getServer")
 const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
 const { isMaintenance } = require('./functions/general/isMaintenance');
@@ -120,8 +123,8 @@ client.on("interactionCreate", async interaction => {
 
     if (isMaintenance(interaction.user.id)) return
 
-    // let userstats = getUser(interaction.user.id)
-    // if (!userstats) userstats = addUser(interaction.member)[0]
+    let userstats = await getUser(interaction.user.id)
+    if (!userstats) userstats = await addUser(interaction.member)
 
     const comando = client.commands.get(interaction.commandName)
     if (!comando) return
@@ -143,7 +146,7 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
-    // let serverstats = getServer()
+    let serverstats = await getServer()
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(client.channels.cache.get(interaction.channelId).parentId)) {
         if (getUserPermissionLevel(client, interaction.user.id) >= 2) {
 
@@ -154,12 +157,12 @@ client.on("interactionCreate", async interaction => {
         else if (getUserPermissionLevel(client, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
 
         }
-        // else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
+        else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
 
-        // }
-        // else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(client, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+        }
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(client, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
 
-        // }
+        }
         else {
             return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
         }
@@ -212,35 +215,35 @@ client.on("interactionCreate", async interaction => {
         return
     }
 
-    // if (serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id))?.channel == interaction.channelId && !getUserPermissionLevel(client, interaction.user.id)) {
-    //     if (!serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id)).mode.messages) {
-    //         let embed = new Discord.MessageEmbed()
-    //             .setTitle("Messaggi bloccati")
-    //             .setColor(colors.yellow)
-    //             .setDescription("In questa stanza privata non sono concessi i messaggi, quindi non puoi eseguire comandi qui")
+    if (serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id))?.channel == interaction.channelId && !getUserPermissionLevel(client, interaction.user.id)) {
+        if (!serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id)).mode.messages) {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Messaggi bloccati")
+                .setColor(colors.yellow)
+                .setDescription("In questa stanza privata non sono concessi i messaggi, quindi non puoi eseguire comandi qui")
 
-    //         interaction.reply({ embeds: [embed], ephemeral: true })
+            interaction.reply({ embeds: [embed], ephemeral: true })
 
-    //         let embed2 = new Discord.MessageEmbed()
-    //             .setTitle(":construction: No messages in Private Rooms :construction:")
-    //             .setColor(colors.yellow)
-    //             .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
-    //             .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-    //             .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
-    //             .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
+            let embed2 = new Discord.MessageEmbed()
+                .setTitle(":construction: No messages in Private Rooms :construction:")
+                .setColor(colors.yellow)
+                .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
+                .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+                .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
 
-    //         let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
-    //         interaction.options?._hoistedOptions?.forEach(option => {
-    //             testoCommand += ` ${option.name}: \`${option.value}\``
-    //         })
-    //         embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
+            let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
+            interaction.options?._hoistedOptions?.forEach(option => {
+                testoCommand += ` ${option.name}: \`${option.value}\``
+            })
+            embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-    //         if (!isMaintenance()) {
-    //             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
-    //         }
-    //         return
-    //     }
-    // }
+            if (!isMaintenance()) {
+                client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+            }
+            return
+        }
+    }
 
     // if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
     //     return replyMessage(client, interaction, "InsufficientLevel", "", "", comando)
@@ -310,21 +313,20 @@ client.on("interactionCreate", async interaction => {
 })
 
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const Users = require("./schemas/Users");
+// const Users = require("./schemas/Users");
 
-client.on("ready", async () => {
-    console.log(new Date().toTimeString(), "online")
-    await mongoose.connect(`mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/GiulioAndCommunity?authSource=admin&replicaSet=atlas-5euq7x-shard-0&readPreference=primary&ssl=true`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }).then(async () => {
-        console.log(new Date().toTimeString(), "connesso")
-        const all = await Users.find({});
-        console.log(new Date().toTimeString(), "fatto")
-        // console.log(all);
-    })
+// client.on("ready", async () => {
+//     console.log(new Date().toTimeString(), "online")
+//     await mongoose.connect(`mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/GiulioAndCommunity?authSource=admin&replicaSet=atlas-5euq7x-shard-0&readPreference=primary&ssl=true`, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//         useFindAndModify: false
+//     })
 
-})
+//     console.log(new Date().toTimeString(), "connesso")
+//     const all = await Users.find({});
+//     console.log(new Date().toTimeString(), "fatto")
+
+// })
