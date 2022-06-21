@@ -308,3 +308,23 @@ client.on("interactionCreate", async interaction => {
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
+
+
+const mongoose = require('mongoose');
+
+const Users = require("./schemas/Users");
+
+client.on("ready", async () => {
+    console.log(new Date().toTimeString(), "online")
+    await mongoose.connect(`mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/GiulioAndCommunity?authSource=admin&replicaSet=atlas-5euq7x-shard-0&readPreference=primary&ssl=true`, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    }).then(async () => {
+        console.log(new Date().toTimeString(), "connesso")
+        const all = await Users.find({});
+        console.log(new Date().toTimeString(), "fatto")
+        // console.log(all);
+    })
+
+})
