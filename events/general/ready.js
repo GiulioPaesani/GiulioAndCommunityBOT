@@ -8,6 +8,8 @@ const { subtractCommandCooldown } = require("../..");
 const { checkModeration } = require("../../functions/moderation/checkModeration");
 const { counterChannels } = require("../../functions/server/counterChannels");
 const { youtubeNotifications } = require("../../functions/server/youtubeNotifications");
+const { checkBirthday } = require("../../functions/community/birthday/checkBirthday")
+const { ttdCounter } = require("../../functions/log/ttdCounter")
 
 module.exports = {
     name: "ready",
@@ -21,16 +23,17 @@ module.exports = {
             setInterval(youtubeNotifications, 1000 * 60 * 5, client)
             setInterval(autoBackup, 1000, client)
             setInterval(subtractCommandCooldown, 1000)
-            // setInterval(checkBirthday, 1000, client)
+            setInterval(checkBirthday, 1000, client)
             // setInterval(ttsInactivity, 1000, client)
             // setInterval(checkActivityPrivateRooms, 1000 * 10, client)
             // setInterval(checkPollTimeout, 1000 * 60, client)
             // // setInterval(checkUnverifedUser, 1000 * 60, client)
             // setInterval(checkRoomInDB, 1000 * 60 * 10, client)
             // setInterval(checkTicketInDB, 1000 * 60 * 10, client)
-            // setInterval(ttdCounter, 1000 * 60 * 20, client)
+            setInterval(ttdCounter, 1000 * 60 * 20, client)
             // setInterval(newStory, 1000, client)
             setInterval(checkModeration, 1000 * 60, client)
+            // setInterval(subtractCooldown, 1000 * 5)
         }
 
         await mongoose.connect(`mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/GiulioAndCommunity?authSource=admin&replicaSet=atlas-5euq7x-shard-0&readPreference=primary&ssl=true`, {

@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getEmoji } = require("../../../functions/general/getEmoji");
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,

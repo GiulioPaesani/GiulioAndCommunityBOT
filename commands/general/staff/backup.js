@@ -1,5 +1,4 @@
 const Discord = require("discord.js")
-const zipper = require('zip-local')
 const moment = require("moment")
 const fs = require("fs")
 const settings = require("../../../config/general/settings.json")
@@ -7,6 +6,8 @@ const log = require("../../../config/general/log.json")
 const colors = require("../../../config/general/colors.json")
 const { getEmoji } = require("../../../functions/general/getEmoji")
 const { fetchAllMessages } = require("../../../functions/general/fetchAllMessages")
+const { getServer } = require("../../../functions/database/getServer")
+const { getAllUsers } = require("../../../functions/database/getAllUsers")
 
 module.exports = {
     name: "backup",
@@ -278,15 +279,16 @@ ${getEmoji(client, "Loading")} **Things to do**
                 await fetchAllMessages(client.channels.cache.get(log.general.thingsToDo))
                     .then(messages => {
                         for (let msg of messages) {
-                            let content = msg.embeds[0].fields[1]?.value || msg.embeds[0].fields[0]?.value
+                            let content = msg.embeds[0]?.fields[1]?.value || msg.embeds[0]?.fields[0]?.value
+                            if (content) {
+                                server.channels.cache.forEach(x => content = content.replace(eval(`/<#${x.id}>/g`), `#${x.name}`))
+                                server.roles.cache.forEach(x => content = content.replace(eval(`/<@&${x.id}>/g`), `@${x.name}`))
 
-                            server.channels.cache.forEach(x => content = content.replace(eval(`/<#${x.id}>/g`), `#${x.name}`))
-                            server.roles.cache.forEach(x => content = content.replace(eval(`/<@&${x.id}>/g`), `@${x.name}`))
-
-                            backup.thingsToDo.push({
-                                content: content,
-                                status: msg.embeds[0].fields[0].value
-                            })
+                                backup.thingsToDo.push({
+                                    content: content,
+                                    status: msg.embeds[0].fields[0].value
+                                })
+                            }
                         }
                     })
 
@@ -306,9 +308,12 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                 interaction.editReply({ embeds: [embed] })
 
-                await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
+                let serverstats = await getServer()
+                let userstatsList = await getAllUsers(client, false)
 
-                const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup${time}.json`);
+                const attachmentServer = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup-server-${time}.json`);
+                const attachmentServerstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t"), "utf-8"), `backup-serverstats-${time}.json`);
+                const attachmentUserstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `backup-userstats-${time}.json`);
 
                 embed = new Discord.MessageEmbed()
                     .setTitle(":inbox_tray: New backup :inbox_tray:")
@@ -316,7 +321,7 @@ ${getEmoji(client, "Loading")} **Database**`)
                     .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
                     .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
 
-                client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachment, `./database${time}.zip`] })
+                client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, attachmentServerstats, attachmentUserstats] })
                     .then(msg2 => {
                         embed = new Discord.MessageEmbed()
                             .setTitle(":card_box: Backup CREATO :card_box:")
