@@ -2,7 +2,7 @@ const isMaintenance = (userId) => {
 
     let serverstats = { testers: ["793768313934577664"] }
     const testers = serverstats.testers
-    // const maintenanceStates = process.env.isHost == "false" ? serverstats.maintenance?.local : serverstats.maintenance?.host
+    //! const maintenanceStates = process.env.isHost == "false" ? serverstats.maintenance?.local : serverstats.maintenance?.host
     const maintenanceStates = 0
 
     if (!userId) {

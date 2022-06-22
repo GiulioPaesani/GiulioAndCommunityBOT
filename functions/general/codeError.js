@@ -10,11 +10,6 @@ const codeError = async (client, err) => {
 
     if (err.stack) err = err.stack
 
-    // if (
-    //     err.toString().startsWith("Response: Internal Server Error") ||
-    //     err.toString().startsWith("Error: Request failed with status code 404") ||
-    // ) return
-
     if (!isMaintenance()) {
         let channel = client.channels.cache.get(log.general.codeErrors)
         if (!channel) return

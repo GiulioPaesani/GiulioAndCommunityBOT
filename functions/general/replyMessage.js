@@ -114,7 +114,7 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\n${canaliConcessiL
             .addField(":envelope: Error message", description)
 
     if (!isMaintenance() && comando && type != "Correct") {
-        // client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+        client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
         return true
     }
 }
