@@ -26,7 +26,7 @@ module.exports = {
         interaction.message.edit({ embeds: [embed], components: [] })
 
         embed = new Discord.MessageEmbed()
-            .setAuthor({ name: interaction.customId.split(",")[2] == "web" ? "Web development" : interaction.customId.split(",")[2] == "discord" ? "Discord development" : "Other", iconURL: interaction.customId.split(",")[2] == "web" ? illustrations.html2 interaction.customId.split(",")[2] == "discord" ? illustrations.discord : illustrations.other })
+            .setAuthor({ name: interaction.customId.split(",")[2] == "web" ? "Web development" : interaction.customId.split(",")[2] == "discord" ? "Discord development" : "Other", iconURL: interaction.customId.split(",")[2] == "web" ? illustrations.html2 : interaction.customId.split(",")[2] == "discord" ? illustrations.discord : illustrations.other })
             .setTitle(interaction.message.embeds[0].fields[0].name)
             .setColor(interaction.customId.split(",")[2] == "web" ? "#E44F26" : interaction.customId.split(",")[2] == "discord" ? "#5865F2" : "#ABABAB")
             .setDescription(interaction.message.embeds[0].fields[0].value)
