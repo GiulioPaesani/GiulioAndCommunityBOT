@@ -41,7 +41,7 @@ module.exports = {
             }
         })
 
-        member.guild.invites.fetch().then(guildInvites => {
+        member.guild.invites.fetch().then(async guildInvites => {
             const ei = invites.get(member.guild.id);
             const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 
