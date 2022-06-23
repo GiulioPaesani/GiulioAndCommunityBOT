@@ -1,7 +1,6 @@
 const Discord = require("discord.js")
 const ms = require("ms")
 const moment = require("moment")
-const fetch = require("node-fetch")
 const settings = require("../../config/general/settings.json")
 const changelogs = require("../../config/general/changelogs.json")
 const { description } = require("../../package.json")
@@ -17,7 +16,7 @@ module.exports = {
     category: "info",
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(client, interaction, comando) {
-        let serverstats = getServer()
+        let serverstats = await getServer()
         const maintenanceStates = process.env.isHost == "false" ? serverstats.maintenance.local : serverstats.maintenance.host
 
         let embed = new Discord.MessageEmbed()
