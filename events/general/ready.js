@@ -10,6 +10,8 @@ const { counterChannels } = require("../../functions/server/counterChannels");
 const { youtubeNotifications } = require("../../functions/server/youtubeNotifications");
 const { checkBirthday } = require("../../functions/community/birthday/checkBirthday")
 const { ttdCounter } = require("../../functions/log/ttdCounter")
+const { newStory } = require("../../functions/onewordstory/newStory")
+const { checkTicketInDB } = require("../../functions/ticket/checkTicketInDB")
 
 module.exports = {
     name: "ready",
@@ -29,9 +31,9 @@ module.exports = {
             // setInterval(checkPollTimeout, 1000 * 60, client)
             // // setInterval(checkUnverifedUser, 1000 * 60, client)
             // setInterval(checkRoomInDB, 1000 * 60 * 10, client)
-            // setInterval(checkTicketInDB, 1000 * 60 * 10, client)
+            setInterval(checkTicketInDB, 1000 * 60 * 10, client)
             setInterval(ttdCounter, 1000 * 60 * 20, client)
-            // setInterval(newStory, 1000, client)
+            setInterval(newStory, 1000, client)
             setInterval(checkModeration, 1000 * 60, client)
             // setInterval(subtractCooldown, 1000 * 5)
         }
