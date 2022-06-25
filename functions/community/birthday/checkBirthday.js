@@ -6,8 +6,8 @@ const illustrations = require("../../../config/general/illustrations.json")
 const { getAllUsers } = require("../../../functions/database/getAllUsers")
 const { createCanvas, loadImage } = require('canvas')
 const { updateUser } = require("../../database/updateUser")
-//!! const { hasSufficientLevels } = require("../../leveling/hasSufficientLevels")
-//!! const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
+const { hasSufficientLevels } = require("../../leveling/hasSufficientLevels")
+const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
 
 const checkBirthday = async (client) => {
     let data = new Date()
@@ -48,11 +48,11 @@ const checkBirthday = async (client) => {
             birthdayToday.forEach(async userstats => {
                 if (client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == userstats.id)) {
                     let randomItems = []
-                    //!!! items = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
-                    // for (let i = 1; i <= 4; i++) {
-                    //     randomItems.push(items[Math.floor(Math.random() * items.length)])
-                    //     items = items.filter(x => x != randomItems[randomItems.length - 1])
-                    // }
+                    items = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
+                    for (let i = 1; i <= 4; i++) {
+                        randomItems.push(items[Math.floor(Math.random() * items.length)])
+                        items = items.filter(x => x != randomItems[randomItems.length - 1])
+                    }
 
                     let embed = new Discord.MessageEmbed()
                         .setTitle(":tada: Happy birthday! :tada:")
@@ -75,7 +75,7 @@ const checkBirthday = async (client) => {
                         userstats.economy.inventory[item.id] = !userstats.economy.inventory[item.id] ? 1 : (userstats.economy.inventory[item.id] + 1)
                     })
 
-                    //!!! userstats = await checkLevelUp(client, userstats)
+                    userstats = await checkLevelUp(client, userstats)
 
                     updateUser(userstats)
                 }

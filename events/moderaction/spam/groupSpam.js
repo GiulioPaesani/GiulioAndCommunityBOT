@@ -8,7 +8,7 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { addUser } = require("../../../functions/database/addUser")
 const { getUser } = require("../../../functions/database/getUser")
 const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel")
-//!! const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
+const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
 
 const groupSpam = new Map()
 
@@ -25,7 +25,7 @@ module.exports = {
         let userstats = await getUser(message.author.id)
         if (!userstats) userstats = await addUser(message.member)
 
-        //!! if (hasSufficientLevels(client, userstats, 10)) return
+        if (hasSufficientLevels(client, userstats, 10)) return
 
         if (groupSpam.has(message.channel.id)) {
             let channel = groupSpam.get(message.channel.id)

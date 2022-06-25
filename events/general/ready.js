@@ -12,6 +12,11 @@ const { checkBirthday } = require("../../functions/community/birthday/checkBirth
 const { ttdCounter } = require("../../functions/log/ttdCounter")
 const { newStory } = require("../../functions/onewordstory/newStory")
 const { checkTicketInDB } = require("../../functions/ticket/checkTicketInDB")
+const { subtractCooldown } = require("../../functions/leveling/cooldownXp")
+const { checkRoomInDB } = require("../../functions/privateRooms/checkRoomInDB")
+const { ttsInactivity } = require("../../functions/general/ttsQueue")
+const { checkUnverifedUser } = require("../../functions/general/checkUnverifedUser")
+const { checkActivityPrivateRooms } = require("../../functions/privateRooms/checkActivityPrivateRooms")
 
 module.exports = {
     name: "ready",
@@ -26,16 +31,16 @@ module.exports = {
             setInterval(autoBackup, 1000, client)
             setInterval(subtractCommandCooldown, 1000)
             setInterval(checkBirthday, 1000, client)
-            // setInterval(ttsInactivity, 1000, client)
-            // setInterval(checkActivityPrivateRooms, 1000 * 10, client)
+            setInterval(ttsInactivity, 1000, client)
+            setInterval(checkActivityPrivateRooms, 1000 * 10, client)
             // setInterval(checkPollTimeout, 1000 * 60, client)
-            // // setInterval(checkUnverifedUser, 1000 * 60, client)
-            // setInterval(checkRoomInDB, 1000 * 60 * 10, client)
+            setInterval(checkUnverifedUser, 1000 * 60, client)
+            setInterval(checkRoomInDB, 1000 * 60 * 10, client)
             setInterval(checkTicketInDB, 1000 * 60 * 10, client)
             setInterval(ttdCounter, 1000 * 60 * 20, client)
             setInterval(newStory, 1000, client)
             setInterval(checkModeration, 1000 * 60, client)
-            // setInterval(subtractCooldown, 1000 * 5)
+            setInterval(subtractCooldown, 1000 * 5)
         }
 
         await mongoose.connect(`mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/GiulioAndCommunity?authSource=admin&replicaSet=atlas-5euq7x-shard-0&readPreference=primary&ssl=true`, {

@@ -7,9 +7,9 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getUser } = require("../../../functions/database/getUser")
 const { updateUser } = require("../../../functions/database/updateUser")
 const { createCanvas, loadImage } = require('canvas')
-//!! const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
+const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
 const { replyMessage } = require("../../../functions/general/replyMessage")
-//!! const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
+const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
 
 module.exports = {
     name: `interactionCreate`,
@@ -87,11 +87,11 @@ module.exports = {
                 ctx.drawImage(img, 0, 0)
 
                 let randomItems = []
-                //!!! items = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
-                //!!! for (let i = 1; i <= 4; i++) {
-                //     randomItems.push(items[Math.floor(Math.random() * items.length)])
-                //     items = items.filter(x => x != randomItems[randomItems.length - 1])
-                // }
+                items = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
+                for (let i = 1; i <= 4; i++) {
+                    randomItems.push(items[Math.floor(Math.random() * items.length)])
+                    items = items.filter(x => x != randomItems[randomItems.length - 1])
+                }
 
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":tada: Happy birthday! :tada:")
@@ -113,7 +113,7 @@ module.exports = {
                     userstats.economy.inventory[item.id] = !userstats.economy.inventory[item.id] ? 1 : (userstats.economy.inventory[item.id] + 1)
                 })
 
-                //!!! userstats = await checkLevelUp(client, userstats)
+                userstats = await checkLevelUp(client, userstats)
 
                 updateUser(userstats)
             }

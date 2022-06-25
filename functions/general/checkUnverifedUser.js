@@ -1,17 +1,16 @@
 const Discord = require("discord.js")
-const moment = require("moment")
 const colors = require("../../config/general/colors.json")
-const log = require("../../config/general/log.json")
 const settings = require("../../config/general/settings.json")
 const illustrations = require("../../config/general/illustrations.json")
-const { isMaintenance } = require("../../functions/general/isMaintenance")
 const { getUser } = require("../database/getUser")
 
-const checkUnverifedUser = (client) => {
+const checkUnverifedUser = async (client) => {
     let server = client.guilds.cache.get(settings.idServer)
 
-    server.members.cache.filter(x => x.roles.cache.has(settings.idRuoloNonVerificato)).forEach(async user => {
-        if (!getUser(user.id)) {
+    let role = server.roles.cache.get(settings.idRuoloNonVerificato)
+    role.members.forEach(async user => {
+        let userstats = await getUser(user.id)
+        if (!userstats) {
             if (new Date().getTime() - user.joinedTimestamp > 172800000) { //Utente ancora non verificato da 2 giorni
                 embed = new Discord.MessageEmbed()
                     .setTitle("Non ti sei VERIFICATO")

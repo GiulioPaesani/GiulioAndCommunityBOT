@@ -10,9 +10,12 @@ const { getUser } = require("./functions/database/getUser")
 const { getServer } = require("./functions/database/getServer")
 const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
+const { joinVoiceChannel } = require("@discordjs/voice");
 const { isMaintenance } = require('./functions/general/isMaintenance');
 const { checkBadwords } = require('./functions/moderation/checkBadwords');
 const { getUserPermissionLevel } = require('./functions/general/getUserPermissionLevel');
+const { addQueue } = require("./functions/general/ttsQueue")
+const { hasSufficientLevels } = require('./functions/leveling/hasSufficientLevels');
 const { blockedChannels } = require("./functions/general/blockedChannels");
 registerFont("./assets/font/roboto.ttf", { family: "roboto" })
 registerFont("./assets/font/robotoBold.ttf", { family: "robotoBold" })
@@ -249,9 +252,9 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
-    // if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
-    //     return replyMessage(client, interaction, "InsufficientLevel", "", "", comando)
-    // }
+    if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
+        return replyMessage(client, interaction, "InsufficientLevel", "", "", comando)
+    }
 
     let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
     interaction.options._hoistedOptions.forEach(option => {
@@ -326,4 +329,74 @@ client.on("interactionCreate", async interaction => {
     if (!response) return
 
     interaction.respond(response.slice(0, 25))
+})
+
+client.on("messageCreate", async message => {
+    if (message.author.bot) return
+
+    if (isMaintenance(message.author.id)) return
+
+    if (message.channel.id != settings.idCanaliServer.noMicChat) return
+
+    if (!message.content.startsWith("'")) return
+
+    let userstats = await getUser(message.author.id)
+    if (!userstats) userstats = await addUser(message.member)
+
+    if (!hasSufficientLevels(client, userstats, 15)) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Livello insufficiente")
+            .setColor(colors.pink)
+            .setDescription(`Per utilizzare il comando \`'[testo]\` è necessario almeno il ${message.guild.roles.cache.find(x => x.name == "Level 15").toString()} o **boostare** il server`)
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    let text = message.content.slice(1).trim()
+    if (!text) return
+
+    const voiceChannel = message.member.voice.channel
+    if (!voiceChannel) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Non sei in un canale vocale")
+            .setColor(colors.gray)
+            .setDescription("Per eseguire questo comando devi essere connesso a un canale vocale")
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Bot occupato")
+            .setColor(colors.gray)
+            .setDescription("Il bot è già occupato in un'altra stanza e non puoi utilizzarlo al momento")
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    if (text.length > 200) {
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Testo troppo lungo")
+            .setColor(colors.gray)
+            .setDescription("Puoi scrivere un testo solo fino a 200 caratteri")
+
+        return message.channel.send({ embeds: [embed] })
+    }
+
+    const connection = joinVoiceChannel({
+        channelId: message.member.voice.channel.id,
+        guildId: message.guild.id,
+        adapterCreator: message.guild.voiceAdapterCreator
+    })
+
+    let serverstats = await getServer()
+
+    const url = googleTTS.getAudioUrl(text, {
+        lang: serverstats.ttsDefaultLanguage,
+        slow: false,
+        host: 'https://translate.google.com',
+    });
+
+    addQueue(client, url, connection)
 })
