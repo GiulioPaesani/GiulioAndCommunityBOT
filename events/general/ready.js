@@ -40,7 +40,7 @@ module.exports = {
             setInterval(ttdCounter, 1000 * 60 * 20, client)
             setInterval(newStory, 1000, client)
             setInterval(checkModeration, 1000 * 60, client)
-            setInterval(subtractCooldown, 1000 * 5)
+            // setInterval(subtractCooldown, 1000 * 5)
         }
 
         await mongoose.connect(`mongodb+srv://giulioandcode:${process.env.passwordDb}@clustergiulioandcommuni.xqwnr.mongodb.net/GiulioAndCommunity?authSource=admin&replicaSet=atlas-5euq7x-shard-0&readPreference=primary&ssl=true`, {
