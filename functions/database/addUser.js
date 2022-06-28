@@ -1,11 +1,15 @@
 const { getUser } = require("../database/getUser")
 const Users = require("../../schemas/Users");
+const fs = require("fs")
 
 const addUser = async (member) => {
     if (!member) return
     if (member.bot) return
 
     let userstats = await getUser(member.id)
+
+    if (!userstats)
+        await fs.mkdirSync(`./database/users/${member.id}`)
 
     if (!userstats) {
         userstats = {
@@ -61,9 +65,7 @@ const addUser = async (member) => {
             invites: {}
         }
 
-        const user = new Users(userstats)
-
-        await user.save()
+        await fs.writeFileSync(`./database/users/${member.id}/${member.id}.json`, JSON.stringify(data))
     }
 
     return userstats

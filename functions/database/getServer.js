@@ -1,7 +1,8 @@
 const Servers = require("../../schemas/Servers");
+const fs = require("fs")
 
 const getServer = async () => {
-    const data = await Servers.findOne({});
+    let data = JSON.parse(fs.readFileSync('./database/server/server.json', 'utf8'))
 
     return data
 }

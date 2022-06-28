@@ -1,9 +1,12 @@
 const Users = require("../../schemas/Users");
+const fs = require("fs")
 
 const getUser = async (userId) => {
-    const data = await Users.findOne({ id: userId });
-
-    return data
+    try {
+        let data = JSON.parse(fs.readFileSync(`./database/users/${userId}.json`, 'utf8'))
+        return data
+    }
+    catch { }
 }
 
 module.exports = { getUser }
