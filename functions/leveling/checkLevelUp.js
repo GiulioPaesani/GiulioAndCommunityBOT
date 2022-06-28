@@ -42,11 +42,9 @@ const checkLevelUp = async (client, userstats) => {
             `Nuove **emoji**: ${getEmoji(client, "GiulioCringe")} ${getEmoji(client, "GiulioDomandoso")} ${getEmoji(client, "GiulioFesta")} ${getEmoji(client, "GiulioOcchioloni")} ${getEmoji(client, "GiulioPopCorn")} ${getEmoji(client, "GiulioSus")}`
         ],
         40: [
-            `Applicare **effetti bizzarri** alla musica che stai ascoltando con \`/effect\``,
             `Aggiungre altri **proprietari** alla tua stanza privata con \`/padmin\``
         ],
         50: [
-            `Fare il **karaoke** con le canzoni che stai ascoltando con \`/lyrics\``,
             `Nuove **emoji**: ${getEmoji(client, "GiulioCuoriBlue")} ${getEmoji(client, "GiulioEasy")} ${getEmoji(client, "GiulioF")} ${getEmoji(client, "GiulioNausea")} ${getEmoji(client, "GiulioRicco")} ${getEmoji(client, "GiulioSaiyan")} ${getEmoji(client, "GiulioSconvolto")}`
         ],
         60: [

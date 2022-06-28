@@ -34,11 +34,6 @@ module.exports = {
                     .setTitle("📊 INFORMATIONS commands 📊")
                     .setColor("#C5CED5")
             } break
-            case "music": {
-                embed
-                    .setTitle("🎵 MUSIC commands 🎵")
-                    .setColor("#58A3DE")
-            } break
             case "fun": {
                 embed
                     .setTitle("😂 FUN and GAMES commands 😂")
@@ -125,12 +120,6 @@ ${commands[i].description}
                 emoji: "📊",
                 value: "info",
                 description: "/serverinfo, /channelinfo, /link, /youtube, ..."
-            })
-            .addOptions({
-                label: "Music",
-                emoji: "🎵",
-                value: "music",
-                description: "/play, /queue, /shuffle, /lyrics, ..."
             })
             .addOptions({
                 label: "Fun and Games",

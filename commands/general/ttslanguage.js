@@ -10,7 +10,7 @@ module.exports = {
     permissionLevel: 0,
     requiredLevel: 0,
     syntax: "/ttslanguage [language]",
-    category: "music",
+    category: "general",
     data: {
         options: [
             {

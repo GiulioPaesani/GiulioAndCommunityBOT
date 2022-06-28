@@ -7,8 +7,6 @@ const addUser = async (member) => {
 
     let userstats = await getUser(member.id)
 
-    if (!userstats) fs.mkdirSync(`./database/users/${member.id}`).catch(() => { })
-
     if (!userstats) {
         userstats = {
             id: member.id || null,
@@ -63,7 +61,7 @@ const addUser = async (member) => {
             invites: {}
         }
 
-        await fs.writeFileSync(`./database/users/${member.id}/${member.id}.json`, JSON.stringify(userstats))
+        await fs.writeFileSync(`./database/users/${member.id}.json`, JSON.stringify(userstats))
     }
 
     return userstats

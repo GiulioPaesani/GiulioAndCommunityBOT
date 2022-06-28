@@ -93,7 +93,7 @@ for (const folder of autocompleteFolder) {
 }
 
 //Events Handler
-const eventsFolders = fs.readdirSync('./events').filter(x => x != "music");
+const eventsFolders = fs.readdirSync('./events')
 for (const folder of eventsFolders) {
     const eventsFiles = fs.readdirSync(`./events/${folder}`)
 
@@ -147,12 +147,7 @@ client.on("interactionCreate", async interaction => {
     }
 
     if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
-        if (comando.name == "poll" && interaction.user.id == settings.idCanaliServer.staffPolls) {
-
-        }
-        else {
-            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
-        }
+        return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
     }
 
     let serverstats = await getServer()

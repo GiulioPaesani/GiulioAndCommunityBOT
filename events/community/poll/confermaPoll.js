@@ -38,12 +38,15 @@ module.exports = {
             .setAuthor({ name: (interaction.member.nickname || interaction.user.username), iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
             .setTitle(`${interaction.customId.split(",")[3] == "ufficiale" ? "[OFFICIAL POLL]" : ""} ${interaction.message.embeds[0].fields[0].name}`)
             .addField("\u200b", interaction.message.embeds[0].fields[0].value.split("\n\n")[interaction.message.embeds[0].fields[0].value.split("\n\n").length == 1 ? 0 : 1].split("\n").map(x => x += ": **0** - 0%").join("\n"))
-            .setFooter({ text: `Poll close on ${interaction.message.channel.id != settings.idCanaliServer.staffPolls ? moment().add(timeout, "ms").format("DD MMM HH:mm") : ""}` })
+
+        if (interaction.customId.split(",")[3] != "staffpoll")
+            embed2.setFooter({ text: `Poll close on ${interaction.message.channel.id != settings.idCanaliServer.staffPolls ? moment().add(timeout, "ms").format("DD MMM HH:mm") : ""}` })
 
         if (interaction.message.embeds[0].fields[0].value.split("\n\n").length > 1)
             embed2.setDescription(interaction.message.embeds[0].fields[0].value.split("\n\n")[0])
 
         if (interaction.customId.split(",")[3] == "ufficiale") embed2.setColor(colors.purple)
+        if (interaction.customId.split(",")[3] == "staffpoll") embed2.setColor(colors.orange)
 
         let discordEmoji = await fetch("https://gist.githubusercontent.com/rigwild/1b509bf69e2a2391f44aa5de3f05b006/raw/e4b5bfa81ea3e7e51af1f5585964666115934631/discord_emojis.json")
         discordEmoji = await discordEmoji.json();
@@ -52,6 +55,11 @@ module.exports = {
             .then(msg => {
                 interaction.message.embeds[0].fields[0].value.split("\n\n")[interaction.message.embeds[0].fields[0].value.split("\n\n").length == 1 ? 0 : 1].split("\n").map(x => x.split(" ")[0]).forEach(reaction => {
                     msg.react(discordEmoji[reaction] || reaction)
+                });
+
+                msg.startThread({
+                    name: interaction.message.embeds[0].fields[0].name,
+                    autoArchiveDuration: "MAX",
                 });
             })
 

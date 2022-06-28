@@ -16,7 +16,7 @@ const checkUserLevelRole = async (client, userstats) => {
         if (utente.roles.cache.has(settings.ruoliLeveling[index]) && settings.ruoliLeveling[index] != ruoloDaAvere) await utente.roles.remove(settings.ruoliLeveling[index])
     }
 
-    if (!utente.roles.cache.has(ruoloDaAvere)) {
+    if (ruoloDaAvere && !utente.roles.cache.has(ruoloDaAvere)) {
         await utente.roles.add(ruoloDaAvere)
         /*>*/ console.log(`functions/checkLevelRoles.js > Aggiunta ruolo ruoloDaAvere > ${time_now}`);
     }

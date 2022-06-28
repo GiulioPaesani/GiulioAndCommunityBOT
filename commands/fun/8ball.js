@@ -29,7 +29,7 @@ module.exports = {
         }
 
         const answers = [
-            "È decisamento così",
+            "È decisamente così",
             "Senza dubbio",
             "Molto probabilmente",
             "Sì",

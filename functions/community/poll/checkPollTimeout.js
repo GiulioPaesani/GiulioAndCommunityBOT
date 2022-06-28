@@ -4,7 +4,7 @@ const colors = require("../../../config/general/colors.json")
 const { fetchAllMessages } = require("../../general/fetchAllMessages")
 
 const checkPollTimeout = async (client) => {
-    let channel = client.channels.cache.get(settings.idCanaliServer.polls)
+    let channel = client.channels.cache.get(.settings.idCanaliServerpolls)
 
     fetchAllMessages(channel)
         .then(async messages => {

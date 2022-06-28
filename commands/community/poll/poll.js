@@ -142,61 +142,44 @@ module.exports = {
             }
         }
 
-        if (interaction.channelId != settings.idCanaliServer.staffPolls) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Confermi il tuo sondaggio?")
-                .setColor(colors.yellow)
-                .setDescription(`**Confermi** il tuo sondaggio? Una volta accettato verrà pubblicato nel canale <#${settings.idCanaliServer.polls}>`)
-                .addField(domanda, (description || "") + "\n\n" + pollText)
-                .setFooter({ text: `Poll close on ${moment().add(timeout, "ms").format("DD MMM HH:mm")}` })
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Confermi il tuo sondaggio?")
+            .setColor(colors.yellow)
+            .setDescription(`**Confermi** il tuo sondaggio? Una volta accettato verrà pubblicato nel canale <#${settings.idCanaliServer.polls}>`)
+            .addField(domanda, (description || "") + "\n\n" + pollText)
+            .setFooter({ text: `Poll close on ${moment().add(timeout, "ms").format("DD MMM HH:mm")}` })
 
-            let button1 = new Discord.MessageButton()
-                .setLabel("Annulla")
-                .setStyle("DANGER")
-                .setCustomId(`annullaPoll,${interaction.user.id}`)
+        let button1 = new Discord.MessageButton()
+            .setLabel("Annulla")
+            .setStyle("DANGER")
+            .setCustomId(`annullaPoll,${interaction.user.id}`)
 
-            let button2 = new Discord.MessageButton()
-                .setLabel("Conferma")
-                .setStyle("SUCCESS")
-                .setCustomId(`confermaPoll,${interaction.user.id},${timeout}`)
+        let button2 = new Discord.MessageButton()
+            .setLabel("Conferma")
+            .setStyle("SUCCESS")
+            .setCustomId(`confermaPoll,${interaction.user.id},${timeout}`)
 
-            let button3 = new Discord.MessageButton()
-                .setLabel("Conferma come UFFICIALE")
-                .setStyle("SUCCESS")
-                .setCustomId(`confermaPoll,${interaction.user.id},${timeout},ufficiale`)
+        let button3 = new Discord.MessageButton()
+            .setLabel("Conferma come UFFICIALE")
+            .setStyle("SUCCESS")
+            .setCustomId(`confermaPoll,${interaction.user.id},${timeout},ufficiale`)
 
-            let row = new Discord.MessageActionRow()
-                .addComponents(button1)
-                .addComponents(button2)
+        let button4 = new Discord.MessageButton()
+            .setLabel("Conferma come STAFF POLL")
+            .setStyle("SUCCESS")
+            .setCustomId(`confermaPoll,${interaction.user.id},${timeout},staffpoll`)
 
-            if (getUserPermissionLevel(client, interaction.user.id) == 3) {
-                row.addComponents(button3)
-            }
+        let row = new Discord.MessageActionRow()
+            .addComponents(button1)
+            .addComponents(button2)
 
-            interaction.reply({ embeds: [embed], components: [row] })
+        if (getUserPermissionLevel(client, interaction.user.id) == 3) {
+            row.addComponents(button3)
         }
-        else {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("Confermi il tuo sondaggio staff?")
-                .setColor(colors.yellow)
-                .setDescription(`**Confermi** il tuo sondaggio staff? Una volta creato verrà pubblicato nel canale <#${settings.idCanaliServer.staffPolls}>`)
-                .addField(domanda, (description || "") + "\n\n" + pollText)
-
-            let button1 = new Discord.MessageButton()
-                .setLabel("Annulla")
-                .setStyle("DANGER")
-                .setCustomId(`annullaPoll,${interaction.user.id}`)
-
-            let button2 = new Discord.MessageButton()
-                .setLabel("Conferma")
-                .setStyle("SUCCESS")
-                .setCustomId(`confermaPoll,${interaction.user.id}`)
-
-            let row = new Discord.MessageActionRow()
-                .addComponents(button1)
-                .addComponents(button2)
-
-            interaction.reply({ embeds: [embed], components: [row] })
+        if (getUserPermissionLevel(client, interaction.user.id) >= 1) {
+            row.addComponents(button4)
         }
+
+        interaction.reply({ embeds: [embed], components: [row] })
     },
 };
