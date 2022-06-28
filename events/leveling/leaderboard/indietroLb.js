@@ -5,7 +5,7 @@ const { humanize } = require("../../../functions/general/humanize")
 const { getEmoji } = require("../../../functions/general/getEmoji")
 const { replyMessage } = require("../../../functions/general/replyMessage");
 const { getAllUsers } = require("../../../functions/database/getAllUsers");
-
+const time_now = new Date().toLocaleString();
 module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {

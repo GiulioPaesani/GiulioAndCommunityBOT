@@ -58,7 +58,7 @@ const checkLevelUp = async (client, userstats) => {
     let level = 0
 
     while (userstats.leveling.xp >= getXpNecessari(level + 1)) {
-        /*>*/ console.log(`functions/checkLevelUp.js > Inizio ciclo "for" calcolo level (${i}) > ${time_now}`);
+        /*>*/ console.log(`functions/checkLevelUp.js > Inizio ciclo "for" calcolo level (${level}) > ${time_now}`);
         level++
     }
 
