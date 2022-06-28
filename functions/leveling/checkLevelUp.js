@@ -7,6 +7,7 @@ const illustrations = require("../../config/general/illustrations.json")
 const { getXpNecessari } = require("../../functions/leveling/getXpNecessari")
 const { getEmoji } = require("../../functions/general/getEmoji")
 const { checkUserLevelRole } = require("../../functions/leveling/checkLevelRoles")
+const time_now = new Date().toLocaleString();
 
 const checkLevelUp = async (client, userstats) => {
     const privilegiLevel = {
@@ -52,29 +53,35 @@ const checkLevelUp = async (client, userstats) => {
             `Fare **scrivere** al bot ciò che si vuole in tutti i canali con \`/say\``
         ],
     }
+    /*>*/ console.log(`functions/checkLevelUp.js > Creazione array privilegi > ${time_now}`);
 
     let level = 0
 
     while (userstats.leveling.xp >= getXpNecessari(level + 1)) {
+        /*>*/ console.log(`functions/checkLevelUp.js > Inizio ciclo "for" calcolo level (${i}) > ${time_now}`);
         level++
     }
 
     if (userstats.leveling.level != level) {
         let textPrivilegi = `+${level * 10} Coins\n`
+        /*>*/ console.log(`functions/checkLevelUp.js > Aggiunta privilegio coins > ${time_now}`);
 
         if (settings.ruoliLeveling[level]) {
+            /*>*/ console.log(`functions/checkLevelUp.js > Aggiunta privilegio Ruolo leveling  > ${time_now}`);
             textPrivilegi += `Ruolo @Level ${level}\n`
         }
 
         if (privilegiLevel[level])
             privilegiLevel[level].forEach(privilegio => {
                 textPrivilegi += `${privilegio}\n`
+                /*>*/ console.log(`functions/checkLevelUp.js > Aggiunta privilegio ${privilegio} > ${time_now}`);
             })
 
         let textItems = ""
         items.forEach(item => {
             if (item.priviled && item.priviled == level) {
                 textItems += `${getEmoji(client, item.name.toLowerCase())} `
+                /*>*/ console.log(`functions/checkLevelUp.js > Aggiunta item privilegio ${item.name} > ${time_now}`);
             }
         })
         if (textItems != "")
@@ -82,6 +89,7 @@ const checkLevelUp = async (client, userstats) => {
 
         let nextPrivilegi;
         for (let i = level + 1; i <= parseInt(Object.keys(privilegiLevel)[Object.keys(privilegiLevel).length - 1]); i++) {
+            /*>*/ console.log(`functions/checkLevelUp.js > Inizio ciclo "for" calcolo nextPrivilegi (${i}) > ${time_now}`);
             if (!nextPrivilegi && privilegiLevel[i])
                 nextPrivilegi = i
         }
@@ -90,6 +98,7 @@ const checkLevelUp = async (client, userstats) => {
             userstats.leveling.livelliSuperati = {}
 
             for (let i = 1; i <= userstats.leveling.level; i++) {
+                /*>*/ console.log(`functions/checkLevelUp.js > Inizio ciclo "for" get livelli superati (${i}) > ${time_now}`);
                 userstats.leveling.livelliSuperati[i] = true
             }
         }
@@ -114,15 +123,18 @@ const checkLevelUp = async (client, userstats) => {
 
             let canvas = await createCanvas(400, 400)
             let ctx = await canvas.getContext('2d')
+                /*>*/ console.log(`functions/checkLevelUp.js > Creazione canvas > ${time_now}`);
 
             let img = await loadImage(illustrations.levelUp)
             ctx.drawImage(img, 0, 0, 400, 400)
+                /*>*/ console.log(`functions/checkLevelUp.js > Aggiunta immagine stella levelup a canvas > ${time_now}`);
 
             ctx.globalCompositeOperation = "source-in";
 
             if (level >= 5) {
                 ctx.fillStyle = levelColor[level];
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
+                /*>*/ console.log(`functions/checkLevelUp.js > Colorazione stella del colore del livello > ${time_now}`);
             }
 
             let embed = new Discord.MessageEmbed()
@@ -134,18 +146,24 @@ const checkLevelUp = async (client, userstats) => {
             if (nextPrivilegi)
                 embed.setFooter({ text: `Prossimi privilegi al livello ${nextPrivilegi}` })
 
+                /*>*/ console.log(`functions/checkLevelUp.js > Creo l'embed > ${time_now}`);
+
             client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                 .catch(() => { })
+            /*>*/ console.log(`functions/checkLevelUp.js > Mando il msg > ${time_now}`);
         }
 
-        if (!userstats.leveling.livelliSuperati[level])
+        if (!userstats.leveling.livelliSuperati[level]) {
             userstats.economy.money += level * 10
+            /*>*/ console.log(`functions/checkLevelUp.js > Aggiunta monete a utente > ${time_now}`);
+        }
+
 
         userstats.leveling.level = level
 
         userstats.leveling.livelliSuperati[level] = true
 
-        checkUserLevelRole(client, userstats)
+        checkUserLevelRole(client, userstats); /*>*/ console.log(`functions/checkLevelUp.js > Controllo ruoli leveling utente > ${time_now}`);
     }
 
     return userstats

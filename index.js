@@ -252,8 +252,12 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
+    const time_now = new Date().toLocaleString();
+
+    /*>*/ console.log(`index.js > Sto per calcolare se livello necessario > ${time_now}`);
     if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
-        return replyMessage(client, interaction, "InsufficientLevel", "", "", comando)
+        /*>*/ console.log(`index.js > Errore insufficient level > ${time_now}`);
+        return replyMessage(client, interaction, "InsufficientLevel", "", "", comando);
     }
 
     let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
