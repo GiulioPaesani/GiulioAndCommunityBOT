@@ -408,8 +408,10 @@ client.on("messageCreate", async message => {
 })
 
 
-let userstatsList = getAllUsers(client)
-userstatsList.filter(x => !x.economy.inventory).forEach(userstats => {
-    userstats.economy.inventory = {}
-    updateUser(userstats)
+client.on("ready", async () => {
+    let userstatsList = await getAllUsers(client)
+    userstatsList.filter(x => !x.economy.inventory).forEach(userstats => {
+        userstats.economy.inventory = {}
+        updateUser(userstats)
+    })
 })
