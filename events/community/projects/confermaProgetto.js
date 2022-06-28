@@ -31,7 +31,7 @@ Se ti va, fai una domanda per far comparire il tuo progetto nella nuova serie "I
             .setTitle(":newspaper: New project :newspaper: ")
             .setColor(colors.yellow)
             .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
-            .addField(":bust_in_silhouette: User", `${interaction.user.username} - ID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: User", `${interaction.user.username} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
             .addField(":label: Status", "Pending")
             .addField(":placard: Title", interaction.message.embeds[0].fields[0].name)
             .addField(":page_facing_up: Description", interaction.message.embeds[0].fields[0].value)

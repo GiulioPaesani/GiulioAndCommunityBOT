@@ -22,7 +22,7 @@ module.exports = {
             .setTitle("📊 Sondaggio creato 📊")
             .setColor(colors.green)
             .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
-            .setDescription(`Il tuo sondaggio è stato creato e pubblicato in <#${interaction.message.channel.id != settings.idCanaliServer.staffPolls ? settings.idCanaliServer.polls : settings.idCanaliServer.staffPolls}>`)
+            .setDescription(`Il tuo sondaggio è stato creato e pubblicato in <#${interaction.customId.split(",")[3] != "staffpoll" ? settings.idCanaliServer.polls : settings.idCanaliServer.staffPolls}>`)
             .addField(interaction.message.embeds[0].fields[0].name, interaction.message.embeds[0].fields[0].value)
 
         interaction.message.edit({ embeds: [embed], components: [], fetchReply: true })

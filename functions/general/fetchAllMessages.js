@@ -19,7 +19,7 @@ const fetchAllMessages = async (channel) => {
         }
     }
 
-    return allMessages;
+    return allMessages.reverse();
 }
 
 module.exports = { fetchAllMessages }

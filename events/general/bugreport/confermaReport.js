@@ -30,7 +30,7 @@ module.exports = {
             .setColor(colors.yellow)
             .setDescription(`[Message link](https://discord.com/channels/${interaction.message.guild.id}/${interaction.message.channel.id}/${interaction.message.id})`)
             .addField(":alarm_clock: Time", moment().format("ddd DD MMM YYYY, HH:mm:ss"), true)
-            .addField(":bust_in_silhouette: User", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: User", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
             .addField(":page_facing_up: Text", interaction.message.embeds[0].fields[0].value)
 
         client.channels.cache.get(log.general.bugReport).send({ embeds: [embed] });

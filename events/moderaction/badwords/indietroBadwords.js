@@ -31,7 +31,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(":zipper_mouth: Badwords")
             .setDescription(`Lista completa di tutte le espressioni proibite nel server
-Trovi l'elenco completo anche [QUI](https://github.com/GiulioPaesani/GiulioAndCommunityBOT/blob/main/config/moderation/badwords.json)
+Trovi l'elenco completo anche [QUI](https://github.com/GiulioPaesani/GiulioAndCommunityBOT/blob/master/config/moderation/badwords.json)
             
 :warning: _Se siete sensibili o deboli di cuore evitate di vedere questa lista_`)
             .addField("\u200b", `||${badwordsList}||`)

@@ -28,7 +28,7 @@ module.exports = {
             .setTitle(":love_letter: New question :love_letter:")
             .setColor(colors.yellow)
             .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
-            .addField(":bust_in_silhouette: User", `${interaction.user.username} - ID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: User", `${interaction.user.username} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
             .addField(":label: Status", "Pending")
             .addField(":page_facing_up: Text", interaction.message.embeds[0].fields[0].value)
 

@@ -136,7 +136,7 @@ module.exports = {
                 default: {
                     embed
                         .setTitle(":robot: Tutti i COMANDI :robot:")
-                        .setDescription(`Tutti i **comandi** disponibili all'interno di <@${client.user.id}> e di tutti gli altri BOT presenti nel server
+                        .setDescription(`Tutti i **comandi** disponibili all'interno di <@${client.user.id}>
     Per avere più dettagli del server leggi in <#${settings.idCanaliServer.info}>`)
                         .addField("Categorie", `
 I comandi sono divisi nelle seguenti categorie:
