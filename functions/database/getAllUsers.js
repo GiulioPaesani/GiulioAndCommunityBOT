@@ -1,5 +1,4 @@
 const settings = require("../../config/general/settings.json")
-const Users = require("../../schemas/Users");
 const fs = require("fs")
 
 const getAllUsers = async (client, onlyInGuild = true) => {

@@ -1,4 +1,3 @@
-const Servers = require("../../schemas/Servers");
 const fs = require("fs")
 
 const getServer = async () => {

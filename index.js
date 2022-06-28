@@ -17,6 +17,8 @@ const { getUserPermissionLevel } = require('./functions/general/getUserPermissio
 const { addQueue } = require("./functions/general/ttsQueue")
 const { hasSufficientLevels } = require('./functions/leveling/hasSufficientLevels');
 const { blockedChannels } = require("./functions/general/blockedChannels");
+const { getAllUsers } = require("./functions/database/getAllUsers");
+const { updateUser } = require("./functions/database/updateUser");
 registerFont("./assets/font/roboto.ttf", { family: "roboto" })
 registerFont("./assets/font/robotoBold.ttf", { family: "robotoBold" })
 
@@ -403,4 +405,11 @@ client.on("messageCreate", async message => {
     });
 
     addQueue(client, url, connection)
+})
+
+
+let userstatsList = getAllUsers(client)
+userstatsList.filter(x => !x.economy.inventory).forEach(userstats => {
+    userstats.economy.inventory = {}
+    updateUser(userstats)
 })

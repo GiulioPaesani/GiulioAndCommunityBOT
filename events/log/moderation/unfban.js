@@ -37,7 +37,7 @@ module.exports = {
             .addField(":brain: Executor", `${logs.executor.toString()} - ${logs.executor.tag}\nID: ${logs.executor.id}`, false)
             .addField(":bust_in_silhouette: Member", `${logs.target.toString()} - ${logs.target.tag}\nID: ${logs.target.id}`, false)
 
-        if (userstats.moderation.type == "Forcebanned") {
+        if (userstats.moderation.type == "Forcebanned" && !logs.target.bot) {
             embed
                 .addField(":page_facing_up: Ban reason", userstats.moderation.reason || "No reason", false)
                 .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`, false)

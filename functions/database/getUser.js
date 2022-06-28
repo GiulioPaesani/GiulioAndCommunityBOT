@@ -1,4 +1,3 @@
-const Users = require("../../schemas/Users");
 const fs = require("fs")
 
 const getUser = async (userId) => {

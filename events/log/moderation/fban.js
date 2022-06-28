@@ -36,6 +36,8 @@ module.exports = {
 
         client.channels.cache.get(log.moderation.forceban).send({ embeds: [embed] })
 
+        if (logs.target.bot) return
+
         let userstats = await getUser(logs.target.id)
         if (!userstats) userstats = await addUser(ban.guild.members.cache.get(logs.target.id) || logs.target)
 

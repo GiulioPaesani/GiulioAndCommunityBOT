@@ -41,6 +41,8 @@ module.exports = {
         let userstats = await getUser(utente.id); /*>*/ console.log(`rank.js > Ottengo userstats utente > ${time_now}`);
         if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente); /*>*/ console.log(`rank.js > Aggiungo userstats utente > ${time_now}`);
 
+        console.log(userstats)
+
         let xpProgress = ""
         let numEmoji = 8;
         let maxValue = getXpNecessari(userstats.leveling.level + 1) - getXpNecessari(userstats.leveling.level); /*>*/ console.log(`rank.js > Calcolo mazValue > ${time_now}`);

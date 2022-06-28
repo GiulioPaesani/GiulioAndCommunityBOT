@@ -38,6 +38,8 @@ module.exports = {
 
         client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
 
+        if (logs.target.bot) return
+
         let userstats = await getUser(logs.target.id)
         if (!userstats) userstats = await addUser(member.guild.members.cache.get(logs.target.id) || logs.target)
 

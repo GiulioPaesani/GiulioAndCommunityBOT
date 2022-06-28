@@ -1,5 +1,4 @@
 const { getUser } = require("../database/getUser")
-const Users = require("../../schemas/Users");
 const fs = require("fs")
 
 const addUser = async (member) => {
@@ -8,8 +7,7 @@ const addUser = async (member) => {
 
     let userstats = await getUser(member.id)
 
-    if (!userstats)
-        await fs.mkdirSync(`./database/users/${member.id}`)
+    if (!userstats) fs.mkdirSync(`./database/users/${member.id}`).catch(() => { })
 
     if (!userstats) {
         userstats = {
@@ -65,7 +63,7 @@ const addUser = async (member) => {
             invites: {}
         }
 
-        await fs.writeFileSync(`./database/users/${member.id}/${member.id}.json`, JSON.stringify(data))
+        await fs.writeFileSync(`./database/users/${member.id}/${member.id}.json`, JSON.stringify(userstats))
     }
 
     return userstats

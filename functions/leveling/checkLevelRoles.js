@@ -12,7 +12,7 @@ const checkUserLevelRole = async (client, userstats) => {
     if (!utente) return
 
     for (let index in settings.ruoliLeveling) {
-        /*>*/ console.log(`functions/checkLevelRoles.js > Inizio ciclo "for" rimozione ruoli non necessari (${i}) > ${time_now}`);
+        /*>*/ console.log(`functions/checkLevelRoles.js > Inizio ciclo "for" rimozione ruoli non necessari (${index}) > ${time_now}`);
         if (utente.roles.cache.has(settings.ruoliLeveling[index]) && settings.ruoliLeveling[index] != ruoloDaAvere) await utente.roles.remove(settings.ruoliLeveling[index])
     }
 

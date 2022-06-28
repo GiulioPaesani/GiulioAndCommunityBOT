@@ -1,4 +1,3 @@
-const Users = require("../../schemas/Users");
 const { getUser } = require("../../functions/database/getUser");
 const fs = require("fs")
 
