@@ -51,7 +51,7 @@ module.exports = {
         let discordEmoji = await fetch("https://gist.githubusercontent.com/rigwild/1b509bf69e2a2391f44aa5de3f05b006/raw/e4b5bfa81ea3e7e51af1f5585964666115934631/discord_emojis.json")
         discordEmoji = await discordEmoji.json();
 
-        client.channels.cache.get(interaction.message.channel.id != settings.idCanaliServer.staffPolls ? settings.idCanaliServer.polls : settings.idCanaliServer.staffPolls).send({ embeds: [embed2], fetchReply: true })
+        client.channels.cache.get(interaction.customId.split(",")[3] != "staffpoll" ? settings.idCanaliServer.polls : settings.idCanaliServer.staffPolls).send({ embeds: [embed2], fetchReply: true })
             .then(msg => {
                 interaction.message.embeds[0].fields[0].value.split("\n\n")[interaction.message.embeds[0].fields[0].value.split("\n\n").length == 1 ? 0 : 1].split("\n").map(x => x.split(" ")[0]).forEach(reaction => {
                     msg.react(discordEmoji[reaction] || reaction)

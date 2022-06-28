@@ -173,13 +173,15 @@ module.exports = {
             .addComponents(button1)
             .addComponents(button2)
 
+        let row2 = new Discord.MessageActionRow()
+
         if (getUserPermissionLevel(client, interaction.user.id) == 3) {
-            row.addComponents(button3)
+            row2.addComponents(button3)
         }
         if (getUserPermissionLevel(client, interaction.user.id) >= 1) {
-            row.addComponents(button4)
+            row2.addComponents(button4)
         }
 
-        interaction.reply({ embeds: [embed], components: [row] })
+        interaction.reply({ embeds: [embed], components: getUserPermissionLevel(client, interaction.user.id) >= 1 ? [row, row2] : [row] })
     },
 };

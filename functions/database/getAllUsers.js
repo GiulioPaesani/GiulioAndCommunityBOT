@@ -8,7 +8,6 @@ const getAllUsers = async (client, onlyInGuild = true) => {
 
     const folder = fs.readdirSync("./database/users/");
     for (const user of folder) {
-        console.log(user)
         if (onlyInGuild) {
             if (guildUsers.find(x => x.id == user.split(".")[0])) {
                 data.push(JSON.parse(fs.readFileSync(`./database/users/${user}`, 'utf8')))
