@@ -3,7 +3,7 @@ const time_now = new Date().toLocaleString();
 
 const checkUserLevelRole = async (client, userstats) => {
     let ruoloDaAvere
-    for (let i = userstats.leveling.level; !ruoloDaAvere; i--) {
+    for (let i = userstats.leveling.level; !ruoloDaAvere && i > 0; i--) {
         /*>*/ console.log(`functions/checkLevelRoles.js > Inizio ciclo "for" calcolo ruoloDaAvere (${i}) > ${time_now}`);
         if (settings.ruoliLeveling[i]) ruoloDaAvere = settings.ruoliLeveling[i]
     }
