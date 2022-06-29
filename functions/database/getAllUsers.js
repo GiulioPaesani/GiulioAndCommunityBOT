@@ -10,13 +10,19 @@ const getAllUsers = async (client, onlyInGuild = true) => {
     for (const user of folder) {
         if (onlyInGuild) {
             if (guildUsers.find(x => x.id == user.split(".")[0])) {
-                let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8').catch(() => { console.log("ERRORE USER" + user) })
+                let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
 
                 data.push(JSON.parse(userstats))
             }
         }
         else {
-            let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8').catch(() => { console.log("ERRORE USER" + user) })
+            try {
+                let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
+
+            }
+            catch {
+                console.log("USER -" + user)
+            }
 
             data.push(JSON.parse(userstats))
         }
