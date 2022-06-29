@@ -8,7 +8,8 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance");
 module.exports = {
     name: `roleDelete`,
     async execute(client, role) {
-        if (isMaintenance()) return
+        const maintenanceStates = await isMaintenance()
+        if (maintenanceStates) return
 
         if (role.guild.id != settings.idServer) return
 

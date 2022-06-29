@@ -102,7 +102,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                 .addField(":wastebasket: Warns deleted", warnsDeletedList)
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
         }
         else {
@@ -133,7 +134,8 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                 .addField(":wastebasket: Warns deleted", warnsList)
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.moderation.clearinfractions).send({ embeds: [embed] })
         }
     },

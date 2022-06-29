@@ -14,7 +14,8 @@ const { addUser } = require("../../functions/database/addUser")
 module.exports = {
     name: "guildMemberAdd",
     async execute(client, member) {
-        if (isMaintenance(member.user.id)) return
+        const maintenanceStates = await isMaintenance(member.user.id)
+        if (maintenanceStates) return
 
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return
@@ -56,7 +57,8 @@ module.exports = {
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
                 .addField(":shirt: Roles", roles || "_No roles_")
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
             if (invite) {

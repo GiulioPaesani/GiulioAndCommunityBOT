@@ -56,7 +56,7 @@ Trovi l'elenco completo anche [QUI](https://github.com/GiulioPaesani/GiulioAndCo
             .addComponents(button2)
 
         interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 setTimeout(() => msg.delete(), 1000 * 60)
             })
     },

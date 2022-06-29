@@ -8,7 +8,8 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.author.bot) return
         if (message.channel.type == "DM") return
@@ -23,7 +24,7 @@ module.exports = {
         if (!message.content) return
 
         client.channels.cache.get(log.community.qna).messages.fetch(message.reference.messageId)
-            .then(msg => {
+            .then(async msg => {
                 let utente = client.guilds.cache.get(settings.idServer).members.cache.get(msg.embeds[0].fields[0].value.slice(msg.embeds[0].fields[0].value.length - 18))
                 if (!utente) return
 

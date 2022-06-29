@@ -17,7 +17,8 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "apriVoiceRoom") return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         let userstats = await getUser(interaction.user.id)
         if (!userstats) userstats = await addUser(interaction.member)
@@ -56,8 +57,8 @@ module.exports = {
             ],
             parent: client.channels.cache.get(interaction.channelId).parentId,
         })
-            .then(channel => {
-                interaction.deferUpdate()
+            .then(async channel => {
+                await interaction.deferUpdate()
                     .catch(() => { })
 
                 serverstats.privateRooms.push({
@@ -87,7 +88,8 @@ module.exports = {
                     .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                     .addField(":placard: Type", `Voice`)
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
             })
             .catch(() => {

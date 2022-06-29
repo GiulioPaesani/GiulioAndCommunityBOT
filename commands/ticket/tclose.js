@@ -49,7 +49,7 @@ module.exports = {
         }
 
         client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-            .then(msg => {
+            .then(async msg => {
                 let button1 = new Discord.MessageButton()
                     .setLabel("In chiusura...")
                     .setStyle("DANGER")
@@ -76,7 +76,7 @@ module.exports = {
             .addComponents(button1)
 
         interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = true;
                 updateServer(serverstats)
 
@@ -114,7 +114,8 @@ module.exports = {
                                 if (chatLog != "")
                                     attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `ticket-${ticket.channel}-${new Date().getTime()}.txt`);
 
-                                if (!isMaintenance())
+                                const maintenanceStatus = await isMaintenance()
+                                if (!maintenanceStatus)
                                     client.channels.cache.get(log.community.ticket).send({ embeds: [embed2], files: attachment1 ? [attachment1] : [] })
 
                                 embed.setDescription("Questo ticket si sta per chiudere")

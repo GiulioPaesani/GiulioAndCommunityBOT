@@ -162,7 +162,7 @@ _Version: \`Discord.js v13\`_`)
             }
 
             utente.send({ embeds: [embed], components: tooLong ? [row] : [] })
-                .then(() => {
+                .then(async () => {
                     replyMessage(client, interaction, "Correct", "Ecco il codice", `Il codice di **${codice.name.toUpperCase()}** è stato mandato in privato a ${utente.toString()}`, comando)
                 })
                 .catch(() => {

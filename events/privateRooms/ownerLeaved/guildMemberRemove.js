@@ -7,7 +7,8 @@ const { getServer } = require("../../../functions/database/getServer")
 module.exports = {
     name: "guildMemberRemove",
     async execute(client, member) {
-        if (isMaintenance(member.user.id)) return
+        const maintenanceStates = await isMaintenance(member.user.id)
+        if (maintenanceStates) return
 
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return

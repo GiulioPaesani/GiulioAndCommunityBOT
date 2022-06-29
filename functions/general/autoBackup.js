@@ -203,7 +203,7 @@ const autoBackup = async (client) => {
         .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
 
     client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, attachmentServerstats, attachmentUserstats] })
-        .then(() => {
+        .then(async () => {
             fs.unlinkSync(`./database${time}.zip`)
         })
 }

@@ -87,7 +87,8 @@ module.exports = {
             .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
             .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()

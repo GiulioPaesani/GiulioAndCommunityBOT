@@ -12,7 +12,8 @@ const { getAllUsers } = require("../../functions/database/getAllUsers")
 module.exports = {
     name: "guildMemberRemove",
     async execute(client, member) {
-        if (isMaintenance(member.user.id)) return
+        const maintenanceStates = await isMaintenance(member.user.id)
+        if (maintenanceStates) return
 
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return
@@ -42,7 +43,8 @@ module.exports = {
             .addField(":red_car: Joined server", `${moment(member.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.joinedTimestamp).fromNow()})`)
             .addField(":shirt: Roles", roles || "_No roles_")
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
         let userstatsList = await getAllUsers(client)

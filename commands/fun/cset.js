@@ -50,7 +50,7 @@ module.exports = {
             client.channels.cache.get(settings.idCanaliServer.counting).send({ embeds: [embed] })
 
         client.channels.cache.get(settings.idCanaliServer.counting).send(count.toString())
-            .then(msg => {
+            .then(async msg => {
                 msg.react("🟢")
             })
     },

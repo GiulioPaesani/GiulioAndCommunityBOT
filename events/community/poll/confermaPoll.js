@@ -10,11 +10,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("confermaPoll")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -26,7 +27,7 @@ module.exports = {
             .addField(interaction.message.embeds[0].fields[0].name, interaction.message.embeds[0].fields[0].value)
 
         interaction.message.edit({ embeds: [embed], components: [], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 if (interaction.message.channel.id == settings.idCanaliServer.staffPolls) {
                     setTimeout(() => msg.delete(), 1000 * 10)
                 }
@@ -52,7 +53,7 @@ module.exports = {
         discordEmoji = await discordEmoji.json();
 
         client.channels.cache.get(interaction.customId.split(",")[3] != "staffpoll" ? settings.idCanaliServer.polls : settings.idCanaliServer.staffPolls).send({ embeds: [embed2], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 interaction.message.embeds[0].fields[0].value.split("\n\n")[interaction.message.embeds[0].fields[0].value.split("\n\n").length == 1 ? 0 : 1].split("\n").map(x => x.split(" ")[0]).forEach(reaction => {
                     msg.react(discordEmoji[reaction] || reaction)
                 });

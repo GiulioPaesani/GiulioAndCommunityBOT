@@ -7,7 +7,8 @@ module.exports = {
     name: "messageReactionAdd",
     async execute(client, messageReaction, user) {
         if (user.bot) return
-        if (isMaintenance(user.id)) return
+        const maintenanceStates = await isMaintenance(user.id)
+        if (maintenanceStates) return
         if (getUserPermissionLevel(client, user.id) == 3) return
 
         if (messageReaction.message.channel.id == settings.idCanaliServer.polls) return

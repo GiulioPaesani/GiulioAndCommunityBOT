@@ -12,7 +12,8 @@ const { updateUser } = require('../../../functions/database/updateUser');
 module.exports = {
     name: `guildBanRemove`,
     async execute(client, ban) {
-        if (isMaintenance()) return
+        const maintenanceStates = await isMaintenance()
+        if (maintenanceStates) return
 
         if (ban.guild.id != settings.idServer) return
 

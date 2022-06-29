@@ -25,7 +25,7 @@ client.on("messageCreate", message => {
 
 client.on("interactionCreate", interaction => {
     if (interaction.customId == "apriTicket") {
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
         if (interaction.guild.channels.cache.find(canale => canale.topic == \`User ID: \${interaction.user.id}\`)) {
             interaction.user.send("Hai gia un ticket aperto").catch(() => { })
             return

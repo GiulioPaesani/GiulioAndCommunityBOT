@@ -9,11 +9,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("confermaClear")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -44,7 +45,7 @@ module.exports = {
                 .setDescription(deletedMessages.size < count ? `Messaggi eliminati: **${deletedMessages.size}**` : `Sono stati eliminati **${deletedMessages.size}** messaggi`)
 
             interaction.message.edit({ embeds: [embed] })
-                .then(msg => {
+                .then(async msg => {
                     if (deletedMessages.size >= count)
                         setTimeout(() => msg.delete(), 5000)
                 })
@@ -67,7 +68,8 @@ module.exports = {
                     .addField(":anchor: Channel", `${interaction.channel.toString()} - #${interaction.channel.name}\nID: ${interaction.channelId}`)
                     .addField(":incoming_envelope: Messages deleted", deletedMessages.size.toString())
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.moderation.clear).send({ embeds: [embed], files: attachment1 ? [attachment1] : [] })
             }
         }

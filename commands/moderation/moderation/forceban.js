@@ -79,12 +79,13 @@ module.exports = {
                 .addComponents(button1)
 
             interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-                .then(msg => {
+                .then(async msg => {
                     const collector = msg.createMessageComponentCollector();
 
                     collector.on('collect', async i => {
                         if (!i.isButton()) return
-                        if (isMaintenance(i.user.id)) return
+                        const maintenanceStates = await isMaintenance(i.user.id)
+                        if (maintenanceStates) return
 
                         i.deferUpdate().catch(() => { })
 
@@ -143,7 +144,8 @@ module.exports = {
                             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                             .addField(":page_facing_up: Reason", reason)
 
-                        if (!isMaintenance())
+                        const maintenanceStatus = await isMaintenance()
+                        if (!maintenanceStatus)
                             client.channels.cache.get(log.moderation.forceban).send({ embeds: [embed] })
 
                         embed = new Discord.MessageEmbed()
@@ -206,7 +208,8 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
             .addField(":page_facing_up: Reason", reason)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.moderation.forceban).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()

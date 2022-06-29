@@ -52,7 +52,7 @@ module.exports = {
     channelsGranted: [],
     async execute(client, interaction, comando) {
         client.channels.cache.get(interaction.channelId).messages.fetch(interaction.options.getString("message"))
-            .then(msg => {
+            .then(async msg => {
                 if (!msg || !msg.content) {
                     return replyMessage(client, interaction, "Error", "Messaggio non trovato", "Inserisci l'ID di un messaggio valido", comando)
                 }
@@ -85,9 +85,10 @@ module.exports = {
                     .then(msg2 => {
                         const collector = msg2.createMessageComponentCollector();
 
-                        collector.on('collect', i => {
+                        collector.on('collect', async i => {
                             if (!i.isButton()) return
-                            if (isMaintenance(i.user.id)) return
+                            const maintenanceStates = await isMaintenance(i.user.id)
+                            if (maintenanceStates) return
 
                             i.deferUpdate().catch(() => { })
 
@@ -110,7 +111,7 @@ module.exports = {
                                 msg2.edit({ embeds: [embed], components: [] })
 
                                 client.channels.cache.get(channel).send({ content: `${title}\n${msg.content}\n<@&${role}>`, files: Array.from(msg.attachments.values()).reverse() })
-                                    .then(msg => {
+                                    .then(async msg => {
                                         msg.crosspost().catch(() => { })
                                     })
                             }

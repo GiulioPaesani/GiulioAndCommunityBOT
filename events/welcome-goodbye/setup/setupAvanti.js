@@ -9,9 +9,10 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "setupAvanti") return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         switch (interaction.customId.split(",")[1]) {
             case "1": {

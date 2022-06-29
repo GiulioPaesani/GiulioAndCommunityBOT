@@ -9,13 +9,14 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("approvaDomanda")) return
 
         if (getUserPermissionLevel(client, interaction.user.id) < 3) return replyMessage(client, interaction, "NonPermesso", "", "Non hai il permesso di approvare una domanda")
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.slice(interaction.message.embeds[0].fields[0].value.length - 18))
         if (!utente) return
@@ -27,7 +28,7 @@ module.exports = {
             .setDescription("_Domanda non ancora risposta_")
 
         client.channels.cache.get(settings.idCanaliServer.qna).send({ embeds: [embed] })
-            .then(msg => {
+            .then(async msg => {
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":love_letter: Domanda ACCETTATA")
                     .setColor(colors.green)

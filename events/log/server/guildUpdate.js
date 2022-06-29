@@ -8,7 +8,8 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance");
 module.exports = {
     name: `guildUpdate`,
     async execute(client, oldGuild, newGuild) {
-        if (isMaintenance()) return
+        const maintenanceStates = await isMaintenance()
+        if (maintenanceStates) return
 
         if (newGuild.id != settings.idServer) return
 

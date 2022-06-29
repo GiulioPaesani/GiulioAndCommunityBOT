@@ -17,9 +17,10 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "verifica") return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         let userstats = await getUser(interaction.user.id)
         if (userstats && userstats.joinedAt) return
@@ -78,7 +79,8 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
                 .addField(":pencil: Account created", `${moment(interaction.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(interaction.user.createdAt).fromNow()})`)
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
             let userstats = await getUser(interaction.user.id)

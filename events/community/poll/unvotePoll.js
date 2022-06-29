@@ -5,7 +5,8 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 module.exports = {
     name: `messageReactionRemove`,
     async execute(client, messageReaction, user) {
-        if (isMaintenance(user.id) && user.id != client.user.id) return
+        const maintenanceStates = await isMaintenance(user.id)
+        if (maintenanceStates && user.id != client.user.id) return
 
         if (messageReaction.message.partial) await messageReaction.message.fetch();
 

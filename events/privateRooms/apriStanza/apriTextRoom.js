@@ -17,7 +17,8 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "apriTextRoom") return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         let userstats = await getUser(interaction.user.id)
         if (!userstats) userstats = await addUser(interaction.member)
@@ -57,8 +58,8 @@ module.exports = {
             parent: client.channels.cache.get(interaction.channelId).parentId,
             topic: `Text room by **${interaction.user.username}**`
         })
-            .then(channel => {
-                interaction.deferUpdate()
+            .then(async channel => {
+                await interaction.deferUpdate()
                     .catch(() => { })
 
                 let embed = new Discord.MessageEmbed()
@@ -110,7 +111,8 @@ Per ogni comando è necessario specificare a quali stanza si vuole applicare
                     .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                     .addField(":placard: Type", `Text`)
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
             })
             .catch(() => {

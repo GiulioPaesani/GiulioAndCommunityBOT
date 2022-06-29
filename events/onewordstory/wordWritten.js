@@ -18,7 +18,8 @@ module.exports = {
     async execute(client, message) {
         if (message.type == "CHANNEL_PINNED_MESSAGE" && message.channel.id == settings.idCanaliServer.onewordstory) message.delete()
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.onewordstory) return
         if (message.author.bot) return

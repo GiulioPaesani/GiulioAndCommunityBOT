@@ -5,7 +5,8 @@ const { getEmoji } = require("../../functions/general/getEmoji");
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id) && !message.author.bot) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates && !message.author.bot) return
         if (message.guild?.id != settings.idServer) return
 
         if (message.channel.id == settings.idCanaliServer.onewordstory) return

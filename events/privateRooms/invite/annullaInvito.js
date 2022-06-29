@@ -11,9 +11,10 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("annullaInvito")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
             .catch(() => { })
 
         let serverstats = await getServer()

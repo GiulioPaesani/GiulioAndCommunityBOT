@@ -13,7 +13,8 @@ module.exports = {
     async execute(client, message) {
         if (!message.author) return
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.countingplus) return
 
@@ -37,7 +38,7 @@ module.exports = {
         message.channel.send({ embeds: [embed] })
 
         message.channel.send(numero.toString())
-            .then(msg => {
+            .then(async msg => {
                 msg.react("🟢");
             })
 

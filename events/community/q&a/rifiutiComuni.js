@@ -11,11 +11,12 @@ module.exports = {
         if (!interaction.isSelectMenu()) return
         if (!interaction.customId.startsWith("rifiutiComuniDomande")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (getUserPermissionLevel(client, interaction.user.id) < 3) return replyMessage(client, interaction, "NonPermesso", "", "Non hai il permesso di rifiutare una domanda")
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.slice(interaction.message.embeds[0].fields[0].value.length - 18))
         if (!utente) return

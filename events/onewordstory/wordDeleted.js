@@ -13,7 +13,8 @@ module.exports = {
     async execute(client, message) {
         if (!message.author) return
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.onewordstory) return
 

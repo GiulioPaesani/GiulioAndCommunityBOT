@@ -85,7 +85,8 @@ module.exports = {
             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
             .addField(":page_facing_up: Reason", reason)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.moderation.warn).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()
@@ -113,7 +114,7 @@ module.exports = {
 
             if (interaction.guild.members.cache.get(utente.id)) {
                 interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
-                    .then(() => {
+                    .then(async () => {
                         if (interaction.guild.members.cache.get(utente.id).voice?.channelId) {
                             let canale = interaction.guild.members.cache.get(utente.id).voice.channelId
                             if (canale == settings.idCanaliServer.general1)
@@ -170,7 +171,8 @@ module.exports = {
                 .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
                 .addField(":page_facing_up: Reason", reason)
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
             embed = new Discord.MessageEmbed()

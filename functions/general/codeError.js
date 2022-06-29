@@ -10,9 +10,10 @@ const codeError = async (client, err) => {
 
     if (err.stack) err = err.stack
 
-    if (err.includes(":100:")) err = err.replace(/:100:/g, '\:100:');
+    if (err.includes(":100:")) err = err.replace(/:100:/g, '\:100:')
 
-    if (!isMaintenance()) {
+    const maintenanceStatus = await isMaintenance()
+    if (!maintenanceStatus) {
         let channel = client.channels.cache.get(log.general.codeErrors)
         if (!channel) return
 

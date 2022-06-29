@@ -30,7 +30,7 @@ ${descriptionVideo}
 https://youtu.be/${idVideo}
 <@&${settings.ruoliNotification.youtubeVideosCode}>
                 `)
-                                .then(msg => {
+                                .then(async msg => {
                                     msg.crosspost()
                                 })
                         })
@@ -64,7 +64,7 @@ ${descriptionVideo}
 https://youtu.be/${idVideo}
 <@&${settings.ruoliNotification.youtubeVideosGiulio}>
                 `)
-                            .then(msg => {
+                            .then(async msg => {
                                 msg.crosspost()
                             })
                     })

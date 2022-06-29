@@ -65,7 +65,7 @@ module.exports = {
             .addComponents(button1)
 
         interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 serverstats.privateRooms[serverstats.privateRooms.findIndex(x => x.channel == room.channel)].daEliminare = true;
                 updateServer(serverstats)
 
@@ -113,7 +113,8 @@ module.exports = {
                                 if (chatLog != "")
                                     attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `room-${room.channel}-${new Date().getTime()}.txt`);
 
-                                if (!isMaintenance())
+                                const maintenanceStatus = await isMaintenance()
+                                if (!maintenanceStatus)
                                     client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed2], files: attachment1 ? [attachment1] : [] })
 
                                 embed

@@ -17,7 +17,8 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "apriTicket") return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         let serverstats = await getServer()
         if (interaction.channelId == settings.idCanaliServer.support) {
@@ -51,8 +52,8 @@ module.exports = {
                 ],
                 parent: client.channels.cache.get(interaction.channelId).parentId
             })
-                .then((canale) => {
-                    interaction.deferUpdate()
+                .then(async canale => {
+                    await interaction.deferUpdate()
                         .catch(() => { })
 
                     let embed = new Discord.MessageEmbed()
@@ -95,7 +96,8 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
                         .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                         .addField(":placard: Type", `Normal`)
 
-                    if (!isMaintenance())
+                    const maintenanceStatus = await isMaintenance()
+                    if (!maintenanceStatus)
                         client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
                 })
         }
@@ -137,8 +139,8 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
                 ],
                 parent: client.channels.cache.get(interaction.channelId).parentId
             })
-                .then((canale) => {
-                    interaction.deferUpdate()
+                .then(async canale => {
+                    await interaction.deferUpdate()
                         .catch(() => { })
 
                     let embed = new Discord.MessageEmbed()
@@ -191,7 +193,8 @@ _Non è possibile chiedere aiuto nella programmazione nei ticket_`)
                         .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                         .addField(":placard: Type", `Moderation - ${interaction.channelId == settings.idCanaliServer.mutedTicket ? "Mute" : interaction.channelId == settings.idCanaliServer.tempmutedTicket ? "Tempmute" : interaction.channelId == settings.idCanaliServer.bannedTicket ? "Ban" : interaction.channelId == settings.idCanaliServer.tempbannedTicket ? "Tempban" : ""}`)
 
-                    if (!isMaintenance())
+                    const maintenanceStatus = await isMaintenance()
+                    if (!maintenanceStatus)
                         client.channels.cache.get(log.community.ticket).send({ embeds: [embed2] })
                 });
         }

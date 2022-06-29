@@ -5,7 +5,8 @@ const { updateServer } = require("../../../functions/database/updateServer");
 module.exports = {
     name: `voiceStateUpdate`,
     async execute(client, oldMember, newMember) {
-        if (isMaintenance(newMember.id)) return
+        const maintenanceStates = await isMaintenance(newMember.id)
+        if (maintenanceStates) return
 
         let serverstats = await getServer()
         let room = serverstats.privateRooms.find(x => x.channel == newMember.channelId)

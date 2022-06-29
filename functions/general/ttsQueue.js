@@ -29,8 +29,9 @@ const ttsPlay = (client, connection) => {
         }
     });
 
-    client.once("voiceStateUpdate", (oldState, newState) => {
-        if (isMaintenance(newState.id)) return
+    client.once("voiceStateUpdate", async (oldState, newState) => {
+        const maintenanceStates = await isMaintenance(newState.id)
+        if (maintenanceStates) return
 
         if (newState.guild.id != settings.idServer) return
 

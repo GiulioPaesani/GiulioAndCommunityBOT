@@ -7,11 +7,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("approvaProgetto")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.slice(interaction.message.embeds[0].fields[0].value.length - 18))
         if (!utente) return
@@ -47,7 +48,7 @@ module.exports = {
         }
 
         client.channels.cache.get(settings.idCanaliServer.ourProjects).send({ embeds: [embed], components: row.components.length > 0 ? [row] : [] })
-            .then(msg => {
+            .then(async msg => {
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":newspaper: Progetto ACCETTATO")
                     .setColor(colors.green)

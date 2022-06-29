@@ -130,7 +130,8 @@ process.on("unhandledRejection", err => {
 client.on("interactionCreate", async interaction => {
     if (!interaction.isCommand()) return
 
-    if (isMaintenance(interaction.user.id)) return
+    const maintenanceStatus = await isMaintenance(interaction.user.id)
+    if (maintenanceStatus) return
 
     let userstats = await getUser(interaction.user.id)
     if (!userstats) userstats = await addUser(interaction.member)
@@ -212,7 +213,8 @@ client.on("interactionCreate", async interaction => {
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
         }
 
-        if (!isMaintenance()) {
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus) {
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
         }
 
@@ -242,7 +244,8 @@ client.on("interactionCreate", async interaction => {
             })
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-            if (!isMaintenance()) {
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus) {
                 client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
             }
             return
@@ -277,7 +280,7 @@ client.on("interactionCreate", async interaction => {
         interaction.deleteReply()
 
         client.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
-            .then(msg => {
+            .then(async msg => {
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":sweat_drops: Badwords :sweat_drops:")
                     .setColor(colors.purple)
@@ -288,7 +291,8 @@ client.on("interactionCreate", async interaction => {
                     .addField(":anchor: Channel", `${client.channels.cache.get(interaction.channelId).toString()} - #${client.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
                     .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
@@ -315,7 +319,8 @@ client.on("interactionCreate", async interaction => {
             .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
             .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
@@ -335,7 +340,8 @@ client.on("interactionCreate", async interaction => {
 client.on("messageCreate", async message => {
     if (message.author.bot) return
 
-    if (isMaintenance(message.author.id)) return
+    const maintenanceStates = await isMaintenance(message.author.id)
+    if (maintenanceStates) return
 
     if (message.channel.id != settings.idCanaliServer.noMicChat) return
 

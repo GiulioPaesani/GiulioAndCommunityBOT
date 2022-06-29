@@ -13,7 +13,8 @@ const time_now = new Date().toLocaleString();
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
         /*>*/ console.log(`event/message.js > isMaintenance > ${time_now}`);
 
         if (message.author.bot) return

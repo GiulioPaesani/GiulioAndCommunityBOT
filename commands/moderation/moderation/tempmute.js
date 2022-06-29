@@ -88,12 +88,13 @@ module.exports = {
                 .addComponents(button1)
 
             interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-                .then(msg => {
+                .then(async msg => {
                     const collector = msg.createMessageComponentCollector();
 
-                    collector.on('collect', i => {
+                    collector.on('collect', async i => {
                         if (!i.isButton()) return
-                        if (isMaintenance(i.user.id)) return
+                        const maintenanceStates = await isMaintenance(i.user.id)
+                        if (maintenanceStates) return
 
                         i.deferUpdate().catch(() => { })
 
@@ -114,7 +115,7 @@ module.exports = {
                         })
 
                         interaction.guild.members.unban(utente.id)
-                            .then(() => {
+                            .then(async () => {
                                 embed = new Discord.MessageEmbed()
                                     .setTitle(":name_badge: Unban :name_badge:")
                                     .setColor(colors.purple)
@@ -126,7 +127,8 @@ module.exports = {
                                     .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
                                     .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-                                if (!isMaintenance())
+                                const maintenanceStatus = await isMaintenance()
+                                if (!maintenanceStatus)
                                     client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
 
                                 let reverseWarns = [...userstats.warns].reverse()
@@ -140,7 +142,7 @@ module.exports = {
                             interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.muted)
                             interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.tempbanned)
                             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
-                                .then(() => {
+                                .then(async () => {
                                     if (interaction.guild.members.cache.get(utente.id).voice?.channelId) {
                                         let canale = interaction.guild.members.cache.get(utente.id).voice.channelId
                                         if (canale == settings.idCanaliServer.general1)
@@ -196,7 +198,8 @@ module.exports = {
                             .addField(":bust_in_silhouette: Member", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
                             .addField(":page_facing_up: Reason", reason)
 
-                        if (!isMaintenance())
+                        const maintenanceStatus = await isMaintenance()
+                        if (!maintenanceStatus)
                             client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
                         embed = new Discord.MessageEmbed()
@@ -227,7 +230,7 @@ module.exports = {
 
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
-                .then(() => {
+                .then(async () => {
                     if (interaction.guild.members.cache.get(utente.id).voice?.channelId) {
                         let canale = interaction.guild.members.cache.get(utente.id).voice.channelId
                         if (canale == settings.idCanaliServer.general1)
@@ -282,7 +285,8 @@ module.exports = {
             .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
             .addField(":page_facing_up: Reason", reason)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()

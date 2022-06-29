@@ -26,7 +26,8 @@ module.exports = {
 
         client.user.setActivity('/help', { type: 'WATCHING' });
 
-        if (!isMaintenance()) {
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus) {
             setInterval(counterChannels, 1000 * 60 * 10, client)
             setInterval(youtubeNotifications, 1000 * 60 * 5, client)
             setInterval(autoBackup, 1000, client)
