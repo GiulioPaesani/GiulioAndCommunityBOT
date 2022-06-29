@@ -322,11 +322,11 @@ ${getEmoji(client, "Loading")} **Database**`)
                     .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
 
                 client.channels.cache.get(log.general.backup).send({ embeds: [embed] })
-                    .then(msg2 => {
+                    .then(async msg2 => {
 
-                        client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
-                        client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
-                        client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
+                        await client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
+                        await client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
+                        await client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
 
 
                         embed = new Discord.MessageEmbed()
@@ -337,6 +337,7 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                         interaction.editReply({ embeds: [embed] })
                     })
+                    .catch((err) => { console.log("ciao", err) })
             })
     },
 };
