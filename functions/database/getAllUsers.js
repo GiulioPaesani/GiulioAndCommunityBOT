@@ -25,7 +25,15 @@ const getAllUsers = async (client, onlyInGuild = true) => {
                 console.log("USER -" + user)
             }
 
-            data.push(JSON.parse(userstats))
+            try {
+                data.push(JSON.parse(userstats))
+
+            }
+            catch {
+                console.log("JSON -" + user)
+
+
+            }
         }
     }
     return data
