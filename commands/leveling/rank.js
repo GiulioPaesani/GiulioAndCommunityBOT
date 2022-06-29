@@ -39,8 +39,6 @@ module.exports = {
         let userstats = await getUser(utente.id);
         if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente);
 
-        console.log(userstats)
-
         let xpProgress = ""
         let numEmoji = 8;
         let maxValue = getXpNecessari(userstats.leveling.level + 1) - getXpNecessari(userstats.leveling.level);

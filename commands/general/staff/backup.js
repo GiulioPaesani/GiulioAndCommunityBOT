@@ -321,8 +321,14 @@ ${getEmoji(client, "Loading")} **Database**`)
                     .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
                     .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
 
-                client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, attachmentServerstats, attachmentUserstats] })
+                client.channels.cache.get(log.general.backup).send({ embeds: [embed] })
                     .then(msg2 => {
+
+                        client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
+                        client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
+                        client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
+
+
                         embed = new Discord.MessageEmbed()
                             .setTitle(":card_box: Backup CREATO :card_box:")
                             .setDescription(`Salvataggio di tutto il **server** e del contenuto dei **database** creato con successo
@@ -330,8 +336,6 @@ ${getEmoji(client, "Loading")} **Database**`)
                             .setColor(colors.green)
 
                         interaction.editReply({ embeds: [embed] })
-
-                        fs.unlinkSync(`./database${time}.zip`)
                     })
             })
     },
