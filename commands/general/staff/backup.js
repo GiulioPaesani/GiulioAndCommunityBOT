@@ -1,7 +1,6 @@
 const Discord = require("discord.js")
 const moment = require("moment")
 const fs = require("fs")
-
 const zipper = require('zip-local')
 const settings = require("../../../config/general/settings.json")
 const log = require("../../../config/general/log.json")
@@ -326,7 +325,7 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                 await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
 
-                client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, attachmentDatabase] })
+                client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, `./database${time}.zip`] })
                     .then(async msg2 => {
 
                         // await client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
