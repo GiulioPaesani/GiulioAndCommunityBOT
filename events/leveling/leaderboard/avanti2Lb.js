@@ -6,7 +6,6 @@ const { getEmoji } = require("../../../functions/general/getEmoji");
 const { replyMessage } = require("../../../functions/general/replyMessage");
 const { getAllUsers } = require("../../../functions/database/getAllUsers");
 
-const time_now = new Date().toLocaleString();
 module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
@@ -14,15 +13,15 @@ module.exports = {
         if (!interaction.customId.startsWith("avanti2Lb")) return
 
         await interaction.deferUpdate().catch(() => { })
-        console.log(`events/avanti2Lb.js > isMaintenance > ${time_now}`)
+
         const maintenanceStatus = await isMaintenance(interaction.user.id)
         if (maintenanceStatus) return
-        console.log(`events/avanti2Lb.js > Mando msg > ${time_now}`)
+
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
-        console.log(`events/avanti2Lb.js > Ottengo tutti gli utenti > ${time_now}`)
+
         let userstatsList = await getAllUsers(client)
-        console.log(`events/avanti2Lb.js > Riordino l'array > ${time_now}`)
-        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0)); /*>*/ console.log(`leaderboard.js > Riordino l'array > ${time_now}`);
+
+        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0));
         let leaderboardLeveling = ""
 
         let totPage = Math.ceil(leaderboardListLeveling.length / 10)
@@ -30,7 +29,6 @@ module.exports = {
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListLeveling[i]) {
-                console.log(`leaderboard.js > Inizio ciclo "for" (${i}) > ${time_now}`);
                 switch (i) {
                     case 0:
                         leaderboardLeveling += ":first_place: ";
@@ -45,17 +43,16 @@ module.exports = {
                         leaderboardLeveling += `**#${i + 1}** `
                 }
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id); /*>*/ console.log(`leaderboard.js > Ottengo l'utente > ${time_now}`);
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id);
                 leaderboardLeveling += `${utente.toString()} - **Lvl. ${leaderboardListLeveling[i].leveling.level}** (XP: ${humanize(leaderboardListLeveling[i].leveling.xp)})\n`
             }
         }
 
-        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0)); console.log(`events/avanti2Lb.js > Riordino l'array > ${time_now}`)
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0));
         let leaderboardEconomy = ""
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListEconomy[i]) {
-                console.log(`leaderboard.js > Inizio ciclo "for" (${i}) > ${time_now}`)
                 switch (i) {
                     case 0:
                         leaderboardEconomy += ":first_place: ";
@@ -70,7 +67,7 @@ module.exports = {
                         leaderboardEconomy += `**#${i + 1}** `
                 }
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id); /*>*/ console.log(`leaderboard.js > Ottengo l'utente > ${time_now}`);
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id);
                 leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].economy.money)}$**\n`
             }
         }
@@ -120,7 +117,6 @@ module.exports = {
             .addComponents(button3)
             .addComponents(button4)
 
-        console.log(`leaderboard.js > Ottengo l'utente > ${time_now}`);
         interaction.message.edit({ embeds: [embed], components: [row] })
     },
 };

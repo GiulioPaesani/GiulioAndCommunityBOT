@@ -1,5 +1,3 @@
-const time_now = new Date().toLocaleString();
-
 const getXpNecessari = (level) => {
     let xp = 0;
 
@@ -8,7 +6,6 @@ const getXpNecessari = (level) => {
         if (i > 15)
             xp += 40 * (i - 15)
     }
-    /*>*/ console.log(`functions/getXpNecessari.js > Calcolo XP necessari > ${time_now}`);
 
     return xp
 }

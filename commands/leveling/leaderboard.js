@@ -3,8 +3,6 @@ const settings = require("../../config/general/settings.json")
 const { humanize } = require("../../functions/general/humanize")
 const { getAllUsers } = require("../../functions/database/getAllUsers")
 const { getEmoji } = require("../../functions/general/getEmoji")
-// leaderboard.js > [azione] > [ora]
-const time_now = new Date().toLocaleString();
 
 module.exports = {
     name: "leaderboard",
@@ -17,9 +15,9 @@ module.exports = {
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(client, interaction, comando) {
 
-        let userstatsList = await getAllUsers(client); /*>*/ console.log(`leaderboard.js > Ottengo gli utenti > ${time_now}`);
+        let userstatsList = await getAllUsers(client);
 
-        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0)); /*>*/ console.log(`leaderboard.js > Riordino l'array > ${time_now}`);
+        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0));
         let leaderboardLeveling = ""
 
         let totPage = Math.ceil(leaderboardListLeveling.length / 10)
@@ -27,7 +25,6 @@ module.exports = {
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListLeveling[i]) {
-                /*>*/ console.log(`leaderboard.js > Inizio ciclo "for" (${i}) > ${time_now}`);
                 switch (i) {
                     case 0:
                         leaderboardLeveling += ":first_place: ";
@@ -42,17 +39,16 @@ module.exports = {
                         leaderboardLeveling += `**#${i + 1}** `
                 }
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id); /*>*/ console.log(`leaderboard.js > Ottengo l'utente > ${time_now}`);
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListLeveling[i].id);
                 leaderboardLeveling += `${utente.toString()} - **Lvl. ${leaderboardListLeveling[i].leveling.level}** (XP: ${humanize(leaderboardListLeveling[i].leveling.xp)})\n`
             }
         }
 
-        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0));  /*>*/ console.log(`leaderboard.js > Riordino l'array > ${time_now}`);
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0));
         let leaderboardEconomy = ""
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListEconomy[i]) {
-                /*>*/ console.log(`leaderboard.js > Inizio ciclo "for" (${i}) > ${time_now}`);
                 switch (i) {
                     case 0:
                         leaderboardEconomy += ":first_place: ";
@@ -67,7 +63,7 @@ module.exports = {
                         leaderboardEconomy += `**#${i + 1}** `
                 }
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id); /*>*/ console.log(`leaderboard.js > Ottengo l'utente > ${time_now}`);
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id);
                 leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].economy.money)}$**\n`
             }
         }
@@ -81,19 +77,15 @@ module.exports = {
             .addField(":coin: Economy", leaderboardEconomy)
             .setFooter({ text: `Page ${page}/${totPage}` })
 
-        /*>*/ console.log(`leaderboard.js > Creo l'embed > ${time_now}`);
-
         let button1 = new Discord.MessageButton()
             .setCustomId(`indietro2Lb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
             .setEmoji(getEmoji(client, "Previous2"))
-         /*>*/ console.log(`leaderboard.js > Creo il bottone > ${time_now}`);
 
         let button2 = new Discord.MessageButton()
             .setCustomId(`indietroLb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
             .setEmoji(getEmoji(client, "Previous"))
-        /*>*/ console.log(`leaderboard.js > Creo il bottone > ${time_now}`);
 
         if (page == 1) {
             button1.setDisabled()
@@ -104,13 +96,12 @@ module.exports = {
             .setCustomId(`avantiLb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
             .setEmoji(getEmoji(client, "Next"))
-    /*>*/ console.log(`leaderboard.js > Creo il bottone > ${time_now}`);
 
         let button4 = new Discord.MessageButton()
             .setCustomId(`avanti2Lb,${interaction.user.id},${page}`)
             .setStyle("PRIMARY")
             .setEmoji(getEmoji(client, "Next2"))
-/*>*/ console.log(`leaderboard.js > Creo il bottone > ${time_now}`);
+
         if (page == totPage) {
             button3.setDisabled()
             button4.setDisabled()
@@ -121,8 +112,7 @@ module.exports = {
             .addComponents(button2)
             .addComponents(button3)
             .addComponents(button4)
-     /*>*/ console.log(`leaderboard.js > Creo la Row > ${time_now}`);
 
-        interaction.reply({ embeds: [embed], components: [row] }); /*>*/ console.log(`leaderboard.js > Mando il msg > ${time_now}`);
+        interaction.reply({ embeds: [embed], components: [row] });
     },
 };
