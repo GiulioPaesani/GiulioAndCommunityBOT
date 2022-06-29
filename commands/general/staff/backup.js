@@ -308,12 +308,13 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                 interaction.editReply({ embeds: [embed] })
 
-                let serverstats = await getServer()
-                let userstatsList = await getAllUsers(client, false)
+                // let serverstats = await getServer()
+                // let userstatsList = await getAllUsers(client, false)
 
                 const attachmentServer = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup-server-${time}.json`);
-                const attachmentServerstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t"), "utf-8"), `backup-serverstats-${time}.json`);
-                const attachmentUserstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `backup-userstats-${time}.json`);
+                // const attachmentServerstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t"), "utf-8"), `backup-serverstats-${time}.json`);
+                // const attachmentUserstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `backup-userstats-${time}.json`);
+                const attachmentDatabase = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup${time}.json`);
 
                 embed = new Discord.MessageEmbed()
                     .setTitle(":inbox_tray: New backup :inbox_tray:")
@@ -321,12 +322,14 @@ ${getEmoji(client, "Loading")} **Database**`)
                     .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
                     .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
 
-                client.channels.cache.get(log.general.backup).send({ embeds: [embed] })
+                await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
+
+                client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, attachmentDatabase] })
                     .then(async msg2 => {
 
-                        await client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
-                        await client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
-                        await client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
+                        // await client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
+                        // await client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
+                        // await client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
 
 
                         embed = new Discord.MessageEmbed()
