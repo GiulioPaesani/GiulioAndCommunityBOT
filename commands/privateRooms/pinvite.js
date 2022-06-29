@@ -37,7 +37,7 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Descrizione troppo lunga", "Puoi scrivere una descrizione solo fino a 800 caratteri", comando)
         }
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         let room
         if (!serverstats.privateRooms.find(x => x.channel == interaction.options.getChannel("room").id)) {

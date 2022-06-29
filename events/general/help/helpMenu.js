@@ -1,18 +1,19 @@
 const Discord = require("discord.js")
-const fetch = require("node-fetch")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getEmoji } = require("../../../functions/general/getEmoji");
-const { replyMessage } = require("../../../functions/general/replyMessage");
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: `interactionCreate`,
+    client: "general",
     async execute(client, interaction) {
         if (!interaction.isSelectMenu()) return
         if (!interaction.customId.startsWith("helpMenu")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -34,11 +35,6 @@ module.exports = {
                 embed
                     .setTitle("📊 INFORMATIONS commands 📊")
                     .setColor("#C5CED5")
-            } break
-            case "music": {
-                embed
-                    .setTitle("🎵 MUSIC commands 🎵")
-                    .setColor("#58A3DE")
             } break
             case "fun": {
                 embed
@@ -63,7 +59,6 @@ module.exports = {
         }
 
         let row2 = new Discord.MessageActionRow()
-
         let commands = [...client.commands.filter(x => x.category == category).map(x => x)]
 
         let totPage = Math.ceil(commands.length / 9)
@@ -125,12 +120,6 @@ ${commands[i].description}
                 emoji: "📊",
                 value: "info",
                 description: "/serverinfo, /channelinfo, /link, /youtube, ..."
-            })
-            .addOptions({
-                label: "Music",
-                emoji: "🎵",
-                value: "music",
-                description: "/play, /queue, /shuffle, /lyrics, ..."
             })
             .addOptions({
                 label: "Fun and Games",

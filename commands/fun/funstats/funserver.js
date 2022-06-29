@@ -15,7 +15,7 @@ module.exports = {
     category: "fun",
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(client, interaction, comando) {
-        let userstatsList = getAllUsers(client)
+        let userstatsList = await getAllUsers(client)
 
         let leaderboardListCorrect = userstatsList.sort((a, b) => (a.counting.correct < b.counting.correct) ? 1 : ((b.counting.correct < a.counting.correct) ? -1 : 0))
         let leaderboardCorrect = ""
@@ -69,7 +69,7 @@ module.exports = {
             }
         }
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         let embed = new Discord.MessageEmbed()
             .setTitle("COUNTING - GiulioAndCommunity")

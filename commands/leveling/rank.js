@@ -30,14 +30,14 @@ module.exports = {
     },
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(client, interaction, comando) {
-        let utente = await getTaggedUser(client, interaction.options.getString("user")) || interaction.user
+        let utente = await getTaggedUser(client, interaction.options.getString("user")) || interaction.user;
 
         if (utente.bot) {
-            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi avere le statistiche ranking di un bot", comando)
+            return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi avere le statistiche ranking di un bot", comando);
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id);
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente);
 
         let xpProgress = ""
         let numEmoji = 8;
@@ -81,12 +81,12 @@ module.exports = {
             }
         }
 
-        let userstatsList = getAllUsers(client)
-        let leaderboardListXp = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0))
-        let positionXp = leaderboardListXp.findIndex(x => x.id == utente.id) + 1
+        let userstatsList = await getAllUsers(client);
+        let leaderboardListXp = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0));
+        let positionXp = leaderboardListXp.findIndex(x => x.id == utente.id) + 1;
 
-        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0))
-        let positionEconomy = leaderboardListEconomy.findIndex(x => x.id == utente.id) + 1
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0));
+        let positionEconomy = leaderboardListEconomy.findIndex(x => x.id == utente.id) + 1;
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Ranking - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
@@ -98,6 +98,6 @@ ${xpProgress}
 XP ${humanize(userstats.leveling.xp - getXpNecessari(userstats.leveling.level))}/${humanize(getXpNecessari(userstats.leveling.level + 1) - getXpNecessari(userstats.leveling.level))} ${positionXp > 0 ? `- Rank #${positionXp}` : ""}`)
             .addField(`:coin: ${humanize(userstats.economy.money)}$`, `${Object.keys(userstats.economy.inventory).length == 0 ? "0" : Object.values(userstats.economy.inventory).reduce((a, b) => a + b)} ${Object.keys(userstats.economy.inventory).length == 0 ? "Items" : Object.values(userstats.economy.inventory).reduce((a, b) => a + b) == 1 ? "Item" : "Items"} ${positionEconomy > 0 ? `- Rank #${positionEconomy}` : ""}`)
 
-        interaction.reply({ embeds: [embed] })
+        interaction.reply({ embeds: [embed] });
     },
 };

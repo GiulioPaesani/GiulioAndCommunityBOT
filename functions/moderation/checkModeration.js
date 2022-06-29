@@ -9,15 +9,15 @@ const { getAllUsers } = require("../../functions/database/getAllUsers")
 const { updateUser } = require("../../functions/database/updateUser");
 const { isMaintenance } = require("../../functions/general/isMaintenance");
 
-const checkModeration = (client) => {
+const checkModeration = async (client) => {
     let server = client.guilds.cache.get(settings.idServer)
-    let userstatsList = getAllUsers(client)
+    let userstatsList = await getAllUsers(client)
 
-    userstatsList.filter(x => x.moderation.type == "Tempmuted").forEach(userstats => {
+    userstatsList.filter(x => x.moderation.type == "Tempmuted").forEach(async userstats => {
         if (userstats.moderation.until <= new Date().getTime()) {
             if (server.members.cache.get(userstats.id)) {
                 server.members.cache.get(userstats.id).roles.remove(settings.ruoliModeration.tempmuted)
-                    .then(() => {
+                    .then(async () => {
                         if (server.members.cache.get(userstats.id).voice?.channelId) {
                             let canale = server.members.cache.get(userstats.id).voice.channelId
                             if (canale == settings.idCanaliServer.general1)
@@ -45,7 +45,8 @@ const checkModeration = (client) => {
                 .addField(":page_facing_up: Mute reason", userstats.moderation.reason)
                 .addField(":hourglass: Time muted", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.moderation.unmute).send({ embeds: [embed] })
 
             embed = new Discord.MessageEmbed()
@@ -75,11 +76,11 @@ const checkModeration = (client) => {
         }
     })
 
-    userstatsList.filter(x => x.moderation.type == "Tempbanned").forEach(userstats => {
+    userstatsList.filter(x => x.moderation.type == "Tempbanned").forEach(async userstats => {
         if (userstats.moderation.until <= new Date().getTime()) {
             if (server.members.cache.get(userstats.id)) {
                 server.members.cache.get(userstats.id).roles.remove(settings.ruoliModeration.tempbanned)
-                    .then(() => {
+                    .then(async () => {
                         if (server.members.cache.get(userstats.id).voice?.channelId) {
                             server.members.cache.get(userstats.id).voice.disconnect()
                         }
@@ -102,7 +103,8 @@ const checkModeration = (client) => {
                 .addField(":page_facing_up: Ban reason", userstats.moderation.reason)
                 .addField(":hourglass: Time banned", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.moderation.unban).send({ embeds: [embed] })
 
             embed = new Discord.MessageEmbed()

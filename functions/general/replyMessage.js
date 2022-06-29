@@ -5,7 +5,7 @@ const log = require("../../config/general/log.json")
 const settings = require("../../config/general/settings.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance.js")
 
-const replyMessage = (client, interaction, type, title, description, comando, fields, components) => {
+const replyMessage = async (client, interaction, type, title, description, comando, fields, components) => {
     let embed = new Discord.MessageEmbed()
     let embed2 = new Discord.MessageEmbed()
         .setThumbnail(interaction.guild.members.cache.get(interaction.user.id).displayAvatarURL({ dynamic: true }) || interaction.user.displayAvatarURL({ dynamic: true }))
@@ -105,16 +105,20 @@ ${canaliConcessiLista ? `_Puoi utilizzare questo comando in:_\n${canaliConcessiL
 
     interaction.reply({ embeds: [embed], components: components ? components : [], ephemeral: type != "Correct" && !components ? true : false })
         .catch(() => {
-            interaction.user.send({ embeds: [embed], components: components ? components : [] })
-                .catch(() => { })
+            interaction.followUp({ embeds: [embed], components: components ? components : [], ephemeral: type != "Correct" && !components ? true : false })
+                .catch(() => {
+                    interaction.user.send({ embeds: [embed], components: components ? components : [] })
+                        .catch(() => { })
+                })
         })
 
     if (description)
         embed2
             .addField(":envelope: Error message", description)
 
-    if (!isMaintenance() && comando && type != "Correct") {
-        // client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
+    const maintenanceStatus = await isMaintenance()
+    if (!maintenanceStatus && comando && type != "Correct") {
+        client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
         return true
     }
 }

@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
+const { createCanvas, loadImage } = require('canvas')
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
 const illustrations = require("../../../config/general/illustrations.json")
 const moment = require("moment")
-const { createCanvas, loadImage } = require('canvas')
 const { getUser } = require("../../../functions/database/getUser");
-const { replyMessage } = require("../../../functions/general/replyMessage");
 const { addUser } = require("../../../functions/database/addUser");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: "setbirthday",
@@ -86,8 +86,8 @@ module.exports = {
     },
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(client, interaction, comando) {
-        let userstats = getUser(interaction.user.id)
-        if (!userstats) userstats = addUser(interaction.member)[0]
+        let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         if (userstats.birthday && userstats.birthday[0]) {
             return replyMessage(client, interaction, "Warning", "Compleanno già inserito", "Hai già settato il tuo compleanno, non puoi più **modificarlo**", comando)

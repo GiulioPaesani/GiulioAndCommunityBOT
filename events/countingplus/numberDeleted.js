@@ -1,9 +1,7 @@
 const Discord = require("discord.js")
 const Parser = require('expr-eval').Parser;
-const moment = require("moment")
 const settings = require("../../config/general/settings.json")
 const colors = require("../../config/general/colors.json")
-const log = require("../../config/general/log.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance")
 const { getUser } = require("../../functions/database/getUser")
 const { getServer } = require("../../functions/database/getServer")
@@ -15,7 +13,8 @@ module.exports = {
     async execute(client, message) {
         if (!message.author) return
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.countingplus) return
 
@@ -25,7 +24,7 @@ module.exports = {
         }
         catch { return }
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (serverstats.countingplus.lastMessage != message.id) return
 
@@ -39,11 +38,11 @@ module.exports = {
         message.channel.send({ embeds: [embed] })
 
         message.channel.send(numero.toString())
-            .then(msg => {
+            .then(async msg => {
                 msg.react("🟢");
             })
 
-        let userstats = getUser(message.author.id)
+        let userstats = await getUser(message.author.id)
         userstats.countingplus.deleted++
         updateUser(userstats)
 

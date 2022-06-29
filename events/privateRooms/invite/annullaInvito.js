@@ -11,12 +11,13 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("annullaInvito")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
             .catch(() => { })
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
         let room = serverstats.privateRooms.find(x => x.channel == interaction.customId.split(",")[2])
         if (!room) return
 

@@ -31,8 +31,10 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi vedere gli inviti di un bot", comando)
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
+
+        if (!userstats.invites) userstats.invites = {}
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Invites - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)

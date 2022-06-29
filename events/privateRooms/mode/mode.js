@@ -9,12 +9,13 @@ module.exports = {
     async execute(client, message) {
         if (message.author.bot) return
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
         if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
         let room = serverstats.privateRooms.find(x => x.channel == message.channel.id)
         if (!room) return
 

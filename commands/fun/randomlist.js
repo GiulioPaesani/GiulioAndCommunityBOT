@@ -89,12 +89,13 @@ module.exports = {
         row.addComponents(button3)
 
         interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 const collector = msg.createMessageComponentCollector();
 
-                collector.on('collect', i => {
+                collector.on('collect', async i => {
                     if (!i.isButton()) return
-                    if (isMaintenance(i.user.id)) return
+                    const maintenanceStates = await isMaintenance(i.user.id)
+                    if (maintenanceStates) return
 
                     i.deferUpdate().catch(() => { })
 

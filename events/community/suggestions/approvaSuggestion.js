@@ -8,11 +8,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("approvaSuggestion")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.slice(interaction.message.embeds[0].fields[0].value.length - 18))
         if (!utente) return
@@ -28,7 +29,7 @@ ${getEmoji(client, "suggest11")}${getEmoji(client, "suggest21")}${getEmoji(clien
             .setFooter({ text: "Dai un voto da 1 a 5 al suggerimento" })
 
         client.channels.cache.get(settings.idCanaliServer.suggestions).send({ embeds: [embed] })
-            .then(msg => {
+            .then(async msg => {
                 msg.react(getEmoji(client, "vote1"))
                 msg.react(getEmoji(client, "vote2"))
                 msg.react(getEmoji(client, "vote3"))

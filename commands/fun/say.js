@@ -30,8 +30,8 @@ module.exports = {
     },
     channelsGranted: [],
     async execute(client, interaction, comando) {
-        let userstats = getUser(interaction.user.id)
-        if (!userstats) userstats = addUser(interaction.member)[0]
+        let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         if (!hasSufficientLevels(client, userstats, 60) && interaction.channelId != settings.idCanaliServer.commands && !getUserPermissionLevel(client, interaction.user.id)) {
             let embed = new Discord.MessageEmbed()
@@ -57,7 +57,8 @@ module.exports = {
                 embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
             }
 
-            if (!isMaintenance()) {
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus) {
                 client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
             }
             return

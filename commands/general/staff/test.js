@@ -1,7 +1,7 @@
 module.exports = {
     name: "test",
     description: "Test se il bot è online",
-    permissionLevel: 1,
+    permissionLevel: 0,
     requiredLevel: 0,
     syntax: "/test",
     category: "general",

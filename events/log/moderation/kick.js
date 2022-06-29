@@ -11,7 +11,8 @@ const { updateUser } = require('../../../functions/database/updateUser');
 module.exports = {
     name: `guildMemberRemove`,
     async execute(client, member) {
-        if (isMaintenance()) return
+        const maintenanceStates = await isMaintenance()
+        if (maintenanceStates) return
 
         if (member.guild.id != settings.idServer) return
 
@@ -38,8 +39,10 @@ module.exports = {
 
         client.channels.cache.get(log.moderation.kick).send({ embeds: [embed] })
 
-        let userstats = getUser(logs.target.id)
-        if (!userstats) userstats = addUser(member.guild.members.cache.get(logs.target.id) || logs.target)[0]
+        if (logs.target.bot) return
+
+        let userstats = await getUser(logs.target.id)
+        if (!userstats) userstats = await addUser(member.guild.members.cache.get(logs.target.id) || logs.target)
 
         userstats.warns.push({
             type: "kick",

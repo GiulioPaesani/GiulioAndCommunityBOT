@@ -8,11 +8,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("confermaProgetto")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -31,7 +32,7 @@ Se ti va, fai una domanda per far comparire il tuo progetto nella nuova serie "I
             .setTitle(":newspaper: New project :newspaper: ")
             .setColor(colors.yellow)
             .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
-            .addField(":bust_in_silhouette: User", `${interaction.user.username} - ID: ${interaction.user.id}`)
+            .addField(":bust_in_silhouette: User", `${interaction.user.username} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
             .addField(":label: Status", "Pending")
             .addField(":placard: Title", interaction.message.embeds[0].fields[0].name)
             .addField(":page_facing_up: Description", interaction.message.embeds[0].fields[0].value)

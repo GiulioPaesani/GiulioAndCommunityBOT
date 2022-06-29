@@ -1,5 +1,6 @@
 const moment = require("moment")
 const { getUser } = require("../../../functions/database/getUser");
+const { addUser } = require("../../../functions/database/addUser");
 const { replyMessage } = require("../../../functions/general/replyMessage");
 const { updateUser } = require("../../../functions/database/updateUser");
 const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
@@ -123,8 +124,8 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Non a un bot", "Non puoi modificare il compleanno a un bot", comando)
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
         if (interaction.options.getSubcommand() == "set") {
             let month

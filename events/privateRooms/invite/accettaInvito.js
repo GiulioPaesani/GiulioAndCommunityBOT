@@ -10,14 +10,15 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("accettaInvito")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
             .catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Invito non per te", "Questo invito non si riferisce a te, non puoi accettarlo")
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
         let room = serverstats.privateRooms.find(x => x.channel == interaction.customId.split(",")[2])
         if (!room) return
 

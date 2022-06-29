@@ -5,7 +5,8 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 module.exports = {
     name: `messageReactionAdd`,
     async execute(client, messageReaction, user) {
-        if (isMaintenance(user.id)) return
+        const maintenanceStates = await isMaintenance(user.id)
+        if (maintenanceStates) return
 
         if (user.bot) return
 
@@ -13,14 +14,15 @@ module.exports = {
 
         if (messageReaction.message.channel.id != settings.idCanaliServer.polls && messageReaction.message.channel.id != settings.idCanaliServer.staffPolls) return
 
-        if (messageReaction.message.embeds[0]?.footer?.text.startsWith("Poll delete")) return
+        if (!messageReaction.message.embeds[0]) return
+        if (messageReaction.message.embeds[0].footer.text.startsWith("Poll delete")) return
 
         let discordEmoji = await fetch("https://gist.githubusercontent.com/rigwild/1b509bf69e2a2391f44aa5de3f05b006/raw/e4b5bfa81ea3e7e51af1f5585964666115934631/discord_emojis.json")
         discordEmoji = await discordEmoji.json();
 
         let emoji = messageReaction.message.embeds[0].fields[0].value.split("\n").map(x => x.split(" ")[0]).map(x => discordEmoji[x] ? discordEmoji[x] : x)
 
-        if (!emoji.includes(messageReaction._emoji.name) && !emoji.includes(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`)) return messageReaction.users.remove(user).then(() => console.log("rimossa1"))
+        if (!emoji.includes(messageReaction._emoji.name) && !emoji.includes(`<${messageReaction._emoji.animated ? "a" : ""}:${messageReaction._emoji.name}:${messageReaction._emoji.id}>`)) return messageReaction.users.remove(user)
 
         let reactionVotes = []
         let reactions = emoji

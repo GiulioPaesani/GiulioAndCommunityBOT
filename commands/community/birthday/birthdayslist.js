@@ -118,7 +118,8 @@ module.exports = {
 
             let birthdayList = ""
 
-            let userstatsList = getAllUsers(client).filter(x => x.birthday[0] && x.birthday[0] == month && x.birthday[1] == day)
+            let userstatsList = await getAllUsers(client)
+            userstatsList = userstatsList.filter(x => x.birthday[0] && x.birthday[0] == month && x.birthday[1] == day)
 
             let i = 0
             while (userstatsList[i] && birthdayList.length + `${client.users.cache.get(userstatsList[i].id).toString()}\n`.length <= 900) {
@@ -160,7 +161,8 @@ ${birthdayList || "_Nessun compleanno_"}`)
         else {
             let birthdayList = ""
 
-            let userstatsList = getAllUsers(client).filter(x => x.birthday[0])
+            let userstatsList = await getAllUsers(client)
+            userstatsList = userstatsList.filter(x => x.birthday[0])
 
             let firstDay = moment([2020, month - 1, 1])
             let lastDay = moment([2020, month - 1, new Date(2020, month, 0).getDate()])

@@ -2,7 +2,7 @@ const { getServer } = require('../database/getServer')
 const { updateServer } = require('../database/updateServer')
 
 const checkTicketInDB = async (client) => {
-    let serverstats = getServer()
+    let serverstats = await getServer()
     let changed = false
 
     serverstats.tickets.forEach(async ticket => {

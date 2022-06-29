@@ -3,7 +3,7 @@ const { getServer } = require('../database/getServer')
 const { updateServer } = require('../database/updateServer')
 
 const checkRoomInDB = async (client) => {
-    let serverstats = getServer()
+    let serverstats = await getServer()
     let changed = false
 
     for (let index in serverstats.privateRooms) {

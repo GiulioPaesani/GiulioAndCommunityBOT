@@ -18,7 +18,8 @@ module.exports = {
     async execute(client, message) {
         if (message.type == "CHANNEL_PINNED_MESSAGE" && message.channel.id == settings.idCanaliServer.onewordstory) message.delete()
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.onewordstory) return
         if (message.author.bot) return
@@ -26,10 +27,10 @@ module.exports = {
         let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
         if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
 
-        let userstats = getUser(message.author.id)
-        if (!userstats) userstats = addUser(message.member)[0]
+        let userstats = await getUser(message.author.id)
+        if (!userstats) userstats = await addUser(message.member)
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (!message.content) message.delete()
 

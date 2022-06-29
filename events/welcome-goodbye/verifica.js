@@ -17,19 +17,20 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "verifica") return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        if (getUser(interaction.user.id) && getUser(interaction.user.id).joinedAt) return
+        let userstats = await getUser(interaction.user.id)
+        if (userstats && userstats.joinedAt) return
 
         interaction.member.roles.remove(settings.idRuoloNonVerificato)
 
-        if (!getUser(interaction.user.id)) {
+        if (!userstats) {
             addUser(interaction.member)
         }
         else {
-            let userstats = getUser(interaction.user.id)
             userstats.joinedAt = interaction.member.joinedAt.getTime()
             updateUser(userstats)
 
@@ -65,7 +66,7 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
         interaction.user.send({ embeds: [embed], components: [row] })
             .catch(() => { })
 
-        interaction.message.guild.invites.fetch().then(guildInvites => {
+        interaction.message.guild.invites.fetch().then(async guildInvites => {
             const ei = invites.get(interaction.message.guild.id);
             const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 
@@ -78,26 +79,28 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
                 .addField(":pencil: Account created", `${moment(interaction.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(interaction.user.createdAt).fromNow()})`)
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
-            let userstats = getUser(interaction.user.id)
-            if (!userstats) userstats = addUser(interaction.member)[0]
+            let userstats = await getUser(interaction.user.id)
+            if (!userstats) userstats = await addUser(interaction.member)
 
             if (invite) {
-                let userstatsInviter = getUser(invite.inviter.id)
-                if (!userstatsInviter) userstatsInviter = addUser(client.users.cache.get(invite.inviter.id))[0]
+                let userstatsInviter = await getUser(invite.inviter.id)
+                if (!userstatsInviter) userstatsInviter = await addUser(client.users.cache.get(invite.inviter.id))
 
                 userstatsInviter.invites[interaction.user.id] = "inServer"
                 updateUser(userstatsInviter)
             }
 
-            let userstatsList = getAllUsers(client)
-            userstatsList.filter(x => x.invites[interaction.user.id]).forEach(userstats2 => {
+            let userstatsList = await getAllUsers(client)
+            userstatsList.filter(x => x.invites && x.invites[interaction.user.id]).forEach(userstats2 => {
                 if (invite && invite.inviter.id == userstats2.id) {
 
                 }
                 else {
+                    if (!userstats2.invites) userstats2.invites = {}
                     userstats2.invites[interaction.user.id] = "inServerOtherInvite"
                     updateUser(userstats2)
                 }

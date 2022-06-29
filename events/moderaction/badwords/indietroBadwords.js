@@ -10,9 +10,10 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("indietroBadwords")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -31,7 +32,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(":zipper_mouth: Badwords")
             .setDescription(`Lista completa di tutte le espressioni proibite nel server
-Trovi l'elenco completo anche [QUI](https://github.com/GiulioPaesani/GiulioAndCommunityBOT/blob/main/config/moderation/badwords.json)
+Trovi l'elenco completo anche [QUI](https://github.com/GiulioPaesani/GiulioAndCommunityBOT/blob/master/config/moderation/badwords.json)
             
 :warning: _Se siete sensibili o deboli di cuore evitate di vedere questa lista_`)
             .addField("\u200b", `||${badwordsList}||`)

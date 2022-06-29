@@ -12,15 +12,16 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("indietro2Lb")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        let userstatsList = getAllUsers(client)
+        let userstatsList = await getAllUsers(client)
 
-        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0))
+        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0));
         let leaderboardLeveling = ""
 
         let totPage = Math.ceil(leaderboardListLeveling.length / 10)
@@ -28,7 +29,6 @@ module.exports = {
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListLeveling[i]) {
-
                 switch (i) {
                     case 0:
                         leaderboardLeveling += ":first_place: ";
@@ -48,7 +48,7 @@ module.exports = {
             }
         }
 
-        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0))
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0));
         let leaderboardEconomy = ""
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
@@ -67,7 +67,7 @@ module.exports = {
                         leaderboardEconomy += `**#${i + 1}** `
                 }
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id);
                 leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].economy.money)}$**\n`
             }
         }

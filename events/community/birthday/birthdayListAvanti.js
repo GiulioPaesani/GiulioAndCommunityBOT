@@ -10,11 +10,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("birthdayListAvanti")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[3] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -31,7 +32,8 @@ module.exports = {
 
             let birthdayList = ""
 
-            let userstatsList = getAllUsers(client).filter(x => x.birthday[0] && x.birthday[0] == month && x.birthday[1] == day)
+            let userstatsList = await getAllUsers(client)
+            userstatsList = userstatsList.filter(x => x.birthday[0] && x.birthday[0] == month && x.birthday[1] == day)
 
             let i = 0
             while (userstatsList[i] && birthdayList.length + `${client.users.cache.get(userstatsList[i].id).toString()}\n`.length <= 900) {
@@ -75,7 +77,8 @@ ${birthdayList || "_Nessun compleanno_"}`)
 
             let birthdayList = ""
 
-            let userstatsList = getAllUsers(client).filter(x => x.birthday[0])
+            let userstatsList = await getAllUsers(client)
+            userstatsList = userstatsList.filter(x => x.birthday[0])
 
             let firstDay = moment([2020, month - 1, 1])
             let lastDay = moment([2020, month - 1, new Date(2020, month, 0).getDate()])

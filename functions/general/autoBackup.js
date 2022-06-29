@@ -1,11 +1,13 @@
 const Discord = require("discord.js")
-const zipper = require('zip-local')
 const moment = require("moment")
+const zipper = require('zip-local')
 const fs = require("fs")
 const settings = require("../../config/general/settings.json")
 const log = require("../../config/general/log.json")
 const colors = require("../../config/general/colors.json")
 const { fetchAllMessages } = require("../../functions/general/fetchAllMessages")
+const { getServer } = require("../../functions/database/getServer")
+const { getAllUsers } = require("../../functions/database/getAllUsers")
 
 const autoBackup = async (client) => {
     let data = new Date()
@@ -176,31 +178,29 @@ const autoBackup = async (client) => {
     await fetchAllMessages(client.channels.cache.get(log.general.thingsToDo))
         .then(messages => {
             for (let msg of messages) {
-                let content = msg.embeds[0].fields[1]?.value || msg.embeds[0].fields[0]?.value
+                let content = msg.embeds[0]?.fields[1]?.value || msg.embeds[0]?.fields[0]?.value
+                if (content) {
+                    server.channels.cache.forEach(x => content = content.replace(eval(`/<#${x.id}>/g`), `#${x.name}`))
+                    server.roles.cache.forEach(x => content = content.replace(eval(`/<@&${x.id}>/g`), `@${x.name}`))
 
-                server.channels.cache.forEach(x => content = content.replace(eval(`/<#${x.id}>/g`), `#${x.name}`))
-                server.roles.cache.forEach(x => content = content.replace(eval(`/<@&${x.id}>/g`), `@${x.name}`))
-
-                backup.thingsToDo.push({
-                    content: content,
-                    status: msg.embeds[0].fields[0].value
-                })
+                    backup.thingsToDo.push({
+                        content: content,
+                        status: msg.embeds[0].fields[0].value
+                    })
+                }
             }
         })
 
-    await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
+    const attachmentServer = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup-server-${time}.json`);
 
-    const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup${time}.json`);
+    await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
 
     embed = new Discord.MessageEmbed()
         .setTitle(":inbox_tray: Auto backup :inbox_tray:")
         .setColor(colors.purple)
         .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
 
-    client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachment, `./database${time}.zip`] })
-        .then(() => {
-            fs.unlinkSync(`./database${time}.zip`)
-        })
+    client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, `./database${time}.zip`] })
 }
 
 module.exports = { autoBackup }

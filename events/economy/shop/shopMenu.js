@@ -12,16 +12,17 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isSelectMenu()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("shopMenu")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Menu non tuo", "Questo menu è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        let userstats = getUser(interaction.user.id)
-        if (!userstats) userstats = addUser(interaction.member)[0]
+        let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         let embed = new Discord.MessageEmbed()
             .setDescription(`Utilizza i comandi \`/buy [item]\` e \`/sell [item]\` per comprare o vendere un oggetto`)

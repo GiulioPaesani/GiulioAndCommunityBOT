@@ -32,7 +32,7 @@ module.exports = {
     },
     channelsGranted: [],
     async execute(client, interaction, comando) {
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (getUserPermissionLevel(client, interaction.user.id) <= 1 && interaction.channelId != settings.idCanaliServer.commands && !serverstats.privateRooms.find(x => x.channel == interaction.channelId)) {
             return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)

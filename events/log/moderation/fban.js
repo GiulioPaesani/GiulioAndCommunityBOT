@@ -11,7 +11,8 @@ const { updateUser } = require('../../../functions/database/updateUser');
 module.exports = {
     name: `guildBanAdd`,
     async execute(client, ban) {
-        if (isMaintenance()) return
+        const maintenanceStates = await isMaintenance()
+        if (maintenanceStates) return
 
         if (ban.guild.id != settings.idServer) return
 
@@ -36,8 +37,10 @@ module.exports = {
 
         client.channels.cache.get(log.moderation.forceban).send({ embeds: [embed] })
 
-        let userstats = getUser(logs.target.id)
-        if (!userstats) userstats = addUser(ban.guild.members.cache.get(logs.target.id) || logs.target)[0]
+        if (logs.target.bot) return
+
+        let userstats = await getUser(logs.target.id)
+        if (!userstats) userstats = await addUser(ban.guild.members.cache.get(logs.target.id) || logs.target)
 
         userstats.moderation = {
             type: "Forcebanned",

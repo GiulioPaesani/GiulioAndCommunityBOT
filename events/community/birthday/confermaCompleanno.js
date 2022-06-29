@@ -6,7 +6,6 @@ const items = require("../../../config/ranking/items.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getUser } = require("../../../functions/database/getUser")
 const { updateUser } = require("../../../functions/database/updateUser")
-const { getAllUsers } = require("../../../functions/database/getAllUsers")
 const { createCanvas, loadImage } = require('canvas')
 const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
 const { replyMessage } = require("../../../functions/general/replyMessage")
@@ -16,15 +15,16 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("confermaCompleanno")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        let userstats = getUser(interaction.user.id)
+        let userstats = await getUser(interaction.user.id)
 
         if (userstats.birthday && userstats.birthday[0]) {
             let embed = new Discord.MessageEmbed()

@@ -58,7 +58,7 @@ module.exports = {
             .setTitle("Confermi la tua segnalazione?")
             .setColor(colors.yellow)
             .setDescription(`**Confermi** il tuo report? Una volta confermato verrà **inviato** allo staff che cercherà di **intervenire** il prima possibile\nSpiega in modo esaustivo e chiaro il motivo`)
-            .addField(":bust_in_silhouette: User", `${utente.toString()} - ID: ${utente.id}`)
+            .addField(":bust_in_silhouette: User", `${utente.toString()} - ${utente.tag}\nID: ${utente.id}`)
             .addField(":page_facing_up: Reason", reason)
 
         let button1 = new Discord.MessageButton()

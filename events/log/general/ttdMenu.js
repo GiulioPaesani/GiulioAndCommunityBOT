@@ -8,11 +8,12 @@ module.exports = {
         if (!interaction.isSelectMenu()) return
         if (!interaction.customId.startsWith("ttdMenu")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (getUserPermissionLevel(client, interaction.user.id) <= 2) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
 
         switch (interaction.values[0]) {
             case "ttdIdea": {

@@ -9,9 +9,10 @@ module.exports = {
         if (!interaction.isSelectMenu()) return
         if (!interaction.customId.startsWith("rifiutiComuniProgetti")) return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.slice(interaction.message.embeds[0].fields[0].value.length - 18))
         if (!utente) return

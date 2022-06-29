@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
+const yt = require('youtube-search-without-api-key');
 const settings = require("../../config/general/settings.json");
 const colors = require("../../config/general/colors.json");
 const { getEmoji } = require("../../functions/general/getEmoji");
-const yt = require('youtube-search-without-api-key');
 
 module.exports = {
     name: "video",

@@ -1,6 +1,6 @@
 const settings = require("../../config/general/settings.json")
-const { replyMessage } = require("../../functions/general/replyMessage");
 const ttsLanguage = require("../../config/general/ttsLanguage.json");
+const { replyMessage } = require("../../functions/general/replyMessage");
 const { getServer } = require("../../functions/database/getServer");
 const { updateServer } = require("../../functions/database/updateServer");
 
@@ -10,7 +10,7 @@ module.exports = {
     permissionLevel: 0,
     requiredLevel: 0,
     syntax: "/ttslanguage [language]",
-    category: "music",
+    category: "general",
     data: {
         options: [
             {
@@ -28,7 +28,7 @@ module.exports = {
 
         language = ttsLanguage.find(x => x.code.toLowerCase() == language.toLowerCase()) || ttsLanguage.find(x => x.name.toLowerCase().includes(language.toLowerCase()))
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
         if (serverstats.ttsDefaultLanguage == language.code) {
             return replyMessage(client, interaction, "Warning", "Lingua già impostata", "Questa lingua è già impostata come default")
         }

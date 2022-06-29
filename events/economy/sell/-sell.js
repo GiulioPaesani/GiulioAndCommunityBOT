@@ -11,11 +11,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("-sell")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -24,8 +25,8 @@ module.exports = {
         quantity--
         if (quantity < 1) quantity = 1
 
-        let userstats = getUser(interaction.user.id)
-        if (!userstats) userstats = addUser(interaction.member)[0]
+        let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Sell  ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? getEmoji(client, `${item.name.toLowerCase()}Unlocked`) : getEmoji(client, item.name.toLowerCase())} ${item.name.toUpperCase()} ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "- Not unlocked" : ""}`)

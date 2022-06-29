@@ -1,6 +1,5 @@
 const Discord = require("discord.js")
 const moment = require("moment")
-const settings = require("../../../config/general/settings.json")
 const colors = require("../../../config/general/colors.json")
 const changelogs = require("../../../config/general/changelogs.json")
 const { getEmoji } = require("../../../functions/general/getEmoji.js")
@@ -11,11 +10,12 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("changelog")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 

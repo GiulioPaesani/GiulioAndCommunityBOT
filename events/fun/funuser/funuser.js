@@ -15,9 +15,10 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("funuser")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
@@ -27,10 +28,10 @@ module.exports = {
 
         let utente = client.users.cache.get(interaction.customId.split(",")[3])
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (game == "counting") {
             embed = new Discord.MessageEmbed()

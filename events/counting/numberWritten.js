@@ -1,9 +1,7 @@
 const Discord = require("discord.js")
 const Parser = require('expr-eval').Parser;
-const moment = require("moment")
 const settings = require("../../config/general/settings.json")
 const colors = require("../../config/general/colors.json")
-const log = require("../../config/general/log.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance")
 const { getUser } = require("../../functions/database/getUser")
 const { addUser } = require("../../functions/database/addUser")
@@ -16,7 +14,8 @@ const { checkBadwords } = require("../../functions/moderation/checkBadwords");
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.counting) return
         if (message.author.bot) return
@@ -32,10 +31,10 @@ module.exports = {
         }
         catch { return }
 
-        let userstats = getUser(message.author.id)
-        if (!userstats) userstats = addUser(message.member)[0]
+        let userstats = await getUser(message.author.id)
+        if (!userstats) userstats = await addUser(message.member)
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         let titleRandom = ["IMMAGINO AVRETE 5 IN MATEMATICA, GIUSTO?", "SAD FOR YOU", "PROPRIO ORA DOVEVI SBAGLIARE?", "MA SAPETE COME SI GIOCA?", "MA È COSÌ DIFFICILE QUESTO GIOCO?", "NOOOO, PERCHÈ...", "MEGLIO SE TORNATE A PROGRAMMARE", `MA SIETE SCEMI ? `, "QUANTO HAI IN MATEMATICA?", `MA SIETE SICURI DI SAPER CONTARE ? `, "QUALCUNO QUI NON SA CONTARE", "SIETE DELLE CAPRE"]
 
@@ -56,7 +55,7 @@ module.exports = {
             message.channel.send({ embeds: [embed] })
 
             message.channel.send("0")
-                .then(msg => {
+                .then(async msg => {
                     msg.react("🟢")
                 })
 
@@ -83,7 +82,7 @@ module.exports = {
             message.channel.send({ embeds: [embed] })
 
             message.channel.send("0")
-                .then(msg => {
+                .then(async msg => {
                     msg.react("🟢")
                 })
 

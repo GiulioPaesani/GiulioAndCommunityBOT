@@ -10,7 +10,7 @@ const { updateUser } = require("../database/updateUser")
 const newStory = async (client) => {
     let date = new Date()
     if (date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":orange_book: Storia terminata")
@@ -34,7 +34,7 @@ Utente unici partecipanti: ${serverstats.onewordstory.words.filter((v, i, a) => 
 
         updateServer(serverstats)
 
-        let userstatsList = getAllUsers(client)
+        let userstatsList = await getAllUsers(client)
         userstatsList.forEach(userstats => {
             if (userstats.onewordstory.totWordsToday != 0) {
                 userstats.onewordstory.totWordsToday = 0;

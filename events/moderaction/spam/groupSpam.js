@@ -8,7 +8,6 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { addUser } = require("../../../functions/database/addUser")
 const { getUser } = require("../../../functions/database/getUser")
 const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel")
-const { getServer } = require("../../../functions/database/getServer")
 const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
 
 const groupSpam = new Map()
@@ -16,19 +15,18 @@ const groupSpam = new Map()
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.author.bot) return
         if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (getUserPermissionLevel(client, message.author.id) >= 2) return
 
-        let userstats = getUser(message.author.id)
-        if (!userstats) userstats = addUser(message.member)[0]
+        let userstats = await getUser(message.author.id)
+        if (!userstats) userstats = await addUser(message.member)
 
         if (hasSufficientLevels(client, userstats, 10)) return
-
-        let serverstats = getServer()
 
         if (groupSpam.has(message.channel.id)) {
             let channel = groupSpam.get(message.channel.id)
@@ -48,7 +46,7 @@ module.exports = {
 Tutti gli utenti con inferiori al ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == "Level 10").toString()} non vedranno piu nessun canale fino alla disattivazione di questo sistema`)
 
                     message.channel.send({ embeds: [embed] })
-                        .then(msg => {
+                        .then(async msg => {
                             let memberList = ""
                             channel.users.forEach(userId => {
                                 memberList += `${client.users.cache.get(userId).toString()} - ${client.users.cache.get(userId).tag}\nID: ${userId}\n`
@@ -62,7 +60,8 @@ Tutti gli utenti con inferiori al ${client.guilds.cache.get(settings.idServer).r
                                 .addField(":anchor: Channel", `${message.channel.toString()} - #${message.channel.name}\nID: ${message.channel.id}`)
                                 .addField(":bust_in_silhouette: Members", memberList)
 
-                            if (!isMaintenance())
+                            const maintenanceStatus = await isMaintenance()
+                            if (!maintenanceStatus)
                                 client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
                         })
 

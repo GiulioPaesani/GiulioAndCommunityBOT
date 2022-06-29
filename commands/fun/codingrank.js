@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const settings = require("../../config/general/settings.json");
 const { getTaggedUser } = require("../../functions/general/getTaggedUser");
+
 module.exports = {
     name: "codingrank",
     description: "Scropri quanto è bravo a programmare un utente",

@@ -16,15 +16,16 @@ const individualSpam = new Map()
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.author.bot) return
         if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
         if (getUserPermissionLevel(client, message.author.id) >= 2) return
 
-        let userstats = getUser(message.author.id)
-        if (!userstats) userstats = addUser(message.member)[0]
+        let userstats = await getUser(message.author.id)
+        if (!userstats) userstats = await addUser(message.member)
 
         if (individualSpam.has(message.author.id)) {
             const user = individualSpam.get(message.author.id);
@@ -45,7 +46,7 @@ module.exports = {
                     })
 
                     message.member.roles.add(settings.ruoliModeration.tempmuted)
-                        .then(() => {
+                        .then(async () => {
                             if (message.member.voice?.channelId) {
                                 let canale = message.member.voice.channelId
                                 if (canale == settings.idCanaliServer.general1)
@@ -96,7 +97,8 @@ module.exports = {
                         .addField(":bust_in_silhouette: Member", `${message.author.toString()} - ${message.author.tag}\nID: ${message.author.id}`)
                         .addField(":anchor: Channel", `${message.channel.toString()} - #${message.channel.name}\nID: ${message.channel.id}`)
 
-                    if (!isMaintenance())
+                    const maintenanceStatus = await isMaintenance()
+                    if (!maintenanceStatus)
                         client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
 
                     embed = new Discord.MessageEmbed()
@@ -110,7 +112,7 @@ module.exports = {
                         .addField(":hourglass: Duration", `${ms(time, { long: true })} (Until: ${moment().add(time, "ms").format("ddd DD MMM YYYY, HH:mm:ss")})`)
                         .addField(":page_facing_up: Reason", reason)
 
-                    if (!isMaintenance())
+                    if (!maintenanceStatus)
                         client.channels.cache.get(log.moderation.tempmute).send({ embeds: [embed] })
 
                     embed = new Discord.MessageEmbed()

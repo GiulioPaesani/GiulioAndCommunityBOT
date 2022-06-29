@@ -15,12 +15,13 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "chiudiTicket") return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
             .catch(() => { })
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
         let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
         if (!ticket) return
 
@@ -56,7 +57,7 @@ module.exports = {
             .addComponents(button1)
 
         interaction.message.channel.send({ embeds: [embed], components: [row] })
-            .then(msg => {
+            .then(async msg => {
                 serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = true;
                 updateServer(serverstats)
 
@@ -91,7 +92,8 @@ module.exports = {
                                         if (chatLog != "")
                                             attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `ticket-${ticket.channel}-${new Date().getTime()}.txt`);
 
-                                        if (!isMaintenance())
+                                        const maintenanceStatus = await isMaintenance()
+                                        if (!maintenanceStatus)
                                             client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] || [] })
 
                                         embed.setDescription("Questo ticket si sta per chiudere")

@@ -114,7 +114,7 @@ module.exports = {
             .setDescription(`${getEmoji(client, "Loading")} Sto ricercando tutti i messaggi di ${utente.toString()} nel tempo desiderato`)
 
         interaction.reply({ embeds: [embed], fetchReply: true })
-            .then(msg => {
+            .then(async msg => {
                 setTimeout(async () => {
                     if (totMessages == 0) {
                         embed = new Discord.MessageEmbed()
@@ -148,7 +148,7 @@ module.exports = {
                                 .setDescription(totDeletedMessages.size < totMessages ? `Messaggi di ${utente.toString()} eliminati: **${totDeletedMessages.size}**` : `Sono stati eliminati **${totDeletedMessages.size}** messaggi di ${utente.toString()}`)
 
                             msg.edit({ embeds: [embed] })
-                                .then(msg => {
+                                .then(async msg => {
                                     if (totDeletedMessages.size >= totMessages)
                                         setTimeout(() => msg.delete(), 5000)
                                 })
@@ -175,7 +175,8 @@ module.exports = {
                                     .addField(":anchor: Channel", interaction.options.getString("mode") == "allchannels" ? "All channels" : `${interaction.channel.toString()} - #${interaction.channel.name}\nID: ${interaction.channelId}`)
                                     .addField(":incoming_envelope: Messages deleted", totDeletedMessages.size.toString())
 
-                                if (!isMaintenance())
+                                const maintenanceStatus = await isMaintenance()
+                                if (!maintenanceStatus)
                                     client.channels.cache.get(log.moderation.clearuser).send({ embeds: [embed], files: attachment1 ? [attachment1] : [] })
                             }
                         }

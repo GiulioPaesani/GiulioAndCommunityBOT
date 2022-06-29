@@ -6,7 +6,8 @@ const { getUserPermissionLevel } = require("../../../functions/general/getUserPe
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
         if (message.guild?.id != log.idServer) return
 
         if (message.channel.id != log.general.thingsToDo) return
@@ -17,7 +18,7 @@ module.exports = {
         if (!message.reference) return
 
         client.channels.cache.get(log.general.thingsToDo).messages.fetch(message.reference.messageId)
-            .then(msg => {
+            .then(async msg => {
                 if (!msg.embeds[0]) return
 
                 const args = message.content.split(/ +/);

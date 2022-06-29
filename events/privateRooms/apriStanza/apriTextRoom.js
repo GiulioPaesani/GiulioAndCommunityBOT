@@ -17,10 +17,11 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "apriTextRoom") return
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
-        let userstats = getUser(interaction.user.id)
-        if (!userstats) userstats = addUser(interaction.member)[0]
+        let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         if (!hasSufficientLevels(client, userstats, 10)) {
             return replyMessage(client, interaction, "InsufficientLevel", "Non ha il livello", `Per aprire una **stanza privata testuale** devi avere almeno il ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == "Level 10").toString()} o **boostare** il server`)
@@ -30,7 +31,7 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Non puoi aprire una stanza se sei mutato", `Non ti è concesso creare una qualsiasi stanza privata se sei mutato`)
         }
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
         let privaterooms = serverstats.privateRooms
 
         if (privaterooms.find((x) => x.type == 'text' && x.owners.includes(interaction.user.id))) {
@@ -57,8 +58,8 @@ module.exports = {
             parent: client.channels.cache.get(interaction.channelId).parentId,
             topic: `Text room by **${interaction.user.username}**`
         })
-            .then(channel => {
-                interaction.deferUpdate()
+            .then(async channel => {
+                await interaction.deferUpdate()
                     .catch(() => { })
 
                 let embed = new Discord.MessageEmbed()
@@ -110,7 +111,8 @@ Per ogni comando è necessario specificare a quali stanza si vuole applicare
                     .addField(":bust_in_silhouette: Owner", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
                     .addField(":placard: Type", `Text`)
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.community.privateRooms).send({ embeds: [embed] })
             })
             .catch(() => {

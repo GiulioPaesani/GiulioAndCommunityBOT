@@ -7,7 +7,8 @@ const { isMaintenance } = require("../../../functions/general/isMaintenance")
 module.exports = {
     name: `messageReactionAdd`,
     async execute(client, messageReaction, user) {
-        if (isMaintenance(user.id)) return
+        const maintenanceStates = await isMaintenance(user.id)
+        if (maintenanceStates) return
 
         if (user.bot) return
 

@@ -52,7 +52,7 @@ client.on("interactionCreate", interaction => {
     if (!interaction.isSelectMenu()) return
 
     if (interaction.customId == "idMenu") {
-        interaction.deferUpdate()
+        await interaction.deferUpdate()
 
         switch (interaction.values[0]) {
             case "opzione1": {

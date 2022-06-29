@@ -14,7 +14,8 @@ const { addUser } = require("../../functions/database/addUser")
 module.exports = {
     name: "guildMemberAdd",
     async execute(client, member) {
-        if (isMaintenance(member.user.id)) return
+        const maintenanceStates = await isMaintenance(member.user.id)
+        if (maintenanceStates) return
 
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return
@@ -24,14 +25,13 @@ module.exports = {
                 invites[member.guild.id] = guildInvites;
             })
 
-        if (!getUser(member.user.id) || !getUser(member.user.id).joinedAt) {
+        let userstats = await getUser(member.user.id)
+        if (!userstats || !userstats.joinedAt) {
             member.roles.add(settings.idRuoloNonVerificato)
             client.channels.cache.get(settings.idCanaliServer.joinTheServer).send(member.toString())
                 .then(msg => msg.delete().catch(() => { }))
             return
         }
-
-        let userstats = getUser(member.user.id)
 
         let roles = ""
         let rolesUser = ""
@@ -42,7 +42,7 @@ module.exports = {
             }
         })
 
-        member.guild.invites.fetch().then(guildInvites => {
+        member.guild.invites.fetch().then(async guildInvites => {
             const ei = invites.get(member.guild.id);
             const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 
@@ -57,18 +57,19 @@ module.exports = {
                 .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
                 .addField(":shirt: Roles", roles || "_No roles_")
 
-            if (!isMaintenance())
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus)
                 client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
             if (invite) {
-                let userstatsInviter = getUser(invite.inviter.id)
-                if (!userstatsInviter) userstatsInviter = addUser(client.users.cache.get(invite.inviter.id))[0]
+                let userstatsInviter = await getUser(invite.inviter.id)
+                if (!userstatsInviter) userstatsInviter = await addUser(client.users.cache.get(invite.inviter.id))
 
                 userstatsInviter.invites[member.user.id] = "inServer"
                 updateUser(userstatsInviter)
             }
 
-            let userstatsList = getAllUsers(client)
+            let userstatsList = await getAllUsers(client)
             userstatsList.filter(x => x.invites[member.user.id]).forEach(userstats2 => {
                 if (invite && invite.inviter.id == userstats2.id) {
 

@@ -1,23 +1,24 @@
 const Discord = require("discord.js");
 const fs = require("fs")
 const moment = require("moment")
-const googleTTS = require('google-tts-api');
+const { registerFont } = require('canvas');
 const settings = require("./config/general/settings.json")
 const colors = require("./config/general/colors.json")
 const log = require("./config/general/log.json")
+const { addUser } = require("./functions/database/addUser")
+const { getUser } = require("./functions/database/getUser")
+const { getServer } = require("./functions/database/getServer")
 const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
-const { isMaintenance } = require('./functions/general/isMaintenance');
-const { getUserPermissionLevel } = require('./functions/general/getUserPermissionLevel');
-const { getUser } = require('./functions/database/getUser');
-const { addUser } = require('./functions/database/addUser');
-const { registerFont } = require('canvas');
-const { checkBadwords } = require('./functions/moderation/checkBadwords');
-const { getServer } = require('./functions/database/getServer');
-let { addQueue } = require('./functions/music/tts/ttsQueue');
 const { joinVoiceChannel } = require("@discordjs/voice");
+const { isMaintenance } = require('./functions/general/isMaintenance');
+const { checkBadwords } = require('./functions/moderation/checkBadwords');
+const { getUserPermissionLevel } = require('./functions/general/getUserPermissionLevel');
+const { addQueue } = require("./functions/general/ttsQueue")
+const { hasSufficientLevels } = require('./functions/leveling/hasSufficientLevels');
 const { blockedChannels } = require("./functions/general/blockedChannels");
-const { hasSufficientLevels } = require("./functions/leveling/hasSufficientLevels");
+const { getAllUsers } = require("./functions/database/getAllUsers");
+const { updateUser } = require("./functions/database/updateUser");
 registerFont("./assets/font/roboto.ttf", { family: "roboto" })
 registerFont("./assets/font/robotoBold.ttf", { family: "robotoBold" })
 
@@ -92,7 +93,7 @@ for (const folder of autocompleteFolder) {
 }
 
 //Events Handler
-const eventsFolders = fs.readdirSync('./events').filter(x => x != "music");
+const eventsFolders = fs.readdirSync('./events')
 for (const folder of eventsFolders) {
     const eventsFiles = fs.readdirSync(`./events/${folder}`)
 
@@ -129,10 +130,11 @@ process.on("unhandledRejection", err => {
 client.on("interactionCreate", async interaction => {
     if (!interaction.isCommand()) return
 
-    if (isMaintenance(interaction.user.id)) return
+    const maintenanceStatus = await isMaintenance(interaction.user.id)
+    if (maintenanceStatus) return
 
-    let userstats = getUser(interaction.user.id)
-    if (!userstats) userstats = addUser(interaction.member)[0]
+    let userstats = await getUser(interaction.user.id)
+    if (!userstats) userstats = await addUser(interaction.member)
 
     const comando = client.commands.get(interaction.commandName)
     if (!comando) return
@@ -146,29 +148,21 @@ client.on("interactionCreate", async interaction => {
     }
 
     if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
-        if (comando.name == "poll" && interaction.user.id == settings.idCanaliServer.staffPolls) {
-
-        }
-        else {
-            return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
-        }
+        return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
     }
 
-    let serverstats = getServer()
+    let serverstats = await getServer()
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(client.channels.cache.get(interaction.channelId).parentId)) {
-        if (getUserPermissionLevel(client, interaction.user.id) >= 2) {
+        if (getUserPermissionLevel(client, interaction.user.id)) {
 
         }
         else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
 
         }
-        else if (getUserPermissionLevel(client, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
-
-        }
         else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
 
         }
-        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(client, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId) {
 
         }
         else {
@@ -216,7 +210,8 @@ client.on("interactionCreate", async interaction => {
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
         }
 
-        if (!isMaintenance()) {
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus) {
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
         }
 
@@ -246,15 +241,18 @@ client.on("interactionCreate", async interaction => {
             })
             embed2.addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-            if (!isMaintenance()) {
+            const maintenanceStatus = await isMaintenance()
+            if (!maintenanceStatus) {
                 client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed2] })
             }
             return
         }
     }
 
+    const time_now = new Date().toLocaleString();
+
     if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
-        return replyMessage(client, interaction, "InsufficientLevel", "", "", comando)
+        return replyMessage(client, interaction, "InsufficientLevel", "", "", comando);
     }
 
     let testoCommand = `/${comando.name}${interaction.options._subcommand ? `${interaction.options._subcommand} ` : ""}`
@@ -277,7 +275,7 @@ client.on("interactionCreate", async interaction => {
         interaction.deleteReply()
 
         client.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
-            .then(msg => {
+            .then(async msg => {
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":sweat_drops: Badwords :sweat_drops:")
                     .setColor(colors.purple)
@@ -288,7 +286,8 @@ client.on("interactionCreate", async interaction => {
                     .addField(":anchor: Channel", `${client.channels.cache.get(interaction.channelId).toString()} - #${client.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
                     .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 
@@ -315,7 +314,8 @@ client.on("interactionCreate", async interaction => {
             .addField(":anchor: Channel", `#${client.channels.cache.get(interaction.channelId).name} - ID: ${interaction.channelId}`)
             .addField(":page_facing_up: Command", testoCommand.length > 1024 ? `${testoCommand.slice(0, 1021)}...` : testoCommand)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.commands.allCommands).send({ embeds: [embed] })
     }
 })
@@ -332,17 +332,18 @@ client.on("interactionCreate", async interaction => {
     interaction.respond(response.slice(0, 25))
 })
 
-client.on("messageCreate", message => {
+client.on("messageCreate", async message => {
     if (message.author.bot) return
 
-    if (isMaintenance(message.author.id)) return
+    const maintenanceStates = await isMaintenance(message.author.id)
+    if (maintenanceStates) return
 
     if (message.channel.id != settings.idCanaliServer.noMicChat) return
 
     if (!message.content.startsWith("'")) return
 
-    let userstats = getUser(message.author.id)
-    if (!userstats) userstats = addUser(message.member)[0]
+    let userstats = await getUser(message.author.id)
+    if (!userstats) userstats = await addUser(message.member)
 
     if (!hasSufficientLevels(client, userstats, 15)) {
         let embed = new Discord.MessageEmbed()
@@ -391,7 +392,7 @@ client.on("messageCreate", message => {
         adapterCreator: message.guild.voiceAdapterCreator
     })
 
-    let serverstats = getServer()
+    let serverstats = await getServer()
 
     const url = googleTTS.getAudioUrl(text, {
         lang: serverstats.ttsDefaultLanguage,

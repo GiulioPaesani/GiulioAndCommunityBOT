@@ -16,7 +16,8 @@ const { checkBadwords } = require("../../functions/moderation/checkBadwords");
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.countingplus) return
         if (message.author.bot) return
@@ -32,10 +33,10 @@ module.exports = {
         }
         catch { return }
 
-        let userstats = getUser(message.author.id)
-        if (!userstats) userstats = addUser(message.member)[0]
+        let userstats = await getUser(message.author.id)
+        if (!userstats) userstats = await addUser(message.member)
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         let operator = ["+", "+", "-", "-", "*"]
 
@@ -63,7 +64,7 @@ module.exports = {
             message.channel.send({ embeds: [embed] })
 
             message.channel.send(serverstats.countingplus.number.toString())
-                .then(msg => {
+                .then(async msg => {
                     msg.react("🟢")
                 })
 
@@ -97,7 +98,7 @@ module.exports = {
             message.channel.send({ embeds: [embed] })
 
             message.channel.send(serverstats.countingplus.number.toString())
-                .then(msg => {
+                .then(async msg => {
                     msg.react("🟢")
                 })
 

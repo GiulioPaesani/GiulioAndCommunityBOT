@@ -1,12 +1,12 @@
+const { getUser } = require("../../functions/database/getUser");
 const fs = require("fs")
-const { getUser } = require("./getUser")
 
-const updateUser = (data) => {
+const updateUser = async (data) => {
     try {
         if (!data) return
         if (!getUser(data.id)) return
 
-        fs.writeFileSync(`./database/users/${data.id}/${data.id}.json`, JSON.stringify(data))
+        fs.writeFileSync(`./database/users/${data.id}.json`, JSON.stringify(data))
     }
     catch (err) {
         console.log(err)

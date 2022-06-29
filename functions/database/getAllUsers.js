@@ -1,24 +1,26 @@
-const fs = require("fs")
 const settings = require("../../config/general/settings.json")
+const fs = require("fs")
 
-const getAllUsers = (client, onlyInGuild = true) => {
-    try {
-        let data = []
+const getAllUsers = async (client, onlyInGuild = true) => {
+    let guildUsers = client.guilds.cache.get(settings.idServer).members.cache.map(x => x)
 
-        const commandsFolder = fs.readdirSync("./database/users");
-        for (const folder of commandsFolder) {
-            if (onlyInGuild) {
-                if (client.guilds.cache.get(settings.idServer).members.cache.get(folder)) {
-                    data.push(JSON.parse(fs.readFileSync(`./database/users/${folder}/${folder}.json`, 'utf8')))
-                }
-            }
-            else {
-                data.push(JSON.parse(fs.readFileSync(`./database/users/${folder}/${folder}.json`, 'utf8')))
+    let data = []
+
+    const folder = fs.readdirSync("./database/users/");
+    for (const user of folder) {
+        if (onlyInGuild) {
+            if (guildUsers.find(x => x.id == user.split(".")[0])) {
+                let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
+
+                data.push(JSON.parse(userstats))
             }
         }
-        return data
+        else {
+            let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
+            data.push(JSON.parse(userstats))
+        }
     }
-    catch (e) { console.log(e) }
+    return data
 }
 
 module.exports = { getAllUsers }

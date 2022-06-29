@@ -45,8 +45,8 @@ module.exports = {
             return replyMessage(client, interaction, "Error", "Oggetto non trovato", "Inserisci un oggetto valido", comando)
         }
 
-        let userstats = getUser(interaction.user.id)
-        if (!userstats) userstats = addUser(interaction.member)[0]
+        let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Buy  ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? getEmoji(client, `${item.name.toLowerCase()}Unlocked`) : getEmoji(client, item.name.toLowerCase())} ${item.name.toUpperCase()} ${item.priviled && !hasSufficientLevels(client, userstats, item.priviled) ? "- Not unlocked" : ""}`)

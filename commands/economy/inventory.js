@@ -35,8 +35,8 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi vedere l'inventario di un bot", comando)
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
         let totItems = 0
         let userItems = []

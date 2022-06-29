@@ -1,15 +1,8 @@
 const Discord = require("discord.js")
-const fetch = require("node-fetch")
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
-const { getServer } = require("../../../functions/database/getServer");
 const { replyMessage } = require("../../../functions/general/replyMessage")
-const { updateServer } = require("../../../functions/database/updateServer");
 const { getTaggedUser } = require("../../../functions/general/getTaggedUser");
-const { getServerStats } = require("../../../functions/database/getServerStats");
-const { getUser } = require("../../../functions/database/getUser");
-const { getUserStats } = require("../../../functions/database/getUserStats");
-const { deleteUser } = require("../../../functions/database/deleteUser");
 
 module.exports = {
     name: "debug",
@@ -214,7 +207,7 @@ module.exports = {
             let where = interaction.options.getString("where")
             let mode = parseInt(interaction.options.getString("mode"))
 
-            let serverstats = getServer()
+            let serverstats = await getServer()
 
             if (serverstats.maintenance[where] == mode) {
                 return replyMessage(client, interaction, "Warning", "Modalità manutenzione già impostata", `In **${where == "local" ? "locale" : "host"}** la manuntezione è già settata a \`${mode == 0 ? `Off - Everyone can use bot` : mode == 1 ? `Mode 1 - Only tester can use bot` : mode == 2 ? `Mode 2 - Nobody can use bot` : mode == 3 ? `Mode 3 - Everyone, except testers, can use bot` : ""}\``, comando)
@@ -234,7 +227,7 @@ module.exports = {
                 return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
             }
 
-            let serverstats = getServer()
+            let serverstats = await getServer()
 
             if (mode == "add") {
                 if (serverstats.testers.includes(utente.id)) {

@@ -13,11 +13,12 @@ module.exports = {
     async execute(client, message) {
         if (!message.author) return
 
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
 
         if (message.channel.id != settings.idCanaliServer.onewordstory) return
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (!serverstats.onewordstory.words.find(x => x.message == message.id)) return
 
@@ -28,8 +29,8 @@ module.exports = {
 
         updateServer(serverstats)
 
-        let userstats = getUser(message.author.id)
-        if (!userstats) userstats = addUser(message.member)[0]
+        let userstats = await getUser(message.author.id)
+        if (!userstats) userstats = await addUser(message.member)
 
         userstats.onewordstory.totWords--
         userstats.onewordstory.totWordsToday--

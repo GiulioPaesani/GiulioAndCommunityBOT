@@ -22,7 +22,7 @@ module.exports = {
     },
     channelsGranted: [],
     async execute(client, interaction, comando) {
-        let serverstats = getServer()
+        let serverstats = await getServer()
         let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
 
         if (!ticket) {

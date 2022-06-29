@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-const updateServer = (data) => {
+const updateServer = async (data) => {
     try {
         if (!data) return
 
@@ -10,5 +10,4 @@ const updateServer = (data) => {
         console.log(err)
     }
 }
-
 module.exports = { updateServer }

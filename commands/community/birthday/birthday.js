@@ -37,8 +37,8 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi visualizzare il compleanno di un bot", comando)
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Birthday - ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`)

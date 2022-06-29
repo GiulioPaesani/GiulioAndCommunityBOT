@@ -26,6 +26,10 @@ module.exports = {
                     {
                         name: "🌐 Web development",
                         value: "web"
+                    },
+                    {
+                        name: "⚫ Other",
+                        value: "other"
                     }
                 ]
             },

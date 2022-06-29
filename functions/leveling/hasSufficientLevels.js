@@ -1,7 +1,7 @@
 const settings = require("../../config/general/settings.json")
 
 const hasSufficientLevels = (client, userstats, level) => {
-    let server = client.guilds.cache.get(settings.idServer)
+    let server = client.guilds.cache.get(settings.idServer);
 
     if (userstats.leveling.level >= level) return true
 

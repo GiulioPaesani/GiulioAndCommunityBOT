@@ -1,12 +1,5 @@
-const Discord = require("discord.js")
-const moment = require("moment")
-const settings = require("../../config/general/settings.json")
-const colors = require("../../config/general/colors.json")
-const log = require("../../config/general/log.json")
 const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
 const { checkLevelUp } = require("../../functions/leveling/checkLevelUp");
-const { isMaintenance } = require("../../functions/general/isMaintenance")
-const { humanize } = require("../../functions/general/humanize")
 const { getUser } = require("../../functions/database/getUser")
 const { addUser } = require("../../functions/database/addUser")
 const { updateUser } = require("../../functions/database/updateUser")
@@ -103,8 +96,8 @@ module.exports = {
             return replyMessage(client, interaction, "Warning", "Non a un bot", "modificare i punti esperienza a un bot", comando)
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
         let xp = interaction.options.getInteger("xp")
 

@@ -13,19 +13,20 @@ module.exports = {
         if (!interaction.isButton()) return
         if (!interaction.customId.startsWith("funLb")) return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
-        let userstatsList = getAllUsers(client)
+        let userstatsList = await getAllUsers(client)
 
         let game = interaction.customId.split(",")[2]
 
         let row, embed
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (game == "counting") {
             let leaderboardListCorrect = userstatsList.sort((a, b) => (a.counting.correct < b.counting.correct) ? 1 : ((b.counting.correct < a.counting.correct) ? -1 : 0))

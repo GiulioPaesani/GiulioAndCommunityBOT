@@ -1,3 +1,4 @@
+const Discord = require("discord.js")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const illustrations = require("../../../config/general/illustrations.json")
 const colors = require("../../../config/general/colors.json")
@@ -8,9 +9,10 @@ module.exports = {
         if (!interaction.isButton()) return
         if (interaction.customId != "setupAvanti") return
 
-        interaction.deferUpdate().catch(() => { })
+        await interaction.deferUpdate().catch(() => { })
 
-        if (isMaintenance(interaction.user.id)) return
+        const maintenanceStatus = await isMaintenance(interaction.user.id)
+        if (maintenanceStatus) return
 
         switch (interaction.customId.split(",")[1]) {
             case "1": {

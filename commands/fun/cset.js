@@ -27,7 +27,7 @@ module.exports = {
     async execute(client, interaction, comando) {
         let count = interaction.options.getInteger("number")
 
-        let serverstats = getServer()
+        let serverstats = await getServer()
 
         if (count > serverstats.counting.bestScore) {
             return replyMessage(client, interaction, "Error", "Numero troppo alto", "Non puoi ripristinare un numero maggiore del record del server", comando)
@@ -50,7 +50,7 @@ module.exports = {
             client.channels.cache.get(settings.idCanaliServer.counting).send({ embeds: [embed] })
 
         client.channels.cache.get(settings.idCanaliServer.counting).send(count.toString())
-            .then(msg => {
+            .then(async msg => {
                 msg.react("🟢")
             })
     },

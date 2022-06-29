@@ -41,11 +41,9 @@ const checkLevelUp = async (client, userstats) => {
             `Nuove **emoji**: ${getEmoji(client, "GiulioCringe")} ${getEmoji(client, "GiulioDomandoso")} ${getEmoji(client, "GiulioFesta")} ${getEmoji(client, "GiulioOcchioloni")} ${getEmoji(client, "GiulioPopCorn")} ${getEmoji(client, "GiulioSus")}`
         ],
         40: [
-            `Applicare **effetti bizzarri** alla musica che stai ascoltando con \`/effect\``,
             `Aggiungre altri **proprietari** alla tua stanza privata con \`/padmin\``
         ],
         50: [
-            `Fare il **karaoke** con le canzoni che stai ascoltando con \`/lyrics\``,
             `Nuove **emoji**: ${getEmoji(client, "GiulioCuoriBlue")} ${getEmoji(client, "GiulioEasy")} ${getEmoji(client, "GiulioF")} ${getEmoji(client, "GiulioNausea")} ${getEmoji(client, "GiulioRicco")} ${getEmoji(client, "GiulioSaiyan")} ${getEmoji(client, "GiulioSconvolto")}`
         ],
         60: [
@@ -134,18 +132,21 @@ const checkLevelUp = async (client, userstats) => {
             if (nextPrivilegi)
                 embed.setFooter({ text: `Prossimi privilegi al livello ${nextPrivilegi}` })
 
+
             client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                 .catch(() => { })
         }
 
-        if (!userstats.leveling.livelliSuperati[level])
+        if (!userstats.leveling.livelliSuperati[level]) {
             userstats.economy.money += level * 10
+        }
+
 
         userstats.leveling.level = level
 
         userstats.leveling.livelliSuperati[level] = true
 
-        checkUserLevelRole(client, userstats)
+        checkUserLevelRole(client, userstats);
     }
 
     return userstats

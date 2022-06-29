@@ -1,8 +1,8 @@
 const fs = require("fs")
 
-const getUser = (userId) => {
+const getUser = async (userId) => {
     try {
-        let data = JSON.parse(fs.readFileSync(`./database/users/${userId}/${userId}.json`, 'utf8'))
+        let data = JSON.parse(fs.readFileSync(`./database/users/${userId}.json`, 'utf8'))
         return data
     }
     catch { }

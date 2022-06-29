@@ -18,7 +18,8 @@ const checkBirthday = async (client) => {
 
     let birthdayToday = []
 
-    getAllUsers(client).forEach(userstats => {
+    let userstatsList = await getAllUsers(client)
+    userstatsList.forEach(userstats => {
         if (userstats.birthday && ((userstats.birthday[0] == data.getMonth() + 1 && userstats.birthday[1] == data.getDate()) || (userstats.birthday[0] == 2 && userstats.birthday[1] == 29 && data.getMonth() == 2 && data.getDate() == 1 && !isAnnoBisestile(new Date().getFullYear())))) {
             birthdayToday.push(userstats)
         }

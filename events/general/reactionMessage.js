@@ -1,13 +1,12 @@
 const settings = require("../../config/general/settings.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance");
-const { checkBadwords } = require("../../functions/moderation/checkBadwords")
 const { getEmoji } = require("../../functions/general/getEmoji");
-const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
 
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id) && !message.author.bot) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates && !message.author.bot) return
         if (message.guild?.id != settings.idServer) return
 
         if (message.channel.id == settings.idCanaliServer.onewordstory) return

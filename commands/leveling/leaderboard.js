@@ -14,9 +14,10 @@ module.exports = {
     category: "ranking",
     channelsGranted: [settings.idCanaliServer.commands],
     async execute(client, interaction, comando) {
-        let userstatsList = getAllUsers(client)
 
-        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0))
+        let userstatsList = await getAllUsers(client);
+
+        let leaderboardListLeveling = userstatsList.sort((a, b) => (a.leveling.xp < b.leveling.xp) ? 1 : ((b.leveling.xp < a.leveling.xp) ? -1 : 0));
         let leaderboardLeveling = ""
 
         let totPage = Math.ceil(leaderboardListLeveling.length / 10)
@@ -24,7 +25,6 @@ module.exports = {
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
             if (leaderboardListLeveling[i]) {
-
                 switch (i) {
                     case 0:
                         leaderboardLeveling += ":first_place: ";
@@ -44,7 +44,7 @@ module.exports = {
             }
         }
 
-        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0))
+        let leaderboardListEconomy = userstatsList.sort((a, b) => (a.economy.money < b.economy.money) ? 1 : ((b.economy.money < a.economy.money) ? -1 : 0));
         let leaderboardEconomy = ""
 
         for (let i = 10 * (page - 1); i < 10 * page; i++) {
@@ -63,7 +63,7 @@ module.exports = {
                         leaderboardEconomy += `**#${i + 1}** `
                 }
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id)
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == leaderboardListEconomy[i].id);
                 leaderboardEconomy += `${utente.toString()} - **${humanize(leaderboardListEconomy[i].economy.money)}$**\n`
             }
         }
@@ -113,6 +113,6 @@ module.exports = {
             .addComponents(button3)
             .addComponents(button4)
 
-        interaction.reply({ embeds: [embed], components: [row] })
+        interaction.reply({ embeds: [embed], components: [row] });
     },
 };

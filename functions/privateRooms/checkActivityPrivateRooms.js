@@ -5,7 +5,7 @@ const { getServer } = require('./../../functions/database/getServer')
 const { updateServer } = require('./../../functions/database/updateServer')
 
 const checkActivityPrivateRooms = async (client) => {
-    let serverstats = getServer()
+    let serverstats = await getServer()
 
     for (let index in serverstats.privateRooms) {
         let room = serverstats.privateRooms[index]

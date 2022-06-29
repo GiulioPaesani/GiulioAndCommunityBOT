@@ -12,15 +12,16 @@ const { getAllUsers } = require("../../functions/database/getAllUsers")
 module.exports = {
     name: "guildMemberRemove",
     async execute(client, member) {
-        if (isMaintenance(member.user.id)) return
+        const maintenanceStates = await isMaintenance(member.user.id)
+        if (maintenanceStates) return
 
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return
 
         if (member.roles.cache.has(settings.idRuoloNonVerificato)) return
 
-        let userstats = getUser(member.id)
-        if (!userstats) userstats = addUser(member)[0]
+        let userstats = await getUser(member.id)
+        if (!userstats) userstats = await addUser(member)
 
         userstats.roles = member._roles;
         userstats.leavedAt = new Date().getTime();
@@ -42,11 +43,13 @@ module.exports = {
             .addField(":red_car: Joined server", `${moment(member.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.joinedTimestamp).fromNow()})`)
             .addField(":shirt: Roles", roles || "_No roles_")
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
-        let userstatsList = getAllUsers(client)
-        userstatsList.filter(x => x.invites[member.user.id]).forEach(userstats2 => {
+        let userstatsList = await getAllUsers(client)
+        userstatsList.filter(x => x.invites && x.invites[member.user.id]).forEach(userstats2 => {
+            if (!userstats2.invites) userstats2.invites = {}
             userstats2.invites[member.user.id] = "leaved"
             updateUser(userstats2)
         })

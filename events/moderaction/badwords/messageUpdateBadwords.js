@@ -11,7 +11,8 @@ const { checkBadwords } = require("../../../functions/moderation/checkBadwords")
 module.exports = {
     name: "messageUpdate",
     async execute(client, oldMessage, newMessage) {
-        if (isMaintenance(newMessage.author.id)) return
+        const maintenanceStates = await isMaintenance(newMessage.author.id)
+        if (maintenanceStates) return
 
         if (newMessage.author.bot) return
         if (newMessage.channel.type == "DM") return
@@ -33,7 +34,7 @@ module.exports = {
             .setFooter({ text: "User ID: " + newMessage.author.id })
 
         newMessage.channel.send({ embeds: [embed] })
-            .then(msg => {
+            .then(async msg => {
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":sweat_drops: Badwords :sweat_drops:")
                     .setColor(colors.purple)
@@ -44,7 +45,8 @@ module.exports = {
                     .addField(":anchor: Channel", `${newMessage.channel.toString()} - #${newMessage.channel.name}\nID: ${newMessage.channel.id}`)
                     .addField(":envelope: Message edited", nonCensurato.slice(0, 1024))
 
-                if (!isMaintenance())
+                const maintenanceStatus = await isMaintenance()
+                if (!maintenanceStatus)
                     client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
             })
 

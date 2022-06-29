@@ -46,8 +46,8 @@ module.exports = {
             return replyMessage(client, interaction, "NonPermesso", "", "Non puoi smutare questo utente", comando)
         }
 
-        let userstats = getUser(utente.id)
-        if (!userstats) userstats = addUser(interaction.guild.members.cache.get(utente.id) || utente)[0]
+        let userstats = await getUser(utente.id)
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
         if (userstats.moderation.type != "Muted" && userstats.moderation.type != "Tempmuted") {
             return replyMessage(client, interaction, "Warning", "Utente non mutato", "Questo utente non è mutato", comando)
@@ -56,7 +56,7 @@ module.exports = {
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.muted)
             interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.tempmuted)
-                .then(() => {
+                .then(async () => {
                     if (interaction.guild.members.cache.get(utente.id).voice?.channelId) {
                         let canale = interaction.guild.members.cache.get(utente.id).voice.channelId
                         if (canale == settings.idCanaliServer.general1)
@@ -94,7 +94,8 @@ module.exports = {
             .addField(":page_facing_up: Mute reason", userstats.moderation.reason)
             .addField(":hourglass: Time muted", `${ms(new Date().getTime() - userstats.moderation.since, { long: true })} (Since: ${moment(userstats.moderation.since).format("ddd DD MMM YYYY, HH:mm:ss")})`)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.moderation.unmute).send({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()

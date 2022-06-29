@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const moment = require("moment")
 const colors = require("../../config/general/colors.json")
+const log = require("../../config/general/log.json")
 const settings = require("../../config/general/settings.json")
 const items = require("../../config/ranking/items.json")
 const illustrations = require("../../config/general/illustrations.json")
@@ -10,7 +11,8 @@ const { getEmoji } = require("../../functions/general/getEmoji")
 module.exports = {
     name: "messageCreate",
     async execute(client, message) {
-        if (isMaintenance(message.author.id)) return
+        const maintenanceStates = await isMaintenance(message.author.id)
+        if (maintenanceStates) return
         if (message.guild?.id != settings.idServer) return
 
         if (message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION" && message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1" && message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2" && message.type != "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3") return
@@ -96,7 +98,8 @@ ${nuovoLivello ? nuovoLivello : ""}
 Old: Lvl. ${livelloVecchio} Boost ${message.guild.premiumSubscriptionCount - numeroBoost}
 New: Lvl. ${livelloNuovo} Boost ${message.guild.premiumSubscriptionCount}`)
 
-        if (!isMaintenance())
+        const maintenanceStatus = await isMaintenance()
+        if (!maintenanceStatus)
             client.channels.cache.get(log.server.serverBoostes).send({ embeds: [embed] })
 
         let textItems = ""
