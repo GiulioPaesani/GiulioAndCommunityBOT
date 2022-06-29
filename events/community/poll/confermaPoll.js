@@ -57,10 +57,11 @@ module.exports = {
                     msg.react(discordEmoji[reaction] || reaction)
                 });
 
-                msg.startThread({
-                    name: interaction.message.embeds[0].fields[0].name,
-                    autoArchiveDuration: "MAX",
-                });
+                if (interaction.customId.split(",")[3] == "staffpoll")
+                    msg.startThread({
+                        name: interaction.message.embeds[0].fields[0].name,
+                        autoArchiveDuration: "MAX",
+                    });
             })
 
     },
