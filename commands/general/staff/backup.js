@@ -1,6 +1,8 @@
 const Discord = require("discord.js")
 const moment = require("moment")
 const fs = require("fs")
+
+const zipper = require('zip-local')
 const settings = require("../../../config/general/settings.json")
 const log = require("../../../config/general/log.json")
 const colors = require("../../../config/general/colors.json")
