@@ -153,19 +153,16 @@ client.on("interactionCreate", async interaction => {
 
     let serverstats = await getServer()
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(client.channels.cache.get(interaction.channelId).parentId)) {
-        if (getUserPermissionLevel(client, interaction.user.id) >= 2) {
+        if (getUserPermissionLevel(client, interaction.user.id)) {
 
         }
         else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
 
         }
-        else if (getUserPermissionLevel(client, interaction.user.id) >= 1 && (comando.category == "moderation" || comando.name == "video" || comando.name == "code")) {
-
-        }
         else if (serverstats.privateRooms.find(x => x.owners.includes(interaction.user.id))?.channel == interaction.channelId) {
 
         }
-        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId && (getUserPermissionLevel(client, interaction.user.id) >= 1 || serverstats.tickets.find(x => x.owner == interaction.user.id))) {
+        else if (serverstats.tickets.find(x => x.owner == interaction.user.id)?.channel == interaction.channelId) {
 
         }
         else {

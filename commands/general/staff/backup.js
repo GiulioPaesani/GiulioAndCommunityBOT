@@ -309,13 +309,7 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                 interaction.editReply({ embeds: [embed] })
 
-                // let serverstats = await getServer()
-                // let userstatsList = await getAllUsers(client, false)
-
                 const attachmentServer = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup-server-${time}.json`);
-                // const attachmentServerstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t"), "utf-8"), `backup-serverstats-${time}.json`);
-                // const attachmentUserstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `backup-userstats-${time}.json`);
-                const attachmentDatabase = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup${time}.json`);
 
                 embed = new Discord.MessageEmbed()
                     .setTitle(":inbox_tray: New backup :inbox_tray:")
@@ -327,12 +321,6 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                 client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, `./database${time}.zip`] })
                     .then(async msg2 => {
-
-                        // await client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
-                        // await client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
-                        // await client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
-
-
                         embed = new Discord.MessageEmbed()
                             .setTitle(":card_box: Backup CREATO :card_box:")
                             .setDescription(`Salvataggio di tutto il **server** e del contenuto dei **database** creato con successo

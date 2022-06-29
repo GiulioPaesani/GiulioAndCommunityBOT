@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const moment = require("moment")
+const zipper = require('zip-local')
 const fs = require("fs")
 const settings = require("../../config/general/settings.json")
 const log = require("../../config/general/log.json")
@@ -190,24 +191,16 @@ const autoBackup = async (client) => {
             }
         })
 
-    let serverstats = await getServer()
-    let userstatsList = await getAllUsers(client, false)
-
     const attachmentServer = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(backup, null, "\t"), "utf-8"), `backup-server-${time}.json`);
-    const attachmentServerstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(serverstats, null, "\t"), "utf-8"), `backup-serverstats-${time}.json`);
-    const attachmentUserstats = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(userstatsList, null, "\t"), "utf-8"), `backup-userstats-${time}.json`);
+
+    await zipper.sync.zip("./database").compress().save(`./database${time}.zip`);
 
     embed = new Discord.MessageEmbed()
         .setTitle(":inbox_tray: Auto backup :inbox_tray:")
         .setColor(colors.purple)
         .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
 
-    client.channels.cache.get(log.general.backup).send({ embeds: [embed] })
-        .then(async () => {
-            await client.channels.cache.get(log.general.backup).send({ files: [attachmentServer] })
-            await client.channels.cache.get(log.general.backup).send({ files: [attachmentServerstats] })
-            await client.channels.cache.get(log.general.backup).send({ files: [attachmentUserstats] })
-        })
+    client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, `./database${time}.zip`] })
 }
 
 module.exports = { autoBackup }
