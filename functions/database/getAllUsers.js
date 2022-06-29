@@ -16,8 +16,9 @@ const getAllUsers = async (client, onlyInGuild = true) => {
             }
         }
         else {
+            let userstats
             try {
-                let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
+                userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
 
             }
             catch {
