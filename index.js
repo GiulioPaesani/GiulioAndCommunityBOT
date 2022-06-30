@@ -405,20 +405,3 @@ client.on("messageCreate", async message => {
 
     addQueue(client, url, connection)
 })
-
-
-client.on("ready", async () => {
-    let userstatsList = await getAllUsers(client)
-
-    userstatsList.forEach(async userstats => {
-
-        if (JSON.stringify(userstats).includes("$numberLong")) {
-            if (userstats.joinedAt?.$numberLong) userstats.joinedAt = parseInt(userstats.joinedAt.$numberLong)
-            if (userstats.timeLastScore?.$numberLong) userstats.timeLastScore = parseInt(userstats.timeLastScore.$numberLong)
-            if (userstats.timeBestScore?.$numberLong) userstats.timeBestScore = parseInt(userstats.timeBestScore.$numberLong)
-
-            await updateUser(userstats)
-            console.log(userstats.id)
-        }
-    })
-})
