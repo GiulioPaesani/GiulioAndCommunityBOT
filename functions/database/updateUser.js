@@ -7,6 +7,7 @@ const updateUser = async (data) => {
         if (!getUser(data.id)) return
 
         fs.writeFileSync(`./database/users/${data.id}.json`, JSON.stringify(data))
+        console.log(data.id, "AGGIORNATO")
     }
     catch (err) {
         console.log(err)
