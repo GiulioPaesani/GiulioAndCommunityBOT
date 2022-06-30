@@ -31,6 +31,7 @@
         "privateRooms": "984042391575101490",
         "categoriaAdmin": "869975171795157022",
         "testing": "869975198483488890",
+        "bar":"991284521892839445",
         "admin": "793781906478858269",
         "staffPolls": "965574854067769384",
         "mutedTicket": "869975202224824380",
@@ -52,6 +53,7 @@
     "idRuoloFeatureActivator":"971849703614455859",
     "idRuoloGiulioSubPlus":"986961028707397715",
     "idRuoloGiulioSubPro":"986961028707397716",
+    "idRuoloMonthMember": "991282211133325362",
     "ruoliNotification": {
         "announcements": "815649916574629941",
         "news": "815649625591382077",
