@@ -328,6 +328,8 @@ ${getEmoji(client, "Loading")} **Database**`)
                             .setColor(colors.green)
 
                         interaction.editReply({ embeds: [embed] })
+
+                        fs.unlinkSync(`./database${time}.zip`)
                     })
                     .catch((err) => { console.log("ciao", err) })
             })

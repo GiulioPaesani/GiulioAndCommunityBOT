@@ -200,7 +200,9 @@ const autoBackup = async (client) => {
         .setColor(colors.purple)
         .addField(":alarm_clock: Time", moment(time).format("ddd DD MMM YYYY, HH:mm:ss"))
 
-    client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, `./database${time}.zip`] })
+    await client.channels.cache.get(log.general.backup).send({ embeds: [embed], files: [attachmentServer, `./database${time}.zip`] })
+
+    fs.unlinkSync(`./database${time}.zip`)
 }
 
 module.exports = { autoBackup }
