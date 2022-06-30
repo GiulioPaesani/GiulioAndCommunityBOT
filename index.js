@@ -156,7 +156,7 @@ client.on("interactionCreate", async interaction => {
         if (getUserPermissionLevel(client, interaction.user.id)) {
 
         }
-        if (interaction.member.roles.cache.has(settings.idRuoloMonthMember)) {
+        else if (interaction.member.roles.cache.has(settings.idRuoloMonthMember)) {
 
         }
         else if (client.channels.cache.get(interaction.channelId).parentId == settings.idCanaliServer.categoriaAdmin) {
