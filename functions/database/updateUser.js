@@ -10,6 +10,7 @@ const updateUser = async (data) => {
         console.log(data.id, "AGGIORNATO")
     }
     catch (err) {
+        console.log("ciao")
         console.log(err)
     }
 }
