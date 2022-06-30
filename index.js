@@ -411,28 +411,47 @@ client.on("ready", async () => {
     let userstatsList = await getAllUsers(client)
     let i = 0
     userstatsList.forEach(async userstats => {
-        if (JSON.stringify(userstats).includes("$numberLong")) {
-            i++
-            console.log(i)
-            if (userstats.joinedAt?.$numberLong) userstats.joinedAt = parseInt(userstats.joinedAt.$numberLong)
-            if (userstats.leavedAt?.$numberLong) userstats.leavedAt = parseInt(userstats.leavedAt.$numberLong)
-            if (userstats.counting.timeLastScore?.$numberLong) userstats.counting.timeLastScore = parseInt(userstats.counting.timeLastScore.$numberLong)
-            if (userstats.countingplus.timeLastScore?.$numberLong) userstats.countingplus.timeLastScore = parseInt(userstats.countingplus.timeLastScore.$numberLong)
-            if (userstats.counting.timeBestScore?.$numberLong) userstats.counting.timeBestScore = parseInt(userstats.counting.timeBestScore.$numberLong)
-            if (userstats.moderation.since?.$numberLong) userstats.moderation.since = parseInt(userstats.moderation.since.$numberLong)
-            if (userstats.moderation.until?.$numberLong) userstats.moderation.until = parseInt(userstats.moderation.until.$numberLong)
-            if (userstats.warns.find(x => x.time?.$numberLong)) {
-                for (let x = 0; x < userstats.warns.length; x++) {
-                    userstats.warns[x].time = parseInt(userstats.warns[x].time.$numberLong)
-                }
-            }
-            if (userstats.warns.find(x => x.unTime?.$numberLong)) {
-                for (let x = 0; x < userstats.warns.length; x++) {
-                    if (userstats.warns[x].unTime)
-                        userstats.warns[x].unTime = parseInt(userstats.warns[x].unTime.$numberLong)
-                }
-            }
+        // if (JSON.stringify(userstats).includes("$numberLong")) {
+        //     i++
+        //     console.log(i)
+        //     if (userstats.joinedAt?.$numberLong) userstats.joinedAt = parseInt(userstats.joinedAt.$numberLong)
+        //     if (userstats.leavedAt?.$numberLong) userstats.leavedAt = parseInt(userstats.leavedAt.$numberLong)
+        //     if (userstats.counting.timeLastScore?.$numberLong) userstats.counting.timeLastScore = parseInt(userstats.counting.timeLastScore.$numberLong)
+        //     if (userstats.countingplus.timeLastScore?.$numberLong) userstats.countingplus.timeLastScore = parseInt(userstats.countingplus.timeLastScore.$numberLong)
+        //     if (userstats.counting.timeBestScore?.$numberLong) userstats.counting.timeBestScore = parseInt(userstats.counting.timeBestScore.$numberLong)
+        //     if (userstats.moderation.since?.$numberLong) userstats.moderation.since = parseInt(userstats.moderation.since.$numberLong)
+        //     if (userstats.moderation.until?.$numberLong) userstats.moderation.until = parseInt(userstats.moderation.until.$numberLong)
+        //     if (userstats.warns.find(x => x.time?.$numberLong)) {
+        //         for (let x = 0; x < userstats.warns.length; x++) {
+        //             userstats.warns[x].time = parseInt(userstats.warns[x].time.$numberLong)
+        //         }
+        //     }
+        //     if (userstats.warns.find(x => x.unTime?.$numberLong)) {
+        //         for (let x = 0; x < userstats.warns.length; x++) {
+        //             if (userstats.warns[x].unTime)
+        //                 userstats.warns[x].unTime = parseInt(userstats.warns[x].unTime.$numberLong)
+        //         }
+        //     }
 
+        //     await updateUser(userstats)
+        //     console.log(`C:\\Users\\giuli\\Documents\\GitHub\\GiulioAndCommunityBOT\\database\\users\\${userstats.id}.json`)
+        // }
+
+        if (!userstats.leveling.livelliSuperati || userstats.leveling.livelliSuperati?.length) {
+            userstats.leveling.livelliSuperati = {}
+            await updateUser(userstats)
+            console.log(`C:\\Users\\giuli\\Documents\\GitHub\\GiulioAndCommunityBOT\\database\\users\\${userstats.id}.json`)
+        }
+        if (userstats.economy.inventory?.length) {
+            let newInventory = {}
+            let index = 0
+            userstats.economy.inventory.forEach(item => {
+                if (item) {
+                    newInventory[index] = item
+                }
+                index++
+            })
+            userstats.economy.inventory = newInventory
             await updateUser(userstats)
             console.log(`C:\\Users\\giuli\\Documents\\GitHub\\GiulioAndCommunityBOT\\database\\users\\${userstats.id}.json`)
         }
