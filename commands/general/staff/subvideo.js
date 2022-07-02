@@ -15,13 +15,19 @@ module.exports = {
         options: [
             {
                 name: "idvideo",
-                description: "ID del video",
+                description: "ID del video per abbonati",
                 type: "STRING",
                 required: true,
             },
             {
                 name: "title",
                 description: "Titolo del video censurato",
+                type: "STRING",
+                required: true,
+            },
+            {
+                name: "title2",
+                description: "Titolo del video completo",
                 type: "STRING",
                 required: true,
             },
@@ -43,6 +49,7 @@ module.exports = {
     async execute(client, interaction, comando) {
         let idvideo = interaction.options.getString("idvideo")
         let title = interaction.options.getString("title")
+        let title2 = interaction.options.getString("title2")
         let thumbnail = interaction.options.getString("thumbnail")
         let publishdate = interaction.options.getString("publishdate")
 
@@ -84,17 +91,19 @@ ${moment(publishdate, "DD/MM/YYYY").format("dddd DD MMMM yyyy")} - [Video link](
                         let embed = new Discord.MessageEmbed()
                             .setTitle("Video annullato")
                             .setColor(colors.red)
-                            .setDescription(msg2.embeds[0].description)
+                            .setDescription(msg2.embeds[0].description.replace(` - [Video link](https://youtu.be/${idvideo})`, ""))
 
                         msg2.edit({ embeds: [embed], components: [] })
+                            .then(() => setTimeout(() => msg2.delete(), 2000))
                     }
                     else if (i.customId == "confermaSubVideo") {
                         let embed = new Discord.MessageEmbed()
                             .setTitle("Video annunciato")
                             .setColor(colors.green)
-                            .setDescription(msg2.embeds[0].description)
+                            .setDescription(msg2.embeds[0].description.replace(` - [Video link](https://youtu.be/${idvideo})`, ""))
 
                         msg2.edit({ embeds: [embed], components: [] })
+                            .then(() => setTimeout(() => msg2.delete(), 2000))
 
                         let embed2 = new Discord.MessageEmbed()
                             .setTitle(":film_frames: Nuovo video in anteprima :face_with_monocle:")
@@ -116,14 +125,13 @@ _Uscirà per tutti il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}_
                         let button2 = new Discord.MessageButton()
                             .setLabel("Scopri il video")
                             .setStyle("PRIMARY")
-                            .setCustomId(`scopriSubVideo,${idvideo},${publishdate}`)
+                            .setCustomId(`scopriSubVideo,${idvideo},${title2},${publishdate}`)
 
                         let row = new Discord.MessageActionRow()
                             .addComponents(button1)
                             .addComponents(button2)
 
-                        //! CAMBIARE CANALE
-                        client.channels.cache.get(settings.idCanaliServer.testing).send({ embeds: [embed2], components: [row] })
+                        client.channels.cache.get(settings.idCanaliServer.general).send({ embeds: [embed2], components: [row] })
                     }
                 })
             })

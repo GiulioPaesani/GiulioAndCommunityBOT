@@ -3,10 +3,7 @@ const moment = require("moment")
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
-const { getEmoji } = require("../../../functions/general/getEmoji");
 const { replyMessage } = require("../../../functions/general/replyMessage");
-const { getInfo } = require("ytdl-getinfo");
-const { humanizeTime } = require("../../../functions/general/humanizeTime");
 
 module.exports = {
     name: `interactionCreate`,
@@ -17,30 +14,27 @@ module.exports = {
 
         if (!interaction.customId.startsWith("scopriSubVideo")) return
 
+        await interaction.deferUpdate().catch(() => { })
+
+        if (!interaction.member.roles.cache.has(settings.idRuoloGiulioSubPro)) return replyMessage(client, interaction, "NonPermesso", null, "Per vedere questo video è necessario **abbonarsi** al livello GiulioSub Pro e **collegare** il tuo account Youtube a Discord")
+
         let idVideo = interaction.customId.split(",")[1]
-        let publishdate = interaction.customId.split(",")[2]
+        let title = interaction.customId.split(",")[2]
+        let publishdate = interaction.customId.split(",")[3]
 
-        setTimeout(async () => {
-            await interaction.deferUpdate().catch(() => { })
-        }, 2000)
+        let embed = new Discord.MessageEmbed()
+            .setTitle(title)
+            .setColor(colors.blue)
+            .setDescription(`:gem: Video in anteprima, uscirà pubblicamente il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}`)
 
-        getInfo(`https://www.youtube.com/watch?v=${idVideo}`)
-            .then(async (info) => {
-                let embed = new Discord.MessageEmbed()
-                    .setTitle(info.items[0].title)
-                    .setColor(colors.blue)
-                    .setThumbnail(info.items[0].thumbnail)
-                    .setDescription(`:gem: Video in anteprima, uscirà pubblicamente il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}`)
+        let button1 = new Discord.MessageButton()
+            .setURL(`https://www.youtube.com/watch?v=${idVideo}`)
+            .setStyle("LINK")
+            .setLabel("Vai al video")
 
-                let button1 = new Discord.MessageButton()
-                    .setURL(`https://www.youtube.com/watch?v=${idVideo}`)
-                    .setStyle("LINK")
-                    .setLabel("Vai al video")
+        let row = new Discord.MessageActionRow()
+            .addComponents(button1)
 
-                let row = new Discord.MessageActionRow()
-                    .addComponents(button1)
-
-                interaction.followUp({ embeds: [embed], components: [row], ephemeral: true })
-            })
+        interaction.followUp({ embeds: [embed], components: [row], ephemeral: true })
     },
 };
