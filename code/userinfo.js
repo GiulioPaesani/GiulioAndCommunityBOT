@@ -10,11 +10,12 @@ module.exports = {
     code: `
 client.on("messageCreate", message => {
     if (message.content.startsWith("!userinfo")) {
+        let utente
         if (message.content == "!userinfo") {
-            let utente = message.member;
+            utente = message.member;
         }
         else {
-            let utente = message.mentions.members.first();
+            utente = message.mentions.members.first();
         }
         if (!utente) {
             return message.channel.send("Non ho trovato questo utente")
