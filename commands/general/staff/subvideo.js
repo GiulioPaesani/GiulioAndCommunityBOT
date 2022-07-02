@@ -104,7 +104,7 @@ ${moment(publishdate, "DD/MM/YYYY").format("dddd DD MMMM yyyy")} - [Video link](
 **${title}**
 _Uscirà per tutti il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}_
 
-:gem: Quardalo ora **ABBONANDOTI** al canale! Fallo subito [QUI](https://www.youtube.com/giulioandcode/join)
+:gem: Guardalo ora **ABBONANDOTI** al canale! Fallo subito [QUI](https://www.youtube.com/giulioandcode/join)
 `)
                             .setImage(thumbnail)
 

@@ -1,7 +1,12 @@
 const Discord = require("discord.js")
 const moment = require("moment")
 const colors = require("../../../config/general/colors.json")
+const settings = require("../../../config/general/settings.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { getEmoji } = require("../../../functions/general/getEmoji");
+const { replyMessage } = require("../../../functions/general/replyMessage");
+const { getInfo } = require("ytdl-getinfo");
+const { humanizeTime } = require("../../../functions/general/humanizeTime");
 
 module.exports = {
     name: `interactionCreate`,
@@ -15,12 +20,9 @@ module.exports = {
         let idVideo = interaction.customId.split(",")[1]
         let publishdate = interaction.customId.split(",")[2]
 
-        let embed = new Discord.MessageEmbed()
-            .setTitle(`:projector: Ricerca video`)
-            .setColor(colors.blue)
-            .setDescription(`${getEmoji(client, "Loading")} Caricamento video...`)
-
-        interaction.followUp({ embeds: [embed], components: [], ephymeral: true })
+        setTimeout(async () => {
+            await interaction.deferUpdate().catch(() => { })
+        }, 2000)
 
         getInfo(`https://www.youtube.com/watch?v=${idVideo}`)
             .then(async (info) => {
@@ -28,10 +30,7 @@ module.exports = {
                     .setTitle(info.items[0].title)
                     .setColor(colors.blue)
                     .setThumbnail(info.items[0].thumbnail)
-                    .setDescription(`
-${humanizeTime(info.items[0].duration)}
-
-:gem: Video in anteprima, uscirà pubblicamente il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}`)
+                    .setDescription(`:gem: Video in anteprima, uscirà pubblicamente il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}`)
 
                 let button1 = new Discord.MessageButton()
                     .setURL(`https://www.youtube.com/watch?v=${idVideo}`)
@@ -41,7 +40,7 @@ ${humanizeTime(info.items[0].duration)}
                 let row = new Discord.MessageActionRow()
                     .addComponents(button1)
 
-                interaction.editReply({ embeds: [embed], components: [row] })
+                interaction.followUp({ embeds: [embed], components: [row], ephemeral: true })
             })
     },
 };
