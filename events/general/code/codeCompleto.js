@@ -14,7 +14,7 @@ module.exports = {
 
         let codice = client.codes.find(cmd => cmd.id == interaction.customId.split(",")[1]);
 
-        if (!codice) client.channels.cache.get("985108334606688266").send(`CustomId: ${interaction.customId} - ID: ${interaction.customId.split(",")[1]} - Message: ${interaction.message.id} - Channel: ${interaction.channel.id}`) //? DEBUG
+        if (!codice) interaction.message.delete()
 
         let attachment = new Discord.MessageAttachment(Buffer.from(codice.code.trim(), 'utf-8'), `${codice.name}-GiulioAndCode.txt`)
 

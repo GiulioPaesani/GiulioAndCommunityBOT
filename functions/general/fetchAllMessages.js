@@ -8,7 +8,7 @@ const fetchAllMessages = async (channel) => {
             options.before = lastMessage;
         }
 
-        let messages = await channel.messages.fetch(options)
+        let messages = await channel.messages.fetch(options).catch(() => { }) || new Map()
 
         allMessages = allMessages.concat(Array.from(messages.values()))
 

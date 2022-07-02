@@ -6,14 +6,12 @@ const checkRoomInDB = async (client) => {
     let serverstats = await getServer()
     let changed = false
 
-    for (let index in serverstats.privateRooms) {
-        let room = serverstats.privateRooms[index]
-
+    serverstats.privateRooms.forEach(room => {
         if (!client.channels.cache.get(room.channel)) {
             serverstats.privateRooms = serverstats.privateRooms.filter(x => x.channel != room.channel);
             changed = true
         }
-    }
+    })
 
     client.guilds.cache.get(settings.idServer).channels.cache.forEach(channel => {
         if (channel.parentId == settings.idCanaliServer.categoriaPrivateRooms && channel.id != settings.idCanaliServer.privateRooms) {

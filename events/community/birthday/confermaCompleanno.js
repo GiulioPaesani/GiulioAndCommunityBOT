@@ -88,10 +88,10 @@ module.exports = {
                 ctx.drawImage(img, 0, 0)
 
                 let randomItems = []
-                items = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
+                let items2 = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
                 for (let i = 1; i <= 4; i++) {
-                    randomItems.push(items[Math.floor(Math.random() * items.length)])
-                    items = items.filter(x => x != randomItems[randomItems.length - 1])
+                    randomItems.push(items2[Math.floor(Math.random() * items2.length)])
+                    items2 = items2.filter(x => x != randomItems[randomItems.length - 1])
                 }
 
                 let embed = new Discord.MessageEmbed()

@@ -76,7 +76,7 @@ const checkActivityPrivateRooms = async (client) => {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Stanza inattiva eliminato")
                 .setColor(colors.yellow)
-                .setDescription(`La tua stanza #${client.channels.cache.get(room.channel).name} è stato inutilizzata per più di **7 giorni** ed è stata eliminata per inattività\nSe ti va puoi riaprire un'altra stanza nel canale <#${settings.idCanaliServer.privateRooms}>`)
+                .setDescription(`La tua stanza <#${room.channel}> è stato inutilizzata per più di **7 giorni** ed è stata eliminata per inattività\nSe ti va puoi riaprire un'altra stanza nel canale <#${settings.idCanaliServer.privateRooms}>`)
 
             room.owners.forEach(async owner => {
                 await client.users.cache.get(owner)?.send({ embeds: [embed] })
