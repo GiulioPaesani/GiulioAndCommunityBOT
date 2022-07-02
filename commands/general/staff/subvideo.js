@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const moment = require("moment")
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
+const { isMaintenance } = require("../../../functions/general/isMaintenance")
 
 module.exports = {
     name: "subvideo",
