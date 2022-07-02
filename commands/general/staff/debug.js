@@ -10,7 +10,7 @@ module.exports = {
     permissionLevel: 3,
     cooldown: 30,
     requiredLevel: 0,
-    syntax: "/debug [reload/maintenance/tester/restart/stop]",
+    syntax: "/debug [reload/maintenance/tester/server/user]",
     category: "general",
     data: {
         options: [
