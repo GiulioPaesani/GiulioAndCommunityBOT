@@ -44,7 +44,9 @@ module.exports = {
         client.channels.cache.get(settings.idCanaliServer.qna).messages.fetch(domanda)
             .then(async msg => {
                 msg.embeds[0].color = colors.purple
-                msg.embeds[0].description = `${risposta}${video ? `\n\n:projector: Per maggiori dettagli **[guarda il video](${video}) **` : ""}`
+                msg.embeds[0].description = risposta
+                if (video)
+                    msg.embeds[0].url = video
 
                 msg.edit({ embeds: [msg.embeds[0]] })
 
