@@ -3,6 +3,7 @@ const moment = require("moment")
 const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: "subvideo",
@@ -135,5 +136,7 @@ _Uscirà per tutti il ${moment(publishdate, "DD/MM/YYYY").format("DD/MM/yyyy")}_
                     }
                 })
             })
+
+        return true
     },
 };
