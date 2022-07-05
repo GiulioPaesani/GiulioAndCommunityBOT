@@ -12,7 +12,7 @@ const fetchAllMessages = async (channel) => {
 
         allMessages = allMessages.concat(Array.from(messages.values()))
 
-        lastMessage = messages.last()?.id;
+        lastMessage = messages?.last()?.id;
 
         if (messages.size != 100) {
             break

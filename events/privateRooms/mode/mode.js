@@ -8,6 +8,7 @@ module.exports = {
     name: "messageCreate",
     async execute(client, message) {
         if (message.author.bot) return
+        if (message.channel.type == "DM") return
 
         const maintenanceStates = await isMaintenance(message.author.id)
         if (maintenanceStates) return

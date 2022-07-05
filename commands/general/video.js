@@ -31,7 +31,7 @@ module.exports = {
             .setColor(colors.gray)
             .setDescription(`${getEmoji(client, "Loading")} Ricerca video su YouTube per \`${query}\``)
 
-        interaction.reply({ embeds: [embed] })
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
         yt.search(query)
             .then(videos => {
@@ -74,7 +74,7 @@ module.exports = {
                 let row = new Discord.MessageActionRow()
                     .addComponents(select)
 
-                interaction.editReply({ embeds: [embed], components: [row] })
+                msg.edit({ embeds: [embed], components: [row] })
             })
     },
 };

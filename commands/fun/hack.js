@@ -51,7 +51,7 @@ module.exports = {
             .setColor(colors.purple)
             .setDescription(`_Attacco hacker a ${utente.toString()}_\n${attack[0]}`)
 
-        interaction.reply({ embeds: [embed] })
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
         setTimeout(() => {
             embed = new Discord.MessageEmbed()
@@ -59,35 +59,35 @@ module.exports = {
                 .setColor(colors.purple)
                 .setDescription(`_Attacco hacker a ${utente.toString()}_\n${attack[1]}`)
 
-            interaction.editReply({ embeds: [embed] })
+            msg.edit({ embeds: [embed] })
             setTimeout(() => {
                 embed = new Discord.MessageEmbed()
                     .setTitle("Hacking in corso...")
                     .setColor(colors.purple)
                     .setDescription(`_Attacco hacker a ${utente.toString()}_\n${attack[2]}`)
 
-                interaction.editReply({ embeds: [embed] })
+                msg.edit({ embeds: [embed] })
                 setTimeout(() => {
                     embed = new Discord.MessageEmbed()
                         .setTitle("Hacking in corso...")
                         .setColor(colors.purple)
                         .setDescription(`_Attacco hacker a ${utente.toString()}_\n${attack[3]}`)
 
-                    interaction.editReply({ embeds: [embed] })
+                    msg.edit({ embeds: [embed] })
                     setTimeout(() => {
                         embed = new Discord.MessageEmbed()
                             .setTitle("Hacking in corso...")
                             .setColor(colors.purple)
                             .setDescription(`_Attacco hacker a ${utente.toString()}_\n${attack[4]}`)
 
-                        interaction.editReply({ embeds: [embed] })
+                        msg.edit({ embeds: [embed] })
                         setTimeout(() => {
                             embed = new Discord.MessageEmbed()
                                 .setTitle("Attacco hacking completato")
                                 .setColor(colors.purple)
                                 .setDescription(`_Attacco hacker a ${utente.toString()} terminato con successo_`)
 
-                            interaction.editReply({ embeds: [embed] })
+                            msg.edit({ embeds: [embed] })
                         }, 500)
                     }, 1500)
                 }, 2200)
