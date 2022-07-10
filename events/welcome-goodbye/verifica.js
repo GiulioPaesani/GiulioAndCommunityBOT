@@ -95,12 +95,11 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
             }
 
             let userstatsList = await getAllUsers(client)
-            userstatsList.filter(x => x.invites && x.invites[interaction.user.id]).forEach(userstats2 => {
+            userstatsList.filter(x => x.invites[interaction.user.id]).forEach(userstats2 => {
                 if (invite && invite.inviter.id == userstats2.id) {
 
                 }
                 else {
-                    if (!userstats2.invites) userstats2.invites = {}
                     userstats2.invites[interaction.user.id] = "inServerOtherInvite"
                     updateUser(userstats2)
                 }

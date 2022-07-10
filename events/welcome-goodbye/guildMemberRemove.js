@@ -48,8 +48,7 @@ module.exports = {
             client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
         let userstatsList = await getAllUsers(client)
-        userstatsList.filter(x => x.invites && x.invites[member.user.id]).forEach(userstats2 => {
-            if (!userstats2.invites) userstats2.invites = {}
+        userstatsList.filter(x => x.invites[member.user.id]).forEach(userstats2 => {
             userstats2.invites[member.user.id] = "leaved"
             updateUser(userstats2)
         })

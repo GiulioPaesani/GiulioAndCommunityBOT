@@ -253,8 +253,6 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
-    const time_now = new Date().toLocaleString();
-
     if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
         return replyMessage(client, interaction, "InsufficientLevel", "", "", comando);
     }

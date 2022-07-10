@@ -34,8 +34,6 @@ module.exports = {
         let userstats = await getUser(utente.id)
         if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
-        if (!userstats.invites) userstats.invites = {}
-
         let embed = new Discord.MessageEmbed()
             .setTitle(`Invites - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
             .setDescription("Membri che ha invitato questo utente nel server")
