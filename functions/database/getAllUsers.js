@@ -12,15 +12,11 @@ const getAllUsers = async (client, onlyInGuild = true) => {
             if (guildUsers.find(x => x.id == user.split(".")[0])) {
                 let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
 
-                if (!userstats.invites) userstats.invites = {}
-
                 data.push(JSON.parse(userstats))
             }
         }
         else {
             let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
-
-            if (!userstats.invites) userstats.invites = {}
 
             data.push(JSON.parse(userstats))
         }
