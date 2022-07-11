@@ -110,6 +110,7 @@ module.exports = {
             {
                 name: "server",
                 description: "Ottenere il file del database relativo al server",
+                type: "SUB_COMMAND",
             },
             {
                 name: "user",
