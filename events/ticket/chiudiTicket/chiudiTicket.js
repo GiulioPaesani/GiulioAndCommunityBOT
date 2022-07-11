@@ -13,7 +13,6 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        console.log(interaction.customId)
         if (interaction.customId != "chiudiTicket") return
 
         const maintenanceStatus = await isMaintenance(interaction.user.id)
@@ -24,7 +23,7 @@ module.exports = {
 
         let serverstats = await getServer()
         let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-        if (!ticket) return console.log("<sdjfhsafd")
+        if (!ticket) return
 
         if (interaction.user.id != ticket.owner && !getUserPermissionLevel(client, interaction.user.id)) {
             return replyMessage(client, interaction, "NonPermesso", "", "Non puoi chiudere questo ticket")
@@ -65,14 +64,14 @@ module.exports = {
                 setTimeout(async function () {
                     serverstats = await getServer()
                     let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-                    if (ticket?.daEliminare) {
+                    if (ticket?.daEliminare && msg.description != "Questo ticket non si chiuderà più") {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
                         msg.edit({ embeds: [embed] })
 
                         setTimeout(async function () {
                             serverstats = await getServer()
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-                            if (ticket?.daEliminare) {
+                            if (ticket?.daEliminare && msg.description != "Questo ticket non si chiuderà più") {
                                 client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
                                     .then(async msg => {
                                         let embed = new Discord.MessageEmbed()
