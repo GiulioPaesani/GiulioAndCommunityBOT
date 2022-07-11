@@ -28,6 +28,10 @@ module.exports = {
 
         language = ttsLanguage.find(x => x.code.toLowerCase() == language.toLowerCase()) || ttsLanguage.find(x => x.name.toLowerCase().includes(language.toLowerCase()))
 
+        if (!language) {
+            return replyMessage(client, interaction, "Error", "Lingua non trovata", "Hai inserito una lingua non valida o non esistente", comando)
+        }
+
         let serverstats = await getServer()
         if (serverstats.ttsDefaultLanguage == language.code) {
             return replyMessage(client, interaction, "Warning", "Lingua già impostata", "Questa lingua è già impostata come default")

@@ -27,6 +27,7 @@ module.exports = {
                 .setDescription(`Questa stanza è stata eliminata`)
 
             interaction.message.edit({ embeds: [embed], components: [] })
+            return
         }
 
         if (!room.owners.includes(interaction.user.id) && !getUserPermissionLevel(client, interaction.user.id)) {

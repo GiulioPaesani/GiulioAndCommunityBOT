@@ -14,7 +14,7 @@ module.exports = {
 
         let codice = client.codes.find(cmd => cmd.id == interaction.customId.split(",")[1]);
 
-        if (!codice) interaction.message.delete()
+        if (!codice) return interaction.message.delete()
 
         let attachment = new Discord.MessageAttachment(Buffer.from(codice.code.trim(), 'utf-8'), `${codice.name}-GiulioAndCode.txt`)
 

@@ -21,7 +21,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(":outbox_tray: Owner uscito :outbox_tray:")
             .setColor(colors.purple)
-            .setDescription(`L'owner <#${ticket.owner}> è uscito dal server, potete chiudere il ticket con \`/tclose\``)
+            .setDescription(`L'owner <@${ticket.owner}> è uscito dal server, potete chiudere il ticket con \`/tclose\``)
 
         client.channels.cache.get(ticket.channel).send({ embeds: [embed] })
     }

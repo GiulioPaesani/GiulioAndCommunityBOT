@@ -26,6 +26,8 @@ const getUser = async (userId) => {
             }
         }
 
+        if (!data.invites) data.invites = {}
+
         return data
     }
     catch { }

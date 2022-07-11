@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const colors = require("../../../config/general/colors.json");
 const { getInfo } = require("ytdl-getinfo");
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 const { humanize } = require("../../../functions/general/humanize");
 const { getEmoji } = require("../../../functions/general/getEmoji");
 const { humanizeTime } = require("../../../functions/general/humanizeTime");
