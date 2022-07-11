@@ -9,10 +9,7 @@ const { updateUser } = require("../database/updateUser")
 
 const newStory = async (client) => {
     let date = new Date()
-    console.log(date.getHours(), date.getMinutes(), date.getMinutes())
-    if (date.getHours() == 0 && date.getMinutes() == 0 && date.getMinutes() == 0) {
-        console.log("MANDATO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
+    if (date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
         let serverstats = await getServer()
 
         let embed = new Discord.MessageEmbed()

@@ -23,7 +23,7 @@ module.exports = {
 
         let serverstats = await getServer()
         let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-        if (!ticket) return
+        if (!ticket) return console.log("<sdjfhsafd")
 
         if (interaction.user.id != ticket.owner && !getUserPermissionLevel(client, interaction.user.id)) {
             return replyMessage(client, interaction, "NonPermesso", "", "Non puoi chiudere questo ticket")
