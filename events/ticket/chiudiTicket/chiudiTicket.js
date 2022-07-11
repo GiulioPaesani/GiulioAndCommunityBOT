@@ -64,15 +64,13 @@ module.exports = {
                 setTimeout(async function () {
                     serverstats = await getServer()
                     let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-                    msg = await client.channels.cache.get(ticket.channel).messages.fetch(msg.id)
-                    if (ticket?.daEliminare && msg.description != "Questo ticket non si chiuderà più") {
+                    if (ticket?.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
                         msg.edit({ embeds: [embed] })
 
                         setTimeout(async function () {
                             serverstats = await getServer()
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-                            msg = await client.channels.cache.get(ticket.channel).messages.fetch(msg.id)
                             if (ticket?.daEliminare && msg.description != "Questo ticket non si chiuderà più") {
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle(":paperclips: Ticket closed :paperclips:")
