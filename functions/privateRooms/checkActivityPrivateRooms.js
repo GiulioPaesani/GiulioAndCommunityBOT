@@ -7,7 +7,7 @@ const { updateServer } = require('./../../functions/database/updateServer')
 const checkActivityPrivateRooms = async (client) => {
     let serverstats = await getServer()
 
-    serverstats.privateRooms.forEach(room => {
+    serverstats.privateRooms.forEach(async room => {
         if (room.lastActivity && room.lastActivityCount == 0 && new Date().getTime() - room.lastActivity >= 345600000) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Stanza un po' inattiva")
