@@ -53,9 +53,7 @@ module.exports = {
             return replyMessage(client, interaction, "NonPermesso", "", "Non puoi bannare questo utente", comando)
         }
 
-        console.log(interaction.guild.members.cache.get(utente.id))
-        console.log(utente.manageable)
-        if (interaction.guild.members.cache.get(utente.id) && !utente.manageable) {
+        if (interaction.guild.members.cache.get(utente.id) && !interaction.guild.members.cache.get(utente.id).manageable) {
             return replyMessage(client, interaction, "NonHoPermesso", "", "Non ho il permesso di bannare questo utente", comando)
         }
 
