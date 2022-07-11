@@ -20,7 +20,7 @@ module.exports = {
         let room = serverstats.privateRooms.find(x => x.channel == message.channel.id)
         if (!room) return
 
-        if (room.owners.includes(message.author.id) && getUserPermissionLevel(client, message.author.id)) return
+        if (room.owners.includes(message.author.id) || getUserPermissionLevel(client, message.author.id)) return
 
         let messageContent = message.content
 
