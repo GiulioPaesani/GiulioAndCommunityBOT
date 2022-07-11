@@ -61,14 +61,14 @@ module.exports = {
                 serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = true;
                 updateServer(serverstats)
 
-                setTimeout(function () {
+                setTimeout(async function () {
                     serverstats = await getServer()
                     let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                     if (ticket?.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
                         msg.edit({ embeds: [embed] })
 
-                        setTimeout(function () {
+                        setTimeout(async function () {
                             serverstats = await getServer()
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                             if (ticket?.daEliminare) {
