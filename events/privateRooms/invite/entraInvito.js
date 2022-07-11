@@ -1,3 +1,5 @@
+const Discord = require("discord.js")
+const colors = require("../../../config/general/colors.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { getServer } = require("../../../functions/database/getServer");
 const { replyMessage } = require("../../../functions/general/replyMessage");
@@ -30,6 +32,11 @@ module.exports = {
             VIEW_CHANNEL: true
         })
 
-        replyMessage(client, interaction, "Correct", "Benvenuto nella stanza", `Ora hai accesso alla stanza <#${room.channel}>`)
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Benvenuto nella stanza")
+            .setColor(colors.blue)
+            .setDescription(`Ora hai accesso alla stanza <#${room.channel}>`)
+
+        interaction.followUp({ embeds: [embed], ephemeral: true })
     },
 };
