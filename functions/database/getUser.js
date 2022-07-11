@@ -5,7 +5,6 @@ const getUser = async (userId) => {
         let data = JSON.parse(fs.readFileSync(`./database/users/${userId}.json`, 'utf8'))
 
         if (JSON.stringify(data).includes("$numberLong")) {
-            i++
             if (data.joinedAt?.$numberLong) data.joinedAt = parseInt(data.joinedAt.$numberLong)
             if (data.leavedAt?.$numberLong) data.leavedAt = parseInt(data.leavedAt.$numberLong)
             if (data.counting.timeLastScore?.$numberLong) data.counting.timeLastScore = parseInt(data.counting.timeLastScore.$numberLong)

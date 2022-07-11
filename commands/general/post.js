@@ -85,11 +85,7 @@ module.exports = {
         if (image) {
             if (!image.startsWith("https://") && !image.startsWith("http://")) image = "https://" + image
 
-            try {
-                let test = new Discord.MessageEmbed()
-                    .setImage(image)
-            }
-            catch {
+            if (!validator.isURL(linkbutton1)) {
                 return replyMessage(client, interaction, "Error", "Link immagine non valido", "Hai inserito un link dell'immagine non valido", comando)
             }
 
@@ -108,11 +104,7 @@ module.exports = {
 
             if (!linkbutton1.startsWith("https://") && !linkbutton1.startsWith("http://") && !linkbutton1.startsWith("discord")) linkbutton1 = "https://" + linkbutton1
 
-            try {
-                let test = new Discord.MessageEmbed()
-                    .setImage(image)
-            }
-            catch {
+            if (!validator.isURL(linkbutton1)) {
                 return replyMessage(client, interaction, "Warning", "Link bottone1 non valido", "Hai inserito un link del primo bottone non valido", comando)
             }
 

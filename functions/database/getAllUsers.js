@@ -13,7 +13,6 @@ const getAllUsers = async (client, onlyInGuild = true) => {
                 let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
 
                 if (JSON.stringify(userstats).includes("$numberLong")) {
-                    i++
                     if (userstats.joinedAt?.$numberLong) userstats.joinedAt = parseInt(userstats.joinedAt.$numberLong)
                     if (userstats.leavedAt?.$numberLong) userstats.leavedAt = parseInt(userstats.leavedAt.$numberLong)
                     if (userstats.counting.timeLastScore?.$numberLong) userstats.counting.timeLastScore = parseInt(userstats.counting.timeLastScore.$numberLong)
@@ -43,7 +42,6 @@ const getAllUsers = async (client, onlyInGuild = true) => {
             let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
 
             if (JSON.stringify(userstats).includes("$numberLong")) {
-                i++
                 if (userstats.joinedAt?.$numberLong) userstats.joinedAt = parseInt(userstats.joinedAt.$numberLong)
                 if (userstats.leavedAt?.$numberLong) userstats.leavedAt = parseInt(userstats.leavedAt.$numberLong)
                 if (userstats.counting.timeLastScore?.$numberLong) userstats.counting.timeLastScore = parseInt(userstats.counting.timeLastScore.$numberLong)
