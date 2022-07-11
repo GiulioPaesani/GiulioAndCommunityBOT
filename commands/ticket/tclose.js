@@ -53,7 +53,7 @@ module.exports = {
                 let button1 = new Discord.MessageButton()
                     .setLabel("In chiusura...")
                     .setStyle("DANGER")
-                    .setCustomId("ticketChiudi")
+                    .setCustomId("chiudiTicket")
                     .setDisabled()
 
                 let row = new Discord.MessageActionRow()
