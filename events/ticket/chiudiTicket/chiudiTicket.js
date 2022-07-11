@@ -13,6 +13,7 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
+        console.log(interaction.customId)
         if (interaction.customId != "chiudiTicket") return
 
         const maintenanceStatus = await isMaintenance(interaction.user.id)
