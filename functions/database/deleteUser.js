@@ -4,7 +4,7 @@ const { getUser } = require("../../functions/database/getUser")
 const deleteUser = async (userId) => {
     try {
 
-        let userstats = await getUser(member.id)
+        let userstats = await getUser(userId)
 
         if (!userstats) return
 
