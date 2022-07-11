@@ -81,6 +81,7 @@ module.exports = {
                 updateServer(serverstats)
 
                 setTimeout(function () {
+                    serverstats = await getServer()
                     let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                     if (ticket?.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
@@ -88,6 +89,7 @@ module.exports = {
                             .catch(() => { })
 
                         setTimeout(async function () {
+                            serverstats = await getServer()
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                             if (ticket?.daEliminare) {
                                 let channel = client.channels.cache.get(ticket.channel)

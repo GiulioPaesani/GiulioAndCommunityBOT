@@ -34,6 +34,7 @@ module.exports = {
         if (!ticket.daEliminare) return
 
         serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = false;
+
         updateServer(serverstats)
 
         client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
