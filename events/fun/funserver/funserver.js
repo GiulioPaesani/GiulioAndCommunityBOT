@@ -80,9 +80,6 @@ module.exports = {
                 }
             }
 
-            console.log(serverstats.counting)
-            console.log(serverstats.counting.timeBestScore)
-
             embed = new Discord.MessageEmbed()
                 .setTitle("COUNTING - GiulioAndCommunity")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
