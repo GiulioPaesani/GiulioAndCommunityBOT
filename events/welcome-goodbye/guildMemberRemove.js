@@ -46,11 +46,5 @@ module.exports = {
         const maintenanceStatus = await isMaintenance()
         if (!maintenanceStatus)
             client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
-
-        let userstatsList = await getAllUsers(client)
-        userstatsList.filter(x => x.invites[member.user.id]).forEach(userstats2 => {
-            userstats2.invites[member.user.id] = "leaved"
-            updateUser(userstats2)
-        })
     }
 }
