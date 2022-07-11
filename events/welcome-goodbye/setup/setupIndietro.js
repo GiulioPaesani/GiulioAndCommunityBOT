@@ -7,7 +7,7 @@ module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (interaction.customId != "setupIndietro") return
+        if (!interaction.customId.startsWith("setupIndietro")) return
 
         await interaction.deferUpdate().catch(() => { })
 
