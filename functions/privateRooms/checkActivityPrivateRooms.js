@@ -36,7 +36,7 @@ const checkActivityPrivateRooms = async (client) => {
                 })
             }
 
-            serverstats.privateRooms[index].lastActivityCount = 1
+            serverstats.privateRooms[serverstats.privateRooms.findIndex(x => x.channel == room.channel)].lastActivityCount = 1
             updateServer(serverstats)
         }
         if (room.lastActivity && room.lastActivityCount == 1 && new Date().getTime() - room.lastActivity >= 604800000) {
@@ -67,7 +67,7 @@ const checkActivityPrivateRooms = async (client) => {
                 })
             }
 
-            serverstats.privateRooms[index].lastActivityCount = 2
+            serverstats.privateRooms[serverstats.privateRooms.findIndex(x => x.channel == room.channel)].lastActivityCount = 2
             updateServer(serverstats)
         }
         if (room.lastActivity && room.lastActivityCount == 2 && new Date().getTime() - room.lastActivity >= 608400000) {

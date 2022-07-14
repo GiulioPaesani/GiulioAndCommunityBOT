@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const items = require("../../../config/ranking/items.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 const { getUser } = require("../../../functions/database/getUser");
 const { addUser } = require("../../../functions/database/addUser");
 const { getEmoji } = require("../../../functions/general/getEmoji");
