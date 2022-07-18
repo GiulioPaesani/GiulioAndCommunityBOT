@@ -21,9 +21,7 @@ module.exports = {
             .setTitle(":newspaper: Progetto inviato :newspaper:")
             .setColor(colors.green)
             .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
-            .setDescription(`Grazie per aver pubblico un tuo progetto. Attendi che lo staff approvi il tuo post
-
-Se ti va, fai una domanda per far comparire il tuo progetto nella nuova serie "I vostri super progetti" su YouTube, compila subito il [FORM](https://forms.gle/8AWWj1kDeJhEnWQJ8)`)
+            .setDescription(`Grazie per aver pubblico un tuo progetto. Attendi che lo staff approvi il tuo post`)
             .addField(interaction.message.embeds[0].fields[0].name, interaction.message.embeds[0].fields[0].value)
 
         interaction.message.edit({ embeds: [embed], components: [] })

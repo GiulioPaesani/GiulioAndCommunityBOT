@@ -52,9 +52,7 @@ module.exports = {
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":newspaper: Progetto ACCETTATO")
                     .setColor(colors.green)
-                    .setDescription(`Un tuo progetto è stato **accettato** dallo staff, ora tutti gli utenti vederlo nel canale <#${settings.idCanaliServer.ourProjects}>\n[Clicca qui](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}) per andare a vederlo
-                    
-Se ti va, fai una domanda per far comparire il tuo progetto nella nuova serie "I vostri super progetti" su YouTube, compila subito il [FORM](https://forms.gle/8AWWj1kDeJhEnWQJ8)`)
+                    .setDescription(`Un tuo progetto è stato **accettato** dallo staff, ora tutti gli utenti vederlo nel canale <#${settings.idCanaliServer.ourProjects}>\n[Clicca qui](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}) per andare a vederlo`)
                     .addField(interaction.message.embeds[0].fields[2].value, interaction.message.embeds[0].fields[3].value)
 
                 utente.send({ embeds: [embed] })

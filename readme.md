@@ -115,9 +115,6 @@ Una volta creato il vostro progetto, verrà inviato allo staff, se lo approverà
 
 Verranno accettati solo progetti **super fighi** e **interessanti**, quindi evitate di pubblicare bot scarni o siti fatti così per gioco
 
-Inoltre se ti va, potete raccontare più nel **dettaglio** il vostro progetto in questo [**FORM**](https://forms.gle/8AWWj1kDeJhEnWQJ8)  
-Se anche qui il vostro progetto verrà accettato, allora Giulio ne parlerà nella nuova serie "**I vostri super progetti**", dove lo mostrerà, lo proverà e darà una sua opinione
-
 Tutto questo è disponibile dal livello 30
 
 ### 🛡️ MODERAZIONE e LOGS ⚔️  

@@ -4,6 +4,7 @@ const blockedChannels = [
     settings.idCanaliServer.info,
     settings.idCanaliServer.announcements,
     settings.idCanaliServer.suggestions,
+    settings.idCanaliServer.judgeMyServer,
     settings.idCanaliServer.polls,
     settings.idCanaliServer.staffPolls,
     settings.idCanaliServer.qna,
