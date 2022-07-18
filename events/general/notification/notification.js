@@ -17,21 +17,26 @@ module.exports = {
 
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
+        let utente = interaction.member || client.guilds.cache.get(settings.idServer).members.cache.get(interaction.user.id)
+        if (!utente) {
+            return replyMessage(client, interaction, "Error", "Non sei nel server", "Non sei più nel server, non puoi configurare i ruoli di notifica")
+        }
+
         switch (interaction.customId.split(",")[2]) {
             case "1": {
-                interaction.member.roles.cache.has(settings.ruoliNotification.announcements) ? await interaction.member.roles.remove(settings.ruoliNotification.announcements) : await interaction.member.roles.add(settings.ruoliNotification.announcements)
+                utente.roles.cache.has(settings.ruoliNotification.announcements) ? await utente.roles.remove(settings.ruoliNotification.announcements) : await utente.roles.add(settings.ruoliNotification.announcements)
             } break;
             case "2": {
-                interaction.member.roles.cache.has(settings.ruoliNotification.news) ? await interaction.member.roles.remove(settings.ruoliNotification.news) : await interaction.member.roles.add(settings.ruoliNotification.news)
+                utente.roles.cache.has(settings.ruoliNotification.news) ? await utente.roles.remove(settings.ruoliNotification.news) : await utente.roles.add(settings.ruoliNotification.news)
             } break;
             case "3": {
-                interaction.member.roles.cache.has(settings.ruoliNotification.changelog) ? await interaction.member.roles.remove(settings.ruoliNotification.changelog) : await interaction.member.roles.add(settings.ruoliNotification.changelog)
+                utente.roles.cache.has(settings.ruoliNotification.changelog) ? await utente.roles.remove(settings.ruoliNotification.changelog) : await utente.roles.add(settings.ruoliNotification.changelog)
             } break;
             case "4": {
-                interaction.member.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? await interaction.member.roles.remove(settings.ruoliNotification.youtubeVideosCode) : await interaction.member.roles.add(settings.ruoliNotification.youtubeVideosCode)
+                utente.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? await utente.roles.remove(settings.ruoliNotification.youtubeVideosCode) : await utente.roles.add(settings.ruoliNotification.youtubeVideosCode)
             } break;
             case "5": {
-                interaction.member.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? await interaction.member.roles.remove(settings.ruoliNotification.youtubeVideosGiulio) : await interaction.member.roles.add(settings.ruoliNotification.youtubeVideosGiulio)
+                utente.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? await utente.roles.remove(settings.ruoliNotification.youtubeVideosGiulio) : await utente.roles.add(settings.ruoliNotification.youtubeVideosGiulio)
             } break;
         }
 
@@ -39,36 +44,36 @@ module.exports = {
             .setTitle(interaction.message.embeds[0].title)
             .setDescription(interaction.message.embeds[0].description)
             .setThumbnail(illustrations.notification)
-            .addField(`📋 Announcements - ${interaction.member.roles.cache.has(settings.ruoliNotification.announcements) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Annunci grossi e importanti relativi al canale e al server")
-            .addField(`📰 News - ${interaction.member.roles.cache.has(settings.ruoliNotification.news) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Notizie piccole e leggere sul canale e sul server")
-            .addField(`📝 Changelog - ${interaction.member.roles.cache.has(settings.ruoliNotification.changelog) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Tutte le novità, funzioni, comandi che vengono aggiunte al bot del server")
-            .addField(`📱 YouTube GiulioAndCode - ${interaction.member.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Nuovi video pubblicati sul canale GiulioAndCode")
-            .addField(`✌ YouTube Giulio - ${interaction.member.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Nuovi video pubblicati sul canale Giulio")
+            .addField(`📋 Announcements - ${utente.roles.cache.has(settings.ruoliNotification.announcements) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Annunci grossi e importanti relativi al canale e al server")
+            .addField(`📰 News - ${utente.roles.cache.has(settings.ruoliNotification.news) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Notizie piccole e leggere sul canale e sul server")
+            .addField(`📝 Changelog - ${utente.roles.cache.has(settings.ruoliNotification.changelog) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Tutte le novità, funzioni, comandi che vengono aggiunte al bot del server")
+            .addField(`📱 YouTube GiulioAndCode - ${utente.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Nuovi video pubblicati sul canale GiulioAndCode")
+            .addField(`✌ YouTube Giulio - ${utente.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Nuovi video pubblicati sul canale Giulio")
 
         let button1 = new Discord.MessageButton()
             .setEmoji("📋")
             .setCustomId(`notification,${interaction.user.id},1${interaction.customId.split(",")[3] ? ",setup" : ""}`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.announcements) ? "SUCCESS" : "DANGER")
+            .setStyle(utente.roles.cache.has(settings.ruoliNotification.announcements) ? "SUCCESS" : "DANGER")
 
         let button2 = new Discord.MessageButton()
             .setEmoji("📰")
             .setCustomId(`notification,${interaction.user.id},2${interaction.customId.split(",")[3] ? ",setup" : ""}`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.news) ? "SUCCESS" : "DANGER")
+            .setStyle(utente.roles.cache.has(settings.ruoliNotification.news) ? "SUCCESS" : "DANGER")
 
         let button3 = new Discord.MessageButton()
             .setEmoji("📝")
             .setCustomId(`notification,${interaction.user.id},3${interaction.customId.split(",")[3] ? ",setup" : ""}`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.changelog) ? "SUCCESS" : "DANGER")
+            .setStyle(utente.roles.cache.has(settings.ruoliNotification.changelog) ? "SUCCESS" : "DANGER")
 
         let button4 = new Discord.MessageButton()
             .setEmoji("📱")
             .setCustomId(`notification,${interaction.user.id},4${interaction.customId.split(",")[3] ? ",setup" : ""}`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? "SUCCESS" : "DANGER")
+            .setStyle(utente.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? "SUCCESS" : "DANGER")
 
         let button5 = new Discord.MessageButton()
             .setEmoji("✌")
             .setCustomId(`notification,${interaction.user.id},5${interaction.customId.split(",")[3] ? ",setup" : ""}`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? "SUCCESS" : "DANGER")
+            .setStyle(utente.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? "SUCCESS" : "DANGER")
 
         let row = new Discord.MessageActionRow()
             .addComponents(button1)

@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const settings = require("../../../config/general/settings.json");
 const colors = require("../../../config/general/colors.json");
+const { replyMessage } = require("../../../functions/general/replyMessage")
 
 module.exports = {
     name: "question",

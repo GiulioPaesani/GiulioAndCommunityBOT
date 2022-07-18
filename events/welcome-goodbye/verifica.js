@@ -82,29 +82,6 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
             const maintenanceStatus = await isMaintenance()
             if (!maintenanceStatus)
                 client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
-
-            let userstats = await getUser(interaction.user.id)
-            if (!userstats) userstats = await addUser(interaction.member)
-
-            if (invite) {
-                let userstatsInviter = await getUser(invite.inviter.id)
-                if (!userstatsInviter) userstatsInviter = await addUser(client.users.cache.get(invite.inviter.id))
-
-                userstatsInviter.invites[interaction.user.id] = "inServer"
-                updateUser(userstatsInviter)
-            }
-
-            let userstatsList = await getAllUsers(client)
-            userstatsList.filter(x => x.invites && x.invites[interaction.user.id]).forEach(userstats2 => {
-                if (invite && invite.inviter.id == userstats2.id) {
-
-                }
-                else {
-                    if (!userstats2.invites) userstats2.invites = {}
-                    userstats2.invites[interaction.user.id] = "inServerOtherInvite"
-                    updateUser(userstats2)
-                }
-            })
         })
     },
 };

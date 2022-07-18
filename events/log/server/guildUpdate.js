@@ -13,6 +13,8 @@ module.exports = {
 
         if (newGuild.id != settings.idServer) return
 
+        if (oldGuild.premiumSubscriptionCount != newGuild.premiumSubscriptionCount) return
+
         const fetchedLogs = await newGuild.fetchAuditLogs({
             limit: 1,
             type: 'GUILD_UPDATE',

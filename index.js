@@ -175,7 +175,7 @@ client.on("interactionCreate", async interaction => {
     }
 
     let cooldown = cooldownCommands.find(x => x.user == interaction.user.id && x.command == comando.name)
-    if (cooldown && cooldown.cooldown > 0) {
+    if (cooldown && cooldown.cooldown > 0 && !getUserPermissionLevel(client, interaction.user.id)) {
         let embed = new Discord.MessageEmbed()
             .setTitle("Sei in cooldown")
             .setColor(colors.orange)
@@ -252,8 +252,6 @@ client.on("interactionCreate", async interaction => {
             return
         }
     }
-
-    const time_now = new Date().toLocaleString();
 
     if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
         return replyMessage(client, interaction, "InsufficientLevel", "", "", comando);

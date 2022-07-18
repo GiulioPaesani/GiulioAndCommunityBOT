@@ -61,51 +61,50 @@ module.exports = {
                 serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = true;
                 updateServer(serverstats)
 
-                setTimeout(function () {
+                setTimeout(async function () {
+                    serverstats = await getServer()
                     let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                     if (ticket?.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
                         msg.edit({ embeds: [embed] })
 
-                        setTimeout(function () {
+                        setTimeout(async function () {
+                            serverstats = await getServer()
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
-                            if (ticket?.daEliminare) {
-                                client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
-                                    .then(async msg => {
-                                        let embed = new Discord.MessageEmbed()
-                                            .setTitle(":paperclips: Ticket closed :paperclips:")
-                                            .setColor(colors.red)
-                                            .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-                                            .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
-                                            .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
-                                            .addField("Category", ticket.type)
+                            if (ticket?.daEliminare && msg.description != "Questo ticket non si chiuderà più") {
+                                let embed = new Discord.MessageEmbed()
+                                    .setTitle(":paperclips: Ticket closed :paperclips:")
+                                    .setColor(colors.red)
+                                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
+                                    .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
+                                    .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
+                                    .addField("Category", ticket.type)
 
-                                        let chatLog = ""
-                                        await fetchAllMessages(interaction.message.channel)
-                                            .then(async messages => {
-                                                for (let msg of messages) {
-                                                    chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == ticket.owner ? "[OWNER] " : getUserPermissionLevel(client, msg.author.id) ? "[STAFF] " : ""}@${msg.author.tag} - ${moment(msg.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? msg.embeds.map(x => `\nEmbed: ${JSON.stringify(x)}`) : ""}${msg.attachments.size > 0 ? `\nAttachments: ${msg.attachments.map(x => `[${x.name}](${x.url})`).join(", ")}` : ""}${msg.stickers.size > 0 ? `\nStickers: ${msg.stickers.map(x => `[${x.name}](${x.url})`).join(", ")}` : ""}\n\n`
-                                                }
-                                            })
-
-                                        let attachment1
-                                        if (chatLog != "")
-                                            attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `ticket-${ticket.channel}-${new Date().getTime()}.txt`);
-
-                                        const maintenanceStatus = await isMaintenance()
-                                        if (!maintenanceStatus)
-                                            client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] || [] })
-
-                                        embed.setDescription("Questo ticket si sta per chiudere")
-                                        msg.edit({ embeds: [embed] })
-
-
-                                        interaction.message.channel.delete()
-                                            .catch(() => { });
-                                        serverstats.tickets = serverstats.tickets.filter((x) => x.channel != interaction.message.channel.id);
-
-                                        updateServer(serverstats)
+                                let chatLog = ""
+                                await fetchAllMessages(interaction.message.channel)
+                                    .then(async messages => {
+                                        for (let msg of messages) {
+                                            chatLog += `${msg.author.bot ? "[BOT] " : msg.author.id == ticket.owner ? "[OWNER] " : getUserPermissionLevel(client, msg.author.id) ? "[STAFF] " : ""}@${msg.author.tag} - ${moment(msg.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")}${msg.content ? `\n${msg.content}` : ""}${msg.embeds[0] ? msg.embeds.map(x => `\nEmbed: ${JSON.stringify(x)}`) : ""}${msg.attachments.size > 0 ? `\nAttachments: ${msg.attachments.map(x => `[${x.name}](${x.url})`).join(", ")}` : ""}${msg.stickers.size > 0 ? `\nStickers: ${msg.stickers.map(x => `[${x.name}](${x.url})`).join(", ")}` : ""}\n\n`
+                                        }
                                     })
+
+                                let attachment1
+                                if (chatLog != "")
+                                    attachment1 = await new Discord.MessageAttachment(Buffer.from(chatLog, "utf-8"), `ticket-${ticket.channel}-${new Date().getTime()}.txt`);
+
+                                const maintenanceStatus = await isMaintenance()
+                                if (!maintenanceStatus)
+                                    client.channels.cache.get(log.community.ticket).send({ embeds: [embed], files: [attachment1] || [] })
+
+                                embed.setDescription("Questo ticket si sta per chiudere")
+                                msg.edit({ embeds: [embed] })
+
+
+                                interaction.message.channel.delete()
+                                    .catch(() => { });
+                                serverstats.tickets = serverstats.tickets.filter((x) => x.channel != interaction.message.channel.id);
+
+                                updateServer(serverstats)
                             }
                             else return
                         }, 10000);

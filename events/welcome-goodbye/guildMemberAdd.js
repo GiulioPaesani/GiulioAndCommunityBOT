@@ -61,25 +61,6 @@ module.exports = {
             if (!maintenanceStatus)
                 client.channels.cache.get(log.server.welcomeGoodbye).send({ embeds: [embed] })
 
-            if (invite) {
-                let userstatsInviter = await getUser(invite.inviter.id)
-                if (!userstatsInviter) userstatsInviter = await addUser(client.users.cache.get(invite.inviter.id))
-
-                userstatsInviter.invites[member.user.id] = "inServer"
-                updateUser(userstatsInviter)
-            }
-
-            let userstatsList = await getAllUsers(client)
-            userstatsList.filter(x => x.invites[member.user.id]).forEach(userstats2 => {
-                if (invite && invite.inviter.id == userstats2.id) {
-
-                }
-                else {
-                    userstats2.invites[member.user.id] = "inServerOtherInvite"
-                    updateUser(userstats2)
-                }
-            })
-
             userstats.leavedAt = null
 
             if (userstats.roles.length != 0) {

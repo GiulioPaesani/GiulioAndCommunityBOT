@@ -53,7 +53,7 @@ module.exports = {
                 let button1 = new Discord.MessageButton()
                     .setLabel("In chiusura...")
                     .setStyle("DANGER")
-                    .setCustomId("ticketChiudi")
+                    .setCustomId("chiudiTicket")
                     .setDisabled()
 
                 let row = new Discord.MessageActionRow()
@@ -80,7 +80,8 @@ module.exports = {
                 serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = true;
                 updateServer(serverstats)
 
-                setTimeout(function () {
+                setTimeout(async function () {
+                    serverstats = await getServer()
                     let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                     if (ticket?.daEliminare) {
                         embed.setDescription("Questo ticket si chiuderà tra `10 secondi`")
@@ -88,6 +89,7 @@ module.exports = {
                             .catch(() => { })
 
                         setTimeout(async function () {
+                            serverstats = await getServer()
                             let ticket = serverstats.tickets.find(x => x.channel == interaction.channelId)
                             if (ticket?.daEliminare) {
                                 let channel = client.channels.cache.get(ticket.channel)

@@ -17,6 +17,7 @@ const getAllUsers = async (client, onlyInGuild = true) => {
         }
         else {
             let userstats = fs.readFileSync(`./database/users/${user}`, 'utf8')
+
             data.push(JSON.parse(userstats))
         }
     }

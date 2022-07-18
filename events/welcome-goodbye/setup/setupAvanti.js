@@ -1,13 +1,14 @@
 const Discord = require("discord.js")
-const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const settings = require("../../../config/general/settings.json")
 const illustrations = require("../../../config/general/illustrations.json")
 const colors = require("../../../config/general/colors.json")
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
 
 module.exports = {
     name: `interactionCreate`,
     async execute(client, interaction) {
         if (!interaction.isButton()) return
-        if (interaction.customId != "setupAvanti") return
+        if (!interaction.customId.startsWith("setupAvanti")) return
 
         await interaction.deferUpdate().catch(() => { })
 

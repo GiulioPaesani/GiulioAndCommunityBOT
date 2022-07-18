@@ -3,6 +3,9 @@ const colors = require("../../../config/general/colors.json")
 const settings = require("../../../config/general/settings.json")
 const { replyMessage } = require("../../../functions/general/replyMessage")
 const { getTaggedUser } = require("../../../functions/general/getTaggedUser");
+const { getUser } = require("../../../functions/database/getUser")
+const { deleteUser } = require("../../../functions/database/deleteUser")
+const { getServer } = require("../../../functions/database/getServer")
 
 module.exports = {
     name: "debug",
@@ -108,24 +111,6 @@ module.exports = {
                 name: "server",
                 description: "Ottenere il file del database relativo al server",
                 type: "SUB_COMMAND",
-                options: [
-                    {
-                        name: "type",
-                        description: "Scegliere quale file si vuole ottenere",
-                        type: "STRING",
-                        required: true,
-                        choices: [
-                            {
-                                name: "👥 Server",
-                                value: "server"
-                            },
-                            {
-                                name: "📊 Serverstats",
-                                value: "serverstats"
-                            }
-                        ]
-                    }
-                ]
             },
             {
                 name: "user",
@@ -137,22 +122,6 @@ module.exports = {
                         description: "L'utente a cui si vuole accedere",
                         type: "STRING",
                         required: true
-                    },
-                    {
-                        name: "type",
-                        description: "Scegliere quale file si vuole gestire",
-                        type: "STRING",
-                        required: true,
-                        choices: [
-                            {
-                                name: "👤 User",
-                                value: "user"
-                            },
-                            {
-                                name: "📊 Userstats",
-                                value: "userstats"
-                            }
-                        ]
                     },
                     {
                         name: "mode",
@@ -253,14 +222,14 @@ module.exports = {
             }
         }
         else if (interaction.options.getSubcommand() == "server") {
-            let data = interaction.options.getString("type") == "server" ? getServer() : getServerStats()
+            let data = await getServer()
 
             let embed = new Discord.MessageEmbed()
-                .setTitle(interaction.options.getString("type") == "server" ? ":cd: Server DB file" : ":cd: Serverstats DB file")
+                .setTitle(":cd: Server DB file")
                 .setColor(colors.blue)
-                .setDescription(interaction.options.getString("type") == "server" ? "Ecco il file del contenuto del DB di Server" : "Ecco il file del contenuto del DB di Serverstats")
+                .setDescription("Ecco il file del contenuto del DB di Server")
 
-            const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(data, null, "\t"), "utf-8"), `${interaction.options.getString("type")}${new Date().getTime()}.json`);
+            const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(data, null, "\t"), "utf-8"), `server-${new Date().getTime()}.json`);
 
             interaction.reply({ embeds: [embed], files: [attachment] })
         }
@@ -271,33 +240,33 @@ module.exports = {
                 return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
             }
 
-            let data = interaction.options.getString("type") == "user" ? getUser(utente.id) : getUserStats(utente.id)
+            let data = await getUser(utente.id)
 
             if (!data) {
-                return replyMessage(client, interaction, "Warning", "Utente non nel DB", `Il file di  ${utente.toString()} richiesto non è nel database del bot`, comando)
+                return replyMessage(client, interaction, "Warning", "Utente non nel DB", `Il file di ${utente.toString()} richiesto non è nel database del bot`, comando)
             }
 
             if (interaction.options.getString("mode") == "get") {
                 let embed = new Discord.MessageEmbed()
-                    .setTitle(interaction.options.getString("type") == "user" ? ":cd: User DB file" : ":cd: Userstats DB file")
+                    .setTitle(":cd: User DB file")
                     .setColor(colors.blue)
-                    .setDescription(interaction.options.getString("type") == "user" ? `Ecco il file del contenuto del DB User di ${utente.toString()}` : `Ecco il file del contenuto del DB Userstats di ${utente.toString()}`)
+                    .setDescription(`Ecco il file del contenuto del DB User di ${utente.toString()}`)
 
-                const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(data, null, "\t"), "utf-8"), `${interaction.options.getString("type")}${new Date().getTime()}.json`);
+                const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(data, null, "\t"), "utf-8"), `user-${utente.id}-${new Date().getTime()}.json`);
 
                 interaction.reply({ embeds: [embed], files: [attachment] })
             }
             else if (interaction.options.getString("mode") == "delete") {
                 let embed = new Discord.MessageEmbed()
-                    .setTitle(interaction.options.getString("type") == "user" ? ":cd: User DB file eliminato" : ":cd: Userstats DB file eliminato")
+                    .setTitle(":cd: User DB file eliminato")
                     .setColor(colors.blue)
-                    .setDescription(interaction.options.getString("type") == "user" ? `Il file del contenuto del DB User di ${utente.toString()} è stato eliminato` : `Il file del contenuto del DB Userstats di ${utente.toString()} è stato eliminato`)
+                    .setDescription(`Il file del contenuto del DB User di ${utente.toString()} è stato eliminato`)
 
-                const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(data, null, "\t"), "utf-8"), `${interaction.options.getString("type")}${new Date().getTime()}.json`);
+                const attachment = await new Discord.MessageAttachment(Buffer.from(JSON.stringify(data, null, "\t"), "utf-8"), `user-${utente.id}-${new Date().getTime()}.json`);
 
                 interaction.reply({ embeds: [embed], files: [attachment] })
 
-                deleteUser(utente.id, interaction.options.getString("type") == "user" ? [true, false] : [false, true])
+                deleteUser(utente.id)
             }
         }
     },

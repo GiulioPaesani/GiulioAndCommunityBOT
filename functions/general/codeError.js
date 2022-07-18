@@ -10,6 +10,9 @@ const codeError = async (client, err) => {
 
     if (err.stack) err = err.stack
 
+    if (err.startsWith("Response: Bad Gateway")) return
+    if (err.startsWith("AbortError: The user aborted a request")) return
+
     if (err.includes(":100:")) err = err.replace(/:100:/g, '\:100:')
 
     const maintenanceStatus = await isMaintenance()

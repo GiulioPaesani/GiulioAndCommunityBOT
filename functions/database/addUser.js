@@ -57,8 +57,7 @@ const addUser = async (member) => {
                 moderator: "",
                 ticketOpened: false
             },
-            warns: [],
-            invites: {}
+            warns: []
         }
 
         await fs.writeFileSync(`./database/users/${member.id}.json`, JSON.stringify(userstats))

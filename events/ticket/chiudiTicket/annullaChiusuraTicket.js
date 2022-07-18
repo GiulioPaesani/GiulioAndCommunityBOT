@@ -34,6 +34,7 @@ module.exports = {
         if (!ticket.daEliminare) return
 
         serverstats.tickets[serverstats.tickets.findIndex(x => x.channel == interaction.channelId)].daEliminare = false;
+
         updateServer(serverstats)
 
         client.channels.cache.get(ticket.channel).messages.fetch(ticket.message)
@@ -41,7 +42,7 @@ module.exports = {
                 let button1 = new Discord.MessageButton()
                     .setLabel("Chiudi ticket")
                     .setStyle("DANGER")
-                    .setCustomId("ticketChiudi")
+                    .setCustomId("chiudiTicket")
 
                 let row = new Discord.MessageActionRow()
                     .addComponents(button1)

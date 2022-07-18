@@ -11,6 +11,8 @@ const { checkBadwords } = require("../../../functions/moderation/checkBadwords")
 module.exports = {
     name: "messageUpdate",
     async execute(client, oldMessage, newMessage) {
+        if (!newMessage.author) return
+
         const maintenanceStates = await isMaintenance(newMessage.author.id)
         if (maintenanceStates) return
 

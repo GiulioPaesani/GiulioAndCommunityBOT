@@ -54,7 +54,7 @@ module.exports = {
         }
 
         if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
-            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere questo utente dal ticket", comando)
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere questo utente da questa stanza", comando)
         }
 
         if (room.owners.includes(utente.id)) {

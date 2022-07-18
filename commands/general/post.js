@@ -83,11 +83,11 @@ module.exports = {
             .addField(title, description)
 
         if (image) {
-            if (!validator.isURL(image)) {
+            if (!image.startsWith("https://") && !image.startsWith("http://")) image = "https://" + image
+
+            if (!validator.isURL(linkbutton1)) {
                 return replyMessage(client, interaction, "Error", "Link immagine non valido", "Hai inserito un link dell'immagine non valido", comando)
             }
-
-            if (!image.startsWith("https://") && !image.startsWith("http://")) image = "https://" + image
 
             embed.setImage(image)
         }
@@ -102,11 +102,11 @@ module.exports = {
                 return replyMessage(client, interaction, "Warning", "Testo bottone1 troppo lungo", "Il testo del primo bottone può avere un massimo di 100 caratteri", comando)
             }
 
+            if (!linkbutton1.startsWith("https://") && !linkbutton1.startsWith("http://") && !linkbutton1.startsWith("discord")) linkbutton1 = "https://" + linkbutton1
+
             if (!validator.isURL(linkbutton1)) {
                 return replyMessage(client, interaction, "Warning", "Link bottone1 non valido", "Hai inserito un link del primo bottone non valido", comando)
             }
-
-            if (!linkbutton1.startsWith("https://") && !linkbutton1.startsWith("http://") && !linkbutton1.startsWith("discord")) linkbutton1 = "https://" + linkbutton1
 
             let button = new Discord.MessageButton()
                 .setLabel(textbutton1)
