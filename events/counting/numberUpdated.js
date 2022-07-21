@@ -55,6 +55,7 @@ module.exports = {
         updateUser(userstats)
 
         serverstats.counting.updated++
+        serverstats.counting.lastMessage = ""
         updateServer(serverstats)
     },
 };
