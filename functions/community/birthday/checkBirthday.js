@@ -113,11 +113,11 @@ const checkBirthday = async (client) => {
             else {
                 let textUsers = ""
                 for (let i = 0; i < birthdayToday.length - 1; i++)
-                    textUsers += `${client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[0].id).nickname || client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[0].id).user.username}, `
+                    textUsers += `${client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[i].id).nickname || client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[i].id).user.username}, `
 
                 if (textUsers != "") textUsers = textUsers.slice(0, -2)
 
-                textUsers += ` e ${client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[0].id).nickname || client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[0].id).user.username}`
+                textUsers += ` e ${client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[birthdayToday.length - 1].id).nickname || client.guilds.cache.get(settings.idServer).members.cache.get(birthdayToday[birthdayToday.length - 1].id).user.username}`
 
                 embed
                     .setDescription(`Oggi è il compleanno di ${textUsers}\nFate a tutti tanti **auguri** e tanti **regali**`)

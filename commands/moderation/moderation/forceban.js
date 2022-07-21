@@ -158,7 +158,7 @@ module.exports = {
                         await utente.send({ embeds: [embed] })
                             .catch(() => { })
 
-                        message.guild.members.ban(utente.id, { reason: reason })
+                        interaction.guild.members.ban(utente.id, { reason: reason })
                     })
                 })
             return

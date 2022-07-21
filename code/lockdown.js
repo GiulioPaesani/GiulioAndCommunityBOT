@@ -15,7 +15,7 @@ client.on("messageCreate", message => {
             message.channel.send("Lockdown ATTIVATO!")
 
             let everyone = message.guild.roles.everyone
-            everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD"]) //Scrivere tutti i permessi che di default @everyone deve avere tranne VIEW_CHANNEL
+            everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_APPLICATION_COMMANDS"]) //Scrivere tutti i permessi che di default @everyone deve avere tranne VIEW_CHANNEL
 
             client.channels.cache.get("idCanale").permissionOverwrites.edit(everyone, { //Canale in cui è presente un messaggio per avvisare del lockdown attivo (facoltativo)
                 VIEW_CHANNEL: true,
@@ -25,7 +25,7 @@ client.on("messageCreate", message => {
             message.channel.send("Lockdown DISATTIVATO!")
 
             let everyone = message.guild.roles.everyone
-            everyone.setPermissions(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD"]) //Scrivere tutti i permessi che di default @everyone
+            everyone.setPermissions(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_APPLICATION_COMMANDS"]) //Scrivere tutti i permessi che di default @everyone
 
             client.channels.cache.get("idCanale").permissionOverwrites.edit(everyone, { //Canale in cui è presente un messaggio per avvisare del lockdown attivo (facoltativo)
                 VIEW_CHANNEL: false,

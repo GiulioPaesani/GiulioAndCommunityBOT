@@ -82,7 +82,7 @@ module.exports = {
         let user = await client.api.users(utente.id).get()
 
         let userstats = await getUser(utente.id)
-        if (!userstats) userstats = await addUser(utente)
+        if (!userstats && !utente.bot) userstats = await addUser(utente)
 
         let embed = new Discord.MessageEmbed()
             .setTitle(utente.nickname || utente.user?.tag || utente.tag)
@@ -92,7 +92,7 @@ module.exports = {
             .addField(":ok_hand: Status", utente.user ? textStatus : "_User not into server_", true)
             .addField(":star2: Accent color", user.accent_color ? `#${user.accent_color.toString(16).toUpperCase()}` : "_Not set_", true)
             .addField(":pencil: Account created", `${moment(utente.user?.createdAt || utente.createdAt).format("ddd DD MMM YYYY, HH:mm")} (${moment(utente.user?.createdAt || utente.createdAt).fromNow()})`)
-            .addField(":red_car: Joined this server", (userstats.joinedAt || utente.joinedTimestamp) ? `${moment(parseInt(userstats.joinedAt) || utente.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm")} (${moment(parseInt(userstats.joinedAt) || utente.joinedTimestamp).fromNow()})` : "_User never joined the server_")
+            .addField(":red_car: Joined this server", (userstats?.joinedAt || utente.joinedTimestamp) ? `${moment(parseInt(userstats?.joinedAt) || utente.joinedTimestamp).format("ddd DD MMM YYYY, HH:mm")} (${moment(parseInt(userstats?.joinedAt) || utente.joinedTimestamp).fromNow()})` : "_User never joined the server_")
             .addField(":shirt: Roles", textRoles || "_No roles_")
             .addField(":beginner: Badge", textBadge || "_No badges_")
 

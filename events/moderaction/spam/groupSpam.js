@@ -65,8 +65,8 @@ Tutti gli utenti con inferiori al ${client.guilds.cache.get(settings.idServer).r
                                 client.channels.cache.get(log.moderation.spam).send({ embeds: [embed] })
                         })
 
-                    let everyone = interaction.guild.roles.everyone
-                    everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_EXTERNAL_EMOJIS"])
+                    let everyone = message.guild.roles.everyone
+                    everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_EXTERNAL_EMOJIS", "USE_APPLICATION_COMMANDS", "START_EMBEDDED_ACTIVITIES"])
 
                     let canale = client.channels.cache.get(settings.idCanaliServer.lockdown);
                     canale.permissionOverwrites.edit(everyone, {
@@ -87,7 +87,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
                             Array.from(messages.values())[0].edit({ embeds: [embed] })
                         })
 
-                    if (interaction.channelId != settings.idCanaliServer.general)
+                    if (message.channel.id != settings.idCanaliServer.general)
                         client.channels.cache.get(settings.idCanaliServer.general).send({ embeds: [embed] })
 
                     groupSpam.delete(message.channel.id);

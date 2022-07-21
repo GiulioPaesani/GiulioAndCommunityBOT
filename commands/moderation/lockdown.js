@@ -49,7 +49,7 @@ Tutti gli utenti con inferiori al ${client.guilds.cache.get(settings.idServer).r
 
             interaction.reply({ embeds: [embed] })
 
-            everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_EXTERNAL_EMOJIS"])
+            everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_EXTERNAL_EMOJIS", "USE_APPLICATION_COMMANDS", "START_EMBEDDED_ACTIVITIES"])
 
             let canale = client.channels.cache.get(settings.idCanaliServer.lockdown);
             canale.permissionOverwrites.edit(everyone, {
@@ -81,7 +81,7 @@ Scusate per il disagio, a breve il sistema verrà disattivato dallo staff e potr
 
             interaction.reply({ embeds: [embed] })
 
-            everyone.setPermissions(["SEND_MESSAGES", "VIEW_CHANNEL", "CREATE_INSTANT_INVITE", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "CONNECT", "SPEAK", "USE_VAD", "USE_EXTERNAL_EMOJIS"])
+            everyone.setPermissions(["SEND_MESSAGES", "VIEW_CHANNEL", "CREATE_INSTANT_INVITE", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "CONNECT", "SPEAK", "USE_VAD", "USE_EXTERNAL_EMOJIS", "USE_APPLICATION_COMMANDS", "START_EMBEDDED_ACTIVITIES"])
 
             let canale = client.channels.cache.get(settings.idCanaliServer.lockdown);
             canale.permissionOverwrites.edit(everyone, {
