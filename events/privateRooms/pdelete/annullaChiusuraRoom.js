@@ -1,3 +1,4 @@
+const Discord = require("discord.js")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { getServer } = require("../../../functions/database/getServer");
 const { replyMessage } = require("../../../functions/general/replyMessage");
