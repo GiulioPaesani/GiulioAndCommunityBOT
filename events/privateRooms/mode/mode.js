@@ -25,9 +25,9 @@ module.exports = {
         let messageContent = message.content
 
         //Emojis
-        if ((messageContent.match(/<:.+?:.+?\d+>/g) || messageContent.match(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g)) && !room.mode.emoji) return message.delete().catch(() => { })
+        if ((messageContent.match(/<a:.+?:.+?\d+>/g) || messageContent.match(/<:.+?:.+?\d+>/g) || messageContent.match(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g)) && !room.mode.emoji) return message.delete().catch(() => { })
 
-        messageContent = messageContent.replace(/<:.+?:.+?\d+>/g, "").replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, "")
+        messageContent = messageContent.replace(/<a:.+?:.+?\d+>/g, "").replace(/<:.+?:.+?\d+>/g, "").replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, "")
 
         //Gif
         if ((messageContent.includes("https://tenor.com/view/") || message.attachments.find(x => x.contentType.endsWith("gif"))) && !room.mode.gif) return message.delete().catch(() => { })
