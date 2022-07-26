@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const settings = require("../../../config/general/settings.json")
 const items = require("../../../config/ranking/items.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 const { getUser } = require("../../../functions/database/getUser");
 const { addUser } = require("../../../functions/database/addUser");
 const { humanize } = require("../../../functions/general/humanize");

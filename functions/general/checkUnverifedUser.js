@@ -25,12 +25,12 @@ const checkUnverifedUser = async (client) => {
                     .catch(() => { })
             }
 
-            if ((new Date().getTime() - user.joinedTimestamp) == 3600000) { //Utente ancora non verificato da un ora
+            if ((new Date().getTime() - user.joinedTimestamp) == 3600000) { //Utente ancora non verificato da un'ora
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Non ti sei ancora VERIFICATO")
                     .setColor(colors.gray)
                     .setImage(illustrations.banner)
-                    .setDescription(`È passata più di **un ora** da quanto hai provato ad entrare nel server, ma non ti sei ancora **verificato**\nVai nel canale <#${settings.idCanaliServer.joinTheServer}>, leggi le regole e clicca sul bottone **"Entra nel server"**`)
+                    .setDescription(`È passata più di **un'ora** da quanto hai provato ad entrare nel server, ma non ti sei ancora **verificato**\nVai nel canale <#${settings.idCanaliServer.joinTheServer}>, leggi le regole e clicca sul bottone **"Entra nel server"**`)
 
                 user.send({ embeds: [embed] })
                     .catch(() => { })

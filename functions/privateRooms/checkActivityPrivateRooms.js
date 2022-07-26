@@ -43,7 +43,7 @@ const checkActivityPrivateRooms = async (client) => {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Stanza troppo inattiva")
                 .setColor(colors.yellow)
-                .setDescription(`${room.type == "text" ? `Questa stanza` : `La tua stanza <#${room.channel}>`} è inutilizzata da più di **7 giorni**\nTra **un ora** verrà eliminata se risulterà ancora inattiva\n\nSe non utilizzi più questa stanza eliminala subito con \`/pdelete\` altrimenti premi sul pulsante **"Annulla eliminazione"** per poter continuare ad usarla`)
+                .setDescription(`${room.type == "text" ? `Questa stanza` : `La tua stanza <#${room.channel}>`} è inutilizzata da più di **7 giorni**\nTra **un'ora** verrà eliminata se risulterà ancora inattiva\n\nSe non utilizzi più questa stanza eliminala subito con \`/pdelete\` altrimenti premi sul pulsante **"Annulla eliminazione"** per poter continuare ad usarla`)
 
             let button1 = new Discord.MessageButton()
                 .setLabel("Annulla eliminazione")

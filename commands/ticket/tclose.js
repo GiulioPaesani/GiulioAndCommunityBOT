@@ -100,7 +100,7 @@ module.exports = {
                                     .setColor(colors.red)
                                     .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
                                     .addField(":brain: Executor", `${interaction.user.toString()} - ID: ${interaction.user.id}`)
-                                    .addField(":bust_in_silhouette: Owner", `${client.users.cache.get(ticket.owner).toString()} - ID: ${ticket.owner}`)
+                                    .addField(":bust_in_silhouette: Owner", `<@${ticket.owner}> - ID: ${ticket.owner}`)
                                     .addField("Category", ticket.type)
                                     .addField("Reason", reason || "_Nessun motivo_")
 
