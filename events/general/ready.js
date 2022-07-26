@@ -16,6 +16,7 @@ const { subtractCooldown } = require("../../functions/leveling/cooldownXp")
 const { checkPollTimeout } = require("../../functions/community/poll/checkPollTimeout")
 const { checkRoomInDB } = require("../../functions/privateRooms/checkRoomInDB")
 const { ttsInactivity } = require("../../functions/general/ttsQueue")
+const { newMonthsMember } = require("../../functions/general/newMonthsMember")
 const { checkUnverifedUser } = require("../../functions/general/checkUnverifedUser")
 const { checkActivityPrivateRooms } = require("../../functions/privateRooms/checkActivityPrivateRooms")
 
@@ -42,8 +43,9 @@ module.exports = {
             setInterval(ttdCounter, 1000 * 60 * 20, client)
             setInterval(newStory, 1000, client)
             setInterval(checkModeration, 1000 * 60, client)
-
             setInterval(subtractCooldown, 1000 * 5)
+
+            setInterval(newMonthsMember, 1000, client)
         }
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(client.user.id)
