@@ -74,6 +74,7 @@ https://youtu.be/${idVideo}
 
     ytch.getChannelVideos('UCdwJnxZFfggSuXrLrc5sfPg', 'newest').then(async (response) => {
         let idVideo = response.items[0]?.videoId;
+        console.log(response.items[0])
         if (!idVideo) return
 
         client.channels.cache.get("1004644492776845392").messages.fetch().then(async (messages) => {
