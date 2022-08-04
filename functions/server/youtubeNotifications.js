@@ -74,8 +74,8 @@ https://youtu.be/${idVideo}
 
     ytch.getChannelVideos('UCdwJnxZFfggSuXrLrc5sfPg', 'newest').then(async (response) => {
         let idVideo = response.items[0]?.videoId;
-        console.log(response.items[0])
         if (!idVideo) return
+        if (response.items[0]?.publishedText == "1 year ago") return
 
         client.channels.cache.get("1004644492776845392").messages.fetch().then(async (messages) => {
             let isGiaMandato = false;
