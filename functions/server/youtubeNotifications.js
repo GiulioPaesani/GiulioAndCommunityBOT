@@ -71,6 +71,39 @@ https://youtu.be/${idVideo}
             }
         });
     });
+
+    ytch.getChannelVideos('UCdwJnxZFfggSuXrLrc5sfPg', 'newest').then(async (response) => {
+        let idVideo = response.items[0]?.videoId;
+        if (!idVideo) return
+
+        client.channels.cache.get("1004644492776845392").messages.fetch().then(async (messages) => {
+            let isGiaMandato = false;
+            await Array.from(messages.values()).forEach((msg) => {
+                if (msg.content.split('\n')[msg.content.split('\n').length - 2]?.endsWith(idVideo))
+                    isGiaMandato = true;
+            })
+
+            if (!isGiaMandato) {
+                await getInfo(`https://www.youtube.com/watch?v=${idVideo}`)
+                    .then(async (info) => {
+                        let descriptionVideo = await JSON.stringify(info.items[0].description).split('\\n\\n')[0].slice(1);
+
+                        await client.channels.cache.get("1004644492776845392").send(`
+-------------🖥️ **LIVE UPLOADED** 🖥️-------------
+Ti sei perso la scorsa live su Twitch? Nessun problema, ora la puoi recuperare con calma sul canale YouTube **GiulioAndLive**
+Andate subito a vedere \"**${info.items[0].fulltitle}**\"
+
+${descriptionVideo}
+
+https://youtu.be/${idVideo}
+                `)
+                            .then(async msg => {
+                                msg.crosspost()
+                            })
+                    })
+            }
+        });
+    });
 }
 
 module.exports = { youtubeNotifications }
