@@ -66,7 +66,7 @@ Tutti gli utenti con inferiori al ${client.guilds.cache.get(settings.idServer).r
                         })
 
                     let everyone = message.guild.roles.everyone
-                    everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_EXTERNAL_EMOJIS", "USE_APPLICATION_COMMANDS", "START_EMBEDDED_ACTIVITIES"])
+                    everyone.setPermissions(["SEND_MESSAGES", "EMBED_LINKS", "READ_MESSAGE_HISTORY", "USE_VAD", "USE_EXTERNAL_EMOJIS", "USE_APPLICATION_COMMANDS", "START_EMBEDDED_ACTIVITIES", "ATTACH_FILES", "ADD_REACTIONS", "USE_EXTERNAL_EMOJIS", "USE_EXTERNAL_STICKERS"])
 
                     let canale = client.channels.cache.get(settings.idCanaliServer.lockdown);
                     canale.permissionOverwrites.edit(everyone, {
