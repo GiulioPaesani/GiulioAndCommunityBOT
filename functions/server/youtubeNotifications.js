@@ -90,9 +90,9 @@ https://youtu.be/${idVideo}
                         let descriptionVideo = await JSON.stringify(info.items[0].description).split('\\n\\n')[0].slice(1);
 
                         await client.channels.cache.get("1004644492776845392").send(`
--------------🖥️ **LIVE UPLOADED** 🖥️-------------
-Ti sei perso la scorsa live su Twitch? Nessun problema, ora la puoi recuperare con calma sul canale YouTube **GiulioAndLive**
-Andate subito a vedere \"**${info.items[0].fulltitle}**\"
+-------------📡 **LIVE UPLOADED** 📡-------------
+Ti sei perso una scorsa live su Twitch? Nessun problema, ora la puoi recuperare con calma sul canale YouTube **GiulioAndLive**
+Vai subito a vedere \"**${info.items[0].fulltitle}**\"
 
 ${descriptionVideo}
 

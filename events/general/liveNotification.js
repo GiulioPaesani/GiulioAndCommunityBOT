@@ -24,7 +24,7 @@ Venite subito a divertirvi in \"**${message.content}**\"
             client.channels.cache.get("1004644492776845392").messages.fetch({ limit: 10 })
                 .then(messages => {
                     for (let msg of Array.from(messages.values())) {
-                        if (msg.includes("🟣 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 🟣")) {
+                        if (msg.content.includes("🟣 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 🟣")) {
                             msg.edit(`${msg.content.replace("🟣 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 🟣", "📺 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 📺")}\n_La stream è terminata_`)
                             return
                         }
