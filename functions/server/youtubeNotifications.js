@@ -80,7 +80,7 @@ https://youtu.be/${idVideo}
         client.channels.cache.get("1004644492776845392").messages.fetch().then(async (messages) => {
             let isGiaMandato = false;
             await Array.from(messages.values()).forEach((msg) => {
-                if (msg.content.split('\n')[msg.content.split('\n').length - 2]?.endsWith(idVideo))
+                if (msg.content.split('\n')[msg.content.split('\n').length - 1]?.endsWith(idVideo)) //!Cambiare in -2 quando si mette la notifica
                     isGiaMandato = true;
             })
 
