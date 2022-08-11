@@ -103,7 +103,7 @@ module.exports = {
         if (["no", "assolutamente no", "ma anche no", "ehm... no"].includes(content))
             message.react(getEmoji(client, "GiulioNo").toString()).catch(() => { })
 
-        if (["si", "assolutamente si"].includes(content))
+        if (["si", "sì", "assolutamente si"].includes(content))
             message.react(getEmoji(client, "GiulioYes").toString()).catch(() => { })
 
         if (["sono ricco", "sei ricco", "voglio diventare ricco", "mi è arrivato lo stipendio"].includes(content))
