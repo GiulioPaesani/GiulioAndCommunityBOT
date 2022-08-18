@@ -219,7 +219,6 @@ ${getEmoji(client, "Loading")} **Main messages**
                     settings.idCanaliServer.qna,
                     settings.idCanaliServer.ourProjects,
                     settings.idCanaliServer.faq,
-                    settings.idCanaliServer.help,
                     settings.idCanaliServer.support,
                     settings.idCanaliServer.privateRooms,
                     settings.idCanaliServer.joinTheServer,
@@ -231,7 +230,6 @@ ${getEmoji(client, "Loading")} **Main messages**
                 ]
 
                 for (let canale of channels) {
-                    console.log(canale)
                     canale = client.channels.cache.get(canale)
                     let mainMessages = []
                     await fetchAllMessages(canale)
