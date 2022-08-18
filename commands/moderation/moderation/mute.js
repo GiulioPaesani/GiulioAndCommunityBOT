@@ -87,7 +87,7 @@ module.exports = {
 
                         if (!i.customId.startsWith("sovrascriviModerazione")) return
 
-                        if (i.user.id != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
+                        if (i.user.id != interaction.user.id) return replyMessage(client, i, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
                         interaction.guild.channels.cache.forEach((canale) => {
                             if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {

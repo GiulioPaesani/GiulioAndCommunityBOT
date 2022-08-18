@@ -91,7 +91,7 @@ module.exports = {
 
                         if (!i.customId.startsWith("sovrascriviModerazione")) return
 
-                        if (i.user.id != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
+                        if (i.user.id != interaction.user.id) return replyMessage(client, i, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
                         if (interaction.guild.members.cache.get(utente.id)) {
                             interaction.guild.members.cache.get(utente.id).roles.remove(settings.ruoliModeration.muted)
