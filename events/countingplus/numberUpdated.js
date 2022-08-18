@@ -43,7 +43,7 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setTitle(titleRandom[Math.floor(Math.random() * titleRandom.length)])
-            .setDescription(`${oldMessage.author.toString()} ha modificato il numero ` + numero + ``)
+            .setDescription(`${oldMessage.author.toString()} ha modificato il numero \`` + numero + `\``)
             .setColor(colors.blue)
 
         oldMessage.channel.send({ embeds: [embed] })
@@ -58,7 +58,7 @@ module.exports = {
         updateUser(userstats)
 
         serverstats.countingplus.updated++
-        serverstats.counting.lastMessage = ""
+        serverstats.countingplus.lastMessage = ""
         updateServer(serverstats)
     },
 };

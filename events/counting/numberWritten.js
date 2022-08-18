@@ -27,7 +27,7 @@ module.exports = {
 
         let numero
         try {
-            numero = Parser.evaluate(message.content.replace(/\\/g, ""));
+            numero = parseInt(Parser.evaluate(message.content.replace(/\\/g, "")))
         }
         catch { return }
 
