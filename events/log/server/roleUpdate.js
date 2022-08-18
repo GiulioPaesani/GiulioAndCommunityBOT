@@ -19,6 +19,7 @@ module.exports = {
         });
 
         const logs = fetchedLogs.entries.first();
+        if (!logs) return
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":pencil: Role updated :pencil:")

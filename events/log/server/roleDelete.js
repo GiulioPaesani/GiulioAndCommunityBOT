@@ -18,6 +18,7 @@ module.exports = {
             type: 'ROLE_DELETE',
         });
         const logs = fetchedLogs.entries.first();
+        if (!logs) return
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":wastebasket: Role deleted :wastebasket:")

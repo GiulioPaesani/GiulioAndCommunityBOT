@@ -18,6 +18,7 @@ module.exports = {
             type: 'ROLE_CREATE',
         });
         const logs = fetchedLogs.entries.first();
+        if (!logs) return
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":mouse_three_button: Role created :mouse_three_button:")
