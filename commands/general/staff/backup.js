@@ -231,6 +231,7 @@ ${getEmoji(client, "Loading")} **Main messages**
                 ]
 
                 for (let canale of channels) {
+                    console.log(canale)
                     canale = client.channels.cache.get(canale)
                     let mainMessages = []
                     await fetchAllMessages(canale)
