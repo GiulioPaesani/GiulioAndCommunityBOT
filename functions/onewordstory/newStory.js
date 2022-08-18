@@ -18,7 +18,7 @@ const newStory = async (client) => {
             .setDescription("Il tempo per la storia di oggi è **terminato**, ecco tutto quello che avete scritto")
             .addField(":bar_chart: Info", `
 Parole scritte: ${serverstats.onewordstory.totWordsToday}
-Utente unici partecipanti: ${serverstats.onewordstory.words.filter((v, i, a) => a.findIndex(x => x.user == v.user) == i).length}`)
+Utenti unici partecipanti: ${serverstats.onewordstory.words.filter((v, i, a) => a.findIndex(x => x.user == v.user) == i).length}`)
 
         let story = `-- STORIA DEL ${moment().format("DD-MM-YYYY")} --\n\n`
         story += serverstats.onewordstory.words.map(x => x.word).join(" ")

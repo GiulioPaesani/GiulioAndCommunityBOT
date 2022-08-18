@@ -31,10 +31,18 @@ module.exports = {
         if (!userstats) userstats = await addUser(message.member)
 
         let serverstats = await getServer()
-
+        console.log(message.content)
         if (!message.content) message.delete()
 
-        if (message.content.split(" ")[1]) {
+        let piuParole = false
+
+        if (message.content.split(" ")[1]) piuParole = true
+        if (message.content.split("\n")[1]) piuParole = true
+        if (message.content.split("\r")[1]) piuParole = true
+        if (message.content.split("_")[1]) piuParole = true
+        if (message.content.split("-")[1]) piuParole = true
+
+        if (piuParole) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Solo una parola")
                 .setColor(colors.red)
