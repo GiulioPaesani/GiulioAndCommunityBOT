@@ -39,7 +39,7 @@ module.exports = {
         let pollText = ""
         let i = 0
         messageReaction.message.embeds[0].fields[0].value.split("\n").forEach(x => {
-            if (reactionVotes[i]) {
+            if (reactionVotes[i] && x.split(" ").slice(0, -3).join(" ").length > 0) {
                 let perc = 100 * reactionVotes[i].length / reactionVotes.reduce((acc, y) => acc + y.length, 0)
                 if (!perc) perc = 0
 

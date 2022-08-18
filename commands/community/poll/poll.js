@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 const moment = require("moment");
+const Grapheme = require('grapheme-splitter');
+const splitter = new Grapheme();
 const settings = require("../../../config/general/settings.json")
 const colors = require("../../../config/general/colors.json");
 const { replyMessage } = require("../../../functions/general/replyMessage");
@@ -120,9 +122,17 @@ module.exports = {
         if (interaction.options.getString("emoji")) {
             interaction.options.getString("emoji").split(",").map(x => x.trim()).forEach(x => {
                 let isValid = false
-
-                if (x.match(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g)) isValid = true
+                if (x.match(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g)) {
+                    isValid = true
+                    if (splitter.splitGraphemes(x).length > 1) {
+                        return replyMessage(client, interaction, "Warning", "Non più emoji", `Per ogni opzione devi specificare una singola emoji`, comando)
+                    }
+                }
                 else {
+                    if (x.split("").filter(y => y == ":").length > 2) {
+                        return replyMessage(client, interaction, "Warning", "Non più emoji", `Per ogni opzione devi specificare una singola emoji`, comando)
+                    }
+
                     client.emojis.cache.forEach(y => {
                         if (`<${y.animated ? "a" : ""}:${y.name}:${y.id}>` == x) isValid = true
                     })
@@ -132,6 +142,10 @@ module.exports = {
                 else emoji.push(i == 0 ? ":one:" : i == 1 ? ":two:" : i == 2 ? ":three:" : i == 3 ? ":four:" : ":five:")
                 i++
             })
+        }
+
+        if (emoji.some(x => emoji.filter(y => y == x).length > 1)) {
+            return replyMessage(client, interaction, "Warning", "Non emoji uguali", `Per ogni opzione è necessario inserire un emoji differente, non è possibile inserire più possibilità con la stessa emoji`, comando)
         }
 
         emoji = emoji.slice(0, 5)
