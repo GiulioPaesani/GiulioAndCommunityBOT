@@ -1,4 +1,4 @@
 node_modules/
 .env
 database/server
-database/users
+# database/users
