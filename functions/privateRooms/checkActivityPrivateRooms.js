@@ -12,7 +12,7 @@ const checkActivityPrivateRooms = async (client) => {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Stanza un po' inattiva")
                 .setColor(colors.yellow)
-                .setDescription(`${room.type == "text" ? `Questa stanza` : `La tua stanza <#${room.channel}>`} è inutilizzata da più di **4 giorni**\nTra **tre giorni** verrà eliminata se risulterà ancora inattiva\n\nSe non utilizzi più questa stanza eliminala subito con \`/pdelete\` altrimenti premi sul pulsante **"Annulla eliminazione"** per poter continuare ad usarla`)
+                .setDescription(`${room.type == "text" ? `Questa stanza` : `La tua stanza #${client.channels.cache.get(room.channel)?.name}`} è inutilizzata da più di **4 giorni**\nTra **tre giorni** verrà eliminata se risulterà ancora inattiva\n\nSe non utilizzi più questa stanza eliminala subito con \`/pdelete\` altrimenti premi sul pulsante **"Annulla eliminazione"** per poter continuare ad usarla`)
 
             let button1 = new Discord.MessageButton()
                 .setLabel("Annulla eliminazione")
@@ -43,7 +43,7 @@ const checkActivityPrivateRooms = async (client) => {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Stanza troppo inattiva")
                 .setColor(colors.yellow)
-                .setDescription(`${room.type == "text" ? `Questa stanza` : `La tua stanza <#${room.channel}>`} è inutilizzata da più di **7 giorni**\nTra **un'ora** verrà eliminata se risulterà ancora inattiva\n\nSe non utilizzi più questa stanza eliminala subito con \`/pdelete\` altrimenti premi sul pulsante **"Annulla eliminazione"** per poter continuare ad usarla`)
+                .setDescription(`${room.type == "text" ? `Questa stanza` : `La tua stanza #${client.channels.cache.get(room.channel)?.name}`} è inutilizzata da più di **7 giorni**\nTra **un'ora** verrà eliminata se risulterà ancora inattiva\n\nSe non utilizzi più questa stanza eliminala subito con \`/pdelete\` altrimenti premi sul pulsante **"Annulla eliminazione"** per poter continuare ad usarla`)
 
             let button1 = new Discord.MessageButton()
                 .setLabel("Annulla eliminazione")
@@ -74,7 +74,7 @@ const checkActivityPrivateRooms = async (client) => {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Stanza inattiva eliminato")
                 .setColor(colors.yellow)
-                .setDescription(`La tua stanza <#${room.channel}> è stato inutilizzata per più di **7 giorni** ed è stata eliminata per inattività\nSe ti va puoi riaprire un'altra stanza nel canale <#${settings.idCanaliServer.privateRooms}>`)
+                .setDescription(`La tua stanza #${client.channels.cache.get(room.channel)?.name} è stato inutilizzata per più di **7 giorni** ed è stata eliminata per inattività\nSe ti va puoi riaprire un'altra stanza nel canale <#${settings.idCanaliServer.privateRooms}>`)
 
             room.owners.forEach(async owner => {
                 await client.users.cache.get(owner)?.send({ embeds: [embed] })

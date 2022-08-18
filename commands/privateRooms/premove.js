@@ -53,7 +53,10 @@ module.exports = {
             return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
 
-        if (getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id) && getUserPermissionLevel(client, interaction.user.id) < 3) {
+        if (getUserPermissionLevel(client, interaction.user.id) == 0 && getUserPermissionLevel(client, utente.id) > getUserPermissionLevel(client, interaction.user.id)) {
+            return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere questo utente da questa stanza", comando)
+        }
+        else if (getUserPermissionLevel(client, interaction.user.id) < 3 && getUserPermissionLevel(client, interaction.user.id) >= 1 && getUserPermissionLevel(client, utente.id) >= getUserPermissionLevel(client, interaction.user.id)) {
             return replyMessage(client, interaction, "NonPermesso", "", "Non puoi rimuovere questo utente da questa stanza", comando)
         }
 

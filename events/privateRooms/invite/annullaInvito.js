@@ -18,7 +18,7 @@ module.exports = {
             .catch(() => { })
 
         let serverstats = await getServer()
-        let room = serverstats.privateRooms.find(x => x.channel == interaction.customId.split(",")[2])
+        let room = serverstats.privateRooms.find(x => x.channel == interaction.customId.split(",")[1])
         if (!room) return
 
         if (!room.owners.includes(interaction.user.id) && !getUserPermissionLevel(client, interaction.user.id)) {
