@@ -72,7 +72,7 @@ module.exports = {
             .setTitle(`${canaleEmoji}   ${canale.name}`)
             .setDescription("Tutte le informazioni su questo canale")
             .addField(":receipt: Channel ID", canale.id, true)
-            .addField(":thought_balloon: Type", canaleType, true)
+            .addField(":thought_balloon: Type", canaleType || "Unknown", true)
             .addField(":pencil: Channel created", `${moment(canale.createdAt).format("ddd DD MMM YYYY, HH:mm")} (${moment(canale.createdAt).fromNow()})`)
 
         if (canaleType == "Text Channel" || canaleType == "News Channel") {
