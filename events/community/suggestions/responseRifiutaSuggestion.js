@@ -22,7 +22,7 @@ module.exports = {
 
         client.channels.cache.get(log.community.suggestions).messages.fetch(message.reference.messageId)
             .then(async msg => {
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.get(msg.embeds[0].fields[0].value.slice(msg.embeds[0].fields[0].value.length - 18))
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.get(msg.embeds[0].fields[0].value.split(" ")[msg.embeds[0].fields[0].value.split(" ").length - 1])
                 if (!utente) return
 
                 if (msg.embeds[0].fields[1].value != "Pending") return

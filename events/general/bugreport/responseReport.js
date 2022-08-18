@@ -24,8 +24,8 @@ module.exports = {
             .then(async msg => {
                 if (msg.embeds[0]?.title != ":beetle: Bug report :beetle:") return
 
-                let utente = client.guilds.cache.get(settings.idServer).members.cache.get(msg.embeds[0].fields[1].value.slice(msg.embeds[0].fields[1].value.length - 18))
-                if (!utente) return msg.delete()
+                let utente = client.guilds.cache.get(settings.idServer).members.cache.get(msg.embeds[0].fields[0].value.split(" ")[msg.embeds[0].fields[0].value.split(" ").length - 1])
+                if (!utente) return
 
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":beetle: Bug REPORTATO")

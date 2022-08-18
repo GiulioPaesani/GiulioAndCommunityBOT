@@ -60,7 +60,7 @@ module.exports = {
 
                 if (interaction.customId.split(",")[3] == "staffpoll")
                     msg.startThread({
-                        name: interaction.message.embeds[0].fields[0].name.length > 100 ? `${interaction.message.embeds[0].fields[0].name.slice(0, 97)}...` : interaction.message.embeds[0].fields[0].name.length,
+                        name: interaction.message.embeds[0].fields[0].name.length > 100 ? `${interaction.message.embeds[0].fields[0].name.slice(0, 97)}...` : interaction.message.embeds[0].fields[0].name,
                         autoArchiveDuration: "MAX",
                     });
             })

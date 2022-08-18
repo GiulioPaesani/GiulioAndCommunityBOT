@@ -14,7 +14,7 @@ module.exports = {
 
         await interaction.deferUpdate()
 
-        let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.slice(interaction.message.embeds[0].fields[0].value.length - 18))
+        let utente = client.guilds.cache.get(settings.idServer).members.cache.get(interaction.message.embeds[0].fields[0].value.split(" ")[interaction.message.embeds[0].fields[0].value.split(" ").length - 1])
         if (!utente) return
 
         interaction.message.embeds[0].fields.push({
