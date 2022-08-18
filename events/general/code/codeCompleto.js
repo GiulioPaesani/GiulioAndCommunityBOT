@@ -21,8 +21,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(`${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""} ${codice.name.toUpperCase()} ${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""}`)
             .setDescription(`${codice.description}
-                
-Se vuoi puoi copiare direttamente tutto il codice da [QUI](${codice.link})
+            
 _Version: \`Discord.js v13\`_`)
 
         interaction.user.send({ embeds: [embed], files: [attachment] })
