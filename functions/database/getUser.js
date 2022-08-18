@@ -2,6 +2,8 @@ const fs = require("fs")
 
 const getUser = async (userId) => {
     try {
+        if (!fs.existsSync(`./database/users/${userId}.json`)) return
+
         let data = JSON.parse(fs.readFileSync(`./database/users/${userId}.json`, 'utf8'))
 
         if (data.joinedAt && data.joinedAt["$numberLong"]) data.joinedAt = data.joinedAt["$numberLong"]
