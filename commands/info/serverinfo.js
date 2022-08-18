@@ -45,7 +45,7 @@ ${getEmoji(client, "Donotdisturb")}Do not disturb: ${server.members.cache.filter
 ${getEmoji(client, "Idle")}Idle: ${server.members.cache.filter(user => user.presence?.status == "idle").size}
 ${getEmoji(client, "Offline")}Offline: ${server.members.cache.filter(user => !user.presence || user.presence?.status == "offline").size}
 `, true)
-            .addField(":beginner: Boost level", `Level ${server.premiumTeam == "NONE" ? 0 : server.premiumTeam == "TIER_1" ? 1 : server.premiumTeam == "TIER_2" ? 2 : 3} (${server.premiumSubscriptionCount} Boosts)`, true)
+            .addField(":beginner: Boost level", `Level ${server.premiumTier == "NONE" ? 0 : server.premiumTier == "TIER_1" ? 1 : server.premiumTier == "TIER_2" ? 2 : 3} (${server.premiumSubscriptionCount} Boosts)`, true)
             .addField(":stuck_out_tongue_winking_eye: Emojis", textEmojis)
             .addField(":frame_photo: Stickers", textStickers)
 
