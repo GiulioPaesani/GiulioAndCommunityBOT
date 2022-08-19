@@ -33,6 +33,8 @@ module.exports = {
         }
         catch { return }
 
+        if (!numero && numero != 0) return
+
         let userstats = await getUser(message.author.id)
         if (!userstats) userstats = await addUser(message.member)
 

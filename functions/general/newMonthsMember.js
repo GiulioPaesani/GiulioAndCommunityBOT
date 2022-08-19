@@ -8,9 +8,7 @@ const newMonthsMember = async (client) => {
         let serverstats = await getServer()
         let member = serverstats.monthmembers.find(x => x.month == `${data.getFullYear().toString().slice(2)}${(data.getMonth() + 1) < 10 ? "0" : ""}${data.getMonth() + 1}`)
 
-        if (!member) return
-
-        member = member.user
+        if (!member) return console.log("Member not found")
 
         let testi = [
             "È arrivato un nuovo mese, e come tutti i mesi, sono qua per annunciarvi il **membro del mese**",
