@@ -19,7 +19,7 @@ const newMonthsMember = async (client) => {
 
         let mesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"]
 
-        let channel = client.channel.cache.get(settings.idCanaliServer.announcements)
+        let channel = client.channels.cache.get(settings.idCanaliServer.announcements)
 
         channel.send(`
 -----💖 **𝐌𝐎𝐍𝐓𝐇'𝐒 𝐌𝐄𝐌𝐁𝐄𝐑** 💖-----
@@ -30,7 +30,7 @@ Ogni mese lo staff **elegge** un utente all'interno del server che si merita que
 
 Essere membro del mese è un **grande onore** e permetterà di ricevere alcuni **privilegi** esclusivi che avrete in questo periodo:
 - **Ruolo** <@&${settings.idRuoloMonthMember}> separato dagli altri
-- **Chat <#${settings.idCanaliServer.bar}> privata** con lo staff e l'ex-staff, dove parlare del più e del meno
+- **Chat <#${settings.idCanaliServer.bar}> privata** con lo staff e l'ex-staff, dove parlare e discutere del più e del meno
 - Poter eseguire i comandi **ovunque**
 - Comparire nel comando \`/monthmembers\`
 
@@ -38,7 +38,7 @@ Andiamo subito alla parte più importante:
 :face_with_hand_over_mouth: Il nuovo membro del mese di **${mesi[data.getMonth()]} ${data.getFullYear()}** è... <@${member}>!! Congratulazioni
 
 Fate i bravi, ci vediamo il prossimo mese
-        `)
+`)
 
         let role = channel.guild.roles.cache.get(settings.idRuoloMonthMember)
         role.members.forEach(x => {
