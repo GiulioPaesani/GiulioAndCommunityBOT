@@ -10,6 +10,8 @@ const { updateUser } = require("../database/updateUser")
 const newStory = async (client) => {
     let date = new Date()
     if (date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
+        client.channels.cache.get("1003566272803504138").send("1 - è ora!")
+
         let serverstats = await getServer()
 
         let embed = new Discord.MessageEmbed()
@@ -25,14 +27,23 @@ Utenti unici partecipanti: ${serverstats.onewordstory.words.filter((v, i, a) => 
 
         const attachment = await new Discord.MessageAttachment(Buffer.from(story, "utf-8"), `story-${moment().format("DDMMYYYY")}.txt`);
 
+        client.channels.cache.get("1003566272803504138").send("2 - prima di mandare")
+
         client.channels.cache.get(settings.idCanaliServer.onewordstory).send({ embeds: [embed], files: [attachment] })
-            .then(msg => msg.pin())
+            .then(msg => {
+                client.channels.cache.get("1003566272803504138").send("2.5 - conferma invio")
+                msg.pin()
+            })
+
+        client.channels.cache.get("1003566272803504138").send("3 - Dopo aver mandato")
 
         serverstats.onewordstory.words = []
         serverstats.onewordstory.totWordsToday = 0
         serverstats.onewordstory.totStories++
 
         updateServer(serverstats)
+
+        client.channels.cache.get("1003566272803504138").send("4 - Aggiornato serverstats")
 
         let userstatsList = await getAllUsers(client)
         userstatsList.forEach(userstats => {
@@ -41,6 +52,9 @@ Utenti unici partecipanti: ${serverstats.onewordstory.words.filter((v, i, a) => 
                 updateUser(userstats)
             }
         })
+
+        client.channels.cache.get("1003566272803504138").send("5 - Aggiornati userstats")
+
     }
 }
 
