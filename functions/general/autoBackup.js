@@ -132,7 +132,6 @@ const autoBackup = async (client) => {
         settings.idCanaliServer.staffPolls,
         settings.idCanaliServer.qna,
         settings.idCanaliServer.ourProjects,
-        settings.idCanaliServer.faq,
         settings.idCanaliServer.support,
         settings.idCanaliServer.privateRooms,
         settings.idCanaliServer.joinTheServer,

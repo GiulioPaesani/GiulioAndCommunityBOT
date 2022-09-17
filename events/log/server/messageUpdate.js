@@ -15,7 +15,7 @@ module.exports = {
 
         if (newMessage.author?.bot) return
         if (!newMessage.author) return
-        if (message.channel.type == "DM") return
+        if (newMessage.channel.type == "DM") return
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":pencil: Message updated :pencil:")
