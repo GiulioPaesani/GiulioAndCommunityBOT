@@ -6,6 +6,7 @@ const { getUser } = require("../../../functions/database/getUser");
 const { addUser } = require("../../../functions/database/addUser");
 const { getEmoji } = require("../../../functions/general/getEmoji");
 const { humanize } = require("../../../functions/general/humanize");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,

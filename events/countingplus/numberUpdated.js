@@ -19,7 +19,7 @@ module.exports = {
         const maintenanceStates = await isMaintenance(oldMessage.author.id)
         if (maintenanceStates) return
 
-        if (oldMessage.channel.id != settings.idCanaliServer.countingplus) return
+        if (oldMessage.channel?.id != settings.idCanaliServer.countingplus) return
 
         let numero, numero2
         try {

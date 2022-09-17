@@ -6,6 +6,7 @@ const { getTaggedUser } = require("../../../functions/general/getTaggedUser");
 const { getUser } = require("../../../functions/database/getUser")
 const { deleteUser } = require("../../../functions/database/deleteUser")
 const { getServer } = require("../../../functions/database/getServer")
+const { updateServer } = require("../../../functions/database/updateServer")
 
 module.exports = {
     name: "debug",

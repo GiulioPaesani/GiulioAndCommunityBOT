@@ -47,51 +47,51 @@ module.exports = {
                         choices: [
                             {
                                 name: "Gennaio",
-                                value: "1"
+                                value: "Gennaio"
                             },
                             {
                                 name: "Febbraio",
-                                value: "2"
+                                value: "Febbraio"
                             },
                             {
                                 name: "Marzo",
-                                value: "3"
+                                value: "Marzo",
                             },
                             {
                                 name: "Aprile",
-                                value: "4"
+                                value: "Aprile"
                             },
                             {
                                 name: "Maggio",
-                                value: "5"
+                                value: "Maggio"
                             },
                             {
                                 name: "Giugno",
-                                value: "6"
+                                value: "Giugno"
                             },
                             {
                                 name: "Luglio",
-                                value: "7"
+                                value: "Luglio"
                             },
                             {
                                 name: "Agosto",
-                                value: "8"
+                                value: "Agosto"
                             },
                             {
                                 name: "Settembre",
-                                value: "9"
+                                value: "Settembre"
                             },
                             {
                                 name: "Ottobre",
-                                value: "10"
+                                value: "Ottobre"
                             },
                             {
                                 name: "Novembre",
-                                value: "11"
+                                value: "Novembre"
                             },
                             {
                                 name: "Dicembre",
-                                value: "12"
+                                value: "Dicembre"
                             }
                         ],
                         required: true

@@ -26,7 +26,7 @@ client.on("messageCreate", message => {
 
     if (trovata) {
         message.delete();
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setTitle("Hai detto una parolaccia")
             .setDescription("Hai scritto un messaggio con parole bloccate\\nIl tuo messaggio: " + testo)
 

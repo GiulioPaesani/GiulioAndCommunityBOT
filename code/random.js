@@ -16,13 +16,13 @@ client.on("messageCreate", message => {
     }
     //Random messaggi embed
     if (message.content == "!comando2") {
-        let embed1 = new Discord.MessageEmbed()
+        let embed1 = new Discord.EmbedBuilder()
             .setTitle("Embed1")
             .setDescription("Questo è il primo embed")
-        let embed2 = new Discord.MessageEmbed()
+        let embed2 = new Discord.EmbedBuilder()
             .setTitle("Embed1")
             .setDescription("Questo è il secondo embed")
-        let embed3 = new Discord.MessageEmbed()
+        let embed3 = new Discord.EmbedBuilder()
             .setTitle("Embed1")
             .setDescription("Questo è il terzo embed")
         let messaggi = [embed1, embed2, embed3]

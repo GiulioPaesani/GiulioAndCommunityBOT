@@ -22,7 +22,7 @@ const newMonthsMember = async (client) => {
         let channel = client.channels.cache.get(settings.idCanaliServer.announcements)
 
         channel.send(`
------💖 **𝐌𝐎𝐍𝐓𝐇'𝐒 𝐌𝐄𝐌𝐁𝐄𝐑** 💖-----
+----- 💖 **𝐌𝐎𝐍𝐓𝐇'𝐒 𝐌𝐄𝐌𝐁𝐄𝐑** 💖 -----
 ${testi[Math.floor(Math.random() * testi.length)]}
 
 :face_with_monocle: Ma chi è il membro del mese?

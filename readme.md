@@ -34,7 +34,7 @@ _Questo sistema di economia è completamente inutile e non serve a nulla, avere 
 
 ### 📳 NOTIFICHE 💢
 Nel server non verrà mai taggato @everyone, ma vengono usati diversi ruoli di notifica
-Puoi scegliere quindi le notifiche ping che ti piacerebbe ricevere con il comando `/notification`
+Puoi scegliere quindi le notifiche ping che ti piacerebbe ricevere con il comando `/notifications`
 
 Ecco quello che puoi abilitare o disabilitare:  
 📋 Announcements - 

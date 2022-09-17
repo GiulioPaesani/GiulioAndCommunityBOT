@@ -16,7 +16,7 @@ client.on("messageCreate", message => {
         message.channel.send({ content: "Messaggio", files: ["./Immagine.png", "https://google.it/immagine.png"] })
 
         //Con embed
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setTitle("Titolo")
             .setDescription("Descrizione")
 

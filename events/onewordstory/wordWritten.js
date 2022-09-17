@@ -31,7 +31,6 @@ module.exports = {
         if (!userstats) userstats = await addUser(message.member)
 
         let serverstats = await getServer()
-        console.log(message.content)
         if (!message.content) message.delete()
 
         let piuParole = false

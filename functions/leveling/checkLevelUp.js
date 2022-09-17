@@ -11,7 +11,6 @@ const { checkUserLevelRole } = require("../../functions/leveling/checkLevelRoles
 const checkLevelUp = async (client, userstats) => {
     const privilegiLevel = {
         5: [
-            `**Streaming** nelle chat vocali`,
             `Nuove **emoji**: ${getEmoji(client, "GiulioLOL")} ${getEmoji(client, "GiulioCool")} ${getEmoji(client, "GiulioLove")} ${getEmoji(client, "GiulioImbarazzato")} ${getEmoji(client, "GiulioPaura")} ${getEmoji(client, "GiulioAngry")}`
         ],
         10: [
@@ -102,7 +101,7 @@ const checkLevelUp = async (client, userstats) => {
                 "Mi spiace, devi avere una vita molto triste per essere arrivato a questo punto",
                 "Ma esci un po' invece di salire di livello",
                 "Si vede che sei un utente attivo, continua così!",
-                "Forza, l'obbiettivo è livello 1000!!",
+                "Forza, l'obbiettivo è il livello 1000!!",
                 "Che figo, hai superato un nuovo livello",
                 "Ma sei fortissimo, come hai fatto a raggiungere questo livello così velocemente?",
                 "Bravissimo! Ma forse è meglio che torni a studiare...",

@@ -2,7 +2,7 @@ const settings = require("../../config/general/settings.json")
 
 const checkUserLevelRole = async (client, userstats) => {
     let ruoloDaAvere
-    for (let i = userstats.leveling.level; !ruoloDaAvere && i > 0; i--) {
+    for (let i = userstats.leveling.level; !ruoloDaAvere && i >= 0; i--) {
         if (settings.ruoliLeveling[i]) ruoloDaAvere = settings.ruoliLeveling[i]
     }
 

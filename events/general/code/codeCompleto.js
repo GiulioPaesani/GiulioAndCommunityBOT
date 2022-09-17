@@ -22,7 +22,7 @@ module.exports = {
             .setTitle(`${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""} ${codice.name.toUpperCase()} ${codice.category == "commands" ? "🎡" : codice.category == "utility" ? "🧰" : codice.category == "moderation" ? "🔨" : codice.category == "fun" ? "🤣" : codice.category == "manage" ? "📁" : codice.category == "errors" ? "🚫" : ""}`)
             .setDescription(`${codice.description}
             
-_Version: \`Discord.js v13\`_`)
+_Version: \`Discord.js v14\`_`)
 
         interaction.user.send({ embeds: [embed], files: [attachment] })
     },

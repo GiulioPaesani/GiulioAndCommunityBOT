@@ -38,7 +38,6 @@ module.exports = {
                 textStatus += `${index == "web" ? "Web" : index == "desktop" ? "Desktop" : "Mobile"} -${status == "online" ? `${getEmoji(client, "Online")}Online` : status == "dnd" ? `${getEmoji(client, "Dotnotdisturb")}Do not disturb` : status == "idle" ? `${getEmoji(client, "Idle")}Idle` : `${getEmoji(client, "Offline")}Offline`}\n`
             }
 
-        console.log(textStatus)
         let textDescription = ""
         if (utente.nickname) textDescription += `${utente.user.tag}\n`
 

@@ -33,6 +33,10 @@ module.exports = {
                         value: "info"
                     },
                     {
+                        name: "🚑 Help",
+                        value: "help"
+                    },
+                    {
                         name: "😂 Fun and Games",
                         value: "fun"
                     },
@@ -84,11 +88,11 @@ module.exports = {
             let embed = new Discord.MessageEmbed()
                 .setTitle(`/${command.name.toUpperCase()}`)
                 .setDescription(command.description)
-                .setColor(command.category == "general" ? "#A0ADB7" : command.category == "community" ? "#F6D17E" : command.category == "info" ? "#C5CED5" : command.category == "fun" ? "#F2C249" : command.category == "ranking" ? "#A5D089" : command.category == "moderation" ? "#2A6797" : "#FFAC33")
+                .setColor(command.category == "general" ? "#A0ADB7" : command.category == "community" ? "#F6D17E" : command.category == "info" ? "#C5CED5" : command.category == "help" ? "#de423a" : command.category == "fun" ? "#F2C249" : command.category == "ranking" ? "#A5D089" : command.category == "moderation" ? "#2A6797" : "#FFAC33")
                 .addField(":keyboard: Syntax", command.syntax)
                 .addField(":gem: Permission required", command.permissionLevel == 0 ? "Accessible to everyone" : command.permissionLevel == 1 ? `Accessible to only ${getEmoji(client, "ModCommand")} Moderators` : command.permissionLevel == 2 ? `Accessible to only ${getEmoji(client, "AdminCommand")} Admins` : `Accessible to only ${getEmoji(client, "OwnerCommand")} Owners`, true)
                 .addField(":beginner: Level required", command.requiredLevel == 0 ? "No level required" : `${interaction.guild.roles.cache.find(x => x.name == `Level ${command.requiredLevel}`).toString()} required`, true)
-                .addField(":bricks: Category", command.category == "general" ? "General" : command.category == "community" ? "Community" : command.category == "info" ? "Informations" : command.category == "fun" ? "Fun and Games" : command.category == "ranking" ? "Ranking" : command.category == "moderation" ? "Moderation" : "Private rooms and Tickets", true)
+                .addField(":bricks: Category", command.category == "general" ? "General" : command.category == "community" ? "Community" : command.category == "info" ? "Informations" : command.category == "help" ? "Help" : command.category == "fun" ? "Fun and Games" : command.category == "ranking" ? "Ranking" : command.category == "moderation" ? "Moderation" : "Private rooms and Tickets", true)
                 .addField(":anchor: Channels granted", channelsGranted)
                 .addField(":stopwatch: Cooldown", command.cooldown ? `${command.cooldown} seconds` : "No cooldown")
 
@@ -112,6 +116,11 @@ module.exports = {
                     embed
                         .setTitle("📊 INFORMATIONS commands 📊")
                         .setColor("#C5CED5")
+                } break
+                case "help": {
+                    embed
+                        .setTitle("🚑 HELP commands 🚑")
+                        .setColor("#de423a")
                 } break
                 case "fun": {
                     embed
@@ -143,6 +152,7 @@ I comandi sono divisi nelle seguenti categorie:
 🎡 General 
 💡 Community
 📊 Informations
+🚑 Help
 😂 Fun and Games
 💵 Ranking
 👮 Moderation
@@ -204,7 +214,7 @@ _Seleziona la categoria dal menù qua sotto_`)
                     label: "General",
                     emoji: "🎡",
                     value: "general",
-                    description: "/help, /code, /segnala, /video, ..."
+                    description: "/help, /segnala, /video, ..."
                 })
                 .addOptions({
                     label: "Community",
@@ -217,6 +227,12 @@ _Seleziona la categoria dal menù qua sotto_`)
                     emoji: "📊",
                     value: "info",
                     description: "/serverinfo, /channelinfo, /link, /youtube, ..."
+                })
+                .addOptions({
+                    label: "Help",
+                    emoji: "🚑",
+                    value: "help",
+                    description: "/code, /hrename, /hclose, ..."
                 })
                 .addOptions({
                     label: "Fun and Games",

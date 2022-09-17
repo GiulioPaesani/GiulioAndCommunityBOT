@@ -33,12 +33,18 @@ module.exports = {
     async execute(client, interaction, comando) {
         let utente = await getTaggedUser(client, interaction.options.getString("user")) || interaction.user
 
-        if (utente.bot) {
+        if (utente.bot && utente.id != client.user.id) {
             return replyMessage(client, interaction, "Warning", "Non un bot", "Non puoi visualizzare il compleanno di un bot", comando)
         }
 
-        let userstats = await getUser(utente.id)
-        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
+        let userstats;
+        if (utente.id == client.user.id) {
+            userstats = { birthday: [1, 22] }
+        }
+        else {
+            userstats = await getUser(utente.id)
+            if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
+        }
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Birthday - ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`)
@@ -106,7 +112,17 @@ module.exports = {
                     .setThumbnail("attachment://canvas.png")
 
                 if (moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1 == 1) {
-                    embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Manca **${moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1} giorno** al compleanno di ${utente.toString()}`)
+                    let text = ""
+                    let duration = moment.duration(moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).valueOf() - new Date().getTime())._data
+
+                    if (duration.hours != 0)
+                        text = `${duration.hours == 1 ? "Manca" : "Mancano"} **${duration.hours == 1 ? "un'" : duration.hours} ${duration.hours == 1 ? "ora" : "ore"}, ${duration.minutes == 1 ? "un" : duration.minutes} ${duration.minutes == 1 ? "minuto" : "minuti"} e ${duration.seconds == 1 ? "un" : duration.seconds} ${duration.seconds == 1 ? "secondo" : "secondi"}**`
+                    else if (duration.minutes != 0)
+                        text = `${duration.minutes == 1 ? "Manca" : "Mancano"} **${duration.minutes == 1 ? "un" : duration.minutes} ${duration.minutes == 1 ? "minuto" : "minuti"} e ${duration.seconds == 1 ? "un" : duration.seconds} ${duration.seconds == 1 ? "secondo" : "secondi"}**`
+                    else
+                        text = `${duration.seconds == 1 ? "Manca" : "Mancano"} **${duration.seconds == 1 ? "un" : duration.seconds} ${duration.seconds == 1 ? "secondo" : "secondi"}**`
+
+                    embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `${text} al compleanno di ${utente.toString()}`)
                 }
                 else
                     embed.addField(`:balloon: ${userstats.birthday[1]} ${moment().set("month", userstats.birthday[0] - 1).format("MMMM")}`, `Mancano **${moment(prossimoBirthday(userstats.birthday[0], userstats.birthday[1])).diff(moment(), "days") + 1} giorni** al compleanno di ${utente.toString()}`)

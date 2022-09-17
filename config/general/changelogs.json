@@ -1,5 +1,19 @@
 [
     {
+        "version": "V0922",
+        "title": "Tanti \"Grazie\" e altrettanti eventi!",
+        "description": "Il changelog più piccolo di sempre. Due principali novità super interessanti nel server, per migliorare ancora di più l'esperienza dei membri",
+        "date": "2022-09-17",
+        "documento": "https://bit.ly/3qJjhIL",
+        "idVideo": "NDpoMf59bWE",
+        "bestNovita": [
+            "Sistema di **ringraziamenti**",
+            "**Eventi** della community",
+            "Rimossi tanti codici da **/code**",
+            "Nuove notifiche ping"
+        ]
+    },
+    {
         "version": "V0622",
         "title": "Ora ci sono troppi BOT... ma con tante novità FIGHISSIME",
         "description": "È arrivato il giorno di un nuovo Changelog, ma questo è un changelog super super ricco di novità. Tantissime nuove funzioni, nuovi comandi e tanti nuovi canali. Guarda il video e entra subito nel server per scoprirli!",
@@ -14,7 +28,7 @@
             "Nuova disposizione ruoli staff (Owner, Admin e Moderator)",
             "Tanto nuovo divertimento con i nuovi canali <#977590416264294462> e <#977601321546956910>",
             "Altre funzioni nei canali <#976847592472318012>, <#978537002456715274>, <#978536291497021440> e <#978536471000662076>",
-            "**Basta ticket!**, ora si potrà richiedere aiuto solo nel canale <#978536821183111178>"
+            "**Basta ticket!**, ora si potrà richiedere aiuto solo nel canale <#1006478335276232715>"
         ]
     },
     {
@@ -87,7 +101,7 @@
         "bestNovita": [
             "**Messaggi di benvenuto** anche in privato, e riassegnamento ruoli se un utente rientra",
             "Sistema di **lockdown**: solo gli utenti con almeno il livello 5 vedranno i canali",
-            "Sistama di **ticket**",
+            "Sistema di **ticket**",
             "Frasi divertenti negli errori in <#869975192645034085>"
         ]
     }

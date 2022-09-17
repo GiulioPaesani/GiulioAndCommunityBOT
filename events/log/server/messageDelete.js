@@ -16,6 +16,7 @@ module.exports = {
         if (!message) return
         if (!message.author) return
         if (message.author.bot) return
+        if (message.channel.type == "DM") return
 
         let embed = new Discord.MessageEmbed()
             .setTitle(":wastebasket: Message deleted :wastebasket:")

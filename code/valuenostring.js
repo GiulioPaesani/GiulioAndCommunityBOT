@@ -14,17 +14,18 @@ client.on("messageCreate", message => {
 
         message.channel.send(variabileNumerica.toString())
 
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setTitle("Titolo")
             .setDescription(variabileNumerica.toString())
-            .addField("Titolo field", "Valore field")
+            .addField(, )
+            .addFields([{ name: "Titolo field", value: "Valore field" }])
 
         message.channel.send({ embeds: [embed] })
 
-        let embed2 = new Discord.MessageEmbed()
+        let embed2 = new Discord.EmbedBuilder()
             .setTitle("Titolo")
             .setDescription("Description")
-            .addField("Titolo field", variabileNumerica.toString())
+            .addFields([{ name: "Titolo field", value: variabileNumerica.toString() }])
 
         message.channel.send({ embeds: [embed2] })
     }

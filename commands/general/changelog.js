@@ -22,7 +22,11 @@ module.exports = {
                 required: false,
                 choices: [
                     {
-                        name: "[Defaut] V0622 - Giugno 2022",
+                        name: "[Defaut] V0922 - Settembre 2022",
+                        value: "V0922"
+                    },
+                    {
+                        name: "V0622 - Giugno 2022",
                         value: "V0622"
                     },
                     {

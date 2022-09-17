@@ -18,7 +18,10 @@ const { checkRoomInDB } = require("../../functions/privateRooms/checkRoomInDB")
 const { ttsInactivity } = require("../../functions/general/ttsQueue")
 const { newMonthsMember } = require("../../functions/general/newMonthsMember")
 const { checkUnverifedUser } = require("../../functions/general/checkUnverifedUser")
-const { checkActivityPrivateRooms } = require("../../functions/privateRooms/checkActivityPrivateRooms")
+const { checkActivityPrivateRooms } = require("../../functions/privateRooms/checkActivityPrivateRooms");
+const { sendGift } = require("../../functions/help/sendGift");
+const { fineIscrizione } = require("../../functions/community/events/fineIscrizioni");
+const { inizioEvento } = require("../../functions/community/events/inizioEvento");
 
 module.exports = {
     name: "ready",
@@ -46,7 +49,11 @@ module.exports = {
             setInterval(subtractCooldown, 1000 * 5)
 
             setInterval(newMonthsMember, 1000, client)
+            setInterval(sendGift, 1000, client)
+            setInterval(fineIscrizione, 1000, client)
+            setInterval(inizioEvento, 1000, client)
         }
+
 
         let utente = client.guilds.cache.get(settings.idServer).members.cache.get(client.user.id)
         utente?.voice?.disconnect()

@@ -36,6 +36,11 @@ module.exports = {
                     .setTitle("📊 INFORMATIONS commands 📊")
                     .setColor("#C5CED5")
             } break
+            case "help": {
+                embed
+                    .setTitle("🚑 HELP commands 🚑")
+                    .setColor("#de423a")
+            } break
             case "fun": {
                 embed
                     .setTitle("😂 FUN and GAMES commands 😂")
@@ -109,7 +114,7 @@ ${commands[i].description}
                 label: "General",
                 emoji: "🎡",
                 value: "general",
-                description: "/help, /code, /segnala, /video, ..."
+                description: "/help, /segnala, /video, ..."
             })
             .addOptions({
                 label: "Community",
@@ -122,6 +127,12 @@ ${commands[i].description}
                 emoji: "📊",
                 value: "info",
                 description: "/serverinfo, /channelinfo, /link, /youtube, ..."
+            })
+            .addOptions({
+                label: "Help",
+                emoji: "🚑",
+                value: "help",
+                description: "/code, /hrename, /hclose, ..."
             })
             .addOptions({
                 label: "Fun and Games",

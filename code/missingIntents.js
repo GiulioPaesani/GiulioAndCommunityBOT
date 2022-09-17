@@ -10,7 +10,7 @@ module.exports = {
     code: `
 //Sostituire la dichiarazione del client in questo modo
 const client = new Discord.Client({
-    intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES"] //Aggiungere tutti quelli necessari al vostro bot
+    intents: [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMembers, Discord.GatewayIntentBits.GuildMessages] //Aggiungere tutti quelli necessari al vostro bot
 })
 
 //Per avere direttamente tutti gli intents

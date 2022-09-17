@@ -331,7 +331,7 @@ ${getEmoji(client, "Loading")} **Database**`)
 
                         fs.unlinkSync(`./database${time}.zip`)
                     })
-                    .catch((err) => { console.log("ciao", err) })
+                    .catch((err) => { console.log(err) })
             })
     },
 };

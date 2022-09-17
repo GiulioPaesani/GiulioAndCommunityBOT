@@ -20,25 +20,22 @@ module.exports = {
                 required: true,
                 choices: [
                     {
-                        name: "📋 Announcement",
+                        name: "📢 Announcement",
                         value: "announcement"
                     },
                     {
-                        name: "📰 News",
-                        value: "news"
+                        name: "📹 Youtube Video",
+                        value: "announcement"
                     },
                     {
-                        name: "📝 Changelog",
-                        value: "changelog"
+                        name: "🟣 Twitch Live",
+                        value: "live"
                     },
                     {
-                        name: "📱 Youtube GiulioAndCode",
-                        value: "youtubegiulioandcode"
+                        name: "🏆 Events",
+                        value: "events"
                     },
-                    {
-                        name: "✌ Youtube Giulio",
-                        value: "youtubegiulio"
-                    }
+
                 ]
             },
             {
@@ -58,14 +55,18 @@ module.exports = {
                 }
 
                 let type = interaction.options.getString("type")
-                let title = type == "announcement" ? "-----:loudspeaker: **ANNOUNCEMENT** :loudspeaker:-----" : type == "news" ? "-----:newspaper: **NEWS** :newspaper:-----" : type == "changelog" ? "----:pencil: **CHANGELOG** :pencil:-----" : type == "youtubegiulioandcode" ? "-----:computer: **NEW VIDEO** :computer:-----" : type == "youtubegiulio" ? "-----:v: **NEW VIDEO** :v:-----" : ""
-                let role = type == "announcement" ? settings.ruoliNotification.announcements : type == "news" ? settings.ruoliNotification.news : type == "changelog" ? settings.ruoliNotification.changelog : type == "youtubegiulioandcode" ? settings.ruoliNotification.youtubeVideosCode : type == "youtubegiulio" ? settings.ruoliNotification.youtubeVideosGiulio : ""
-                let channel = type == "youtubegiulioandcode" || type == "youtubegiulio" ? settings.idCanaliServer.youtubeNotification : settings.idCanaliServer.announcements
+                let title = type == "announcement" ? "----- :loudspeaker: **ANNOUNCEMENT** :loudspeaker: -----" : type == "video" ? "----- :video_camera: **NEW VIDEO** :video_camera: -----" : type == "live" ? "---- 🟣 **NEW LIVE** 🟣 -----" : type == "events" ? "----- :trophy: **NEW EVENT** :trophy: -----" : ""
+                let role = type == "announcement" ? settings.ruoliNotification.announcements : type == "video" ? settings.ruoliNotification.video : type == "live" ? settings.ruoliNotification.live : type == "events" ? settings.ruoliNotification.events : ""
+                let channel = type == "announcement" ? settings.idCanaliServer.announcements : type == "video" ? settings.idCanaliServer.youtubeNotification : type == "live" ? settings.idCanaliServer.liveNotification : type == "events" ? settings.idCanaliServer.events : ""
+
+                if (`${title}\n${msg.content}\n<@&${role}>`.length > 4000) {
+                    return replyMessage(client, interaction, "Warning", "Messaggio troppo lungo", `L'annuncio è lungo ${`${title}\n${msg.content}\n<@&${role}>`.length} caratteri ma è possibile inviare al massimo 4000 caratteri`, comando)
+                }
 
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Confermi la creazione dell'annuncio?")
                     .setColor(colors.yellow)
-                    .setDescription(`${title}\n${msg.content.length > 200 ? `${msg.content.slice(0, 197)}...` : msg.content}\n<@&${role}>`)
+                    .setDescription(`L'annuncio di tipo \`${type}\` verrà inviato in <#${channel}>`)
 
                 let button1 = new Discord.MessageButton()
                     .setLabel("Annulla")
@@ -81,7 +82,7 @@ module.exports = {
                     .addComponents(button1)
                     .addComponents(button2)
 
-                interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
+                interaction.reply({ embeds: [embed], components: [row], fetchReply: true, content: `${title}\n${msg.content}\n<@&${role}>`, allowedMentions: { parse: [] } })
                     .then(msg2 => {
                         const collector = msg2.createMessageComponentCollector();
 
@@ -98,17 +99,16 @@ module.exports = {
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle("Annuncio annullato")
                                     .setColor(colors.red)
-                                    .setDescription(msg2.embeds[0].description)
 
-                                msg2.edit({ embeds: [embed], components: [] })
+                                msg2.edit({ embeds: [embed], components: [], content: "_Annuncio annullatto_" })
                             }
                             else if (i.customId == "confermaAnnuncio") {
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle("Annuncio creato")
                                     .setColor(colors.green)
-                                    .setDescription(msg2.embeds[0].description)
+                                    .setDescription(`Annuncio di tipo \`${type}\` inviato in <#${channel}>`)
 
-                                msg2.edit({ embeds: [embed], components: [] })
+                                msg2.edit({ embeds: [embed], components: [], content: "_Annuncio creato_" })
 
                                 client.channels.cache.get(channel).send({ content: `${title}\n${msg.content}\n<@&${role}>`, files: Array.from(msg.attachments.values()).reverse() })
                                     .then(async msg => {

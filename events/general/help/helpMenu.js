@@ -15,7 +15,7 @@ module.exports = {
 
         await interaction.deferUpdate()
 
-        if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
+        if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Menu non tuo", "Questo menu è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
         let category = interaction.values[0]
         let embed = new Discord.MessageEmbed()
@@ -35,6 +35,11 @@ module.exports = {
                 embed
                     .setTitle("📊 INFORMATIONS commands 📊")
                     .setColor("#C5CED5")
+            } break
+            case "help": {
+                embed
+                    .setTitle("🚑 HELP commands 🚑")
+                    .setColor("#de423a")
             } break
             case "fun": {
                 embed
@@ -107,7 +112,7 @@ ${commands[i].description}
                 label: "General",
                 emoji: "🎡",
                 value: "general",
-                description: "/help, /code, /segnala, /video, ..."
+                description: "/help, /segnala, /video, ..."
             })
             .addOptions({
                 label: "Community",
@@ -120,6 +125,12 @@ ${commands[i].description}
                 emoji: "📊",
                 value: "info",
                 description: "/serverinfo, /channelinfo, /link, /youtube, ..."
+            })
+            .addOptions({
+                label: "Help",
+                emoji: "🚑",
+                value: "help",
+                description: "/code, /hrename, /hclose, ..."
             })
             .addOptions({
                 label: "Fun and Games",

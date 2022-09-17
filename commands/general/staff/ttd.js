@@ -55,7 +55,7 @@ module.exports = {
     channelsGranted: [],
     async execute(client, interaction, comando) {
         let text = interaction.options.getString("text")
-        let category = interaction.options.getString("category") || "ttdWhite"
+        let category = interaction.options.getString("status") || "ttdWhite"
 
         if (text.length > 1024) {
             return replyMessage(client, interaction, "Warning", "Testo troppo lungo", "Puoi scrivere una Thing to Do solo fino a 1024 caratteri", comando)

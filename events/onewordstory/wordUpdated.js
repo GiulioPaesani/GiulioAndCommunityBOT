@@ -12,7 +12,7 @@ module.exports = {
         const maintenanceStates = await isMaintenance(oldMessage.author.id)
         if (maintenanceStates) return
 
-        if (oldMessage.channel.id != settings.idCanaliServer.onewordstory) return
+        if (oldMessage.channel?.id != settings.idCanaliServer.onewordstory) return
 
         let serverstats = await getServer()
 

@@ -83,7 +83,7 @@ module.exports = {
         }
         if (canaleType == "News Thread" || canaleType == "Public Thread" || canaleType == "Private Thread") {
             embed
-                .addField(":bricks: Main Channel", canale.parent.name, true)
+                .addField(":bricks: Main Channel", client.channels.cache.get(canale.parentId).name, true)
                 .addField(":snail: Slowmode", ms(canale.rateLimitPerUser * 1000, { long: true }), true)
                 .addField(":notepad_spiral: Topic", canale.topic || "_No topic_")
         }

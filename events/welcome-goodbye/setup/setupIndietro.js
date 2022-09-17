@@ -47,44 +47,51 @@ Prima di partecipare al server leggi tutte le <#${settings.idCanaliServer.rules}
                     .setDescription(`All'interno del server non viene mai utilizzato il tag @everyone, ma semplici ruoli per diversi scopri di notifiche
 
 Seleziona quali **notifiche** vuoi ricevere
-_Potrai poi modificarle con il comando \`/notification\`_`)
-                    .addField(`📋 Announcements - ${utente.roles.cache.has(settings.ruoliNotification.announcements) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Annunci grossi e importanti relativi al canale e al server")
-                    .addField(`📰 News - ${utente.roles.cache.has(settings.ruoliNotification.news) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Notizie piccole e leggere sul canale e sul server")
-                    .addField(`📝 Changelog - ${utente.roles.cache.has(settings.ruoliNotification.changelog) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Tutte le novità, funzioni, comandi che vengono aggiunte ai bot del server")
-                    .addField(`📱 YouTube GiulioAndCode - ${utente.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Nuovi video pubblicati sul canale GiulioAndCode")
-                    .addField(`✌ YouTube Giulio - ${utente.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? ":green_circle: ON" : ":red_circle: OFF"}`, "Nuovi video pubblicati sul canale Giulio")
+_Potrai poi modificarle con il comando \`/notifications\`_`)
+                    .addFields([
+                        {
+                            name: `📢 Announcements - ${utente.roles.cache.has(settings.ruoliNotification.announcements) ? ":green_circle: ON" : ":red_circle: OFF"}`,
+                            value: "Annunci, notizie e novità nel server, nel canale o molto altro"
+                        },
+                        {
+                            name: `📹 YouTube Video - ${utente.roles.cache.has(settings.ruoliNotification.video) ? ":green_circle: ON" : ":red_circle: OFF"}`,
+                            value: "Nuovi video pubblicati sul canale YouTube di GiulioAndCode"
+                        },
+                        {
+                            name: `🟣 Twitch Live - ${utente.roles.cache.has(settings.ruoliNotification.live) ? ":green_circle: ON" : ":red_circle: OFF"}`,
+                            value: "Dirette Twitch su gaming, divertimento, programmazione ed eventi"
+                        },
+                        {
+                            name: `🏆 Events - ${utente.roles.cache.has(settings.ruoliNotification.events) ? ":green_circle: ON" : ":red_circle: OFF"}`,
+                            value: "Nuovi eventi su sfide di programmazione con la community"
+                        }
+                    ])
 
                 let button1 = new Discord.MessageButton()
-                    .setEmoji("📋")
+                    .setEmoji("📢")
                     .setCustomId(`notification,${interaction.user.id},1,setup`)
                     .setStyle(utente.roles.cache.has(settings.ruoliNotification.announcements) ? "SUCCESS" : "DANGER")
 
                 let button2 = new Discord.MessageButton()
-                    .setEmoji("📰")
+                    .setEmoji("📹")
                     .setCustomId(`notification,${interaction.user.id},2,setup`)
-                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.news) ? "SUCCESS" : "DANGER")
+                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.video) ? "SUCCESS" : "DANGER")
 
                 let button3 = new Discord.MessageButton()
-                    .setEmoji("📝")
+                    .setEmoji("🟣")
                     .setCustomId(`notification,${interaction.user.id},3,setup`)
-                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.changelog) ? "SUCCESS" : "DANGER")
+                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.live) ? "SUCCESS" : "DANGER")
 
                 let button4 = new Discord.MessageButton()
-                    .setEmoji("📱")
+                    .setEmoji("🏆")
                     .setCustomId(`notification,${interaction.user.id},4,setup`)
-                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.youtubeVideosCode) ? "SUCCESS" : "DANGER")
-
-                let button5 = new Discord.MessageButton()
-                    .setEmoji("✌")
-                    .setCustomId(`notification,${interaction.user.id},5,setup`)
-                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.youtubeVideosGiulio) ? "SUCCESS" : "DANGER")
+                    .setStyle(utente.roles.cache.has(settings.ruoliNotification.events) ? "SUCCESS" : "DANGER")
 
                 let row = new Discord.MessageActionRow()
                     .addComponents(button1)
                     .addComponents(button2)
                     .addComponents(button3)
                     .addComponents(button4)
-                    .addComponents(button5)
 
                 let button6 = new Discord.MessageButton()
                     .setLabel("Torna indietro")

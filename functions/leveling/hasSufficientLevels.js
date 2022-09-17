@@ -7,9 +7,10 @@ const hasSufficientLevels = (client, userstats, level) => {
 
     if (level <= 30 && server.members.cache.get(userstats.id).roles.cache.has(settings.idRuoloServerBooster)) return true
 
-    if (level <= 60 && server.members.cache.get(userstats.id).roles.cache.has(settings.idRuoloGiulioSubPlus)) return true
+    if (level <= 60 && server.members.cache.get(userstats.id).roles.cache.has(settings.idRuoloGiulioSub)) return true
 
     if (server.members.cache.get(userstats.id).roles.cache.has(settings.idRuoloGiulioSubPro)) return true
+    if (server.members.cache.get(userstats.id).roles.cache.has(settings.idRuoloGiulioSubTwitch)) return true
 
     return false
 }

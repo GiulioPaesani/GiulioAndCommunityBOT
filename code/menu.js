@@ -12,11 +12,11 @@ module.exports = {
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
         //Menu unico
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setTitle("Embed")
             .setDescription("Seleziona un opzione nel menu")
 
-        let select = new Discord.MessageSelectMenu()
+        let select = new Discord.SelectMenuBuilder()
             .setCustomId("idMenu")
             .setPlaceholder("Seleziona un'opziome")
             .setMinValues(1) //Minimo di opzioni che si possono cliccare
@@ -39,7 +39,7 @@ client.on("messageCreate", message => {
                 }
             ])
 
-        let row = new Discord.MessageActionRow() //Per ogni riga si può inserire un solo menu
+        let row = new Discord.ActionRowBuilder() //Per ogni riga si può inserire un solo menu
             .addComponents(select)
 
         message.channel.send({ embeds: [embed], components: [row] }) //Si possono inserire massimo 5 righe (Es: components: [row1, row2, row3])

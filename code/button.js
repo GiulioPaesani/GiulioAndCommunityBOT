@@ -12,36 +12,36 @@ module.exports = {
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
         //Bottone unico
-        let embed1 = new Discord.MessageEmbed()
+        let embed1 = new Discord.EmbedBuilder()
             .setTitle("Embed")
             .setDescription("Premi i bottoni")
 
-        let button1 = new Discord.MessageButton()
+        let button1 = new Discord.EmbedBuilder()
             .setLabel("Testo bottone")
             .setCustomId("idBottone1")
-            .setStyle("PRIMARY") //Oppure "DANGER", "SECONDARY", "SUCCESS"
+            .setStyle(Discord.ButtonStyle.Primary) //Oppure Danger, Secondary, Success
 
-        let row1 = new Discord.MessageActionRow()
+        let row1 = new Discord.ActionRowBuilder()
             .addComponents(button1)
 
         message.channel.send({ embeds: [embed1], components: [row1] })
 
         //Più bottoni
-        let embed2 = new Discord.MessageEmbed()
+        let embed2 = new Discord.EmbedBuilder()
             .setTitle("Embed")
             .setDescription("Primi i bottoni")
 
-        let button2 = new Discord.MessageButton()
+        let button2 = new Discord.EmbedBuilder()
             .setLabel("Testo bottone")
             .setCustomId("idBottone2")
-            .setStyle("PRIMARY")
+            .setStyle(Discord.ButtonStyle.Primary)
 
-        let button3 = new Discord.MessageButton()
+        let button3 = new Discord.ButtonBuilder()
             .setLabel("Testo bottone")
             .setCustomId("idBottone3")
-            .setStyle("PRIMARY")
+            .setStyle(Discord.ButtonStyle.Primary)
 
-        let row2 = new Discord.MessageActionRow() //Massimo 5 bottoni per riga
+        let row2 = new Discord.ActionRowBuilder() //Massimo 5 bottoni per riga
             .addComponents(button2)
             .addComponents(button3)
 

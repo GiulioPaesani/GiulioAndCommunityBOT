@@ -12,7 +12,7 @@ module.exports = {
     cooldown: 5,
     requiredLevel: 0,
     syntax: "/docs [query] (source)",
-    category: "general",
+    category: "help",
     data: {
         options: [
             {
@@ -129,7 +129,7 @@ module.exports = {
             }
         ]
     },
-    channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.codingGeneral, settings.idCanaliServer.help],
+    channelsGranted: [settings.idCanaliServer.commands, settings.idCanaliServer.help],
     async execute(client, interaction, comando) {
         let query = interaction.options.getString("query")
         let source = interaction.options.getSubcommand()

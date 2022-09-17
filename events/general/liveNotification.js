@@ -1,4 +1,5 @@
 const { isMaintenance } = require("../../functions/general/isMaintenance");
+const settings = require("../../config/general/settings.json")
 
 module.exports = {
     name: "messageCreate",
@@ -11,11 +12,12 @@ module.exports = {
 
         if (!message.content.endsWith("has finished streaming.")) {
             await client.channels.cache.get("1004644492776845392").send(`
--------------🟣 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 🟣-------------
-Ehy ragazzi, è appena iniziata una live sul Twitch di **GiulioAndCode**
+----- 🟣 **NEW LIVE** 🟣 -----
+Ehy ragazzi, è appena iniziata una live ${message.content.endsWith("GiulioAndCraft") ? "sulla :video_game: **GiulioAndCraft**" : message.content.endsWith("GiulioAndCoding") ? "su :keyboard: **GiulioAndCoding**" : message.content.endsWith("Community Event") ? "sui :trophy: **Community Event**" : "su Twitch"}
 Venite subito a divertirvi in \"**${message.content}**\"
 
-<https://www.twitch.tv/giulioandcode>`)
+<https://www.twitch.tv/giulioandcode>
+<@&${settings.ruoliNotification.live}>`)
                 .then(async msg => {
                     msg.crosspost()
                 })
@@ -24,9 +26,8 @@ Venite subito a divertirvi in \"**${message.content}**\"
             client.channels.cache.get("1004644492776845392").messages.fetch({ limit: 10 })
                 .then(messages => {
                     for (let msg of Array.from(messages.values())) {
-                        if (msg.content.includes("🟣 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 🟣")) {
-                            msg.edit(`${msg.content.replace("🟣 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 🟣", "📺 **𝐍𝐄𝐖 𝐋𝐈𝐕𝐄** 📺")}\n_La stream è terminata_`)
-                            return
+                        if (msg.content.includes("🟣 **NEW LIVE** 🟣")) {
+                            msg.edit(`${msg.content.replace("🟣 **NEW LIVE** 🟣", "📺 **NEW LIVE** 📺")}\n_La stream è terminata_`)
                         }
                     }
                 })

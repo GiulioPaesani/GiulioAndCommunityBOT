@@ -243,7 +243,7 @@ module.exports = {
                 .setTitle("ONE WORD STORY - GiulioAndCommunity")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
                 .setDescription("Statistiche one word story di tutti gli utenti nel server")
-                .addField(":pencil2: Last word", serverstats.onewordstory.words.length == 0 ? "_No words today_" : `"${serverstats.onewordstory.words[serverstats.onewordstory.words.length - 1].word}" (${moment(serverstats.onewordstory.words[serverstats.onewordstory.words.length - 1].time).fromNow()})`, true)
+                .addField(":pencil2: Last word", serverstats.onewordstory.words.length == 0 ? "_No words today_" : `"[${serverstats.onewordstory.words[serverstats.onewordstory.words.length - 1].word}](https://discord.com/channels/${settings.idServer}/${settings.idCanaliServer.onewordstory}/${serverstats.onewordstory.words[serverstats.onewordstory.words.length - 1].message})" (${moment(serverstats.onewordstory.words[serverstats.onewordstory.words.length - 1].time).fromNow()})`, true)
                 .addField(":medal: Last user", serverstats.onewordstory.words.length == 0 ? "_No users today_" : client.users.cache.get(serverstats.onewordstory.words[serverstats.onewordstory.words.length - 1].user).toString(), true)
                 .addField(":orange_book: Stories created", serverstats.onewordstory.totStories.toString())
                 .addField(":thought_balloon: Total words today", serverstats.onewordstory.totWordsToday.toString(), true)

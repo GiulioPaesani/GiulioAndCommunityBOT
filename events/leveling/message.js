@@ -17,7 +17,7 @@ module.exports = {
         if (message.channel.type == "DM") return
         if (message.guild.id != settings.idServer) return
 
-        if (message.channel.parentId == settings.idCanaliServer.categoriaAdmin || message.channel.parent?.parentId == settings.idCanaliServer.categoriaAdmin) return
+        if (message.channel.id == settings.idCanaliServer.testing) return
 
         let userstats = await getUser(message.author.id);
         if (!userstats) userstats = await addUser(message.member);

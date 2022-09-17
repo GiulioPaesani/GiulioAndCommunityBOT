@@ -26,6 +26,7 @@ module.exports = {
         if (userstats && userstats.joinedAt) return
 
         interaction.member.roles.remove(settings.idRuoloNonVerificato)
+        interaction.member.roles.add(settings.ruoliLeveling["0"])
 
         if (!userstats) {
             addUser(interaction.member)

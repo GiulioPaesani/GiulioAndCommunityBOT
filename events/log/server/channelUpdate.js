@@ -31,7 +31,7 @@ module.exports = {
             let permissionsText = ""
             Array.from(oldChannel.permissionOverwrites.cache.values()).forEach(permission => {
                 if (!Array.from(newChannel.permissionOverwrites.cache.values()).find(x => x.id == permission.id)) {
-                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\n`
+                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : newChannel.guild.roles.cache.find(y => y.id == permission.id).name ? `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\n` : ""
                     permissionsText += permission.type == "member" ? `_User removed_\n` : `_Role removed_\n`
 
                     let permissionsAllow = permission.allow.serialize() || {}
@@ -63,7 +63,7 @@ module.exports = {
 
             Array.from(oldChannel.permissionOverwrites.cache.values()).forEach(permission => {
                 if (JSON.stringify(Array.from(newChannel.permissionOverwrites.cache.values()).find(x => x.id == permission.id)) != JSON.stringify(permission)) {
-                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\n`
+                    permissionsText += permission.type == "member" ? `User: <@${permission.id}> - ID: ${permission.id}\n` : newChannel.guild.roles.cache.find(y => y.id == permission.id).name ? `Role: @${newChannel.guild.roles.cache.find(y => y.id == permission.id).name}\n` : ""
 
                     let oldPermissionsAllow = permission.allow.serialize() || {}
                     let oldPermissionsDeny = permission.deny.serialize() || {}

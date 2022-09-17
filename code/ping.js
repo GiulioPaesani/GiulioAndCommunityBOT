@@ -10,7 +10,7 @@ module.exports = {
     code: `
 client.on("messageCreate", message => {
     if (message.content == "!comando") {
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setTitle("Ping del bot")
             .setDescription("Ecco la latenza del bot")
             .addField("Ping", \`\${client.ws.ping}ms\`)

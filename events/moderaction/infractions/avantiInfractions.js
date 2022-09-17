@@ -3,6 +3,7 @@ const moment = require("moment")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getEmoji } = require("../../../functions/general/getEmoji");
 const { getUser } = require("../../../functions/database/getUser");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,
@@ -27,7 +28,7 @@ module.exports = {
         let utente = client.users.cache.get(interaction.customId.split(",")[3])
 
         let embed = new Discord.MessageEmbed()
-            .setTitle(`Infractions - ${interaction.guild.members.cache.get(interaction.customId.split(",")[3]).nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
+            .setTitle(`Infractions - ${interaction.guild.members.cache.get(utente.id)?.nickname ? interaction.guild.members.cache.get(utente.id).nickname : utente.username}`)
             .setThumbnail(interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }))
 
         if (userstats.moderation.type) {
