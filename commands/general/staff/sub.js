@@ -147,9 +147,9 @@ _Uscirà per tutti il ${publish_data}_
                 .setColor("#16A0F4")
                 .setDescription(`È appena uscito un nuovo video in **anteprima** solo per voi abbonati <@&${settings.idRuoloGiulioSubPro}>
                 
-**${title}**
+**${title_censored}**
                 `)
-                .setImage(image)
+                .setImage(image_censored)
 
             let button3 = new Discord.MessageButton()
                 .setLabel("Guarda il video")
