@@ -38,7 +38,7 @@ module.exports = {
                 },
                 {
                     name: ":confounded: Non cercare disperatamente aiuto",
-                    value: "Non chiedere in altri canali di essere aiuto nel tuo post, quando qualcuno avrà voglia e tempo ti aiuterà sicuramente"
+                    value: "Non chiedere in altri canali di essere aiutato nel tuo post, quando qualcuno avrà voglia e tempo ti aiuterà sicuramente"
                 },
                 {
                     name: ":heartpulse: Ringrazia gli utenti",
