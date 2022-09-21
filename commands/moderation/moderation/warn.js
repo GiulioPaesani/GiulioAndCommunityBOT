@@ -130,7 +130,7 @@ module.exports = {
             }
 
             let time = 259200000;
-            let reason = "5 warn in una settimana";
+            let reason = "3 warn in una settimana";
 
             userstats.moderation = {
                 type: "Tempmuted",
