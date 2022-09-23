@@ -32,6 +32,7 @@ module.exports = {
 
         const maintenanceStatus = await isMaintenance()
         if (!maintenanceStatus) {
+            console.log("Funcions active")
             setInterval(counterChannels, 1000 * 60 * 10, client)
             setInterval(youtubeNotifications, 1000 * 60 * 5, client)
             setInterval(autoBackup, 1000, client)
