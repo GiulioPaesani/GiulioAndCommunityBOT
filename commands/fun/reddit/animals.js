@@ -17,13 +17,13 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setTitle(random[0].data.children[0].data.title)
-            .setImage(random[0].data.children[0].data.url)
+            .setImage(random[0].data.children[0].data.thumbnail)
             .setFooter({ text: `From ${random[0].data.children[0].data.subreddit_name_prefixed}` })
 
         let button1 = new Discord.MessageButton()
             .setLabel("Go to post")
             .setStyle("LINK")
-            .setURL(`https://www.reddit.com${random[0].data.children[0].data.permalink}`)
+            .setURL(`https://www.reddit.com/${random[0].data.children[0].data.permalink}`)
 
         let row = new Discord.MessageActionRow()
             .addComponents(button1)
