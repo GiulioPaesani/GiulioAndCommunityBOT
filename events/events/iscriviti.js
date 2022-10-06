@@ -115,6 +115,10 @@ ${event.partecipanti.length + 1 >= event.maxpartecipanti ? "_Partecipanti massim
                             value: "Segui tutte le istruzioni sottostanti per iscriverti e per consegnare tutto quello che è necessario"
                         },
                         {
+                            name: ":cake: Non utilizzare oggetti già pronti",
+                            value: "Non è consentito utilizzare strumenti, librerie o tool che offrano componenti (o altri elementi grafici, esluse icone e immagini) già pronti. Sono consentiti solo strumenti che facilitano lo sviluppo (come React, Vite, Svelte...)"
+                        },
+                        {
                             name: ":soccer: Sii sportivo",
                             value: "Non lamentarti se ricevi un punteggio minore di chi secondo te è peggio. Sappi anche perdere e non ci rimanere male"
                         },
