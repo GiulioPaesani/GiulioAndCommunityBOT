@@ -213,7 +213,6 @@ ${getEmoji(client, "Loading")} **Main messages**
                     settings.idCanaliServer.rules,
                     settings.idCanaliServer.info,
                     settings.idCanaliServer.suggestions,
-                    settings.idCanaliServer.judgeMyServer,
                     settings.idCanaliServer.polls,
                     settings.idCanaliServer.staffPolls,
                     settings.idCanaliServer.qna,
