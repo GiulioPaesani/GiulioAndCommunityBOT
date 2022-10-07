@@ -8,7 +8,7 @@ const fineIscrizione = async (client) => {
     let serverstats = await getServer()
 
     serverstats.events.forEach(async event => {
-        if (event.expiration_data <= new Date().getTime() && !event.expired) {
+        if (!event.finished && event.expiration_data <= new Date().getTime() && !event.expired) {
             const msg = await client.channels.cache.get(settings.idCanaliServer.events).messages.fetch(event.message)
 
             let button1 = new Discord.MessageButton()

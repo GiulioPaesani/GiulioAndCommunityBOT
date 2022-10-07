@@ -7,7 +7,7 @@ const inizioEvento = async (client) => {
     let serverstats = await getServer()
 
     serverstats.events.forEach(async event => {
-        if (event.data <= new Date().getTime() && !event.started) {
+        if (!event.finished && event.data <= new Date().getTime() && !event.started) {
             const msg = await client.channels.cache.get(settings.idCanaliServer.events).messages.fetch(event.message)
 
             let button1 = new Discord.MessageButton()
