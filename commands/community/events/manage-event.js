@@ -273,8 +273,6 @@ _Partecipa solo che hai già pronto il progetto da presentare, altrimenti attend
                                 .then(async msg4 => {
                                     msg4.crosspost().catch(() => { })
 
-                                    if (serverstats.events) serverstats.events = []
-
                                     serverstats.events.push({
                                         name: name,
                                         description: description,

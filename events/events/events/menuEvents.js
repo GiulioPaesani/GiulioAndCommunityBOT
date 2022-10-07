@@ -133,6 +133,6 @@ ${event.partecipanti.length >= event.maxpartecipanti ? "_Partecipanti massimi ra
         const row2 = new Discord.MessageActionRow()
             .addComponents(select)
 
-        interaction.message.edit({ embeds: [embed], components: [row2, row] })
+        interaction.message.edit({ embeds: [embed], components: [row, row2] })
     },
 };
