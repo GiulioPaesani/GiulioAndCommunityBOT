@@ -52,7 +52,7 @@ module.exports = {
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il permesso")
                     .setColor(colors.purple)
-                    .setDescription(`Per visualizzare questo contenuto è necessario essere **abbonati** come <@&${settings.idRuoloGiulioSubPro}>`)
+                    .setDescription(`Per visualizzare questo contenuto è necessario essere **abbonati** come <@&${settings.idRuoloGiulioSubTwitch}>`)
 
                 return interaction.followUp({ embeds: [embed], ephemeral: true })
             }
@@ -79,7 +79,7 @@ module.exports = {
                 let embed = new Discord.MessageEmbed()
                     .setTitle("Non hai il permesso")
                     .setColor(colors.purple)
-                    .setDescription(`Per visualizzare questo contenuto è necessario essere **abbonati** come <@&${settings.idRuoloGiulioSubPro}>`)
+                    .setDescription(`Per visualizzare questo contenuto è necessario essere **abbonati** come <@&${settings.idRuoloGiulioSubTwitch}>`)
 
                 return interaction.followUp({ embeds: [embed], ephemeral: true })
             }
