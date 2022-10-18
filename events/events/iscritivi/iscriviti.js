@@ -20,7 +20,7 @@ module.exports = {
 
         if (!interaction.customId.startsWith("iscriviti")) return
 
-        await interaction.deferUpdate().catch(() => { })
+        // await interaction.deferUpdate().catch(() => { })
 
         let serverstats = await getServer()
 
