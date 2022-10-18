@@ -83,7 +83,7 @@ module.exports = {
             .addComponents(button1)
 
         interaction.reply({
-            content: [embed],
+            embeds: [embed],
             components: [row],
             ephemeral: true
         })
