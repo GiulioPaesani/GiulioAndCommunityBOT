@@ -64,18 +64,7 @@ module.exports = {
             .addComponents(button1)
             .addComponents(button2)
 
-        //         interaction.message.edit({
-        //             content: `
-        // Iscriviti subito all'evento con il bottone "**Iscriviti**" qua sotto e segui le istruzioni
-        // _Partecipa solo che hai già pronto il progetto da presentare, altrimenti attendi di terminarlo per poi consegnarlo_
 
-        // :alarm_clock: Data evento: **${moment(event.data).format("DD/MM/YYYY HH:mm")}** sul canale Twitch di Giulio
-        // :hourglass: Scadenza partecipazioni: **${moment(event.expiration_data).format("DD/MM/YYYY HH:mm")}**
-
-        // :busts_in_silhouette: Partecipanti: **${event.partecipanti.length + 1}/${event.maxpartecipanti}**
-        // ${event.partecipanti.length + 1 >= event.maxpartecipanti ? "_Partecipanti massimi raggiunti_" : ""}
-        // `, components: [row]
-        //         })
 
         interaction.guild.channels.create(`🏅│${interaction.user.username}`, {
             type: "GUILD_TEXT",
@@ -161,6 +150,12 @@ module.exports = {
 :identification_card: Segui tutte queste **istruzioni** per consegnare tutto il necessario al meglio
 
 ${msg.content}`)
+
+                interaction.message.edit({
+                    content: `Ecco il canale <#${canale.id}> per **partecipare** all'evento!`,
+                    embeds: [],
+                    components: []
+                })
 
                 canale.send(`<@${interaction.user.id}> ecco il canale della tua iscrizione`)
                     .then((msg) => {
