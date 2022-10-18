@@ -1,15 +1,11 @@
 const Discord = require("discord.js")
 const moment = require("moment")
 const colors = require("../../../config/general/colors.json");
-const settings = require("../../../config/general/settings.json");
 const { addUser } = require("../../../functions/database/addUser");
 const { getServer } = require("../../../functions/database/getServer");
 const { getUser } = require("../../../functions/database/getUser");
-const { updateServer } = require("../../../functions/database/updateServer");
-const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { replyMessage } = require("../../../functions/general/replyMessage");
-const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels");
 
 module.exports = {
     name: `interactionCreate`,
@@ -19,8 +15,6 @@ module.exports = {
         if (maintenanceStatus) return
 
         if (!interaction.customId.startsWith("iscriviti")) return
-
-        // await interaction.deferUpdate().catch(() => { })
 
         let serverstats = await getServer()
 
