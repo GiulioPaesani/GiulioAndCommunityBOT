@@ -44,28 +44,6 @@ module.exports = {
         let userstats = await getUser(interaction.user.id)
         if (!userstats) userstats = await addUser(interaction.member)
 
-        let button1 = new Discord.MessageButton()
-            .setLabel("Iscriviti")
-            .setCustomId("iscriviti")
-            .setStyle("SUCCESS")
-
-        if (event.partecipanti.length + 1 >= event.maxpartecipanti) {
-            button1
-                .setLabel("Iscriviti (Full)")
-                .setDisabled()
-        }
-
-        let button2 = new Discord.MessageButton()
-            .setLabel("Come funzionano gli eventi")
-            .setCustomId("eventiTutorial")
-            .setStyle("SECONDARY")
-
-        let row = new Discord.MessageActionRow()
-            .addComponents(button1)
-            .addComponents(button2)
-
-
-
         interaction.guild.channels.create(`🏅│${interaction.user.username}`, {
             type: "GUILD_TEXT",
             permissionOverwrites: [
@@ -151,7 +129,7 @@ module.exports = {
 
 ${msg.content}`)
 
-                interaction.message.edit({
+                interaction.editReply({
                     content: `Ecco il canale <#${canale.id}> per **partecipare** all'evento!`,
                     embeds: [],
                     components: []
