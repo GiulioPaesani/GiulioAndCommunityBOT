@@ -229,7 +229,7 @@ module.exports = {
                 })
             }
         })
-        await interaction.deferReply();
+        await interaction.reply("test");
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
                 .then(async () => {
