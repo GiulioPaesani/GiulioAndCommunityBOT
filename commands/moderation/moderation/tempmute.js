@@ -229,6 +229,7 @@ module.exports = {
                 })
             }
         })
+        console.log("ciao");
         await interaction.reply("test");
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
@@ -275,7 +276,7 @@ module.exports = {
             .setFooter({ text: "User ID: " + utente.id })
 
         let msg = await interaction.editReply({ embeds: [embed], fetchReply: true })
-        console.log(msg)
+
         embed = new Discord.MessageEmbed()
             .setTitle(":speaker: Tempmute :speaker:")
             .setColor(colors.purple)
