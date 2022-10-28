@@ -1,15 +1,13 @@
 const Discord = require("discord.js")
 const moment = require("moment")
-const colors = require("../../config/general/colors.json");
-const settings = require("../../config/general/settings.json");
-const { addUser } = require("../../functions/database/addUser");
-const { getServer } = require("../../functions/database/getServer");
-const { getUser } = require("../../functions/database/getUser");
-const { updateServer } = require("../../functions/database/updateServer");
-const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
-const { isMaintenance } = require("../../functions/general/isMaintenance");
-const { replyMessage } = require("../../functions/general/replyMessage");
-const { hasSufficientLevels } = require("../../functions/leveling/hasSufficientLevels");
+const colors = require("../../../config/general/colors.json");
+const settings = require("../../../config/general/settings.json");
+const { addUser } = require("../../../functions/database/addUser");
+const { getServer } = require("../../../functions/database/getServer");
+const { getUser } = require("../../../functions/database/getUser");
+const { updateServer } = require("../../../functions/database/updateServer");
+const { isMaintenance } = require("../../../functions/general/isMaintenance");
+const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
     name: `interactionCreate`,
@@ -18,13 +16,13 @@ module.exports = {
         const maintenanceStatus = await isMaintenance(interaction.user.id)
         if (maintenanceStatus) return
 
-        if (!interaction.customId.startsWith("iscriviti")) return
+        if (!interaction.customId.startsWith("confermaIscriviti")) return
 
         await interaction.deferUpdate().catch(() => { })
 
         let serverstats = await getServer()
 
-        const event = serverstats.events.find(x => x.message == interaction.message.id)
+        const event = serverstats.events.find(x => x.message == interaction.customId.split(",")[1])
         if (!event) {
             return replyMessage(client, interaction, "Warning", "Evento non trovato", "Questo evento non esiste più")
         }
@@ -43,39 +41,6 @@ module.exports = {
 
         let userstats = await getUser(interaction.user.id)
         if (!userstats) userstats = await addUser(interaction.member)
-
-        let button1 = new Discord.MessageButton()
-            .setLabel("Iscriviti")
-            .setCustomId("iscriviti")
-            .setStyle("SUCCESS")
-
-        if (event.partecipanti.length + 1 >= event.maxpartecipanti) {
-            button1
-                .setLabel("Iscriviti (Full)")
-                .setDisabled()
-        }
-
-        let button2 = new Discord.MessageButton()
-            .setLabel("Come funzionano gli eventi")
-            .setCustomId("eventiTutorial")
-            .setStyle("SECONDARY")
-
-        let row = new Discord.MessageActionRow()
-            .addComponents(button1)
-            .addComponents(button2)
-
-        interaction.message.edit({
-            content: `
-Iscriviti subito all'evento con il bottone "**Iscriviti**" qua sotto e segui le istruzioni
-_Partecipa solo che hai già pronto il progetto da presentare, altrimenti attendi di terminarlo per poi consegnarlo_
-
-:alarm_clock: Data evento: **${moment(event.data).format("DD/MM/YYYY HH:mm")}** sul canale Twitch di Giulio
-:hourglass: Scadenza partecipazioni: **${moment(event.expiration_data).format("DD/MM/YYYY HH:mm")}**
-
-:busts_in_silhouette: Partecipanti: **${event.partecipanti.length + 1}/${event.maxpartecipanti}**
-${event.partecipanti.length + 1 >= event.maxpartecipanti ? "_Partecipanti massimi raggiunti_" : ""}
-`, components: [row]
-        })
 
         interaction.guild.channels.create(`🏅│${interaction.user.username}`, {
             type: "GUILD_TEXT",
@@ -161,6 +126,46 @@ ${event.partecipanti.length + 1 >= event.maxpartecipanti ? "_Partecipanti massim
 :identification_card: Segui tutte queste **istruzioni** per consegnare tutto il necessario al meglio
 
 ${msg.content}`)
+
+                button1 = new Discord.MessageButton()
+                    .setLabel("Iscriviti")
+                    .setCustomId("iscriviti")
+                    .setStyle("SUCCESS")
+
+                if (event.partecipanti.length + 1 >= event.maxpartecipanti) {
+                    button1
+                        .setLabel("Iscriviti (Full)")
+                        .setDisabled()
+                }
+
+                let button2 = new Discord.MessageButton()
+                    .setLabel("Come funzionano gli eventi")
+                    .setCustomId("eventiTutorial")
+                    .setStyle("SECONDARY")
+
+                row = new Discord.MessageActionRow()
+                    .addComponents(button1)
+                    .addComponents(button2)
+
+                const msg2 = await client.channels.cache.get(settings.idCanaliServer.events).messages.fetch(event.message)
+                msg2.edit({
+                    content: `
+Iscriviti subito all'evento con il bottone "**Iscriviti**" qua sotto e segui le istruzioni
+_Partecipa solo che hai già pronto il progetto da presentare, altrimenti attendi di terminarlo per poi consegnarlo_
+
+:alarm_clock: Data evento: **${moment(event.data).format("DD/MM/YYYY HH:mm")}** sul canale Twitch di Giulio
+:hourglass: Scadenza partecipazioni: **${moment(event.expiration_data).format("DD/MM/YYYY HH:mm")}**
+
+:busts_in_silhouette: Partecipanti: **${event.partecipanti.length + 1}/${event.maxpartecipanti}**
+${event.partecipanti.length + 1 >= event.maxpartecipanti ? "_Partecipanti massimi raggiunti_" : ""}
+`, components: [row]
+                })
+
+                interaction.editReply({
+                    content: `Ecco il canale <#${canale.id}> per **partecipare** all'evento!`,
+                    embeds: [],
+                    components: []
+                })
 
                 canale.send(`<@${interaction.user.id}> ecco il canale della tua iscrizione`)
                     .then((msg) => {
