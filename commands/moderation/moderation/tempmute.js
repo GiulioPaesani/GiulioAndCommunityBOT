@@ -71,7 +71,6 @@ module.exports = {
         let userstats = await getUser(utente.id)
         if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
-        console.log(userstats.moderation.type)
         if (userstats.moderation.type) {
             if (userstats.moderation.type == "Tempmuted") {
                 return replyMessage(client, interaction, "Warning", "Utente già tempmutato", "Questo utente è già mutato temporaneamente", comando)
@@ -230,7 +229,6 @@ module.exports = {
                 })
             }
         })
-        console.log("ciao");
 
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
@@ -275,9 +273,8 @@ module.exports = {
             .addField(":hourglass: Time", ms(time, { long: true }))
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
-        console.log("ciao2")
-        interaction.editReply({ embeds: [embed] })
-        console.log("ciao3")
+
+        msg.edit({ embeds: [embed] })
 
         embed = new Discord.MessageEmbed()
             .setTitle(":speaker: Tempmute :speaker:")
