@@ -216,7 +216,6 @@ module.exports = {
             return
         }
 
-        console.time("test")
         interaction.guild.channels.cache.forEach((canale) => {
             if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
                 canale.permissionOverwrites?.edit(settings.ruoliModeration.tempmuted, {
@@ -228,8 +227,6 @@ module.exports = {
                 })
             }
         })
-
-        console.timeLog("test")
 
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
@@ -247,7 +244,6 @@ module.exports = {
         else {
             userstats.roles.push(settings.ruoliModeration.tempmuted)
         }
-        console.timeLog("test")
 
         userstats.moderation = {
             type: "Tempmuted",
@@ -266,7 +262,6 @@ module.exports = {
             unModerator: null
         })
         updateUser(userstats)
-        console.timeLog("test")
 
         let embed = new Discord.MessageEmbed()
             .setAuthor({ name: `[TEMPMUTE] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
@@ -276,11 +271,8 @@ module.exports = {
             .addField(":hourglass: Time", ms(time, { long: true }))
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
-        console.timeLog("test")
 
-        // interaction.reply({ embeds: [embed] })
-        interaction.reply({ content: "CIAOOO" })
-        console.log(console.timeLog("test"))
+        interaction.reply({ embeds: [embed] })
 
         return
         // let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
