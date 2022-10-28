@@ -49,7 +49,7 @@ module.exports = {
         let reason = interaction.options.getString("reason")
         let time = interaction.options.getString("time")
 
-        await interaction.deferReply();
+        // await interaction.deferReply();
 
         if (!utente) {
             return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
