@@ -272,7 +272,7 @@ module.exports = {
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
         console.log("PRIMA DEL REPLY")
-        let msg = await interaction.reply({ embeds: [embed] })
+        interaction.reply({ embeds: [embed] })
         // let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
         console.log("DOPO IL REPLY")
         embed = new Discord.MessageEmbed()
