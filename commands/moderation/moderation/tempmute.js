@@ -49,8 +49,6 @@ module.exports = {
         let reason = interaction.options.getString("reason")
         let time = interaction.options.getString("time")
 
-        // await interaction.deferReply();
-
         if (!utente) {
             return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
@@ -218,6 +216,7 @@ module.exports = {
             return
         }
 
+        console.time("test")
         interaction.guild.channels.cache.forEach((canale) => {
             if (canale.parentId != settings.idCanaliServer.categoriaModerationTicket) {
                 canale.permissionOverwrites?.edit(settings.ruoliModeration.tempmuted, {
@@ -230,6 +229,7 @@ module.exports = {
             }
         })
 
+        console.log(console.timeStamp("test"))
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
                 .then(async () => {
@@ -246,6 +246,7 @@ module.exports = {
         else {
             userstats.roles.push(settings.ruoliModeration.tempmuted)
         }
+        console.log(console.timeStamp("test"))
 
         userstats.moderation = {
             type: "Tempmuted",
@@ -264,6 +265,7 @@ module.exports = {
             unModerator: null
         })
         updateUser(userstats)
+        console.log(console.timeStamp("test"))
 
         let embed = new Discord.MessageEmbed()
             .setAuthor({ name: `[TEMPMUTE] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
@@ -273,7 +275,11 @@ module.exports = {
             .addField(":hourglass: Time", ms(time, { long: true }))
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
+        console.log(console.timeStamp("test"))
+
         interaction.reply({ embeds: [embed] })
+        console.log(console.timeStamp("test"))
+
         return
         // let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
