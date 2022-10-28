@@ -49,6 +49,8 @@ module.exports = {
         let reason = interaction.options.getString("reason")
         let time = interaction.options.getString("time")
 
+        let msg = await interaction.reply({ content: "CIAOOOO", fetchReply: true })
+
         if (!utente) {
             return replyMessage(client, interaction, "Error", "Utente non trovato", "Hai inserito un utente non valido o non esistente", comando)
         }
@@ -274,7 +276,7 @@ module.exports = {
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
         console.log("ciao2")
-        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
+        interaction.editReply({ embeds: [embed] })
         console.log("ciao3")
 
         embed = new Discord.MessageEmbed()
