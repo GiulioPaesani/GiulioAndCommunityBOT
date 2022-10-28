@@ -69,6 +69,7 @@ module.exports = {
         let userstats = await getUser(utente.id)
         if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
 
+        console.log(userstats.moderation.type)
         if (userstats.moderation.type) {
             if (userstats.moderation.type == "Tempmuted") {
                 return replyMessage(client, interaction, "Warning", "Utente già tempmutato", "Questo utente è già mutato temporaneamente", comando)
