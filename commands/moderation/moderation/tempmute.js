@@ -272,10 +272,7 @@ module.exports = {
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
 
-        interaction.reply({ embeds: [embed] })
-
-        return
-        // let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
         embed = new Discord.MessageEmbed()
             .setTitle(":speaker: Tempmute :speaker:")
