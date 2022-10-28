@@ -229,7 +229,7 @@ module.exports = {
                 })
             }
         })
-
+        await interaction.deferReply();
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
                 .then(async () => {
@@ -274,7 +274,7 @@ module.exports = {
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
 
-        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
+        let msg = await interaction.editReply({ embeds: [embed], fetchReply: true })
         console.log(msg)
         embed = new Discord.MessageEmbed()
             .setTitle(":speaker: Tempmute :speaker:")
