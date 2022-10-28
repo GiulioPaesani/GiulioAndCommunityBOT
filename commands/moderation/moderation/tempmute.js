@@ -273,9 +273,9 @@ module.exports = {
             .addField(":hourglass: Time", ms(time, { long: true }))
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
-        interaction.editReply({ embeds: [embed] })
-        return
-        // let msg = await interaction.editReply({ embeds: [embed], fetchReply: true })
+        // interaction.reply({ embeds: [embed] })
+        // return
+        let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
 
         embed = new Discord.MessageEmbed()
             .setTitle(":speaker: Tempmute :speaker:")
