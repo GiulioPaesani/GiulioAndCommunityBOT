@@ -229,7 +229,8 @@ module.exports = {
             }
         })
 
-        console.log(console.timeStamp("test"))
+        console.timeLog("test")
+
         if (interaction.guild.members.cache.get(utente.id)) {
             interaction.guild.members.cache.get(utente.id).roles.add(settings.ruoliModeration.tempmuted)
                 .then(async () => {
@@ -246,7 +247,7 @@ module.exports = {
         else {
             userstats.roles.push(settings.ruoliModeration.tempmuted)
         }
-        console.log(console.timeStamp("test"))
+        console.timeLog("test")
 
         userstats.moderation = {
             type: "Tempmuted",
@@ -265,7 +266,7 @@ module.exports = {
             unModerator: null
         })
         updateUser(userstats)
-        console.log(console.timeStamp("test"))
+        console.timeLog("test")
 
         let embed = new Discord.MessageEmbed()
             .setAuthor({ name: `[TEMPMUTE] ${interaction.guild.members.cache.get(utente.id)?.nickname || utente.username}`, iconURL: interaction.guild.members.cache.get(utente.id)?.displayAvatarURL({ dynamic: true }) || utente.displayAvatarURL({ dynamic: true }) })
@@ -275,10 +276,11 @@ module.exports = {
             .addField(":hourglass: Time", ms(time, { long: true }))
             .addField(":shield: Moderator", interaction.user.toString())
             .setFooter({ text: "User ID: " + utente.id })
-        console.log(console.timeStamp("test"))
+        console.timeLog("test")
 
-        interaction.reply({ embeds: [embed] })
-        console.log(console.timeStamp("test"))
+        // interaction.reply({ embeds: [embed] })
+        interaction.reply({ content: "CIAOOO" })
+        console.log(console.timeLog("test"))
 
         return
         // let msg = await interaction.reply({ embeds: [embed], fetchReply: true })
