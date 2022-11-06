@@ -122,7 +122,7 @@ module.exports = {
 **${title_censored}**
 _Uscirà per tutti il ${publish_data}_
 
-:gem: Guardalo ora **ABBONANDOTI** al canale a soly 2,99€! Fallo subito [QUI](https://www.youtube.com/giulioandcode/join)
+:gem: Guardalo ora **ABBONANDOTI** al canale a soli 2,99€! Fallo subito [QUI](https://www.youtube.com/giulioandcode/join)
 `)
                 .setImage(image_censored)
 
