@@ -54,7 +54,7 @@ module.exports = {
                 .addField(":bust_in_silhouette: Member", `${member.toString()} - ${member.user.tag}\nID: ${member.id}`)
                 .addField(":pencil: Account created", `${moment(member.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.user.createdAt).fromNow()})`)
                 .addField(":red_car: Leaved server", `${moment(userstats.leavedAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(userstats.leavedAt).fromNow()})`)
-                .addField(":love_letter: Invite", invite ? `${invite.code} - Created from: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
+                .addField(":love_letter: Invite", invite ? `${invite.code} - Created by: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
                 .addField(":shirt: Roles", roles || "_No roles_")
 
             const maintenanceStatus = await isMaintenance()
