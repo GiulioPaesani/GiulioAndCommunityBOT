@@ -107,6 +107,9 @@ module.exports = {
         let coins = interaction.options.getInteger("coins")
 
         if (interaction.options.getSubcommand() == "remove") {
+            userstats.economy.money -= coins
+            if (userstats.economy.money < 0) userstats.economy.money = 0
+
             updateUser(userstats)
 
             replyMessage(client, interaction, "Correct", "Monete rimosse", `**${coins} monete** rimosse a ${utente.toString()}`)
@@ -119,6 +122,8 @@ module.exports = {
             replyMessage(client, interaction, "Correct", "Monete aggiunte", `**${coins} monete** aggiunte a ${utente.toString()}`)
         }
         else if (interaction.options.getSubcommand() == "set") {
+            userstats.economy.money = coins
+
             updateUser(userstats)
 
             replyMessage(client, interaction, "Correct", "Monete settate", `**${coins} monete** settate a ${utente.toString()}`)

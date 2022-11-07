@@ -25,7 +25,7 @@ module.exports = {
                     },
                     {
                         name: "📹 Youtube Video",
-                        value: "announcement"
+                        value: "video"
                     },
                     {
                         name: "🟣 Twitch Live",
