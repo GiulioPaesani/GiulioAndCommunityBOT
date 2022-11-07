@@ -90,7 +90,7 @@ module.exports = {
         await utente.send({ embeds: [embed] })
             .catch(() => { })
 
-        interaction.guild.members.cache.get(utente.id)?.kick({ reason: reason })
+        interaction.guild.members.cache.get(utente.id)?.kick(reason)
 
         let userstats = await getUser(utente.id)
         if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(utente.id) || utente)
