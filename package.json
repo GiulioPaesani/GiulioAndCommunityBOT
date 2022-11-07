@@ -26,7 +26,7 @@
     "node-fetch": "^2.6.7",
     "validator": "^13.7.0",
     "youtube-search-without-api-key": "^1.0.7",
-    "yt-channel-info": "^3.2.1",
+    "yt-channel-info": "^2.2.0",
     "ytdl-getinfo": "^1.1.0",
     "zip-local": "^0.3.5"
   },
