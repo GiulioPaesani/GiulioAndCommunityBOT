@@ -41,41 +41,41 @@ https://youtu.be/${idVideo}
     });
 
     //Giulio
-    ytch.getChannelVideos({ channelId: 'UCvIafNR8ZvZyE5jVGVqgVfA', sortBy: 'newest' }).then(async (response) => {
-        let idVideo = response.items[0]?.videoId;
-        if (!idVideo) return
-        if (response.items[0]?.durationText == "SHORTS") return
+    //     ytch.getChannelVideos({ channelId: 'UCvIafNR8ZvZyE5jVGVqgVfA', sortBy: 'newest' }).then(async (response) => {
+    //         let idVideo = response.items[0]?.videoId;
+    //         if (!idVideo) return
+    //         if (response.items[0]?.durationText == "SHORTS") return
 
-        client.channels.cache.get(settings.idCanaliServer.youtubeNotification).messages.fetch()
-            .then(async (messages) => {
-                let isGiaMandato = false;
-                await Array.from(messages.values()).forEach((msg) => {
-                    if (msg.content.split('\n')[msg.content.split('\n').length - 2]?.endsWith(idVideo))
-                        isGiaMandato = true;
-                })
+    //         client.channels.cache.get(settings.idCanaliServer.youtubeNotification).messages.fetch()
+    //             .then(async (messages) => {
+    //                 let isGiaMandato = false;
+    //                 await Array.from(messages.values()).forEach((msg) => {
+    //                     if (msg.content.split('\n')[msg.content.split('\n').length - 2]?.endsWith(idVideo))
+    //                         isGiaMandato = true;
+    //                 })
 
-                if (!isGiaMandato) {
-                    await getInfo(`https://www.youtube.com/watch?v=${idVideo}`)
-                        .then(async (info) => {
-                            let descriptionVideo = await JSON.stringify(info.items[0].description).split('\\n\\n')[0].slice(1);
+    //                 if (!isGiaMandato) {
+    //                     await getInfo(`https://www.youtube.com/watch?v=${idVideo}`)
+    //                         .then(async (info) => {
+    //                             let descriptionVideo = await JSON.stringify(info.items[0].description).split('\\n\\n')[0].slice(1);
 
-                            await client.channels.cache.get(settings.idCanaliServer.youtubeNotification).send(`
------ :v: **NEW VIDEO** :v: -----
-Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
-Andate subito a vedere \"**${info.items[0].fulltitle}**\"
+    //                             await client.channels.cache.get(settings.idCanaliServer.youtubeNotification).send(`
+    // ----- :v: **NEW VIDEO** :v: -----
+    // Ehy ragazzi, è appena uscito un nuovo video su **Giulio**
+    // Andate subito a vedere \"**${info.items[0].fulltitle}**\"
 
-${descriptionVideo}
+    // ${descriptionVideo}
 
-https://youtu.be/${idVideo}
-<@&${settings.ruoliNotification.video}>
-                `)
-                                .then(async msg => {
-                                    msg.crosspost()
-                                })
-                        })
-                }
-            });
-    });
+    // https://youtu.be/${idVideo}
+    // <@&${settings.ruoliNotification.video}>
+    //                 `)
+    //                                 .then(async msg => {
+    //                                     msg.crosspost()
+    //                                 })
+    //                         })
+    //                 }
+    //             });
+    //     });
 
     //GiulioAndLive
     ytch.getChannelVideos({ channelId: 'UCdwJnxZFfggSuXrLrc5sfPg', sortBy: 'newest' }).then(async (response) => {
