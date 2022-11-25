@@ -95,13 +95,13 @@ module.exports = {
                     {
                         name: "chat_points",
                         description: "Punteggio della chat",
-                        type: "INTEGER",
+                        type: "NUMBER",
                         required: true
                     },
                     {
                         name: "giulio_points",
                         description: "Punteggio di Giulio",
-                        type: "INTEGER",
+                        type: "NUMBER",
                         required: true
                     },
                 ]
