@@ -3,6 +3,7 @@ const moment = require("moment")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getEmoji } = require("../../../functions/general/getEmoji");
 const { getUser } = require("../../../functions/database/getUser");
+const { addUser } = require("../../../functions/database/addUser");
 const { replyMessage } = require("../../../functions/general/replyMessage");
 
 module.exports = {
@@ -19,6 +20,8 @@ module.exports = {
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
         let userstats = await getUser(interaction.customId.split(",")[3])
+        if (!userstats) userstats = await addUser(interaction.guild.members.cache.get(interaction.customId.split(",")[3]) || client.users.cache.get(interaction.customId.split(",")[3]))
+
         let warns = userstats.warns
 
         let utente = client.users.cache.get(interaction.customId.split(",")[3])

@@ -73,7 +73,7 @@ module.exports = {
             updateUser(userstats)
 
             const botCount = member.guild.members.cache.filter(x => x.user.bot).size;
-            const unverifiedCount = member.guild.members.cache.filter(x => x.roles.cache.size === 0).size;
+            const unverifiedCount = member.guild.members.cache.filter(x => x.roles.cache.size === 1).size;
 
             const utentiCount = member.guild.memberCount - botCount - unverifiedCount;
 

@@ -6,6 +6,7 @@ const colors = require("../../config/general/colors.json")
 const log = require("../../config/general/log.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance")
 const { getUser } = require("../../functions/database/getUser")
+const { addUser } = require("../../functions/database/addUser")
 const { getServer } = require("../../functions/database/getServer")
 const { updateUser } = require("../../functions/database/updateUser");
 const { updateServer } = require("../../functions/database/updateServer");
@@ -54,6 +55,8 @@ module.exports = {
             })
 
         let userstats = await getUser(newMessage.author.id)
+        if (!userstats) userstats = await addUser(message.member)
+
         userstats.countingplus.updated++
         updateUser(userstats)
 

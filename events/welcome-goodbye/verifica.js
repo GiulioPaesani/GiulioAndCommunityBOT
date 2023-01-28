@@ -44,7 +44,7 @@ module.exports = {
         }
 
         const botCount = interaction.guild.members.cache.filter(member => member.user.bot).size;
-        const unverifiedCount = interaction.guild.members.cache.filter(member => member.roles.cache.size === 0).size;
+        const unverifiedCount = interaction.guild.members.cache.filter(member => member.roles.cache.size === 1).size;
 
         const utentiCount = interaction.guild.memberCount - botCount - unverifiedCount;
 

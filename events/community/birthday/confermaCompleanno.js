@@ -5,6 +5,7 @@ const illustrations = require("../../../config/general/illustrations.json")
 const items = require("../../../config/ranking/items.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getUser } = require("../../../functions/database/getUser")
+const { addUser } = require("../../../functions/database/addUser")
 const { updateUser } = require("../../../functions/database/updateUser")
 const { createCanvas, loadImage } = require('canvas')
 const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
@@ -25,6 +26,7 @@ module.exports = {
         if (interaction.customId.split(",")[1] != interaction.user.id) return replyMessage(client, interaction, "Warning", "Bottone non tuo", "Questo bottone è in un comando eseguito da un'altra persona, esegui anche tu il comando per poterlo premere")
 
         let userstats = await getUser(interaction.user.id)
+        if (!userstats) userstats = await addUser(interaction.member)
 
         if (userstats.birthday && userstats.birthday[0]) {
             let embed = new Discord.MessageEmbed()
