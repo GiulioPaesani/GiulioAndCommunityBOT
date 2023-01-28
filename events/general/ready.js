@@ -96,5 +96,8 @@ module.exports = {
                 if (!guildLogCommands.find(x => x.name == command.name) && command.otherGuild)
                     await serverLog.commands.create(data)
             })
+
+        let i = 1;
+        server.members.cache.filter(x => x.roles.cache.size === 0).forEach(member => { console.log(i, member.user.username); i++ })
     }
 }
