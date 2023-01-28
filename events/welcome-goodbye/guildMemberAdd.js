@@ -25,10 +25,12 @@ module.exports = {
                 invites[member.guild.id] = guildInvites;
             })
 
+        client.channels.cache.get(settings.idCanaliServer.joinTheServer).send(member.toString())
+            .then(msg => msg.delete().catch(() => { }))
+
+        return
         let userstats = await getUser(member.user.id)
         if (!userstats || !userstats.joinedAt) {
-            client.channels.cache.get(settings.idCanaliServer.joinTheServer).send(member.toString())
-                .then(msg => msg.delete().catch(() => { }))
             return
         }
 
