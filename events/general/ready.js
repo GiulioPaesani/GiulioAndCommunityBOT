@@ -41,7 +41,7 @@ module.exports = {
             setInterval(ttsInactivity, 1000, client)
             setInterval(checkActivityPrivateRooms, 1000 * 10, client)
             setInterval(checkPollTimeout, 1000 * 60, client)
-            setInterval(checkUnverifedUser, 1000 * 60, client)
+            // !!! setInterval(checkUnverifedUser, 1000 * 60, client)
             setInterval(checkRoomInDB, 1000 * 60 * 10, client)
             setInterval(checkTicketInDB, 1000 * 60 * 10, client)
             setInterval(ttdCounter, 1000 * 60 * 20, client)
