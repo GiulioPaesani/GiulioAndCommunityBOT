@@ -22,10 +22,10 @@ module.exports = {
         const maintenanceStatus = await isMaintenance(interaction.user.id)
         if (maintenanceStatus) return
 
+        if (!interaction.members.roles.cache.find(x => x.name.starsWith('Level'))) interaction.member.roles.add(settings.ruoliLeveling["0"])
+
         let userstats = await getUser(interaction.user.id)
         if (userstats && userstats.joinedAt) return
-
-        interaction.member.roles.add(settings.ruoliLeveling["0"])
 
         if (!userstats) {
             addUser(interaction.member)
