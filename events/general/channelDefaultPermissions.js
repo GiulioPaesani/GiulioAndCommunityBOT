@@ -5,10 +5,6 @@ module.exports = {
     async execute(client, channel) {
         if (channel.guild?.id != settings.idServer) return
 
-        channel.permissionOverwrites?.edit(settings.idRuoloNonVerificato, {
-            VIEW_CHANNEL: false
-        })
-
         channel.permissionOverwrites?.edit(settings.ruoliModeration.muted, {
             SEND_MESSAGES: false,
             SEND_MESSAGES_IN_THREADS: false,

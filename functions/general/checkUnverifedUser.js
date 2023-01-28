@@ -7,8 +7,7 @@ const { getUser } = require("../database/getUser")
 const checkUnverifedUser = async (client) => {
     let server = client.guilds.cache.get(settings.idServer)
 
-    let role = server.roles.cache.get(settings.idRuoloNonVerificato)
-    role.members.forEach(async user => {
+    server.members.cache.filter(x => x.roles.cache.size === 0).forEach(async user => {
         let userstats = await getUser(user.id)
         if (!userstats) {
             if (new Date().getTime() - user.joinedTimestamp > 172800000) { //Utente ancora non verificato da 2 giorni

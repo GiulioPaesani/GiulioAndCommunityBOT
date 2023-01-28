@@ -27,7 +27,6 @@ module.exports = {
 
         let userstats = await getUser(member.user.id)
         if (!userstats || !userstats.joinedAt) {
-            member.roles.add(settings.idRuoloNonVerificato)
             client.channels.cache.get(settings.idCanaliServer.joinTheServer).send(member.toString())
                 .then(msg => msg.delete().catch(() => { }))
             return
@@ -74,7 +73,7 @@ module.exports = {
             updateUser(userstats)
 
             const botCount = member.guild.members.cache.filter(x => x.user.bot).size;
-            const unverifiedCount = member.guild.members.cache.filter(x => x.roles.cache.has(settings.idRuoloNonVerificato)).size;
+            const unverifiedCount = member.guild.members.cache.filter(x => x.roles.cache.size === 0).size;
 
             const utentiCount = member.guild.memberCount - botCount - unverifiedCount;
 

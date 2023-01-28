@@ -18,7 +18,7 @@ module.exports = {
         if (member.user.bot) return
         if (member.guild.id != settings.idServer) return
 
-        if (member.roles.cache.has(settings.idRuoloNonVerificato)) return
+        if (member.roles.cache.size === 0) return
 
         let userstats = await getUser(member.id)
         if (!userstats) userstats = await addUser(member)

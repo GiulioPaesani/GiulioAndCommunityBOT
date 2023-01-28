@@ -25,7 +25,6 @@ module.exports = {
         let userstats = await getUser(interaction.user.id)
         if (userstats && userstats.joinedAt) return
 
-        interaction.member.roles.remove(settings.idRuoloNonVerificato)
         interaction.member.roles.add(settings.ruoliLeveling["0"])
 
         if (!userstats) {
@@ -42,7 +41,7 @@ module.exports = {
         }
 
         const botCount = interaction.guild.members.cache.filter(member => member.user.bot).size;
-        const unverifiedCount = interaction.guild.members.cache.filter(member => member.roles.cache.has(settings.idRuoloNonVerificato)).size;
+        const unverifiedCount = interaction.guild.members.cache.filter(member => member.roles.cache.size === 0).size;
 
         const utentiCount = interaction.guild.memberCount - botCount - unverifiedCount;
 
