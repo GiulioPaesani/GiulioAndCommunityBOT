@@ -10,6 +10,7 @@ const { isMaintenance } = require("../../functions/general/isMaintenance");
 const { updateUser } = require("../../functions/database/updateUser");
 const { invites } = require("../../functions/general/invites")
 const { getAllUsers } = require("../../functions/database/getAllUsers")
+const { checkUserLevelRole } = require("../../functions/leveling/checkLevelRoles")
 
 module.exports = {
     name: `interactionCreate`,
