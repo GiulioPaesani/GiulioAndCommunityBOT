@@ -22,6 +22,8 @@ module.exports = {
         const maintenanceStatus = await isMaintenance(interaction.user.id)
         if (maintenanceStatus) return
 
+        console.log(interaction.members.roles.cache.map(x => x.name))
+        console.log(interaction.members.roles.cache.find(x => x.name.starsWith('Level')))
         if (!interaction.members.roles.cache.find(x => x.name.starsWith('Level'))) interaction.member.roles.add(settings.ruoliLeveling["0"])
 
         let userstats = await getUser(interaction.user.id)
