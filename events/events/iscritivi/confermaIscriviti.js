@@ -81,7 +81,7 @@ module.exports = {
                         },
                         {
                             name: ":cake: Non utilizzare oggetti già pronti",
-                            value: "Non è consentito utilizzare strumenti, librerie o tool che offrano componenti (o altri elementi grafici, esluse icone e immagini) già pronti. Sono consentiti solo strumenti che facilitano lo sviluppo (come React, Vite, Svelte...)"
+                            value: "Non è consentito utilizzare strumenti, librerie o tool che offrano componenti (o altri elementi grafici, esluse icone e immagini) già pronti, come Bootstrap, Tailwind o Flutter, . Sono consentiti solo strumenti che facilitano lo sviluppo (come React, Vite, Svelte...)"
                         },
                         {
                             name: ":soccer: Sii sportivo",
