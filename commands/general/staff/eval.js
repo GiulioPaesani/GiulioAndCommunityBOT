@@ -3,7 +3,7 @@ const colors = require("../../../config/general/colors.json");
 const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
 
 
-async function calcMsg() {
+async function calcMsg(interaction) {
     const msg = await interaction.channel.send('Conteggio in corso degli messaggi negli ultimi 28 giorni...');
 
     const allMessages = [];
