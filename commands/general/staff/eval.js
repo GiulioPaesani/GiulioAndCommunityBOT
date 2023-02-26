@@ -59,11 +59,7 @@ module.exports = {
             };
 
             for (const channel of interaction.guild.channels.cache) {
-                if (channel[1].id == '869975192645034085') {
-                    console.log(`inizio ${channel[1].name}`);
-                    await fetchMsgs(channel[1]);
-                    console.log(`fine ${channel[1].name}`);
-                }
+                await fetchMsgs(channel[1]);
             }
 
             const usersMessages = []
