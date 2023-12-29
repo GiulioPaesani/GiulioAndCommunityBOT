@@ -23,22 +23,22 @@ module.exports = {
                 invites[member.guild.id] = guildInvites;
             })
 
-        let userstats = await getUser(interaction.user.id)
+        let userstats = await getUser(member.user.id)
 
         if (!userstats || !userstats.joinedAt) {
-            addUser(interaction.member)
+            addUser(member)
 
-            interaction.message.guild.invites.fetch().then(async guildInvites => {
-                const ei = invites.get(interaction.message.guild.id);
+            member.guild.invites.fetch().then(async guildInvites => {
+                const ei = invites.get(member.guild.id);
                 const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":inbox_tray: Welcome :inbox_tray:")
                     .setColor(colors.green)
-                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail(member.displayAvatarURL({ dynamic: true }))
                     .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-                    .addField(":bust_in_silhouette: Member", `${interaction.member.toString()} - ${interaction.user.tag}\nID: ${interaction.member.id}`)
-                    .addField(":pencil: Account created", `${moment(interaction.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(interaction.user.createdAt).fromNow()})`)
+                    .addField(":bust_in_silhouette: Member", `${member.toString()} - ${member.user.tag}\nID: ${member.id}`)
+                    .addField(":pencil: Account created", `${moment(member.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.user.createdAt).fromNow()})`)
                     .addField(":love_letter: Invite", invite ? `${invite.code} - Created by: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
 
                 const maintenanceStatus = await isMaintenance()
@@ -49,22 +49,22 @@ module.exports = {
         else {
             let roles = ""
             userstats.roles.forEach(role => {
-                if (interaction.member.guild.roles.cache.get(role)) {
-                    roles += `@${interaction.member.guild.roles.cache.get(role).name} - ID: ${role}\n`
+                if (member.guild.roles.cache.get(role)) {
+                    roles += `@${member.guild.roles.cache.get(role).name} - ID: ${role}\n`
                 }
             })
 
-            interaction.member.guild.invites.fetch().then(async guildInvites => {
-                const ei = invites.get(interaction.member.guild.id);
+            member.guild.invites.fetch().then(async guildInvites => {
+                const ei = invites.get(member.guild.id);
                 const invite = guildInvites.find(i => Object.fromEntries(ei)[i.code] < i.uses);
 
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":inbox_tray: Welcome back :inbox_tray:")
                     .setColor(colors.green)
-                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
+                    .setThumbnail(member.displayAvatarURL({ dynamic: true }))
                     .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-                    .addField(":bust_in_silhouette: Member", `${interaction.member.toString()} - ${interaction.member.user.tag}\nID: ${interaction.member.id}`)
-                    .addField(":pencil: Account created", `${moment(interaction.member.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(interaction.member.user.createdAt).fromNow()})`)
+                    .addField(":bust_in_silhouette: Member", `${member.toString()} - ${member.user.tag}\nID: ${member.id}`)
+                    .addField(":pencil: Account created", `${moment(member.user.createdAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(member.user.createdAt).fromNow()})`)
                     .addField(":red_car: Leaved server", `${moment(userstats.leavedAt).format("ddd DD MMM YYYY, HH:mm:ss")} (${moment(userstats.leavedAt).fromNow()})`)
                     .addField(":love_letter: Invite", invite ? `${invite.code} - Created by: ${client.users.cache.get(invite.inviter.id).toString()} (${invite.uses} uses)` : "User joined by Server Discovery")
                     .addField(":shirt: Roles", roles || "_No roles_")
