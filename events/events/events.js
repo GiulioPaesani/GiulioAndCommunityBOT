@@ -1,12 +1,12 @@
 const Discord = require("discord.js")
 const moment = require("moment")
-const colors = require("../../../config/general/colors.json")
-const settings = require("../../../config/general/settings.json")
-const { isMaintenance } = require("../../../functions/general/isMaintenance");
-const { getServer } = require("../../../functions/database/getServer");
-const { updateServer } = require("../../../functions/database/updateServer");
-const { replyMessage } = require("../../../functions/general/replyMessage");
-const { getEmoji } = require("../../../functions/general/getEmoji");
+const colors = require("../../config/general/colors.json")
+const settings = require("../../config/general/settings.json")
+const { isMaintenance } = require("../../functions/general/isMaintenance");
+const { getServer } = require("../../functions/database/getServer");
+const { updateServer } = require("../../functions/database/updateServer");
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getEmoji } = require("../../functions/general/getEmoji");
 
 module.exports = {
     name: `interactionCreate`,

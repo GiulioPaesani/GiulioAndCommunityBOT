@@ -5,12 +5,12 @@ const colors = require("../../config/general/colors.json");
 const { replyMessage } = require("../../functions/general/replyMessage");
 
 module.exports = {
-    name: "post",
+    name: "project",
     description: "Posta un tuo progetto inserendo titolo, descrizione, immagine e molto altro",
     permissionLevel: 0,
     requiredLevel: 30,
     cooldown: 30,
-    syntax: "/post [title] [description] (image) (textbutton1) (linkbutton1) (textbutton2) (linkbutton2)",
+    syntax: "/project [title] [description] (image) (textbutton1) (linkbutton1) (textbutton2) (linkbutton2)",
     category: "general",
     data: {
         options: [

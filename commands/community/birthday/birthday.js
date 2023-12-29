@@ -56,7 +56,7 @@ module.exports = {
 
             if (utente.id == interaction.user.id) {
                 embed
-                    .addField(`:grey_exclamation: Not setted`, `_Non hai ancora inserito il tuo compleanno_\nSe setterai il giorno del tuo compleanno, riceverai **auguri** e tanti **regali** personalizzati. Fallo subito con il comando \`/setbirthday [month] [day]\``)
+                    .addField(`:grey_exclamation: Not setted`, `_Non hai ancora inserito il tuo compleanno_\nSe setterai il giorno del tuo compleanno, riceverai gli **auguri** da tutta la community. Fallo subito con il comando \`/setbirthday [month] [day]\``)
             }
             else {
                 embed

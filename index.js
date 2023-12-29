@@ -13,7 +13,6 @@ const { codeError } = require('./functions/general/codeError');
 const { replyMessage } = require('./functions/general/replyMessage');
 const { joinVoiceChannel } = require("@discordjs/voice");
 const { isMaintenance } = require('./functions/general/isMaintenance');
-const { checkBadwords } = require('./functions/moderation/checkBadwords');
 const { getUserPermissionLevel } = require('./functions/general/getUserPermissionLevel');
 const { addQueue } = require("./functions/general/ttsQueue")
 const { hasSufficientLevels } = require('./functions/leveling/hasSufficientLevels');
@@ -261,49 +260,6 @@ client.on("interactionCreate", async interaction => {
     interaction.options._hoistedOptions.forEach(option => {
         testoCommand += ` ${option.name}: \`${option.value}\``
     })
-
-    let [trovata, nonCensurato, censurato] = checkBadwords(testoCommand);
-
-    if (trovata && !getUserPermissionLevel(client, interaction.user.id) && !interaction.member.roles.cache.has(settings.idRuoloFeatureActivator)) {
-        let embed = new Discord.MessageEmbed()
-            .setAuthor({ name: `[BAD WORDS] ${interaction.member.nickname || interaction.user.username}`, iconURL: interaction.member.displayAvatarURL({ dynamic: true }) })
-            .setDescription("L'utilizzo di certe parole in questo server non è consentito")
-            .setThumbnail(illustrations.badWords)
-            .setColor(colors.purple)
-            .addField(":envelope: Message command", censurato.slice(0, 1024))
-            .setFooter({ text: "User ID: " + interaction.user.id })
-
-        interaction.reply({ content: "Comando non valido" })
-        interaction.deleteReply()
-
-        client.channels.cache.get(interaction.channelId).send({ embeds: [embed] })
-            .then(async msg => {
-                let embed = new Discord.MessageEmbed()
-                    .setTitle(":sweat_drops: Badwords :sweat_drops:")
-                    .setColor(colors.purple)
-                    .setDescription(`[Message link](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`)
-                    .setThumbnail(interaction.member.displayAvatarURL({ dynamic: true }))
-                    .addField(":alarm_clock: Time", `${moment().format("ddd DD MMM YYYY, HH:mm:ss")}`)
-                    .addField(":bust_in_silhouette: Member", `${interaction.user.toString()} - ${interaction.user.tag}\nID: ${interaction.user.id}`)
-                    .addField(":anchor: Channel", `${client.channels.cache.get(interaction.channelId).toString()} - #${client.channels.cache.get(interaction.channelId).name}\nID: ${interaction.channelId}`)
-                    .addField(":envelope: Message command", nonCensurato.slice(0, 1024))
-
-                const maintenanceStatus = await isMaintenance()
-                if (!maintenanceStatus)
-                    client.channels.cache.get(log.moderation.badwords).send({ embeds: [embed] })
-            })
-
-        embed = new Discord.MessageEmbed()
-            .setTitle("Hai detto una parolaccia")
-            .setColor(colors.purple)
-            .setThumbnail(illustrations.badWords)
-            .addField(":envelope: Message", censurato.slice(0, 1024))
-            .addField(":anchor: Channel", client.channels.cache.get(interaction.channelId).toString())
-
-        client.users.cache.get(interaction.user.id).send({ embeds: [embed] })
-            .catch(() => { })
-        return
-    }
 
     let result = await comando.execute(client, interaction, comando)
     if (!result) {

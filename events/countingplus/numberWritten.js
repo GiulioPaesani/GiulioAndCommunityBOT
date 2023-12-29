@@ -11,7 +11,6 @@ const { getServer } = require("../../functions/database/getServer")
 const { updateServer } = require("../../functions/database/updateServer")
 const { updateUser } = require("../../functions/database/updateUser")
 const { getUserPermissionLevel } = require("../../functions/general/getUserPermissionLevel");
-const { checkBadwords } = require("../../functions/moderation/checkBadwords");
 
 module.exports = {
     name: "messageCreate",

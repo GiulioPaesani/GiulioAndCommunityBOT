@@ -27,10 +27,6 @@ module.exports = {
             return replyMessage(client, interaction, "InsufficientLevel", "Non ha il livello", `Per aprire una **stanza privata vocale** devi avere almeno il ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == "Level 20").toString()} o **boostare** il server`)
         }
 
-        if (userstats.moderation.type == "Muted" || userstats.moderation.type == "Tempmuted") {
-            return replyMessage(client, interaction, "Warning", "Non puoi aprire una stanza se sei mutato", `Non ti è concesso creare una qualsiasi stanza privata se sei mutato`)
-        }
-
         let serverstats = await getServer()
         let privaterooms = serverstats.privateRooms
 

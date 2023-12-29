@@ -2,7 +2,6 @@ const settings = require("../../../config/general/settings.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance");
 const { getServer } = require("../../../functions/database/getServer");
 const { getUserPermissionLevel } = require("../../../functions/general/getUserPermissionLevel");
-const { checkBadwords } = require("../../../functions/moderation/checkBadwords");
 
 module.exports = {
     name: "messageCreate",

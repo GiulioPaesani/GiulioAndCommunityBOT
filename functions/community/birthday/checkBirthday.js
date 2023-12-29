@@ -1,13 +1,10 @@
 const Discord = require("discord.js")
 const moment = require("moment")
 const settings = require("../../../config/general/settings.json")
-const items = require("../../../config/ranking/items.json")
 const illustrations = require("../../../config/general/illustrations.json")
 const { getAllUsers } = require("../../../functions/database/getAllUsers")
 const { createCanvas, loadImage } = require('canvas')
-const { updateUser } = require("../../database/updateUser")
 const { hasSufficientLevels } = require("../../leveling/hasSufficientLevels")
-const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
 
 const checkBirthday = async (client) => {
     let data = new Date()
@@ -47,37 +44,13 @@ const checkBirthday = async (client) => {
 
             birthdayToday.forEach(async userstats => {
                 if (client.guilds.cache.get(settings.idServer).members.cache.find(x => x.id == userstats.id)) {
-                    let randomItems = []
-                    let items2 = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
-                    for (let i = 1; i <= 4; i++) {
-                        randomItems.push(items2[Math.floor(Math.random() * items2.length)])
-                        items2 = items2.filter(x => x != randomItems[randomItems.length - 1])
-                    }
-
                     let embed = new Discord.MessageEmbed()
                         .setTitle(":tada: Happy birthday! :tada:")
                         .setColor("#FF1180")
                         .setThumbnail("attachment://canvas.png")
-                        .setDescription("Tanti auguri di **buon compleanno**, goditi subito questi fantastici **regali**")
-                        .addField(":gift: I tuoi regali", `
-- +${(userstats.leveling.level || 1) * 40} XP
-- +${(userstats.leveling.level || 1) * 10} Coins
-- 4 oggetti random dallo **shop** ${randomItems.map(x => x.icon).join(" ")}
-- **Boost x2** livellamento per tutto il giorno`)
 
                     client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                         .catch(() => { })
-
-                    userstats.leveling.xp += (userstats.leveling.level || 1) * 40
-                    userstats.economy.money += (userstats.leveling.level || 1) * 10
-
-                    randomItems.forEach(item => {
-                        userstats.economy.inventory[item.id] = !userstats.economy.inventory[item.id] ? 1 : (userstats.economy.inventory[item.id] + 1)
-                    })
-
-                    userstats = await checkLevelUp(client, userstats)
-
-                    updateUser(userstats)
                 }
             })
         }

@@ -50,11 +50,6 @@ module.exports = {
             .setDescription("Classifica di ringraziamenti nel server")
             .addFields([
                 {
-                    name: ":gift_heart: Premi",
-                    value: `Ogni **Domenica** alle **18:00** i primi **3 utenti** della **classifica settimanale** vinceranno dei **premi** come XP e Coins
-_Vengono contati i ringrazimenti della settimana precedente e non quelli totali_`
-                },
-                {
                     name: ":diamond_shape_with_a_dot_inside: Classifica settimanale",
                     value: leaderboardThanks ? `Il tuo rank: ${leaderboardListThanks.findIndex(x => x.id == interaction.user.id) < 0 ? "###" : `**#${leaderboardListThanks.findIndex(x => x.id == interaction.user.id) + 1}** ${interaction.user.toString()} - **${leaderboardListThanks.find(x => x.id == interaction.user.id).thanks}**`}\n\n${leaderboardThanks}` : "_Nessun ringraziamento_"
                 }

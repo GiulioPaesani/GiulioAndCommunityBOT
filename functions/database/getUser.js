@@ -19,9 +19,6 @@ const getUser = async (userId) => {
 
         if (data.countingplus.timeLastScore && data.countingplus.timeLastScore["$numberLong"]) data.countingplus.timeLastScore = data.countingplus.timeLastScore["$numberLong"]
 
-        if (data.moderation.since && data.moderation.since["$numberLong"]) data.moderation.since = data.moderation.since["$numberLong"]
-        if (data.moderation.until && data.moderation.until["$numberLong"]) data.moderation.until = data.moderation.until["$numberLong"]
-
         if (data.warns.some(x => x.time["$numberLong"])) {
             for (let index in data.warns) {
                 if (data.warns[index].time && data.warns[index].time["$numberLong"]) data.warns[index].time = data.warns[index].time["$numberLong"]

@@ -39,25 +39,7 @@ const addUser = async (member) => {
                 totWords: 0,
                 totWordsToday: 0,
                 totStories: 0
-            },
-            leveling: {
-                level: 0,
-                xp: 0,
-                livelliSuperati: {},
-            },
-            economy: {
-                money: 0,
-                inventory: {},
-            },
-            moderation: {
-                type: "",
-                since: "",
-                until: "",
-                reason: "",
-                moderator: "",
-                ticketOpened: false
-            },
-            warns: []
+            }
         }
 
         await fs.writeFileSync(`./database/users/${member.id}.json`, JSON.stringify(userstats))

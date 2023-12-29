@@ -26,15 +26,7 @@ module.exports = {
                     {
                         name: "📹 Youtube Video",
                         value: "video"
-                    },
-                    {
-                        name: "🟣 Twitch Live",
-                        value: "live"
-                    },
-                    {
-                        name: "🏆 Events",
-                        value: "events"
-                    },
+                    }
 
                 ]
             },
@@ -55,9 +47,9 @@ module.exports = {
                 }
 
                 let type = interaction.options.getString("type")
-                let title = type == "announcement" ? "----- :loudspeaker: **ANNOUNCEMENT** :loudspeaker: -----" : type == "video" ? "----- :video_camera: **NEW VIDEO** :video_camera: -----" : type == "live" ? "---- 🟣 **NEW LIVE** 🟣 -----" : type == "events" ? "----- :trophy: **NEW EVENT** :trophy: -----" : ""
-                let role = type == "announcement" ? settings.ruoliNotification.announcements : type == "video" ? settings.ruoliNotification.video : type == "live" ? settings.ruoliNotification.live : type == "events" ? settings.ruoliNotification.events : ""
-                let channel = type == "announcement" ? settings.idCanaliServer.announcements : type == "video" ? settings.idCanaliServer.youtubeNotification : type == "live" ? settings.idCanaliServer.liveNotification : type == "events" ? settings.idCanaliServer.events : ""
+                let title = type == "announcement" ? "----- :loudspeaker: **ANNOUNCEMENT** :loudspeaker: -----" : type == "video" ? "----- :video_camera: **NEW VIDEO** :video_camera: -----" : ""
+                let role = type == "announcement" ? settings.ruoliNotification.announcements : type == "video" ? settings.ruoliNotification.video : ""
+                let channel = type == "announcement" ? settings.idCanaliServer.announcements : type == "video" ? settings.idCanaliServer.youtubeNotification : ""
 
                 if (`${title}\n${msg.content}\n<@&${role}>`.length > 4000) {
                     return replyMessage(client, interaction, "Warning", "Messaggio troppo lungo", `L'annuncio è lungo ${`${title}\n${msg.content}\n<@&${role}>`.length} caratteri ma è possibile inviare al massimo 4000 caratteri`, comando)

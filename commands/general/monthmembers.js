@@ -19,20 +19,19 @@ module.exports = {
         const monthmembers = serverstats.monthmembers
 
         let currentMonth = moment().format("YYMM")
-        let currentMember = monthmembers.find(x => x.month == currentMonth)?.user || "_Membro non ancora scelto_"
+        let currentMember = monthmembers.find(x => x.month == currentMonth)?.user || null
 
         let lastMonths = ""
         monthmembers.sort((a, b) => b.month - a.month).filter(x => x.month < currentMonth).slice(0, 10).forEach(member => {
             lastMonths += `${moment(member.month, "YYMM").format("MMMM YYYY")} - <@${member.user}>\n`
         })
 
-
         let embed = new Discord.MessageEmbed()
             .setTitle(":sparkling_heart: Member of the month :sparkling_heart:")
             .setColor(colors.purple)
             .setDescription(`Il **membro del mese** è un utente del server che viene eletto **mensilmente** dallo staff`)
             .addField(":bust_in_silhouette: This month", `
-**${moment().format("MMMM YYYY").toUpperCase()}** - ${currentMember != "_Membro non ancora scelto_" ? `<@${currentMember}>` : currentMember}`)
+**${moment().format("MMMM YYYY").toUpperCase()}** - ${currentMember ? `<@${currentMember}>` : ''}`)
 
         if (lastMonths) {
             embed.addField(":busts_in_silhouette: Last months", lastMonths)

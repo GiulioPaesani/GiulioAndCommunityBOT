@@ -3,7 +3,6 @@ const moment = require("moment")
 const colors = require("../../config/general/colors.json")
 const log = require("../../config/general/log.json")
 const settings = require("../../config/general/settings.json")
-const items = require("../../config/ranking/items.json")
 const illustrations = require("../../config/general/illustrations.json")
 const { isMaintenance } = require("../../functions/general/isMaintenance");
 const { getEmoji } = require("../../functions/general/getEmoji")
@@ -102,21 +101,14 @@ New: Lvl. ${livelloNuovo} Boost ${message.guild.premiumSubscriptionCount}`)
         if (!maintenanceStatus)
             client.channels.cache.get(log.server.serverBoostes).send({ embeds: [embed] })
 
-        let textItems = ""
-        items.filter(x => x.priviled && x.priviled <= 30 && getEmoji(client, x.name.toLowerCase()) != "").slice(0, 6).forEach(item => {
-            textItems += `${getEmoji(client, item.name.toLowerCase())} `
-        })
-
         let textPrivilegi = `
 Ruolo @Server Booster
 Creare **sondaggi** con \`/poll\`
 Creare **stanze private testuali** e **vocali** in <#${settings.idCanaliServer.privateRooms}>
 Giocare a <#${settings.idCanaliServer.countingplus}> e <#${settings.idCanaliServer.onewordstory}> per divertirsi con gli utenti
-Ideare **meme** super divertenti con \`/image\`
-Pubblicare un tuo progetto in <#${settings.idCanaliServer.ourProjects}> con \`/post\` (e comparire se vuoi nella serie "I vostri super progetti")
+Pubblicare un tuo progetto in <#${settings.idCanaliServer.ourProjects}> con \`/project\` (e comparire se vuoi nella serie "I vostri super progetti")
 Emoji **eslusiva**: ${getEmoji(client, "GiulioBoost")}
 Nuove **emoji** tra cui ${getEmoji(client, "GiulioCool")} ${getEmoji(client, "GiulioImbarazzato")} ${getEmoji(client, "GiulioAngry")} ${getEmoji(client, "GiulioSus")} ${getEmoji(client, "GiulioCringe")} ${getEmoji(client, "GiulioGG")} e molte altre...
-Nuovi oggetti nello **shop** tra cui ${textItems} e molti altri...
 _E tantissimi altri privilegi..._`
 
         embed = new Discord.MessageEmbed()

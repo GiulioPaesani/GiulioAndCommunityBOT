@@ -218,13 +218,7 @@ ${getEmoji(client, "Loading")} **Main messages**
                     settings.idCanaliServer.qna,
                     settings.idCanaliServer.ourProjects,
                     settings.idCanaliServer.support,
-                    settings.idCanaliServer.privateRooms,
-                    settings.idCanaliServer.joinTheServer,
-                    settings.idCanaliServer.lockdown,
-                    settings.idCanaliServer.mutedTicket,
-                    settings.idCanaliServer.tempmutedTicket,
-                    settings.idCanaliServer.bannedTicket,
-                    settings.idCanaliServer.tempbannedTicket,
+                    settings.idCanaliServer.privateRooms
                 ]
 
                 for (let canale of channels) {

@@ -1,10 +1,10 @@
 const Discord = require("discord.js")
 const moment = require("moment")
-const settings = require("../../../config/general/settings.json")
-const colors = require("../../../config/general/colors.json")
-const { isMaintenance } = require("../../../functions/general/isMaintenance")
-const { replyMessage } = require("../../../functions/general/replyMessage");
-const { getServer } = require("../../../functions/database/getServer");
+const settings = require("../../config/general/settings.json")
+const colors = require("../../config/general/colors.json")
+const { isMaintenance } = require("../../functions/general/isMaintenance")
+const { replyMessage } = require("../../functions/general/replyMessage");
+const { getServer } = require("../../functions/database/getServer");
 
 module.exports = {
     name: `interactionCreate`,

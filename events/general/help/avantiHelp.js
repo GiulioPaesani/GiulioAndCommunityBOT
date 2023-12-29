@@ -45,16 +45,6 @@ module.exports = {
                     .setTitle("😂 FUN and GAMES commands 😂")
                     .setColor("#F2C249")
             } break
-            case "ranking": {
-                embed
-                    .setTitle("💵 RANKING commands 💵")
-                    .setColor("#A5D089")
-            } break
-            case "moderation": {
-                embed
-                    .setTitle("👮 MODERATION commands 👮")
-                    .setColor("#2A6797")
-            } break
             case "rooms": {
                 embed
                     .setTitle("🔐 TICKETS and PRIVATE ROOMS commands 🔐")
@@ -113,7 +103,7 @@ ${commands[i].description}
                 label: "General",
                 emoji: "🎡",
                 value: "general",
-                description: "/help, /segnala, /video, ..."
+                description: "/help, /video, /notifications ..."
             })
             .addOptions({
                 label: "Community",
@@ -125,7 +115,7 @@ ${commands[i].description}
                 label: "Informations",
                 emoji: "📊",
                 value: "info",
-                description: "/serverinfo, /channelinfo, /link, /youtube, ..."
+                description: "/link, /youtube, /illustrations, ..."
             })
             .addOptions({
                 label: "Help",
@@ -137,19 +127,7 @@ ${commands[i].description}
                 label: "Fun and Games",
                 emoji: "😂",
                 value: "fun",
-                description: "/say, /meme, /funuser, /hack, ..."
-            })
-            .addOptions({
-                label: "Ranking",
-                emoji: "💵",
-                value: "ranking",
-                description: "/rank, /leaderboard, /buy, /inventory, ..."
-            })
-            .addOptions({
-                label: "Moderation",
-                emoji: "👮",
-                value: "moderation",
-                description: "/infractions, /ban, /tempmute, /badwords, ..."
+                description: "/say, /funuser, /hack, ..."
             })
             .addOptions({
                 label: "Tickets and Private rooms",

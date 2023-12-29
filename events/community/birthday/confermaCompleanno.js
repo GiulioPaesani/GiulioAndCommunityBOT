@@ -2,15 +2,12 @@ const Discord = require("discord.js")
 const moment = require("moment")
 const colors = require("../../../config/general/colors.json")
 const illustrations = require("../../../config/general/illustrations.json")
-const items = require("../../../config/ranking/items.json")
 const { isMaintenance } = require("../../../functions/general/isMaintenance")
 const { getUser } = require("../../../functions/database/getUser")
 const { addUser } = require("../../../functions/database/addUser")
 const { updateUser } = require("../../../functions/database/updateUser")
 const { createCanvas, loadImage } = require('canvas')
-const { hasSufficientLevels } = require("../../../functions/leveling/hasSufficientLevels")
 const { replyMessage } = require("../../../functions/general/replyMessage")
-const { checkLevelUp } = require("../../../functions/leveling/checkLevelUp")
 
 module.exports = {
     name: `interactionCreate`,
@@ -56,9 +53,9 @@ module.exports = {
                 .setThumbnail("attachment://canvas.png")
 
             if (month == 2 && day == 29)
-                embed.setDescription(`${interaction.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per ricevere **auguri** e **regali**\n_Negli anni non bisestili il tuo compleanno sarà contato il 1 Marzo_`)
+                embed.setDescription(`${interaction.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per ricevere gli **auguri** dalla community\n_Negli anni non bisestili il tuo compleanno sarà contato il 1 Marzo_`)
             else
-                embed.setDescription(`${interaction.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per ricevere **auguri** e **regali**`)
+                embed.setDescription(`${interaction.user.toString()} hai inserito correttamente la data del tuo compleanno. Aspetta che arrivi per ricevere gli **auguri** dalla community`)
 
             if (moment([moment([data.getFullYear(), month - 1, day]).diff(moment()) < 0 ? data.getFullYear() + 1 : data.getFullYear(), month - 1, day]).diff(moment(), "days") + 1 == 1) {
                 embed.addField(`:balloon: ${day} ${moment().set("month", month - 1).format("MMMM")}`, `Manca **${moment([moment([data.getFullYear(), month - 1, day]).diff(moment()) < 0 ? data.getFullYear() + 1 : data.getFullYear(), month - 1, day]).diff(moment(), "days") + 1} giorno** al tuo compleanno`)
@@ -89,36 +86,14 @@ module.exports = {
                 img = await loadImage(illustrations.birthdayDecorations)
                 ctx.drawImage(img, 0, 0)
 
-                let randomItems = []
-                let items2 = items.filter(x => !x.priviled || (x.priviled && hasSufficientLevels(client, userstats, x.priviled)))
-                for (let i = 1; i <= 4; i++) {
-                    randomItems.push(items2[Math.floor(Math.random() * items2.length)])
-                    items2 = items2.filter(x => x != randomItems[randomItems.length - 1])
-                }
-
                 let embed = new Discord.MessageEmbed()
                     .setTitle(":tada: Happy birthday! :tada:")
                     .setColor("#FF1180")
                     .setThumbnail("attachment://canvas.png")
-                    .setDescription("Tanti auguri di **buon compleanno**, goditi subito questi fantastici **regali**")
-                    .addField(":gift: I tuoi regali", `
-- +${(userstats.leveling.level || 1) * 40} XP
-- +${(userstats.leveling.level || 1) * 10} Coins
-- 4 oggetti random dallo **shop** ${randomItems.map(x => x.icon).join(" ")}
-- **Boost x2** livellamento per tutto il giorno`)
+                    .setDescription("Tanti auguri di **buon compleanno**")
 
                 client.users.cache.get(userstats.id).send({ embeds: [embed], files: [new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png')] })
                     .catch(() => { })
-
-                userstats.leveling.xp += (userstats.leveling.level || 1) * 40
-                userstats.economy.money += (userstats.leveling.level || 1) * 10
-                randomItems.forEach(item => {
-                    userstats.economy.inventory[item.id] = !userstats.economy.inventory[item.id] ? 1 : (userstats.economy.inventory[item.id] + 1)
-                })
-
-                userstats = await checkLevelUp(client, userstats)
-
-                updateUser(userstats)
             }
         }
     },

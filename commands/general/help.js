@@ -41,14 +41,6 @@ module.exports = {
                         value: "fun"
                     },
                     {
-                        name: "💵 Ranking",
-                        value: "ranking"
-                    },
-                    {
-                        name: "👮 Moderation",
-                        value: "moderation"
-                    },
-                    {
                         name: "🔐 Tickets anche Private rooms",
                         value: "rooms"
                     }
@@ -88,11 +80,11 @@ module.exports = {
             let embed = new Discord.MessageEmbed()
                 .setTitle(`/${command.name.toUpperCase()}`)
                 .setDescription(command.description)
-                .setColor(command.category == "general" ? "#A0ADB7" : command.category == "community" ? "#F6D17E" : command.category == "info" ? "#C5CED5" : command.category == "help" ? "#de423a" : command.category == "fun" ? "#F2C249" : command.category == "ranking" ? "#A5D089" : command.category == "moderation" ? "#2A6797" : "#FFAC33")
+                .setColor(command.category == "general" ? "#A0ADB7" : command.category == "community" ? "#F6D17E" : command.category == "info" ? "#C5CED5" : command.category == "help" ? "#de423a" : command.category == "fun" ? "#F2C249" : "#FFAC33")
                 .addField(":keyboard: Syntax", command.syntax)
                 .addField(":gem: Permission required", command.permissionLevel == 0 ? "Accessible to everyone" : command.permissionLevel == 1 ? `Accessible to only ${getEmoji(client, "ModCommand")} Moderators` : command.permissionLevel == 2 ? `Accessible to only ${getEmoji(client, "AdminCommand")} Admins` : `Accessible to only ${getEmoji(client, "OwnerCommand")} Owners`, true)
                 .addField(":beginner: Level required", command.requiredLevel == 0 ? "No level required" : `${interaction.guild.roles.cache.find(x => x.name == `Level ${command.requiredLevel}`).toString()} required`, true)
-                .addField(":bricks: Category", command.category == "general" ? "General" : command.category == "community" ? "Community" : command.category == "info" ? "Informations" : command.category == "help" ? "Help" : command.category == "fun" ? "Fun and Games" : command.category == "ranking" ? "Ranking" : command.category == "moderation" ? "Moderation" : "Private rooms and Tickets", true)
+                .addField(":bricks: Category", command.category == "general" ? "General" : command.category == "community" ? "Community" : command.category == "info" ? "Informations" : command.category == "help" ? "Help" : command.category == "fun" ? "Fun and Games" : "Private rooms and Tickets", true)
                 .addField(":anchor: Channels granted", channelsGranted)
                 .addField(":stopwatch: Cooldown", command.cooldown ? `${command.cooldown} seconds` : "No cooldown")
 
@@ -127,16 +119,6 @@ module.exports = {
                         .setTitle("😂 FUN and GAMES commands 😂")
                         .setColor("#F2C249")
                 } break
-                case "ranking": {
-                    embed
-                        .setTitle("💵 RANKING commands 💵")
-                        .setColor("#A5D089")
-                } break
-                case "moderation": {
-                    embed
-                        .setTitle("👮 MODERATION commands 👮")
-                        .setColor("#2A6797")
-                } break
                 case "rooms": {
                     embed
                         .setTitle("🔐 TICKETS and PRIVATE ROOMS commands 🔐")
@@ -154,8 +136,6 @@ I comandi sono divisi nelle seguenti categorie:
 📊 Informations
 🚑 Help
 😂 Fun and Games
-💵 Ranking
-👮 Moderation
 🔐 Tickets and Private rooms
 
 _Seleziona la categoria dal menù qua sotto_`)
@@ -214,7 +194,7 @@ _Seleziona la categoria dal menù qua sotto_`)
                     label: "General",
                     emoji: "🎡",
                     value: "general",
-                    description: "/help, /segnala, /video, ..."
+                    description: "/help, /video, /notifications ..."
                 })
                 .addOptions({
                     label: "Community",
@@ -226,7 +206,7 @@ _Seleziona la categoria dal menù qua sotto_`)
                     label: "Informations",
                     emoji: "📊",
                     value: "info",
-                    description: "/serverinfo, /channelinfo, /link, /youtube, ..."
+                    description: "/link, /youtube, /illustrations, ..."
                 })
                 .addOptions({
                     label: "Help",
@@ -238,19 +218,7 @@ _Seleziona la categoria dal menù qua sotto_`)
                     label: "Fun and Games",
                     emoji: "😂",
                     value: "fun",
-                    description: "/say, /meme, /funuser, /hack, ..."
-                })
-                .addOptions({
-                    label: "Ranking",
-                    emoji: "💵",
-                    value: "ranking",
-                    description: "/rank, /leaderboard, /buy, /inventory, ..."
-                })
-                .addOptions({
-                    label: "Moderation",
-                    emoji: "👮",
-                    value: "moderation",
-                    description: "/infractions, /ban, /tempmute, /badwords, ..."
+                    description: "/say, /funuser, /hack, ..."
                 })
                 .addOptions({
                     label: "Tickets and Private rooms",

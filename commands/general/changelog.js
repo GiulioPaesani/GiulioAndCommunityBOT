@@ -64,7 +64,6 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setTitle(changelog.title)
             .setColor(colors.blue)
-            .setThumbnail(`http://img.youtube.com/vi/${changelog.idVideo}/maxresdefault.jpg`)
             .setDescription(`:pencil: **Changelog ${changelog.version}** - ${["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"][moment(changelog.date).format("M") - 1]} ${moment(changelog.date).format("YYYY")}
             
 ${changelog.description}
@@ -73,9 +72,14 @@ ${changelog.description}
 ${changelog.bestNovita.map(x => `- ${x}`).join("\n")}
 
 Scopri tutte i **cambiamenti**
-:film_frames: Video riassuntivo: https://youtu.be/${changelog.idVideo}
+:film_frames: Video riassuntivo: ${changelog.idVideo ? `https://youtu.be/${changelog.idVideo}` : '_Video non presente_'} 
 :page_with_curl: Lista completa: ${changelog.documento}
 `)
+
+        if (changelog.idVideo) {
+            embed
+                .setThumbnail(`http://img.youtube.com/vi/${changelog.idVideo}/maxresdefault.jpg`)
+        }
 
         let button1 = new Discord.MessageButton()
             .setEmoji(getEmoji(client, "Previous"))

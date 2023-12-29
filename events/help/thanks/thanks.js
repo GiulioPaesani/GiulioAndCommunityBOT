@@ -60,11 +60,6 @@ module.exports = {
                 .setDescription("Classifica di ringraziamenti nel server")
                 .addFields([
                     {
-                        name: ":gift_heart: Premi",
-                        value: `Ogni **Domenica** alle **18:00** i primi **3 utenti** della **classifica settimanale** vinceranno dei **premi** come XP e Coins
-_Vengono contati i ringrazimenti della settimana precedente e non quelli totali_`
-                    },
-                    {
                         name: ":diamond_shape_with_a_dot_inside: Classifica settimanale",
                         value: leaderboardThanks ? `Il tuo rank: ${leaderboardListThanks.findIndex(x => x.id == interaction.user.id) < 0 ? "###" : `**#${leaderboardListThanks.findIndex(x => x.id == interaction.user.id) + 1}** ${interaction.user.toString()} - **${leaderboardListThanks.find(x => x.id == interaction.user.id).thanks}**`}\n\n${leaderboardThanks}` : "_Nessun ringraziamento_"
                     }
@@ -143,11 +138,6 @@ _Vengono contati i ringrazimenti della settimana precedente e non quelli totali_
                 .setDescription("Classifica di ringraziamenti nel server")
                 .addFields([
                     {
-                        name: ":gift_heart: Premi",
-                        value: `Ogni **Domenica** alle **18:00** i primi **3 utenti** della **classifica settimanale** vinceranno dei **premi** come XP e Coins
-_Vengono contati i ringrazimenti della settimana precedente e non quelli totali_`
-                    },
-                    {
                         name: ":globe_with_meridians: Classifica generale",
                         value: leaderboardThanks ? `Il tuo rank: ${leaderboardListThanks.findIndex(x => x.id == interaction.user.id) < 0 ? "###" : `**#${leaderboardListThanks.findIndex(x => x.id == interaction.user.id) + 1}** ${interaction.user.toString()} - **${leaderboardListThanks.find(x => x.id == interaction.user.id).totalThanks}**`}\n\n${leaderboardThanks}` : "_Nessun ringraziamento_"
                     }
@@ -202,13 +192,8 @@ _Vengono contati i ringrazimenti della settimana precedente e non quelli totali_
                         name: ":grey_question: Come ricevere Ringraziamenti",
                         value: `
 **Aiutanto** un utente nella chat <#${settings.idCanaliServer.help}> con il suo problema, lui __se vorrà__ potrà utilizzare il comando </thankyou:1018431018295902238> per **ringraziarti**.
-Una volta che tu avrai **accettato**, ti verrà consegnato questo ringraziamento. Pian piano **scalando** la classifica settimanale puoi ricevere dei regali`
+Una volta che tu avrai **accettato**, ti verrà consegnato questo ringraziamento`
 
-                    },
-                    {
-                        name: ":gift_heart: Premi",
-                        value: `Ogni **Domenica** alle **18:00** i primi **3 utenti** della **classifica settimanale** vinceranno dei **premi** come XP e Coins
-_Vengono contati i ringrazimenti della settimana precedente e non quelli totali_`
                     }
                 ])
         }

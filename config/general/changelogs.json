@@ -1,5 +1,18 @@
 [
     {
+        "version": "V1223",
+        "title": "GiulioAndCommunity BOT inizia ad andare in pensione",
+        "description": "Le principali funzioni di GiulioAndCommunity BOT vanno in pensione per fare spazio a ciò che Jiulien ci offre e ci offrirà. Il bot della community rimarrà ma solo con funzioni speciali ed esclusive del server",
+        "date": "2023-12-29",
+        "documento": "https://bit.ly/47fK5Dw",
+        "idVideo": null,
+        "bestNovita": [
+            "Rimosso **livellamento**, economia, **moderazione** e molti dei comandi di informazione",
+            "Per i compleanni e per i ringraziamenti non vengono più assegnati regali/ricompense",
+            "Rimossa la verifica tramite bottone, inserito sistema di inserimento tramite Discord"
+        ]
+    },
+    {
         "version": "V0922",
         "title": "Tanti \"Grazie\" e altrettanti eventi!",
         "description": "Il changelog più piccolo di sempre. Due principali novità super interessanti nel server, per migliorare ancora di più l'esperienza dei membri",

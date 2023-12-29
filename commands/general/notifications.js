@@ -24,14 +24,6 @@ module.exports = {
                 {
                     name: `📹 YouTube Video - ${interaction.member.roles.cache.has(settings.ruoliNotification.video) ? ":green_circle: ON" : ":red_circle: OFF"}`,
                     value: "Nuovi video pubblicati sul canale YouTube di GiulioAndCode"
-                },
-                {
-                    name: `🟣 Twitch Live - ${interaction.member.roles.cache.has(settings.ruoliNotification.live) ? ":green_circle: ON" : ":red_circle: OFF"}`,
-                    value: "Dirette Twitch su gaming, divertimento, programmazione ed eventi"
-                },
-                {
-                    name: `🏆 Events - ${interaction.member.roles.cache.has(settings.ruoliNotification.events) ? ":green_circle: ON" : ":red_circle: OFF"}`,
-                    value: "Nuovi eventi su sfide di programmazione con la community"
                 }
             ])
 
@@ -44,16 +36,6 @@ module.exports = {
             .setEmoji("📹")
             .setCustomId(`notification,${interaction.user.id},2`)
             .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.video) ? "SUCCESS" : "DANGER")
-
-        let button3 = new Discord.MessageButton()
-            .setEmoji("🟣")
-            .setCustomId(`notification,${interaction.user.id},3`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.live) ? "SUCCESS" : "DANGER")
-
-        let button4 = new Discord.MessageButton()
-            .setEmoji("🏆")
-            .setCustomId(`notification,${interaction.user.id},4`)
-            .setStyle(interaction.member.roles.cache.has(settings.ruoliNotification.events) ? "SUCCESS" : "DANGER")
 
         let row = new Discord.MessageActionRow()
             .addComponents(button1)
