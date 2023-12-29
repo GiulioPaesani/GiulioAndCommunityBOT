@@ -19,9 +19,6 @@ module.exports = {
         if (message.channel.id != settings.idCanaliServer.counting) return
         if (message.author.bot) return
 
-        let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
-        if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
-
         if (message.content == "cos" || message.content.startsWith("!")) return
 
         let numero

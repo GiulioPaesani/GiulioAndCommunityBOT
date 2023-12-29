@@ -23,9 +23,6 @@ module.exports = {
         if (message.channel.id != settings.idCanaliServer.onewordstory) return
         if (message.author.bot) return
 
-        let [trovata, nonCensurato, censurato] = checkBadwords(message.content);
-        if (trovata && !getUserPermissionLevel(client, message.author.id) && !message.member.roles.cache.has(settings.idRuoloFeatureActivator)) return
-
         let userstats = await getUser(message.author.id)
         if (!userstats) userstats = await addUser(message.member)
 
