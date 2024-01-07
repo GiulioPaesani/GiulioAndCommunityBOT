@@ -13,7 +13,7 @@ const hasSufficientLevels = (client, userstats, level) => {
     if (member.roles.cache.has(settings.idRuoloGiulioSubTwitch)) return true
 
     for (let i = level; i <= 200; i += 5) {
-        if (member.roles.cache.find(x => x.name === `Level ${level}`)) return true;
+        if (member.roles.cache.find(x => x.name === `Level ${i}`)) return true;
     }
 
     return false
