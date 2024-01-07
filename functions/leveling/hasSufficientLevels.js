@@ -12,7 +12,11 @@ const hasSufficientLevels = (client, userstats, level) => {
     if (member.roles.cache.has(settings.idRuoloGiulioSubPro)) return true
     if (member.roles.cache.has(settings.idRuoloGiulioSubTwitch)) return true
 
-    return member.roles.cache.find(x => x.name === `Level ${level}`);
+    for (let i = level; i > 0; i -= 5) {
+        if (member.roles.cache.find(x => x.name === `Level ${level}`)) return true;
+    }
+
+    return false
 }
 
 module.exports = { hasSufficientLevels }
