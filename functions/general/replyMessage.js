@@ -46,7 +46,7 @@ const replyMessage = async (client, interaction, type, title, description, coman
             embed
                 .setTitle("Livello insufficiente")
                 .setColor(colors.pink)
-                .setDescription(comando ? `Per utilizzare il comando \`/${comando.name}\` è necessario almeno il ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${comando.requiredLevel}`).toString()}, **boostare** il server o diventando **GiulioSub**` : description)
+                .setDescription(comando ? `Per utilizzare il comando \`/${comando.name}\` è necessario almeno il ${client.guilds.cache.get(settings.idServer).roles.cache.find(x => x.name == `Level ${comando.requiredLevel}`)?.toString()}, **boostare** il server o diventando **GiulioSub**` : description)
 
             embed2
                 .setTitle(":candle: Insuffiencient level :candle:")

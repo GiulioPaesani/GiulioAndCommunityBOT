@@ -130,19 +130,15 @@ process.on("unhandledRejection", err => {
 client.on("interactionCreate", async interaction => {
     console.log('ciao', interaction.user.username)
     if (!interaction.isCommand()) return
-    console.log('ciao1')
 
     const maintenanceStatus = await isMaintenance(interaction.user.id)
     if (maintenanceStatus) return
-    console.log('ciao2')
 
     let userstats = await getUser(interaction.user.id)
     if (!userstats) userstats = await addUser(interaction.member)
-    console.log('ciao3')
 
     const comando = client.commands.get(interaction.commandName)
     if (!comando) return
-    console.log('ciao4')
 
     if (comando.permissionLevel > getUserPermissionLevel(client, interaction.user.id)) {
         return replyMessage(client, interaction, "NonPermesso", "", "", comando)
@@ -155,7 +151,6 @@ client.on("interactionCreate", async interaction => {
     if (blockedChannels.includes(interaction.channelId) && getUserPermissionLevel(client, interaction.user.id) <= 2) {
         return replyMessage(client, interaction, "CanaleNonConcesso", "", "", comando)
     }
-    console.log('ciao5')
 
     let serverstats = await getServer()
     if (comando.channelsGranted.length != 0 && !comando.channelsGranted.includes(interaction.channelId) && !comando.channelsGranted.includes(client.channels.cache.get(interaction.channelId).parentId)) {
@@ -226,7 +221,6 @@ client.on("interactionCreate", async interaction => {
 
         return
     }
-    console.log('ciao6')
 
     if (serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id))?.channel == interaction.channelId && !getUserPermissionLevel(client, interaction.user.id)) {
         if (!serverstats.privateRooms.find(x => !x.owners.includes(interaction.user.id)).mode.messages) {
@@ -259,7 +253,7 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
-    if (getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
+    if (comand.requiredLevel > 0 && getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
         return replyMessage(client, interaction, "InsufficientLevel", "", "", comando);
     }
 
@@ -267,9 +261,6 @@ client.on("interactionCreate", async interaction => {
     interaction.options._hoistedOptions.forEach(option => {
         testoCommand += ` ${option.name}: \`${option.value}\``
     })
-
-    console.log('ciao7')
-
 
     let result = await comando.execute(client, interaction, comando)
     if (!result) {
