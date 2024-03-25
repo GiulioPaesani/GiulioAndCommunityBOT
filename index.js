@@ -253,7 +253,7 @@ client.on("interactionCreate", async interaction => {
         }
     }
 
-    if (comand.requiredLevel > 0 && getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
+    if (comando.requiredLevel > 0 && getUserPermissionLevel(client, interaction.user.id) <= 1 && !hasSufficientLevels(client, userstats, comando.requiredLevel)) {
         return replyMessage(client, interaction, "InsufficientLevel", "", "", comando);
     }
 
